@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorScheme.cs" />
+    <Compile Include="DAL\CauHoiDTO.cs" />
     <Compile Include="DAL\DeThiDAL.cs" />
     <Compile Include="DAL\GiaoVienDAL.cs" />
     <Compile Include="DAL\HocSinhDAL.cs" />

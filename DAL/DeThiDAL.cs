@@ -77,7 +77,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
-        public bool ThemCauHoi(CauHoi ch)
+        public bool ThemCauHoi(CauHoiDTO ch)
         {
             string sql = @"INSERT INTO CauHoi (DeThiID, NoiDung, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, ThuTu)
                            VALUES (@deID, @nd, @a, @b, @c, @d, @dung, @thutu)";
@@ -92,6 +92,21 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 new SqlParameter("@thutu", ch.ThuTu)
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+        }
+        public bool XoaCauHoi(int maCauHoi) // Thay đổi kiểu dữ liệu/tham số cho phù hợp với logic của bạn
+        {
+            // Code thực thi việc xóa câu hỏi trong Database
+            return true;
+        }
+        public bool SuaCauHoi(CauHoiDTO cauHoi) // Truyền tham số tương ứng
+        {
+            // Code thực thi việc sửa câu hỏi trong Database
+            return true;
+        }
+        public DataTable LayKetQuaTheoDeThi(int maDeThi) // Hoặc kiểu trả về List<KetQua> tùy bạn
+        {
+            // Code thực thi việc lấy dữ liệu
+            return new DataTable();
         }
     }
 }

@@ -53,15 +53,23 @@
             this.pageHV_LopHoc = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.materialCard1 = new ReaLTaiizor.Controls.MaterialCard();
-            this.dtHV_BaiThi = new System.Windows.Forms.DataGridView();
-            this.foreverButton6 = new ReaLTaiizor.Controls.ForeverButton();
-            this.dtHV_LopHoc = new System.Windows.Forms.DataGridView();
+            this.dtHV_LopDangHoc = new System.Windows.Forms.DataGridView();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.foreverButton6 = new ReaLTaiizor.Controls.ForeverButton();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.dtHV_LopHoc = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnHV_DangKy = new System.Windows.Forms.Button();
+            this.btnHV_HuyDangKi = new System.Windows.Forms.Button();
             this.materialLabel11 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel10 = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageHV_BaiThi = new System.Windows.Forms.TabPage();
@@ -119,11 +127,6 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabHocVien.SuspendLayout();
             this.pageHV_TrangChu.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -136,8 +139,10 @@
             this.pageHV_LopHoc.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.materialCard1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtHV_BaiThi)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopDangHoc)).BeginInit();
+            this.tableLayoutPanel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopHoc)).BeginInit();
+            this.tableLayoutPanel10.SuspendLayout();
             this.pageHV_BaiThi.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.materialCard8.SuspendLayout();
@@ -454,7 +459,7 @@
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.materialCard1, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.dtHV_LopHoc, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel9, 0, 0);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 43);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
@@ -466,7 +471,7 @@
             // materialCard1
             // 
             this.materialCard1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard1.Controls.Add(this.dtHV_BaiThi);
+            this.materialCard1.Controls.Add(this.dtHV_LopDangHoc);
             this.materialCard1.Controls.Add(this.foreverButton6);
             this.materialCard1.Depth = 0;
             this.materialCard1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -479,23 +484,53 @@
             this.materialCard1.Size = new System.Drawing.Size(2017, 553);
             this.materialCard1.TabIndex = 5;
             // 
-            // dtHV_BaiThi
+            // dtHV_LopDangHoc
             // 
-            this.dtHV_BaiThi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dtHV_BaiThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtHV_BaiThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dtHV_LopDangHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dtHV_LopDangHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtHV_LopDangHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column16,
+            this.Column10,
             this.Column17,
             this.Column18,
-            this.Column19,
             this.Column21});
-            this.dtHV_BaiThi.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dtHV_BaiThi.Location = new System.Drawing.Point(17, 17);
-            this.dtHV_BaiThi.Name = "dtHV_BaiThi";
-            this.dtHV_BaiThi.RowHeadersWidth = 51;
-            this.dtHV_BaiThi.RowTemplate.Height = 24;
-            this.dtHV_BaiThi.Size = new System.Drawing.Size(1983, 253);
-            this.dtHV_BaiThi.TabIndex = 6;
+            this.dtHV_LopDangHoc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtHV_LopDangHoc.Location = new System.Drawing.Point(17, 17);
+            this.dtHV_LopDangHoc.Name = "dtHV_LopDangHoc";
+            this.dtHV_LopDangHoc.RowHeadersWidth = 51;
+            this.dtHV_LopDangHoc.RowTemplate.Height = 24;
+            this.dtHV_LopDangHoc.Size = new System.Drawing.Size(1983, 519);
+            this.dtHV_LopDangHoc.TabIndex = 6;
+            // 
+            // Column16
+            // 
+            this.Column16.HeaderText = "Lớp";
+            this.Column16.MinimumWidth = 6;
+            this.Column16.Name = "Column16";
+            // 
+            // Column10
+            // 
+            this.Column10.HeaderText = "Lịch Học";
+            this.Column10.MinimumWidth = 6;
+            this.Column10.Name = "Column10";
+            // 
+            // Column17
+            // 
+            this.Column17.HeaderText = "Khóa Học";
+            this.Column17.MinimumWidth = 6;
+            this.Column17.Name = "Column17";
+            // 
+            // Column18
+            // 
+            this.Column18.HeaderText = "Giáo Viên";
+            this.Column18.MinimumWidth = 6;
+            this.Column18.Name = "Column18";
+            // 
+            // Column21
+            // 
+            this.Column21.HeaderText = "Trạng Thái";
+            this.Column21.MinimumWidth = 6;
+            this.Column21.Name = "Column21";
             // 
             // foreverButton6
             // 
@@ -512,63 +547,103 @@
             this.foreverButton6.Text = "Đăng Kí Lớp";
             this.foreverButton6.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             // 
+            // tableLayoutPanel9
+            // 
+            this.tableLayoutPanel9.ColumnCount = 1;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel9.Controls.Add(this.dtHV_LopHoc, 0, 0);
+            this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel10, 0, 1);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 2;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.83036F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.16964F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(2045, 448);
+            this.tableLayoutPanel9.TabIndex = 6;
+            // 
             // dtHV_LopHoc
             // 
-            this.dtHV_LopHoc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dtHV_LopHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dtHV_LopHoc.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dtHV_LopHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtHV_LopHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column10,
-            this.Column11,
-            this.Column12,
-            this.Column13,
-            this.Column14,
-            this.Column15});
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5});
+            this.dtHV_LopHoc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtHV_LopHoc.Location = new System.Drawing.Point(3, 3);
             this.dtHV_LopHoc.Name = "dtHV_LopHoc";
             this.dtHV_LopHoc.RowHeadersWidth = 51;
             this.dtHV_LopHoc.RowTemplate.Height = 24;
-            this.dtHV_LopHoc.Size = new System.Drawing.Size(2045, 448);
-            this.dtHV_LopHoc.TabIndex = 6;
+            this.dtHV_LopHoc.Size = new System.Drawing.Size(2039, 383);
+            this.dtHV_LopHoc.TabIndex = 7;
             // 
-            // Column10
+            // dataGridViewTextBoxColumn1
             // 
-            this.Column10.HeaderText = "Lớp";
-            this.Column10.MinimumWidth = 6;
-            this.Column10.Name = "Column10";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Lớp";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             // 
-            // Column11
+            // dataGridViewTextBoxColumn2
             // 
-            this.Column11.HeaderText = "Khóa Học";
-            this.Column11.MinimumWidth = 6;
-            this.Column11.Name = "Column11";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Khóa Học";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             // 
-            // Column12
+            // dataGridViewTextBoxColumn3
             // 
-            this.Column12.HeaderText = "Giáo Viên";
-            this.Column12.MinimumWidth = 6;
-            this.Column12.Name = "Column12";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Giáo Viên";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             // 
-            // Column13
+            // dataGridViewTextBoxColumn4
             // 
-            this.Column13.HeaderText = "Lịch Học";
-            this.Column13.MinimumWidth = 6;
-            this.Column13.Name = "Column13";
+            this.dataGridViewTextBoxColumn4.HeaderText = "Sĩ Số";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             // 
-            // Column14
+            // dataGridViewTextBoxColumn5
             // 
-            this.Column14.HeaderText = "Bắt Đầu";
-            this.Column14.MinimumWidth = 6;
-            this.Column14.Name = "Column14";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Trạng Thái";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             // 
-            // Column15
+            // tableLayoutPanel10
             // 
-            this.Column15.HeaderText = "Kết Thúc";
-            this.Column15.MinimumWidth = 6;
-            this.Column15.Name = "Column15";
+            this.tableLayoutPanel10.ColumnCount = 2;
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel10.Controls.Add(this.btnHV_DangKy, 0, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnHV_HuyDangKi, 1, 0);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 392);
+            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
+            this.tableLayoutPanel10.RowCount = 1;
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(387, 53);
+            this.tableLayoutPanel10.TabIndex = 0;
+            // 
+            // btnHV_DangKy
+            // 
+            this.btnHV_DangKy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHV_DangKy.Location = new System.Drawing.Point(3, 3);
+            this.btnHV_DangKy.Name = "btnHV_DangKy";
+            this.btnHV_DangKy.Size = new System.Drawing.Size(187, 47);
+            this.btnHV_DangKy.TabIndex = 0;
+            this.btnHV_DangKy.Text = "Đăng Kí";
+            this.btnHV_DangKy.UseVisualStyleBackColor = true;
+            // 
+            // btnHV_HuyDangKi
+            // 
+            this.btnHV_HuyDangKi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHV_HuyDangKi.Location = new System.Drawing.Point(196, 3);
+            this.btnHV_HuyDangKi.Name = "btnHV_HuyDangKi";
+            this.btnHV_HuyDangKi.Size = new System.Drawing.Size(188, 47);
+            this.btnHV_HuyDangKi.TabIndex = 1;
+            this.btnHV_HuyDangKi.Text = "Hủy Đăng Ký";
+            this.btnHV_HuyDangKi.UseVisualStyleBackColor = true;
+            this.btnHV_HuyDangKi.Click += new System.EventHandler(this.btnHV_HuyDangKi_Click);
             // 
             // materialLabel11
             // 
@@ -1468,36 +1543,6 @@
             this.Column9.Name = "Column9";
             this.Column9.Width = 125;
             // 
-            // Column16
-            // 
-            this.Column16.HeaderText = "Lớp";
-            this.Column16.MinimumWidth = 6;
-            this.Column16.Name = "Column16";
-            // 
-            // Column17
-            // 
-            this.Column17.HeaderText = "Đề Thi";
-            this.Column17.MinimumWidth = 6;
-            this.Column17.Name = "Column17";
-            // 
-            // Column18
-            // 
-            this.Column18.HeaderText = "Giáo Viên";
-            this.Column18.MinimumWidth = 6;
-            this.Column18.Name = "Column18";
-            // 
-            // Column19
-            // 
-            this.Column19.HeaderText = "Điểm";
-            this.Column19.MinimumWidth = 6;
-            this.Column19.Name = "Column19";
-            // 
-            // Column21
-            // 
-            this.Column21.HeaderText = "Trạng Thái";
-            this.Column21.MinimumWidth = 6;
-            this.Column21.Name = "Column21";
-            // 
             // HocVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1524,8 +1569,10 @@
             this.pageHV_LopHoc.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.materialCard1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dtHV_BaiThi)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopDangHoc)).EndInit();
+            this.tableLayoutPanel9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopHoc)).EndInit();
+            this.tableLayoutPanel10.ResumeLayout(false);
             this.pageHV_BaiThi.ResumeLayout(false);
             this.pageHV_BaiThi.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -1612,14 +1659,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
-        private System.Windows.Forms.DataGridView dtHV_LopHoc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
-        private System.Windows.Forms.DataGridView dtHV_BaiThi;
+        private System.Windows.Forms.DataGridView dtHV_LopDangHoc;
         private System.Windows.Forms.DataGridView dgvHV_DeThiSapToi;
         private ReaLTaiizor.Controls.MaterialCard materialCard2;
         private ReaLTaiizor.Controls.ForeverButton btnHV_VaoLopHoc;
@@ -1642,10 +1682,20 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column24;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column25;
         private ReaLTaiizor.Controls.ForeverButton btnHV_XemLaiBaiThi;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.DataGridView dtHV_LopHoc;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
+        private System.Windows.Forms.Button btnHV_DangKy;
+        private System.Windows.Forms.Button btnHV_HuyDangKi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column19;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
     }
 }

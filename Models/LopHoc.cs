@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +15,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.Models
         public string LichHoc { get; set; }
         public int SiSoToiDa { get; set; }
         public string TrangThai { get; set; }
+        public DateTime? NgayBatDau { get; set; }
+        public DateTime? NgayKetThuc { get; set; }
 
         // Thuộc tính mở rộng hiển thị
         public string TenGiaoVien { get; set; }

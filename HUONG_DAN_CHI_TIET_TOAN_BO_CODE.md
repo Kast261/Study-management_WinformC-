@@ -1,12 +1,14 @@
 # 📘 TÀI LIỆU GỢI Ý & HƯỚNG DẪN CODE TOÀN DIỆN CHO DỰ ÁN
+
 > **Dự án:** Quản Lý Học Tập (`BLT_Quan_Ly_Hoc_Tap`)  
 > **Căn cứ kế hoạch:** `TOAN_BO_CODE_CAN_VIET.md`  
 > **Framework:** .NET Framework 4.8 / Windows Forms / ReaLTaiizor / SQL Server  
-> **Ngày cập nhật:** 2026-10-17  
+> **Ngày cập nhật:** 2026-10-17
 
 ---
 
 ## 📑 MỤC LỤC
+
 1. [DATABASE MIGRATION & BỔ SUNG CƠ SỞ DỮ LIỆU](#1-database-migration--bổ-sung-cơ-sở-dữ-liệu)
 2. [TẦNG TRUY CẬP DỮ LIỆU (DAL) CẦN BỔ SUNG](#2-tầng-truy-cập-dữ-liệu-dal-cần-bổ-sung)
    - 2.1. Hoàn thiện `DAL/TaiKhoanDAL.cs` (Sửa 2 lỗi build hiện tại)
@@ -25,45 +27,47 @@
 ## 1. DATABASE MIGRATION & BỔ SUNG CƠ SỞ DỮ LIỆU
 
 ### 1.1. Script T-SQL chạy trực tiếp trong SQL Server Management Studio (SSMS)
+
 Mở SSMS, chọn Database `BTL_QL_Hoc_Tap` (hoặc tên Database trong `App.config`) và thực thi đoạn script sau:
 
 ```sql
-USE BTL_QL_Hoc_Tap;
-GO
+    USE BTL_QL_Hoc_Tap;
+    GO
 
--- 1. Thêm cột TaiKhoanID vào bảng GiaoVien và HocSinh nếu chưa có
-IF COL_LENGTH('GiaoVien', 'TaiKhoanID') IS NULL 
-    ALTER TABLE GiaoVien ADD TaiKhoanID INT NULL;
-GO
+    -- 1. Thêm cột TaiKhoanID vào bảng GiaoVien và HocSinh nếu chưa có
+    IF COL_LENGTH('GiaoVien', 'TaiKhoanID') IS NULL
+        ALTER TABLE GiaoVien ADD TaiKhoanID INT NULL;
+    GO
 
-IF COL_LENGTH('HocSinh', 'TaiKhoanID') IS NULL 
-    ALTER TABLE HocSinh ADD TaiKhoanID INT NULL;
-GO
+    IF COL_LENGTH('HocSinh', 'TaiKhoanID') IS NULL
+        ALTER TABLE HocSinh ADD TaiKhoanID INT NULL;
+    GO
 
--- 2. Thêm cột Ngày Bắt Đầu & Kết Thúc vào bảng LopHoc nếu chưa có
-IF COL_LENGTH('LopHoc', 'NgayBatDau') IS NULL 
-    ALTER TABLE LopHoc ADD NgayBatDau DATE NULL;
-GO
+    -- 2. Thêm cột Ngày Bắt Đầu & Kết Thúc vào bảng LopHoc nếu chưa có
+    IF COL_LENGTH('LopHoc', 'NgayBatDau') IS NULL
+        ALTER TABLE LopHoc ADD NgayBatDau DATE NULL;
+    GO
 
-IF COL_LENGTH('LopHoc', 'NgayKetThuc') IS NULL 
-    ALTER TABLE LopHoc ADD NgayKetThuc DATE NULL;
-GO
+    IF COL_LENGTH('LopHoc', 'NgayKetThuc') IS NULL
+        ALTER TABLE LopHoc ADD NgayKetThuc DATE NULL;
+    GO
 
--- 3. Đảm bảo bảng DangKyLop có cột TrangThai hợp lệ ('Chờ duyệt', 'Đã duyệt', 'Từ chối')
-IF OBJECT_ID('DangKyLop', 'U') IS NULL
-BEGIN
-    CREATE TABLE DangKyLop (
-        DangKyID INT IDENTITY(1,1) PRIMARY KEY,
-        LopHocID INT NOT NULL,
-        HocSinhID INT NOT NULL,
-        TrangThai NVARCHAR(50) DEFAULT N'Chờ duyệt',
-        NgayDangKy DATETIME DEFAULT GETDATE()
-    );
-END
-GO
+    -- 3. Đảm bảo bảng DangKyLop có cột TrangThai hợp lệ ('Chờ duyệt', 'Đã duyệt', 'Từ chối')
+    IF OBJECT_ID('DangKyLop', 'U') IS NULL
+    BEGIN
+        CREATE TABLE DangKyLop (
+            DangKyID INT IDENTITY(1,1) PRIMARY KEY,
+            LopHocID INT NOT NULL,
+            HocSinhID INT NOT NULL,
+            TrangThai NVARCHAR(50) DEFAULT N'Chờ duyệt',
+            NgayDangKy DATETIME DEFAULT GETDATE()
+        );
+    END
+    GO
 ```
 
 ### 1.2. Cập nhật code trong `Database/CreateDataBase.cs`
+
 Bổ sung các dòng kiểm tra trên vào phương thức `CreateDataBase.Init()` để ứng dụng tự động kiểm tra và thêm cột khi khởi chạy mà không cần chạy SQL thủ công:
 
 ```csharp
@@ -79,7 +83,9 @@ IF COL_LENGTH('LopHoc', 'NgayKetThuc') IS NULL ALTER TABLE LopHoc ADD NgayKetThu
 ## 2. TẦNG TRUY CẬP DỮ LIỆU (DAL) CẦN BỔ SUNG
 
 ### 2.1. File `DAL/TaiKhoanDAL.cs`
+
 > ⚠️ **Lưu ý:** Hiện tại `Frm_Admin.cs` đang bị lỗi biên dịch (Compile Error) CS1061 do thiếu 2 phương thức:
+>
 > - `LayTatCaCoTenNguoiDung()`
 > - `ThemTaiKhoan(string tenDangNhap, string matKhauPlain, string vaiTro, int nguoiDungID)`
 
@@ -93,19 +99,19 @@ Hãy thêm các phương thức sau vào class `TaiKhoanDAL`:
 public DataTable LayTatCaCoTenNguoiDung()
 {
     string sql = @"
-        SELECT 
+        SELECT
             tk.TaiKhoanID,
             tk.TenDangNhap,
             tk.VaiTro,
             tk.NguoiDungID,
             ISNULL(tk.TrangThaiKhoa, 0) AS TrangThaiKhoa,
-            CASE 
+            CASE
                 WHEN tk.VaiTro = 'GiaoVien' THEN ISNULL(gv.HoTen, N'(Chưa liên kết)')
                 WHEN tk.VaiTro = 'HocSinh'  THEN ISNULL(hs.HoTen, N'(Chưa liên kết)')
                 WHEN tk.VaiTro = 'Admin'    THEN N'Quản trị viên hệ thống'
                 ELSE N'(Chưa xác định)'
             END AS TenNguoiDung,
-            CASE 
+            CASE
                 WHEN ISNULL(tk.TrangThaiKhoa, 0) = 1 THEN N'Đã khóa'
                 ELSE N'Hoạt động'
             END AS TrangThaiHienThi
@@ -131,7 +137,7 @@ public bool ThemTaiKhoan(string tenDangNhap, string matKhauPlain, string vaiTro,
 
     string hashPass = Passwords.Hash(matKhauPlain.Trim());
     string sql = @"
-        INSERT INTO TaiKhoan (TenDangNhap, MatKhau, VaiTro, NguoiDungID, TrangThaiKhoa) 
+        INSERT INTO TaiKhoan (TenDangNhap, MatKhau, VaiTro, NguoiDungID, TrangThaiKhoa)
         VALUES (@user, @mk, @vaiTro, @nguoiDungID, 0);
         SELECT SCOPE_IDENTITY();";
 
@@ -178,6 +184,7 @@ public bool ThemTaiKhoan(string tenDangNhap, string matKhauPlain, string vaiTro,
 ---
 
 ### 2.2. File `DAL/LopHocDAL.cs`
+
 Bổ sung các hàm quản lý Duyệt học viên & Đóng đăng ký lớp:
 
 ```csharp
@@ -187,7 +194,7 @@ Bổ sung các hàm quản lý Duyệt học viên & Đóng đăng ký lớp:
 public DataTable LayDangKyTheoLop(int lopHocID)
 {
     string sql = @"
-        SELECT 
+        SELECT
             dk.DangKyID,
             dk.LopHocID,
             dk.HocSinhID,
@@ -244,13 +251,14 @@ public bool DongDangKyLop(int lopHocID)
 ---
 
 ### 2.3. File `DAL/DeThiDAL.cs`
+
 Bổ sung các phương thức sửa/xóa câu hỏi và lấy kết quả thi của học sinh cho giáo viên:
 
 ```csharp
 public bool SuaCauHoi(CauHoi ch)
 {
     string sql = @"
-        UPDATE CauHoi 
+        UPDATE CauHoi
         SET NoiDung = @nd, DapAnA = @a, DapAnB = @b, DapAnC = @c, DapAnD = @d, DapAnDung = @dung
         WHERE CauHoiID = @id";
 
@@ -278,7 +286,7 @@ public bool XoaCauHoi(int cauHoiID)
 public DataTable LayKetQuaTheoDeThi(int deThiID)
 {
     string sql = @"
-        SELECT 
+        SELECT
             hs.HoTen AS TenHocSinh,
             dt.TenDeThi,
             CAST(kq.SoCauDung AS VARCHAR(10)) + '/' + CAST(ISNULL(dt.SoCau, 20) AS VARCHAR(10)) AS SoCauDung,
@@ -297,6 +305,7 @@ public DataTable LayKetQuaTheoDeThi(int deThiID)
 ---
 
 ### 2.4. File `DAL/KetQuaDAL.cs`
+
 Bổ sung phương thức lấy chi tiết bài làm để phục vụ Popup xem lại bài kiểm tra:
 
 ```csharp
@@ -306,7 +315,7 @@ Bổ sung phương thức lấy chi tiết bài làm để phục vụ Popup xem
 public DataTable LayChiTietBaiLamTheoKetQua(int ketQuaID)
 {
     string sql = @"
-        SELECT 
+        SELECT
             ch.NoiDung AS CauHoi,
             ch.DapAnA, ch.DapAnB, ch.DapAnC, ch.DapAnD,
             ch.DapAnDung,
@@ -326,6 +335,7 @@ public DataTable LayChiTietBaiLamTheoKetQua(int ketQuaID)
 ## 3. SỬA LỖI ADMIN FORM (`Forms/Frm_Admin.cs`)
 
 ### Mục tiêu:
+
 1. Khi click **Sửa Giáo Viên** (`btnGV_Sua_Click`), sau khi cập nhật thành công phải gọi:
    - `LoadDanhSachGiaoVien()`
    - `LamMoiFormGV()`
@@ -412,6 +422,7 @@ private void btnHV_Sua_Click(object sender, EventArgs e)
 ## 4. CODE HOÀN CHỈNH FORM KIỂM TRA (`Forms/Frm_KiemTra.cs`)
 
 ### 4 yêu cầu sửa đổi:
+
 1. **Timer**: Đổi sang màu đỏ (`Color.Red`) khi thời gian còn $\le$ 5 phút (300 giây).
 2. **ProgressBar**: Chỉ tăng theo tỉ lệ các câu **đã chọn đáp án**, không tăng bừa khi chỉ bấm "Câu sau".
 3. **Điều hướng**: Nút "Câu trước" chỉ lùi đến câu 1 (`_currentIndex == 0` thì disable nút).
@@ -695,6 +706,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 ## 5. CODE HOÀN CHỈNH FORM GIÁO VIÊN (`Forms/frm_GiaoVien.cs`)
 
 File này bao quát toàn bộ 7 tabs nghiệp vụ của Giáo viên:
+
 - **Tab Lớp học:** Quản lý lớp, tạo lớp, sửa lớp, đóng đăng ký.
 - **Tab Duyệt học viên:** Xem học viên chờ duyệt, bấm Duyệt / Từ chối.
 - **Tab Ngân hàng câu hỏi:** Thêm / Sửa / Xóa câu hỏi trắc nghiệm của đề.
@@ -739,7 +751,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 lblGV_LoiChao.Text = $"Xin Chào, {Session.HoTen ?? Session.TenDangNhap}";
-                
+
                 InitDropdowns();
                 SetupEventHandlers();
 
@@ -989,7 +1001,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 DataTable dt = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID);
-                
+
                 // Gán vào Tab Câu hỏi
                 cmbGV_ChonDeThi.DataSource = dt.Copy();
                 cmbGV_ChonDeThi.DisplayMember = "TenDeThi";
@@ -1305,6 +1317,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 ## 6. CODE HOÀN CHỈNH FORM HỌC VIÊN (`Forms/Frm_HocVien.cs`)
 
 Form học viên quản lý:
+
 1. Danh sách lớp học đang tham gia.
 2. Danh sách bài thi, trạng thái (Đã thi / Chưa thi), nút **Bắt Đầu Làm Bài** mở `Frm_KiemTra`.
 3. Lịch sử làm bài, nút **Xem Lại Bài Thi** hiển thị chi tiết câu đúng/sai.
@@ -1395,14 +1408,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 // Lấy tất cả bài thi thuộc lớp mà học sinh đang học kèm trạng thái Đã thi / Chưa thi
                 string sql = @"
-                    SELECT 
+                    SELECT
                         d.DeThiID,
                         d.TenDeThi,
                         d.MonHoc,
                         d.SoCau,
                         d.ThoiGian,
                         d.HanNop,
-                        CASE 
+                        CASE
                             WHEN kq.KetQuaID IS NOT NULL THEN N'Đã hoàn thành'
                             ELSE N'Chưa làm'
                         END AS TrangThaiLamBai,
@@ -1412,7 +1425,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     LEFT JOIN KetQuaThi kq ON d.DeThiID = kq.DeThiID AND kq.HocSinhID = @hsID
                     WHERE l.LopHocID IN (
                         SELECT LopHocID FROM HocSinh WHERE HocSinhID = @hsID
-                        UNION 
+                        UNION
                         SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID
                     )";
 
@@ -1687,15 +1700,16 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
 ## 8. THỨ TỰ TRIỂN KHAI VÀ CHECKLIST KIỂM THỬ
 
-| STT | Bước thực hiện | Vị trí file | Kết quả kỳ vọng |
-|:---:|:---|:---|:---|
-| **1** | **Chạy script DB Migration** | SQL Server / `CreateDataBase.cs` | Thêm cột `TaiKhoanID`, `NgayBatDau`, `NgayKetThuc` |
-| **2** | **Thêm 2 hàm còn thiếu vào `TaiKhoanDAL`** | `DAL/TaiKhoanDAL.cs` | Dự án **Build thành công 0 Error** |
-| **3** | **Sửa lỗi DGV không reload sau khi Sửa** | `Forms/Frm_Admin.cs` | Bấm Sửa GV / HV -> DGV cập nhật ngay và form reset |
-| **4** | **Cập nhật Timer & ProgressBar** | `Forms/Frm_KiemTra.cs` | Timer đỏ khi còn 5 phút, Progress chỉ tăng khi chọn đáp án |
-| **5** | **Hoàn thiện code Form Giáo Viên** | `Forms/frm_GiaoVien.cs` | Tạo lớp, duyệt học viên, tạo câu hỏi, giao bài, xuất file Excel |
-| **6** | **Hoàn thiện code Form Học Viên** | `Forms/Frm_HocVien.cs` | Xem lớp, làm bài thi, xem kết quả, đổi mật khẩu |
-| **7** | **Thêm Form Xem Lại Chi Tiết** | `Forms/Frm_XemLaiBaiThi.cs` | Xem lại câu hỏi đúng (xanh) / sai (đỏ) trực quan |
+|  STT  | Bước thực hiện                             | Vị trí file                      | Kết quả kỳ vọng                                                 |
+| :---: | :----------------------------------------- | :------------------------------- | :-------------------------------------------------------------- |
+| **1** | **Chạy script DB Migration**               | SQL Server / `CreateDataBase.cs` | Thêm cột `TaiKhoanID`, `NgayBatDau`, `NgayKetThuc`              |
+| **2** | **Thêm 2 hàm còn thiếu vào `TaiKhoanDAL`** | `DAL/TaiKhoanDAL.cs`             | Dự án **Build thành công 0 Error**                              |
+| **3** | **Sửa lỗi DGV không reload sau khi Sửa**   | `Forms/Frm_Admin.cs`             | Bấm Sửa GV / HV -> DGV cập nhật ngay và form reset              |
+| **4** | **Cập nhật Timer & ProgressBar**           | `Forms/Frm_KiemTra.cs`           | Timer đỏ khi còn 5 phút, Progress chỉ tăng khi chọn đáp án      |
+| **5** | **Hoàn thiện code Form Giáo Viên**         | `Forms/frm_GiaoVien.cs`          | Tạo lớp, duyệt học viên, tạo câu hỏi, giao bài, xuất file Excel |
+| **6** | **Hoàn thiện code Form Học Viên**          | `Forms/Frm_HocVien.cs`           | Xem lớp, làm bài thi, xem kết quả, đổi mật khẩu                 |
+| **7** | **Thêm Form Xem Lại Chi Tiết**             | `Forms/Frm_XemLaiBaiThi.cs`      | Xem lại câu hỏi đúng (xanh) / sai (đỏ) trực quan                |
 
 ---
-*Tài liệu này được tạo tự động bởi Antigravity AI để hỗ trợ triển khai code nhanh, chính xác và đồng bộ hoàn toàn với kiến trúc hiện có của dự án.*
+
+_Tài liệu này được tạo tự động bởi Antigravity AI để hỗ trợ triển khai code nhanh, chính xác và đồng bộ hoàn toàn với kiến trúc hiện có của dự án._

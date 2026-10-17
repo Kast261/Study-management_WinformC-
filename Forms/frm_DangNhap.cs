@@ -124,10 +124,16 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 nextForm.FormClosed += (s, args) =>
                 {
+                    // Nếu màn hình đăng nhập đang hiển thị (do người dùng vừa đăng xuất), không thoát app!
+                    if (this.Visible)
+                    {
+                        return;
+                    }
+
                     bool hasVisible = false;
                     foreach (Form f in Application.OpenForms)
                     {
-                        if (f.Visible && f != this)
+                        if (f.Visible)
                         {
                             hasVisible = true;
                             break;
@@ -160,8 +166,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            txt_MatKhau.UseSystemPasswordChar = !txt_MatKhau.UseSystemPasswordChar;
-            txt_MatKhau.PasswordChar = txt_MatKhau.PasswordChar;
+            txt_MatKhau.UseSystemPasswordChar = !checkBox1.Checked;
         }
     }
 }

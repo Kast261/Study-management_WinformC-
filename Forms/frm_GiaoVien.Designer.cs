@@ -92,6 +92,7 @@
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.materialCard28 = new ReaLTaiizor.Controls.MaterialCard();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.txtGV_DeThi = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.txtCH_NoiDung = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.txtCH_DapAnA = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.txtCH_DapAnB = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
@@ -104,11 +105,16 @@
             this.materialLabel40 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialCard29 = new ReaLTaiizor.Controls.MaterialCard();
             this.dgvDanhSachCauHoi = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.materialLabel39 = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageGV_QuanLyDeThi = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.materialCard30 = new ReaLTaiizor.Controls.MaterialCard();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.cmbGV_ChonDeThi = new ReaLTaiizor.Controls.MaterialComboBox();
             this.txtDe_SoCau = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.txtDe_ThoiGian = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.cboDe_ChonLopHoc = new ReaLTaiizor.Controls.MaterialComboBox();
@@ -176,12 +182,6 @@
             this.materialLabel27 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel28 = new ReaLTaiizor.Controls.MaterialLabel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.cmbGV_ChonDeThi = new ReaLTaiizor.Controls.MaterialComboBox();
-            this.txtGV_DeThi = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.materialTabControl1.SuspendLayout();
             this.pageGV_TrangChu.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
@@ -1173,6 +1173,40 @@
             this.tableLayoutPanel7.Size = new System.Drawing.Size(1597, 474);
             this.tableLayoutPanel7.TabIndex = 2;
             // 
+            // txtGV_DeThi
+            // 
+            this.txtGV_DeThi.AnimateReadOnly = false;
+            this.txtGV_DeThi.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtGV_DeThi.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtGV_DeThi.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtGV_DeThi.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtGV_DeThi.Depth = 0;
+            this.txtGV_DeThi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtGV_DeThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtGV_DeThi.HideSelection = true;
+            this.txtGV_DeThi.Hint = "Đề Thi";
+            this.txtGV_DeThi.LeadingIcon = null;
+            this.txtGV_DeThi.Location = new System.Drawing.Point(10, 10);
+            this.txtGV_DeThi.Margin = new System.Windows.Forms.Padding(10);
+            this.txtGV_DeThi.MaxLength = 32767;
+            this.txtGV_DeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.txtGV_DeThi.Name = "txtGV_DeThi";
+            this.txtGV_DeThi.PasswordChar = '\0';
+            this.txtGV_DeThi.PrefixSuffixText = null;
+            this.txtGV_DeThi.ReadOnly = false;
+            this.txtGV_DeThi.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtGV_DeThi.SelectedText = "";
+            this.txtGV_DeThi.SelectionLength = 0;
+            this.txtGV_DeThi.SelectionStart = 0;
+            this.txtGV_DeThi.ShortcutsEnabled = true;
+            this.txtGV_DeThi.Size = new System.Drawing.Size(512, 60);
+            this.txtGV_DeThi.TabIndex = 10;
+            this.txtGV_DeThi.TabStop = false;
+            this.txtGV_DeThi.Text = "materialTextBoxEdit1";
+            this.txtGV_DeThi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtGV_DeThi.TrailingIcon = null;
+            this.txtGV_DeThi.UseSystemPasswordChar = false;
+            // 
             // txtCH_NoiDung
             // 
             this.txtCH_NoiDung.AnimateReadOnly = false;
@@ -1444,6 +1478,30 @@
             this.dgvDanhSachCauHoi.Size = new System.Drawing.Size(1233, 186);
             this.dgvDanhSachCauHoi.TabIndex = 1;
             // 
+            // dataGridViewTextBoxColumn19
+            // 
+            this.dataGridViewTextBoxColumn19.HeaderText = "Đề Thi";
+            this.dataGridViewTextBoxColumn19.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
+            // 
+            // dataGridViewTextBoxColumn20
+            // 
+            this.dataGridViewTextBoxColumn20.HeaderText = "Môn";
+            this.dataGridViewTextBoxColumn20.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
+            // 
+            // dataGridViewTextBoxColumn21
+            // 
+            this.dataGridViewTextBoxColumn21.HeaderText = "Câu Hỏi";
+            this.dataGridViewTextBoxColumn21.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
+            // 
+            // dataGridViewTextBoxColumn22
+            // 
+            this.dataGridViewTextBoxColumn22.HeaderText = "Đáp Án Đúng ";
+            this.dataGridViewTextBoxColumn22.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
+            // 
             // materialLabel39
             // 
             this.materialLabel39.AutoSize = true;
@@ -1520,6 +1578,30 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(1233, 264);
             this.tableLayoutPanel6.TabIndex = 3;
+            // 
+            // cmbGV_ChonDeThi
+            // 
+            this.cmbGV_ChonDeThi.AutoResize = false;
+            this.cmbGV_ChonDeThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbGV_ChonDeThi.Depth = 0;
+            this.cmbGV_ChonDeThi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbGV_ChonDeThi.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbGV_ChonDeThi.DropDownHeight = 218;
+            this.cmbGV_ChonDeThi.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbGV_ChonDeThi.DropDownWidth = 121;
+            this.cmbGV_ChonDeThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 17.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbGV_ChonDeThi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbGV_ChonDeThi.FormattingEnabled = true;
+            this.cmbGV_ChonDeThi.Hint = "Chọn Đề Thi";
+            this.cmbGV_ChonDeThi.IntegralHeight = false;
+            this.cmbGV_ChonDeThi.ItemHeight = 54;
+            this.cmbGV_ChonDeThi.Location = new System.Drawing.Point(3, 3);
+            this.cmbGV_ChonDeThi.MaxDropDownItems = 4;
+            this.cmbGV_ChonDeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.cmbGV_ChonDeThi.Name = "cmbGV_ChonDeThi";
+            this.cmbGV_ChonDeThi.Size = new System.Drawing.Size(404, 60);
+            this.cmbGV_ChonDeThi.StartIndex = 0;
+            this.cmbGV_ChonDeThi.TabIndex = 4;
             // 
             // txtDe_SoCau
             // 
@@ -2570,88 +2652,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(94, 44);
             this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // cmbGV_ChonDeThi
-            // 
-            this.cmbGV_ChonDeThi.AutoResize = false;
-            this.cmbGV_ChonDeThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmbGV_ChonDeThi.Depth = 0;
-            this.cmbGV_ChonDeThi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbGV_ChonDeThi.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbGV_ChonDeThi.DropDownHeight = 218;
-            this.cmbGV_ChonDeThi.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbGV_ChonDeThi.DropDownWidth = 121;
-            this.cmbGV_ChonDeThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 17.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cmbGV_ChonDeThi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cmbGV_ChonDeThi.FormattingEnabled = true;
-            this.cmbGV_ChonDeThi.Hint = "Chọn Đề Thi";
-            this.cmbGV_ChonDeThi.IntegralHeight = false;
-            this.cmbGV_ChonDeThi.ItemHeight = 54;
-            this.cmbGV_ChonDeThi.Location = new System.Drawing.Point(3, 3);
-            this.cmbGV_ChonDeThi.MaxDropDownItems = 4;
-            this.cmbGV_ChonDeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.cmbGV_ChonDeThi.Name = "cmbGV_ChonDeThi";
-            this.cmbGV_ChonDeThi.Size = new System.Drawing.Size(404, 60);
-            this.cmbGV_ChonDeThi.StartIndex = 0;
-            this.cmbGV_ChonDeThi.TabIndex = 4;
-            // 
-            // txtGV_DeThi
-            // 
-            this.txtGV_DeThi.AnimateReadOnly = false;
-            this.txtGV_DeThi.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtGV_DeThi.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtGV_DeThi.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtGV_DeThi.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtGV_DeThi.Depth = 0;
-            this.txtGV_DeThi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtGV_DeThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtGV_DeThi.HideSelection = true;
-            this.txtGV_DeThi.Hint = "Đề Thi";
-            this.txtGV_DeThi.LeadingIcon = null;
-            this.txtGV_DeThi.Location = new System.Drawing.Point(10, 10);
-            this.txtGV_DeThi.Margin = new System.Windows.Forms.Padding(10);
-            this.txtGV_DeThi.MaxLength = 32767;
-            this.txtGV_DeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.txtGV_DeThi.Name = "txtGV_DeThi";
-            this.txtGV_DeThi.PasswordChar = '\0';
-            this.txtGV_DeThi.PrefixSuffixText = null;
-            this.txtGV_DeThi.ReadOnly = false;
-            this.txtGV_DeThi.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtGV_DeThi.SelectedText = "";
-            this.txtGV_DeThi.SelectionLength = 0;
-            this.txtGV_DeThi.SelectionStart = 0;
-            this.txtGV_DeThi.ShortcutsEnabled = true;
-            this.txtGV_DeThi.Size = new System.Drawing.Size(512, 60);
-            this.txtGV_DeThi.TabIndex = 10;
-            this.txtGV_DeThi.TabStop = false;
-            this.txtGV_DeThi.Text = "materialTextBoxEdit1";
-            this.txtGV_DeThi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtGV_DeThi.TrailingIcon = null;
-            this.txtGV_DeThi.UseSystemPasswordChar = false;
-            // 
-            // dataGridViewTextBoxColumn19
-            // 
-            this.dataGridViewTextBoxColumn19.HeaderText = "Đề Thi";
-            this.dataGridViewTextBoxColumn19.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
-            // 
-            // dataGridViewTextBoxColumn20
-            // 
-            this.dataGridViewTextBoxColumn20.HeaderText = "Môn";
-            this.dataGridViewTextBoxColumn20.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
-            // 
-            // dataGridViewTextBoxColumn21
-            // 
-            this.dataGridViewTextBoxColumn21.HeaderText = "Câu Hỏi";
-            this.dataGridViewTextBoxColumn21.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
-            // 
-            // dataGridViewTextBoxColumn22
-            // 
-            this.dataGridViewTextBoxColumn22.HeaderText = "Đáp Án Đúng ";
-            this.dataGridViewTextBoxColumn22.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
             // 
             // frm_GiaoVien
             // 

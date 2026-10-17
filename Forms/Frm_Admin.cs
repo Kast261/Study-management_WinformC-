@@ -238,10 +238,31 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
+            if (!Validation.IsValidBirthDate(txtGV_NgaySinh.Text, out DateTime? ngaySinh, out string errNS))
+            {
+                MessageBox.Show(errNS, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGV_NgaySinh.Focus();
+                return;
+            }
+
+            if (!Validation.IsValidEmail(txtGV_Email.Text, out string errEmail))
+            {
+                MessageBox.Show(errEmail, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGV_Email.Focus();
+                return;
+            }
+
+            if (!Validation.IsValidPhone(txtGV_SoDienThoai.Text, out string errPhone))
+            {
+                MessageBox.Show(errPhone, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGV_SoDienThoai.Focus();
+                return;
+            }
+
             GiaoVien gv = new GiaoVien
             {
                 HoTen = txtGV_HoTen.Text.Trim(),
-                NgaySinh = ParseDate(txtGV_NgaySinh.Text),
+                NgaySinh = ngaySinh,
                 GioiTinh = txtGV_GioiTinh.SelectedItem?.ToString(),
                 ChuyenMon = txtGV_ChuyenMon.Text.Trim(),
                 Email = txtGV_Email.Text.Trim(),
@@ -274,11 +295,32 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
+            if (!Validation.IsValidBirthDate(txtGV_NgaySinh.Text, out DateTime? ngaySinh, out string errNS))
+            {
+                MessageBox.Show(errNS, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGV_NgaySinh.Focus();
+                return;
+            }
+
+            if (!Validation.IsValidEmail(txtGV_Email.Text, out string errEmail))
+            {
+                MessageBox.Show(errEmail, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGV_Email.Focus();
+                return;
+            }
+
+            if (!Validation.IsValidPhone(txtGV_SoDienThoai.Text, out string errPhone))
+            {
+                MessageBox.Show(errPhone, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGV_SoDienThoai.Focus();
+                return;
+            }
+
             GiaoVien gv = new GiaoVien
             {
                 GiaoVienID = _selectedGiaoVienID,
                 HoTen = txtGV_HoTen.Text.Trim(),
-                NgaySinh = ParseDate(txtGV_NgaySinh.Text),
+                NgaySinh = ngaySinh,
                 GioiTinh = txtGV_GioiTinh.SelectedItem?.ToString(),
                 ChuyenMon = txtGV_ChuyenMon.Text.Trim(),
                 Email = txtGV_Email.Text.Trim(),
@@ -410,10 +452,31 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
+            if (!Validation.IsValidBirthDate(txtHV_NgaySinh.Text, out DateTime? ngaySinh, out string errNS))
+            {
+                MessageBox.Show(errNS, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_NgaySinh.Focus();
+                return;
+            }
+
+            if (!Validation.IsValidEmail(txtHV_Email.Text, out string errEmail))
+            {
+                MessageBox.Show(errEmail, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_Email.Focus();
+                return;
+            }
+
+            if (!Validation.IsValidPhone(txtHV_SoDienThoai.Text, out string errPhone))
+            {
+                MessageBox.Show(errPhone, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_SoDienThoai.Focus();
+                return;
+            }
+
             HocSinh hs = new HocSinh
             {
                 HoTen = txtHV_HoTen.Text.Trim(),
-                NgaySinh = ParseDate(txtHV_NgaySinh.Text),
+                NgaySinh = ngaySinh,
                 GioiTinh = cboHV_GioiTinh.SelectedItem?.ToString(),
                 Email = txtHV_Email.Text.Trim(),
                 SoDienThoai = txtHV_SoDienThoai.Text.Trim(),
@@ -445,11 +508,32 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
+            if (!Validation.IsValidBirthDate(txtHV_NgaySinh.Text, out DateTime? ngaySinh, out string errNS))
+            {
+                MessageBox.Show(errNS, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_NgaySinh.Focus();
+                return;
+            }
+
+            if (!Validation.IsValidEmail(txtHV_Email.Text, out string errEmail))
+            {
+                MessageBox.Show(errEmail, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_Email.Focus();
+                return;
+            }
+
+            if (!Validation.IsValidPhone(txtHV_SoDienThoai.Text, out string errPhone))
+            {
+                MessageBox.Show(errPhone, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_SoDienThoai.Focus();
+                return;
+            }
+
             HocSinh hs = new HocSinh
             {
                 HocSinhID = _selectedHocVienID,
                 HoTen = txtHV_HoTen.Text.Trim(),
-                NgaySinh = ParseDate(txtHV_NgaySinh.Text),
+                NgaySinh = ngaySinh,
                 GioiTinh = cboHV_GioiTinh.SelectedItem?.ToString(),
                 Email = txtHV_Email.Text.Trim(),
                 SoDienThoai = txtHV_SoDienThoai.Text.Trim(),
@@ -694,8 +778,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
-            int siSo = 40;
-            int.TryParse(txtLop_SiSoToiDa.Text.Trim(), out siSo);
+            if (!Validation.IsValidSiSo(txtLop_SiSoToiDa.Text, out int siSo, out string errSiSo))
+            {
+                MessageBox.Show(errSiSo, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtLop_SiSoToiDa.Focus();
+                return;
+            }
 
             int khID = 0;
             if (cboLop_KhoaHoc.SelectedValue != null)
@@ -708,7 +796,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LopHoc lop = new LopHoc
             {
                 TenLop = txtLop_TenLop.Text.Trim(),
-                SiSoToiDa = siSo > 0 ? siSo : 40,
+                SiSoToiDa = siSo,
                 KhoaHocID = khID,
                 GiaoVienID = gvID,
                 TrangThai = "Đang mở"
@@ -738,8 +826,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
-            int siSo = 40;
-            int.TryParse(txtLop_SiSoToiDa.Text.Trim(), out siSo);
+            if (!Validation.IsValidSiSo(txtLop_SiSoToiDa.Text, out int siSo, out string errSiSo))
+            {
+                MessageBox.Show(errSiSo, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtLop_SiSoToiDa.Focus();
+                return;
+            }
 
             int khID = 0;
             if (cboLop_KhoaHoc.SelectedValue != null)
@@ -753,7 +845,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 LopHocID = _selectedLopHocID,
                 TenLop = txtLop_TenLop.Text.Trim(),
-                SiSoToiDa = siSo > 0 ? siSo : 40,
+                SiSoToiDa = siSo,
                 KhoaHocID = khID,
                 GiaoVienID = gvID
             };
@@ -1000,16 +1092,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (result == DialogResult.Yes)
                 {
                     Session.Clear();
-                    this.Hide();
-                    Form loginForm = Application.OpenForms["frm_DangNhap"];
-                    if (loginForm != null)
+                    frm_DangNhap loginForm = Application.OpenForms["frm_DangNhap"] as frm_DangNhap;
+                    if (loginForm == null || loginForm.IsDisposed)
                     {
-                        loginForm.Show();
+                        loginForm = new frm_DangNhap();
                     }
-                    else
-                    {
-                        new frm_DangNhap().Show();
-                    }
+                    loginForm.Show();
+                    loginForm.BringToFront();
                     this.Close();
                 }
                 else
@@ -1021,20 +1110,18 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void Frm_Admin_FormClosed(object sender, FormClosedEventArgs e)
         {
-            bool hasVisibleForm = false;
             foreach (Form f in Application.OpenForms)
             {
                 if (f.Visible && f != this)
-                {
-                    hasVisibleForm = true;
-                    break;
-                }
+                    return;
             }
-            if (!hasVisibleForm)
-            {
-                Application.Exit();
-            }
+            Application.Exit();
         }
         #endregion
+
+        private void btnGV_Sua_Click_1(object sender, EventArgs e)
+        {
+            btnGV_Sua_Click(sender, e);
+        }
     }
 }
