@@ -1,4 +1,4 @@
-﻿using BLT_Quan_Ly_Hoc_Tap.Database;
+using BLT_Quan_Ly_Hoc_Tap.Database;
 using BLT_Quan_Ly_Hoc_Tap.Models;
 using System;
 using System.Collections.Generic;
@@ -56,6 +56,18 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                            WHERE k.HocSinhID = @hsID
                            ORDER BY k.ThoiGianNop DESC";
             return DatabaseHelper.ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@hsID", hocSinhID) });
+        }
+
+        public DataTable LayChiTietBaiLamTheoKetQua(int ketQuaID)
+        {
+            string sql = @"SELECT ct.ChiTietID, c.ThuTu, c.NoiDung AS CauHoi, 
+                                  c.DapAnA, c.DapAnB, c.DapAnC, c.DapAnD, 
+                                  c.DapAnDung, ct.DapAnChon, ct.LaDung
+                           FROM ChiTietBaiLam ct
+                           JOIN CauHoi c ON ct.CauHoiID = c.CauHoiID
+                           WHERE ct.KetQuaID = @kqID
+                           ORDER BY c.ThuTu ASC";
+            return DatabaseHelper.ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@kqID", ketQuaID) });
         }
     }
 }
