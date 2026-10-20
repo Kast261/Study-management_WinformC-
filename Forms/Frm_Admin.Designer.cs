@@ -1043,7 +1043,6 @@
             this.txtHV_SoDienThoai.Size = new System.Drawing.Size(353, 60);
             this.txtHV_SoDienThoai.TabIndex = 10;
             this.txtHV_SoDienThoai.TabStop = false;
-            this.txtHV_SoDienThoai.Text = "materialTextBoxEdit1";
             this.txtHV_SoDienThoai.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_SoDienThoai.TrailingIcon = null;
             this.txtHV_SoDienThoai.UseSystemPasswordChar = false;
@@ -1076,7 +1075,6 @@
             this.txtHV_HoTen.Size = new System.Drawing.Size(353, 60);
             this.txtHV_HoTen.TabIndex = 2;
             this.txtHV_HoTen.TabStop = false;
-            this.txtHV_HoTen.Text = "materialTextBoxEdit1";
             this.txtHV_HoTen.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_HoTen.TrailingIcon = null;
             this.txtHV_HoTen.UseSystemPasswordChar = false;
@@ -1132,7 +1130,6 @@
             this.txtHV_NgaySinh.Size = new System.Drawing.Size(353, 60);
             this.txtHV_NgaySinh.TabIndex = 2;
             this.txtHV_NgaySinh.TabStop = false;
-            this.txtHV_NgaySinh.Text = "materialTextBoxEdit1";
             this.txtHV_NgaySinh.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_NgaySinh.TrailingIcon = null;
             this.txtHV_NgaySinh.UseSystemPasswordChar = false;
@@ -1210,7 +1207,6 @@
             this.txtHV_Email.Size = new System.Drawing.Size(353, 60);
             this.txtHV_Email.TabIndex = 2;
             this.txtHV_Email.TabStop = false;
-            this.txtHV_Email.Text = "materialTextBoxEdit1";
             this.txtHV_Email.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_Email.TrailingIcon = null;
             this.txtHV_Email.UseSystemPasswordChar = false;
@@ -1264,7 +1260,6 @@
             this.txtHV_DiaChi.Size = new System.Drawing.Size(353, 60);
             this.txtHV_DiaChi.TabIndex = 2;
             this.txtHV_DiaChi.TabStop = false;
-            this.txtHV_DiaChi.Text = "materialTextBoxEdit1";
             this.txtHV_DiaChi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_DiaChi.TrailingIcon = null;
             this.txtHV_DiaChi.UseSystemPasswordChar = false;
@@ -1654,7 +1649,6 @@
             this.txtLop_TenLop.Size = new System.Drawing.Size(672, 60);
             this.txtLop_TenLop.TabIndex = 0;
             this.txtLop_TenLop.TabStop = false;
-            this.txtLop_TenLop.Text = "materialTextBoxEdit1";
             this.txtLop_TenLop.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtLop_TenLop.TrailingIcon = null;
             this.txtLop_TenLop.UseSystemPasswordChar = false;
@@ -1687,7 +1681,6 @@
             this.txtLop_SiSoToiDa.Size = new System.Drawing.Size(672, 60);
             this.txtLop_SiSoToiDa.TabIndex = 1;
             this.txtLop_SiSoToiDa.TabStop = false;
-            this.txtLop_SiSoToiDa.Text = "materialTextBoxEdit2";
             this.txtLop_SiSoToiDa.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtLop_SiSoToiDa.TrailingIcon = null;
             this.txtLop_SiSoToiDa.UseSystemPasswordChar = false;
@@ -1993,7 +1986,6 @@
             this.txtKH_TenKhoaHoc.Size = new System.Drawing.Size(666, 60);
             this.txtKH_TenKhoaHoc.TabIndex = 0;
             this.txtKH_TenKhoaHoc.TabStop = false;
-            this.txtKH_TenKhoaHoc.Text = "materialTextBoxEdit1";
             this.txtKH_TenKhoaHoc.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtKH_TenKhoaHoc.TrailingIcon = null;
             this.txtKH_TenKhoaHoc.UseSystemPasswordChar = false;
@@ -2026,7 +2018,6 @@
             this.txtKH_MoTa.Size = new System.Drawing.Size(666, 60);
             this.txtKH_MoTa.TabIndex = 1;
             this.txtKH_MoTa.TabStop = false;
-            this.txtKH_MoTa.Text = "materialTextBoxEdit2";
             this.txtKH_MoTa.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtKH_MoTa.TrailingIcon = null;
             this.txtKH_MoTa.UseSystemPasswordChar = false;

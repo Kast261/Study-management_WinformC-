@@ -170,5 +170,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             txt_MatKhau.UseSystemPasswordChar = !checkBox1.Checked;
         }
+
+        private void txt_MatKhau_TextChanged(object sender, EventArgs e)
+        {
+            txt_MatKhau.UseSystemPasswordChar = true;
+            checkBox1.Checked = false;
+        }
     }
 }

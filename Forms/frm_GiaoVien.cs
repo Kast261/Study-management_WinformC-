@@ -159,7 +159,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     }
                     loginForm.Show();
                     loginForm.BringToFront();
-                    this.Close();
+                    this.Hide();
                 }
                 else
                 {
