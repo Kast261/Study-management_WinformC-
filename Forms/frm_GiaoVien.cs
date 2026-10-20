@@ -753,5 +753,15 @@ namespace BLT_Quan_Ly_Hoc_Tap
             Application.Exit();
         }
         #endregion
+
+        private void txtGV_DeThi_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtGV_Profile_Email_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
