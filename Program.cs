@@ -20,7 +20,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            CreateDataBase.Init();
+            //CreateDataBase.Init();
 
             // TASK-33: Cấu hình MaterialSkinManager dùng chung toàn App
             MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;

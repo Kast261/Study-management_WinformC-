@@ -3,7 +3,7 @@ using BLT_Quan_Ly_Hoc_Tap.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using Npgsql;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +21,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public KhoaHoc LayTheoID(int id)
         {
             string sql = "SELECT * FROM KhoaHoc WHERE KhoaHocID = @id";
-            DataTable dt = DatabaseHelper.ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@id", id) });
+            DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) });
             if (dt.Rows.Count == 0) return null;
             DataRow r = dt.Rows[0];
             return new KhoaHoc
@@ -35,9 +35,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public bool Them(KhoaHoc kh)
         {
             string sql = "INSERT INTO KhoaHoc (TenKhoaHoc, MoTa) VALUES (@ten, @mota)";
-            SqlParameter[] pars = {
-                new SqlParameter("@ten", kh.TenKhoaHoc),
-                new SqlParameter("@mota", (object)kh.MoTa ?? DBNull.Value)
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@ten", kh.TenKhoaHoc),
+                new NpgsqlParameter("@mota", (object)kh.MoTa ?? DBNull.Value)
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
@@ -45,10 +45,10 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public bool Sua(KhoaHoc kh)
         {
             string sql = "UPDATE KhoaHoc SET TenKhoaHoc = @ten, MoTa = @mota WHERE KhoaHocID = @id";
-            SqlParameter[] pars = {
-                new SqlParameter("@ten", kh.TenKhoaHoc),
-                new SqlParameter("@mota", (object)kh.MoTa ?? DBNull.Value),
-                new SqlParameter("@id", kh.KhoaHocID)
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@ten", kh.TenKhoaHoc),
+                new NpgsqlParameter("@mota", (object)kh.MoTa ?? DBNull.Value),
+                new NpgsqlParameter("@id", kh.KhoaHocID)
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
@@ -57,14 +57,14 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             // Kiểm tra xem có lớp học nào đang thuộc khóa học này không
             string checkSql = "SELECT COUNT(*) FROM LopHoc WHERE KhoaHocID = @id";
-            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new SqlParameter[] { new SqlParameter("@id", id) }));
+            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) }));
             if (count > 0)
             {
                 throw new Exception("Không thể xóa khóa học này vì đang có lớp học thuộc khóa học!");
             }
 
             string sql = "DELETE FROM KhoaHoc WHERE KhoaHocID = @id";
-            return DatabaseHelper.ExecuteNonQuery(sql, new SqlParameter[] { new SqlParameter("@id", id) }) > 0;
+            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) }) > 0;
         }
     }
 }

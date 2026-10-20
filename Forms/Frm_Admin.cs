@@ -155,9 +155,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 chart1.Series.Clear();
                 Series series = new Series("Điểm trung bình") { ChartType = SeriesChartType.Column };
                 DataTable dtDiem = DatabaseHelper.ExecuteQuery(@"
-                    SELECT TOP 5 d.TenDeThi, AVG(k.Diem) AS DiemTB 
+                    SELECT d.TenDeThi, AVG(k.Diem) AS DiemTB 
                     FROM KetQuaThi k JOIN DeThi d ON k.DeThiID = d.DeThiID 
-                    GROUP BY d.TenDeThi");
+                    GROUP BY d.TenDeThi
+                    ORDER BY DiemTB DESC
+                    LIMIT 5");
 
                 foreach (DataRow r in dtDiem.Rows)
                 {

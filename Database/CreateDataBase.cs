@@ -1,10 +1,5 @@
 using BLT_Quan_Ly_Hoc_Tap.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLT_Quan_Ly_Hoc_Tap.Database
 {
@@ -14,218 +9,141 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
         {
             try
             {
-                // 1. Kết nối vào master để tạo Database nếu chưa có
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(DatabaseHelper.ConnectionString);
-                string dbName = builder.InitialCatalog;
-                builder.InitialCatalog = "master";
-
-                using (SqlConnection conn = new SqlConnection(builder.ConnectionString))
-                {
-                    conn.Open();
-                    string checkDbSql = $"IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'{dbName}') CREATE DATABASE [{dbName}]";
-                    using (SqlCommand cmd = new SqlCommand(checkDbSql, conn))
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
-                // 2. Tạo các bảng nếu chưa tồn tại
                 string createTablesSql = @"
-                IF OBJECT_ID('TaiKhoan', 'U') IS NULL
-                CREATE TABLE TaiKhoan (
-                    TaiKhoanID INT IDENTITY(1,1) PRIMARY KEY,
-                    TenDangNhap NVARCHAR(50) NOT NULL UNIQUE,
-                    MatKhau NVARCHAR(255) NOT NULL,
-                    VaiTro NVARCHAR(20) NOT NULL,
-                    NguoiDungID INT DEFAULT 0,
-                    TrangThaiKhoa BIT DEFAULT 0
-                );
-
-                IF OBJECT_ID('GiaoVien', 'U') IS NULL
-                CREATE TABLE GiaoVien (
-                    GiaoVienID INT IDENTITY(1,1) PRIMARY KEY,
-                    HoTen NVARCHAR(100) NOT NULL,
-                    Email NVARCHAR(100),
-                    SoDienThoai NVARCHAR(20),
-                    DiaChi NVARCHAR(255),
-                    NgaySinh DATE,
-                    ChuyenMon NVARCHAR(100),
-                    GioiTinh NVARCHAR(10)
-                );
-
-                IF OBJECT_ID('KhoaHoc', 'U') IS NULL
-                CREATE TABLE KhoaHoc (
-                    KhoaHocID INT IDENTITY(1,1) PRIMARY KEY,
-                    TenKhoaHoc NVARCHAR(100) NOT NULL,
-                    MoTa NVARCHAR(255)
-                );
-
-                IF OBJECT_ID('LopHoc', 'U') IS NULL
-                CREATE TABLE LopHoc (
-                    LopHocID INT IDENTITY(1,1) PRIMARY KEY,
-                    TenLop NVARCHAR(100) NOT NULL,
-                    GiaoVienID INT,
-                    KhoaHocID INT,
-                    NgayBatDau DATE,
-                    NgayKetThuc DATE,
-                    SiSoToiDa INT DEFAULT 40,
-                    LichHoc NVARCHAR(100),
-                    TrangThai NVARCHAR(50) DEFAULT N'Đang mở'
-                );
-
-                IF OBJECT_ID('HocSinh', 'U') IS NULL
-                CREATE TABLE HocSinh (
-                    HocSinhID INT IDENTITY(1,1) PRIMARY KEY,
-                    HoTen NVARCHAR(100) NOT NULL,
-                    Email NVARCHAR(100),
-                    SoDienThoai NVARCHAR(20),
-                    DiaChi NVARCHAR(255),
-                    NgaySinh DATE,
-                    GioiTinh NVARCHAR(10),
-                    LopHocID INT
-                );
-
-                IF OBJECT_ID('DangKyLop', 'U') IS NULL
-                CREATE TABLE DangKyLop (
-                    DangKyID INT IDENTITY(1,1) PRIMARY KEY,
-                    LopHocID INT,
-                    HocSinhID INT,
-                    TrangThai NVARCHAR(50) DEFAULT N'Đã duyệt',
-                    NgayDangKy DATETIME DEFAULT GETDATE()
-                );
-
-                IF OBJECT_ID('DeThi', 'U') IS NULL
-                CREATE TABLE DeThi (
-                    DeThiID INT IDENTITY(1,1) PRIMARY KEY,
-                    TenDeThi NVARCHAR(150) NOT NULL,
-                    MoTa NVARCHAR(255),
-                    ThoiGian INT NOT NULL, -- Số phút
-                    MonHoc NVARCHAR(100),
-                    SoCau INT DEFAULT 20,
-                    GiaoVienID INT,
-                    LopHocID INT,
-                    NgayTao DATETIME DEFAULT GETDATE(),
-                    HanNop DATETIME NULL,
-                    TrangThai NVARCHAR(50) DEFAULT N'Đang mở'
-                );
-
-                IF OBJECT_ID('CauHoi', 'U') IS NULL
-                CREATE TABLE CauHoi (
-                    CauHoiID INT IDENTITY(1,1) PRIMARY KEY,
-                    NoiDung NVARCHAR(MAX) NOT NULL,
-                    DapAnA NVARCHAR(255),
-                    DapAnB NVARCHAR(255),
-                    DapAnC NVARCHAR(255),
-                    DapAnD NVARCHAR(255),
-                    DapAnDung NVARCHAR(5) NOT NULL, -- 'A', 'B', 'C', hoặc 'D'
-                    DeThiID INT,
-                    ThuTu INT DEFAULT 1
-                );
-
-                IF OBJECT_ID('KetQuaThi', 'U') IS NULL
-                CREATE TABLE KetQuaThi (
-                    KetQuaID INT IDENTITY(1,1) PRIMARY KEY,
-                    HocSinhID INT,
-                    DeThiID INT,
-                    Diem FLOAT,
-                    SoCauDung INT,
-                    ThoiGianNop DATETIME DEFAULT GETDATE(),
-                    TrangThai NVARCHAR(50) DEFAULT N'Hoàn thành'
-                );
-
-                IF OBJECT_ID('ChiTietBaiLam', 'U') IS NULL
-                CREATE TABLE ChiTietBaiLam (
-                    ChiTietID INT IDENTITY(1,1) PRIMARY KEY,
-                    KetQuaID INT,
-                    CauHoiID INT,
-                    DapAnChon NVARCHAR(10),
-                    LaDung BIT
-                );
-
-                -- Migration columns if table already existed previously
-                IF COL_LENGTH('GiaoVien', 'ChuyenMon') IS NULL ALTER TABLE GiaoVien ADD ChuyenMon NVARCHAR(100);
-                IF COL_LENGTH('GiaoVien', 'GioiTinh') IS NULL ALTER TABLE GiaoVien ADD GioiTinh NVARCHAR(10);
-                IF COL_LENGTH('GiaoVien', 'SoDienThoai') IS NULL 
-                BEGIN
-                    IF COL_LENGTH('GiaoVien', 'DienThoai') IS NOT NULL
-                        EXEC sp_rename 'GiaoVien.DienThoai', 'SoDienThoai', 'COLUMN';
-                    ELSE
-                        ALTER TABLE GiaoVien ADD SoDienThoai NVARCHAR(20);
-                END
-
-                IF COL_LENGTH('HocSinh', 'GioiTinh') IS NULL ALTER TABLE HocSinh ADD GioiTinh NVARCHAR(10);
-                IF COL_LENGTH('HocSinh', 'SoDienThoai') IS NULL 
-                BEGIN
-                    IF COL_LENGTH('HocSinh', 'DienThoai') IS NOT NULL
-                        EXEC sp_rename 'HocSinh.DienThoai', 'SoDienThoai', 'COLUMN';
-                    ELSE
-                        ALTER TABLE HocSinh ADD SoDienThoai NVARCHAR(20);
-                END
-
-                IF COL_LENGTH('LopHoc', 'SiSoToiDa') IS NULL ALTER TABLE LopHoc ADD SiSoToiDa INT DEFAULT 40;
-                IF COL_LENGTH('LopHoc', 'LichHoc') IS NULL ALTER TABLE LopHoc ADD LichHoc NVARCHAR(100);
-                IF COL_LENGTH('LopHoc', 'TrangThai') IS NULL ALTER TABLE LopHoc ADD TrangThai NVARCHAR(50) DEFAULT N'Đang mở';
-
-                IF COL_LENGTH('DeThi', 'TenDeThi') IS NULL 
-                BEGIN
-                    IF COL_LENGTH('DeThi', 'TenDe') IS NOT NULL
-                        EXEC sp_rename 'DeThi.TenDe', 'TenDeThi', 'COLUMN';
-                    ELSE
-                        ALTER TABLE DeThi ADD TenDeThi NVARCHAR(150);
-                END
-                IF COL_LENGTH('DeThi', 'MonHoc') IS NULL ALTER TABLE DeThi ADD MonHoc NVARCHAR(100);
-                IF COL_LENGTH('DeThi', 'SoCau') IS NULL ALTER TABLE DeThi ADD SoCau INT DEFAULT 20;
-                IF COL_LENGTH('DeThi', 'HanNop') IS NULL 
-                BEGIN
-                    IF COL_LENGTH('DeThi', 'NgayHetHan') IS NOT NULL
-                        EXEC sp_rename 'DeThi.NgayHetHan', 'HanNop', 'COLUMN';
-                    ELSE
-                        ALTER TABLE DeThi ADD HanNop DATETIME;
-                END
-                IF COL_LENGTH('DeThi', 'TrangThai') IS NULL ALTER TABLE DeThi ADD TrangThai NVARCHAR(50) DEFAULT N'Đang mở';
-
-                IF COL_LENGTH('CauHoi', 'ThuTu') IS NULL ALTER TABLE CauHoi ADD ThuTu INT DEFAULT 1;
-
-                IF COL_LENGTH('KetQuaThi', 'ThoiGianNop') IS NULL 
-                BEGIN
-                    IF COL_LENGTH('KetQuaThi', 'NgayThi') IS NOT NULL
-                        EXEC sp_rename 'KetQuaThi.NgayThi', 'ThoiGianNop', 'COLUMN';
-                    ELSE
-                        ALTER TABLE KetQuaThi ADD ThoiGianNop DATETIME DEFAULT GETDATE();
-                END
-                IF COL_LENGTH('KetQuaThi', 'TrangThai') IS NULL ALTER TABLE KetQuaThi ADD TrangThai NVARCHAR(50) DEFAULT N'Hoàn thành';
-                    IF COL_LENGTH('GiaoVien', 'TaiKhoanID') IS NULL ALTER TABLE GiaoVien ADD TaiKhoanID INT NULL;
-                    IF COL_LENGTH('HocSinh', 'TaiKhoanID') IS NULL ALTER TABLE HocSinh ADD TaiKhoanID INT NULL;
-                    IF COL_LENGTH('LopHoc', 'NgayBatDau') IS NULL ALTER TABLE LopHoc ADD NgayBatDau DATE NULL;
-                    IF COL_LENGTH('LopHoc', 'NgayKetThuc') IS NULL ALTER TABLE LopHoc ADD NgayKetThuc DATE NULL;
-                ";
+CREATE TABLE IF NOT EXISTS TaiKhoan (
+    TaiKhoanID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    TenDangNhap varchar(50) NOT NULL UNIQUE,
+    MatKhau varchar(255) NOT NULL,
+    VaiTro varchar(20) NOT NULL,
+    NguoiDungID integer DEFAULT 0,
+    TrangThaiKhoa boolean DEFAULT FALSE
+);
+CREATE TABLE IF NOT EXISTS GiaoVien (
+    GiaoVienID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    HoTen varchar(100) NOT NULL,
+    Email varchar(100),
+    SoDienThoai varchar(20),
+    DiaChi varchar(255),
+    NgaySinh date,
+    ChuyenMon varchar(100),
+    GioiTinh varchar(10),
+    TaiKhoanID integer
+);
+CREATE TABLE IF NOT EXISTS KhoaHoc (
+    KhoaHocID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    TenKhoaHoc varchar(100) NOT NULL,
+    MoTa varchar(255)
+);
+CREATE TABLE IF NOT EXISTS LopHoc (
+    LopHocID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    TenLop varchar(100) NOT NULL,
+    GiaoVienID integer,
+    KhoaHocID integer,
+    NgayBatDau date,
+    NgayKetThuc date,
+    SiSoToiDa integer DEFAULT 40,
+    LichHoc varchar(100),
+    TrangThai varchar(50) DEFAULT 'Đang mở'
+);
+CREATE TABLE IF NOT EXISTS HocSinh (
+    HocSinhID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    HoTen varchar(100) NOT NULL,
+    Email varchar(100),
+    SoDienThoai varchar(20),
+    DiaChi varchar(255),
+    NgaySinh date,
+    GioiTinh varchar(10),
+    LopHocID integer,
+    TaiKhoanID integer
+);
+CREATE TABLE IF NOT EXISTS DangKyLop (
+    DangKyID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    LopHocID integer,
+    HocSinhID integer,
+    TrangThai varchar(50) DEFAULT 'Đã duyệt',
+    NgayDangKy timestamp DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS DeThi (
+    DeThiID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    TenDeThi varchar(150) NOT NULL,
+    MoTa varchar(255),
+    ThoiGian integer NOT NULL,
+    MonHoc varchar(100),
+    SoCau integer DEFAULT 20,
+    GiaoVienID integer,
+    LopHocID integer,
+    NgayTao timestamp DEFAULT CURRENT_TIMESTAMP,
+    HanNop timestamp,
+    TrangThai varchar(50) DEFAULT 'Đang mở'
+);
+CREATE TABLE IF NOT EXISTS CauHoi (
+    CauHoiID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    NoiDung text NOT NULL,
+    DapAnA varchar(255),
+    DapAnB varchar(255),
+    DapAnC varchar(255),
+    DapAnD varchar(255),
+    DapAnDung varchar(5) NOT NULL,
+    DeThiID integer,
+    ThuTu integer DEFAULT 1
+);
+CREATE TABLE IF NOT EXISTS KetQuaThi (
+    KetQuaID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    HocSinhID integer,
+    DeThiID integer,
+    Diem double precision,
+    SoCauDung integer,
+    ThoiGianNop timestamp DEFAULT CURRENT_TIMESTAMP,
+    TrangThai varchar(50) DEFAULT 'Hoàn thành'
+);
+CREATE TABLE IF NOT EXISTS ChiTietBaiLam (
+    ChiTietID integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    KetQuaID integer,
+    CauHoiID integer,
+    DapAnChon varchar(10),
+    LaDung boolean
+);
+ALTER TABLE GiaoVien ADD COLUMN IF NOT EXISTS ChuyenMon varchar(100);
+ALTER TABLE GiaoVien ADD COLUMN IF NOT EXISTS GioiTinh varchar(10);
+ALTER TABLE GiaoVien ADD COLUMN IF NOT EXISTS SoDienThoai varchar(20);
+ALTER TABLE GiaoVien ADD COLUMN IF NOT EXISTS TaiKhoanID integer;
+ALTER TABLE HocSinh ADD COLUMN IF NOT EXISTS GioiTinh varchar(10);
+ALTER TABLE HocSinh ADD COLUMN IF NOT EXISTS SoDienThoai varchar(20);
+ALTER TABLE HocSinh ADD COLUMN IF NOT EXISTS TaiKhoanID integer;
+ALTER TABLE LopHoc ADD COLUMN IF NOT EXISTS SiSoToiDa integer DEFAULT 40;
+ALTER TABLE LopHoc ADD COLUMN IF NOT EXISTS LichHoc varchar(100);
+ALTER TABLE LopHoc ADD COLUMN IF NOT EXISTS TrangThai varchar(50) DEFAULT 'Đang mở';
+ALTER TABLE LopHoc ADD COLUMN IF NOT EXISTS NgayBatDau date;
+ALTER TABLE LopHoc ADD COLUMN IF NOT EXISTS NgayKetThuc date;
+ALTER TABLE DeThi ADD COLUMN IF NOT EXISTS TenDeThi varchar(150);
+ALTER TABLE DeThi ADD COLUMN IF NOT EXISTS MonHoc varchar(100);
+ALTER TABLE DeThi ADD COLUMN IF NOT EXISTS SoCau integer DEFAULT 20;
+ALTER TABLE DeThi ADD COLUMN IF NOT EXISTS HanNop timestamp;
+ALTER TABLE DeThi ADD COLUMN IF NOT EXISTS TrangThai varchar(50) DEFAULT 'Đang mở';
+ALTER TABLE CauHoi ADD COLUMN IF NOT EXISTS ThuTu integer DEFAULT 1;
+ALTER TABLE KetQuaThi ADD COLUMN IF NOT EXISTS ThoiGianNop timestamp DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE KetQuaThi ADD COLUMN IF NOT EXISTS TrangThai varchar(50) DEFAULT 'Hoàn thành';";
 
                 DatabaseHelper.ExecuteNonQuery(createTablesSql);
 
-                // 3. Tạo tài khoản Admin mặc định nếu bảng TaiKhoan đang trống
                 int countTk = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM TaiKhoan"));
                 if (countTk == 0)
                 {
                     string defaultPass = Passwords.Hash("123456");
                     string seedSql = $@"
-                        INSERT INTO GiaoVien (HoTen, Email, SoDienThoai, DiaChi, NgaySinh, ChuyenMon, GioiTinh) 
-                        VALUES (N'Nguyễn Văn Thầy', 'gv1@school.edu.vn', '0901234567', N'Hà Nội', '1988-05-15', N'Công nghệ thông tin', N'Nam');
-
-                        INSERT INTO KhoaHoc (TenKhoaHoc, MoTa) VALUES (N'Lập trình C# WinForms', N'Khóa học nền tảng');
-                        
-                        INSERT INTO LopHoc (TenLop, GiaoVienID, KhoaHocID, NgayBatDau, NgayKetThuc, SiSoToiDa, LichHoc, TrangThai)
-                        VALUES (N'CNTT-K65', 1, 1, '2026-01-01', '2026-06-01', 40, N'Thứ 2, 4, 6 (18:00 - 20:00)', N'Đang mở');
-
-                        INSERT INTO HocSinh (HoTen, Email, SoDienThoai, DiaChi, NgaySinh, GioiTinh, LopHocID)
-                        VALUES (N'Trần Thị Trò', 'hs1@student.edu.vn', '0987654321', N'Hà Nội', '2006-09-18', N'Nữ', 1);
-
-                        INSERT INTO DangKyLop (LopHocID, HocSinhID, TrangThai) VALUES (1, 1, N'Đã duyệt');
-
-                        INSERT INTO TaiKhoan (TenDangNhap, MatKhau, VaiTro, NguoiDungID) VALUES
-                        ('admin', '{defaultPass}', 'Admin', 0),
-                        ('giaovien1', '{defaultPass}', 'GiaoVien', 1),
-                        ('hocsinh1', '{defaultPass}', 'HocSinh', 1);
-                    ";
+INSERT INTO GiaoVien (HoTen, Email, SoDienThoai, DiaChi, NgaySinh, ChuyenMon, GioiTinh)
+VALUES ('Nguyễn Văn Thầy', 'gv1@school.edu.vn', '0901234567', 'Hà Nội', '1988-05-15', 'Công nghệ thông tin', 'Nam');
+INSERT INTO KhoaHoc (TenKhoaHoc, MoTa) VALUES ('Lập trình C# WinForms', 'Khóa học nền tảng');
+INSERT INTO LopHoc (TenLop, GiaoVienID, KhoaHocID, NgayBatDau, NgayKetThuc, SiSoToiDa, LichHoc, TrangThai)
+VALUES ('CNTT-K65', (SELECT GiaoVienID FROM GiaoVien WHERE Email = 'gv1@school.edu.vn'), (SELECT KhoaHocID FROM KhoaHoc WHERE TenKhoaHoc = 'Lập trình C# WinForms'), '2026-01-01', '2026-06-01', 40, 'Thứ 2, 4, 6 (18:00 - 20:00)', 'Đang mở');
+INSERT INTO HocSinh (HoTen, Email, SoDienThoai, DiaChi, NgaySinh, GioiTinh, LopHocID)
+VALUES ('Trần Thị Trò', 'hs1@student.edu.vn', '0987654321', 'Hà Nội', '2006-09-18', 'Nữ', (SELECT LopHocID FROM LopHoc WHERE TenLop = 'CNTT-K65'));
+INSERT INTO DangKyLop (LopHocID, HocSinhID, TrangThai)
+VALUES ((SELECT LopHocID FROM LopHoc WHERE TenLop = 'CNTT-K65'), (SELECT HocSinhID FROM HocSinh WHERE Email = 'hs1@student.edu.vn'), 'Đã duyệt');
+INSERT INTO TaiKhoan (TenDangNhap, MatKhau, VaiTro, NguoiDungID) VALUES
+('admin', '{defaultPass}', 'Admin', 0),
+('giaovien1', '{defaultPass}', 'GiaoVien', (SELECT GiaoVienID FROM GiaoVien WHERE Email = 'gv1@school.edu.vn')),
+('hocsinh1', '{defaultPass}', 'HocSinh', (SELECT HocSinhID FROM HocSinh WHERE Email = 'hs1@student.edu.vn'));";
                     DatabaseHelper.ExecuteNonQuery(seedSql);
                 }
             }
