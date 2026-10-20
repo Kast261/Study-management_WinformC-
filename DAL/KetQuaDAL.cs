@@ -3,7 +3,7 @@ using BLT_Quan_Ly_Hoc_Tap.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using Npgsql;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,23 +15,23 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public bool KiemTraDaThi(int hocSinhID, int deThiID)
         {
             string sql = "SELECT COUNT(*) FROM KetQuaThi WHERE HocSinhID = @hsID AND DeThiID = @deID";
-            SqlParameter[] pars = {
-                new SqlParameter("@hsID", hocSinhID),
-                new SqlParameter("@deID", deThiID)
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@hsID", hocSinhID),
+                new NpgsqlParameter("@deID", deThiID)
             };
             return Convert.ToInt32(DatabaseHelper.ExecuteScalar(sql, pars)) > 0;
         }
         public int LuuKetQua(KetQuaThi kq)
         {
             string sql = @"INSERT INTO KetQuaThi (HocSinhID, DeThiID, SoCauDung, Diem, ThoiGianNop, TrangThai) 
-                           VALUES (@hsID, @deID, @dung, @diem, GETDATE(), @tt);
-                           SELECT SCOPE_IDENTITY();";
-            SqlParameter[] pars = {
-                new SqlParameter("@hsID", kq.HocSinhID),
-                new SqlParameter("@deID", kq.DeThiID),
-                new SqlParameter("@dung", kq.SoCauDung),
-                new SqlParameter("@diem", kq.Diem),
-                new SqlParameter("@tt", kq.TrangThai ?? "Hoàn thành")
+                           VALUES (@hsID, @deID, @dung, @diem, CURRENT_TIMESTAMP, @tt)
+                           RETURNING KetQuaID;";
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@hsID", kq.HocSinhID),
+                new NpgsqlParameter("@deID", kq.DeThiID),
+                new NpgsqlParameter("@dung", kq.SoCauDung),
+                new NpgsqlParameter("@diem", kq.Diem),
+                new NpgsqlParameter("@tt", kq.TrangThai ?? "Hoàn thành")
             };
             object obj = DatabaseHelper.ExecuteScalar(sql, pars);
             return obj != null ? Convert.ToInt32(obj) : 0;
@@ -40,11 +40,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             string sql = @"INSERT INTO ChiTietBaiLam (KetQuaID, CauHoiID, DapAnChon, LaDung) 
                            VALUES (@kqID, @chID, @da, @dung)";
-            SqlParameter[] pars = {
-                new SqlParameter("@kqID", ketQuaID),
-                new SqlParameter("@chID", cauHoiID),
-                new SqlParameter("@da", dapAnChon),
-                new SqlParameter("@dung", laDung)
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@kqID", ketQuaID),
+                new NpgsqlParameter("@chID", cauHoiID),
+                new NpgsqlParameter("@da", dapAnChon),
+                new NpgsqlParameter("@dung", laDung)
             };
             DatabaseHelper.ExecuteNonQuery(sql, pars);
         }
@@ -55,7 +55,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                            JOIN DeThi d ON k.DeThiID = d.DeThiID
                            WHERE k.HocSinhID = @hsID
                            ORDER BY k.ThoiGianNop DESC";
-            return DatabaseHelper.ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@hsID", hocSinhID) });
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@hsID", hocSinhID) });
         }
 
         public DataTable LayChiTietBaiLamTheoKetQua(int ketQuaID)

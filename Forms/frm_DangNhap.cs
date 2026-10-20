@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
+using Npgsql;
 namespace BLT_Quan_Ly_Hoc_Tap
 {
     public partial class frm_DangNhap : ReaLTaiizor.Forms.MaterialForm
@@ -27,15 +27,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void frm_DangNhap_Load(object sender, EventArgs e)
         {
-            if (!DatabaseHelper.KiemTraKetNoi())
+            string loi;
+
+            if (DatabaseHelper.KiemTraKetNoi(out loi))
+            {
+                MessageBox.Show("Kết nối Supabase thành công!");
+            }
+            else
             {
                 MessageBox.Show(
-                    "Không thể kết nối đến cơ sở dữ liệu SQL Server!\nVui lòng kiểm tra lại cấu hình trong DatabaseHelper.",
-                    "Lỗi Kết Nối",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                btn_DangNhap.Enabled = false;
-                return;
+                    loi,
+                    "Lỗi kết nối PostgreSQL");
             }
             string savedUser = _taiKhoanDAL.DocGhiNho();
             if (!string.IsNullOrEmpty(savedUser))
@@ -102,12 +104,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 {
                     if (Session.IsGiaoVien && Session.NguoiDungID > 0)
                     {
-                        object gvName = DatabaseHelper.ExecuteScalar("SELECT HoTen FROM GiaoVien WHERE GiaoVienID = @id", new SqlParameter("@id", Session.NguoiDungID));
+                        object gvName = DatabaseHelper.ExecuteScalar("SELECT HoTen FROM GiaoVien WHERE GiaoVienID = @id", new NpgsqlParameter("@id", Session.NguoiDungID));
                         if (gvName != null && gvName != DBNull.Value) Session.HoTen = gvName.ToString();
                     }
                     else if (Session.IsHocSinh && Session.NguoiDungID > 0)
                     {
-                        object hsName = DatabaseHelper.ExecuteScalar("SELECT HoTen FROM HocSinh WHERE HocSinhID = @id", new SqlParameter("@id", Session.NguoiDungID));
+                        object hsName = DatabaseHelper.ExecuteScalar("SELECT HoTen FROM HocSinh WHERE HocSinhID = @id", new NpgsqlParameter("@id", Session.NguoiDungID));
                         if (hsName != null && hsName != DBNull.Value) Session.HoTen = hsName.ToString();
                     }
                 }
@@ -167,6 +169,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             txt_MatKhau.UseSystemPasswordChar = !checkBox1.Checked;
+        }
+
+        private void txt_MatKhau_TextChanged(object sender, EventArgs e)
+        {
+            txt_MatKhau.UseSystemPasswordChar = true;
+            checkBox1.Checked = false;
         }
     }
 }

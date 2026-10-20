@@ -4,7 +4,7 @@ using BLT_Quan_Ly_Hoc_Tap.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using Npgsql;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,7 +22,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 return null;
 
             string sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = @user";
-            SqlParameter[] pars = { new SqlParameter("@user", tenDangNhap.Trim()) };
+            NpgsqlParameter[] pars = { new NpgsqlParameter("@user", tenDangNhap.Trim()) };
 
             DataTable dt = DatabaseHelper.ExecuteQuery(sql, pars);
             if (dt.Rows.Count == 0) return null;
@@ -68,13 +68,13 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     if (string.Equals(vaiTro, "GiaoVien", StringComparison.OrdinalIgnoreCase))
                     {
                         string sqlGV = "SELECT GiaoVienID FROM GiaoVien WHERE TaiKhoanID = @id";
-                        object gvObj = DatabaseHelper.ExecuteScalar(sqlGV, new SqlParameter[] { new SqlParameter("@id", taiKhoanID) });
+                        object gvObj = DatabaseHelper.ExecuteScalar(sqlGV, new NpgsqlParameter[] { new NpgsqlParameter("@id", taiKhoanID) });
                         if (gvObj != null && gvObj != DBNull.Value) nguoiDungID = Convert.ToInt32(gvObj);
                     }
                     else if (string.Equals(vaiTro, "HocSinh", StringComparison.OrdinalIgnoreCase))
                     {
                         string sqlHS = "SELECT HocSinhID FROM HocSinh WHERE TaiKhoanID = @id";
-                        object hsObj = DatabaseHelper.ExecuteScalar(sqlHS, new SqlParameter[] { new SqlParameter("@id", taiKhoanID) });
+                        object hsObj = DatabaseHelper.ExecuteScalar(sqlHS, new NpgsqlParameter[] { new NpgsqlParameter("@id", taiKhoanID) });
                         if (hsObj != null && hsObj != DBNull.Value) nguoiDungID = Convert.ToInt32(hsObj);
                     }
                 }
@@ -155,9 +155,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             string hashMoi = Passwords.Hash(matKhauMoiPlain);
             string sql = "UPDATE TaiKhoan SET MatKhau = @mk WHERE TaiKhoanID = @id";
-            SqlParameter[] pars = {
-                new SqlParameter("@mk", hashMoi),
-                new SqlParameter("@id", taiKhoanID)
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@mk", hashMoi),
+                new NpgsqlParameter("@id", taiKhoanID)
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
@@ -165,16 +165,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public bool KhoaHoacMoKhoaTaiKhoan(int taiKhoanID, bool khoa)
         {
             // Cập nhật cả TrangThaiKhoa hoặc TrangThai tuỳ schema
-            string sql = @"
-                IF COL_LENGTH('TaiKhoan', 'TrangThaiKhoa') IS NOT NULL
-                    UPDATE TaiKhoan SET TrangThaiKhoa = @khoa WHERE TaiKhoanID = @id
-                ELSE IF COL_LENGTH('TaiKhoan', 'TrangThai') IS NOT NULL
-                    UPDATE TaiKhoan SET TrangThai = @active WHERE TaiKhoanID = @id";
+            string sql = "UPDATE TaiKhoan SET TrangThaiKhoa = @khoa WHERE TaiKhoanID = @id";
 
-            SqlParameter[] pars = {
-                new SqlParameter("@khoa", khoa),
-                new SqlParameter("@active", !khoa),
-                new SqlParameter("@id", taiKhoanID)
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@khoa", khoa),
+                new NpgsqlParameter("@id", taiKhoanID)
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
@@ -182,7 +177,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public bool XoaTaiKhoan(int taiKhoanID)
         {
             string sql = "DELETE FROM TaiKhoan WHERE TaiKhoanID = @id";
-            SqlParameter[] pars = { new SqlParameter("@id", taiKhoanID) };
+            NpgsqlParameter[] pars = { new NpgsqlParameter("@id", taiKhoanID) };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
         public DataTable LayTatCaCoTenNguoiDung()
@@ -193,16 +188,16 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             tk.TenDangNhap,
             tk.VaiTro,
             tk.NguoiDungID,
-            ISNULL(tk.TrangThaiKhoa, 0) AS TrangThaiKhoa,
+            COALESCE(tk.TrangThaiKhoa, FALSE) AS TrangThaiKhoa,
             CASE 
-                WHEN tk.VaiTro = 'GiaoVien' THEN ISNULL(gv.HoTen, N'(Chưa liên kết)')
-                WHEN tk.VaiTro = 'HocSinh'  THEN ISNULL(hs.HoTen, N'(Chưa liên kết)')
-                WHEN tk.VaiTro = 'Admin'    THEN N'Quản trị viên hệ thống'
-                ELSE N'(Chưa xác định)'
+                WHEN tk.VaiTro = 'GiaoVien' THEN COALESCE(gv.HoTen, '(Chưa liên kết)')
+                WHEN tk.VaiTro = 'HocSinh'  THEN COALESCE(hs.HoTen, '(Chưa liên kết)')
+                WHEN tk.VaiTro = 'Admin'    THEN 'Quản trị viên hệ thống'
+                ELSE '(Chưa xác định)'
             END AS TenNguoiDung,
             CASE 
-                WHEN ISNULL(tk.TrangThaiKhoa, 0) = 1 THEN N'Đã khóa'
-                ELSE N'Hoạt động'
+                WHEN COALESCE(tk.TrangThaiKhoa, FALSE) = TRUE THEN 'Đã khóa'
+                ELSE 'Hoạt động'
             END AS TrangThaiHienThi
         FROM TaiKhoan tk
         LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND tk.NguoiDungID = gv.GiaoVienID
@@ -215,22 +210,22 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             // Kiểm tra tên đăng nhập đã tồn tại chưa
             string checkSql = "SELECT COUNT(*) FROM TaiKhoan WHERE LOWER(TenDangNhap) = LOWER(@user)";
-            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new SqlParameter[] {
-        new SqlParameter("@user", tenDangNhap.Trim())
+            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new NpgsqlParameter[] {
+        new NpgsqlParameter("@user", tenDangNhap.Trim())
     }));
             if (count > 0) return false;
 
             string hashPass = Passwords.Hash(matKhauPlain.Trim());
             string sql = @"
         INSERT INTO TaiKhoan (TenDangNhap, MatKhau, VaiTro, NguoiDungID, TrangThaiKhoa) 
-        VALUES (@user, @mk, @vaiTro, @nguoiDungID, 0);
-        SELECT SCOPE_IDENTITY();";
+        VALUES (@user, @mk, @vaiTro, @nguoiDungID, FALSE)
+        RETURNING TaiKhoanID;";
 
-            SqlParameter[] pars = {
-        new SqlParameter("@user", tenDangNhap.Trim()),
-        new SqlParameter("@mk", hashPass),
-        new SqlParameter("@vaiTro", vaiTro),
-        new SqlParameter("@nguoiDungID", nguoiDungID)
+            NpgsqlParameter[] pars = {
+        new NpgsqlParameter("@user", tenDangNhap.Trim()),
+        new NpgsqlParameter("@mk", hashPass),
+        new NpgsqlParameter("@vaiTro", vaiTro),
+        new NpgsqlParameter("@nguoiDungID", nguoiDungID)
     };
 
             object result = DatabaseHelper.ExecuteScalar(sql, pars);
@@ -245,18 +240,18 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 {
                     DatabaseHelper.ExecuteNonQuery(
                         "UPDATE GiaoVien SET TaiKhoanID = @tkID WHERE GiaoVienID = @gvID",
-                        new SqlParameter[] {
-                    new SqlParameter("@tkID", newTaiKhoanID),
-                    new SqlParameter("@gvID", nguoiDungID)
+                        new NpgsqlParameter[] {
+                    new NpgsqlParameter("@tkID", newTaiKhoanID),
+                    new NpgsqlParameter("@gvID", nguoiDungID)
                         });
                 }
                 else if (vaiTro == "HocSinh" && nguoiDungID > 0)
                 {
                     DatabaseHelper.ExecuteNonQuery(
                         "UPDATE HocSinh SET TaiKhoanID = @tkID WHERE HocSinhID = @hsID",
-                        new SqlParameter[] {
-                    new SqlParameter("@tkID", newTaiKhoanID),
-                    new SqlParameter("@hsID", nguoiDungID)
+                        new NpgsqlParameter[] {
+                    new NpgsqlParameter("@tkID", newTaiKhoanID),
+                    new NpgsqlParameter("@hsID", nguoiDungID)
                         });
                 }
             }

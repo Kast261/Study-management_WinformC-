@@ -3,7 +3,7 @@ using BLT_Quan_Ly_Hoc_Tap.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using Npgsql;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,17 +15,17 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public DataTable LayDeThiTheoLop(int lopID)
         {
             string sql = "SELECT * FROM DeThi WHERE LopHocID = @lopID";
-            return DatabaseHelper.ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@lopID", lopID) });
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@lopID", lopID) });
         }
         public DataTable LayDeThiTheoGiaoVien(int gvID)
         {
             string sql = "SELECT * FROM DeThi WHERE GiaoVienID = @gvID";
-            return DatabaseHelper.ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@gvID", gvID) });
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@gvID", gvID) });
         }
         public DeThi LayTheoID(int deThiID)
         {
             string sql = "SELECT * FROM DeThi WHERE DeThiID = @id";
-            DataTable dt = DatabaseHelper.ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@id", deThiID) });
+            DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", deThiID) });
             if (dt.Rows.Count == 0) return null;
             DataRow r = dt.Rows[0];
             return new DeThi
@@ -43,7 +43,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             var list = new List<CauHoi>();
             string sql = "SELECT * FROM CauHoi WHERE DeThiID = @id ORDER BY ThuTu ASC";
-            DataTable dt = DatabaseHelper.ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@id", deThiID) });
+            DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", deThiID) });
             foreach (DataRow r in dt.Rows)
             {
                 list.Add(new CauHoi
@@ -65,15 +65,15 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             string sql = @"INSERT INTO DeThi (LopHocID, GiaoVienID, TenDeThi, MonHoc, SoCau, ThoiGian, HanNop, TrangThai)
                            VALUES (@lopID, @gvID, @ten, @mon, @socau, @tg, @han, @tt)";
-            SqlParameter[] pars = {
-                new SqlParameter("@lopID", de.LopHocID),
-                new SqlParameter("@gvID", de.GiaoVienID),
-                new SqlParameter("@ten", de.TenDeThi),
-                new SqlParameter("@mon", de.MonHoc ?? ""),
-                new SqlParameter("@socau", de.SoCau),
-                new SqlParameter("@tg", de.ThoiGian),
-                new SqlParameter("@han", (object)de.HanNop ?? DBNull.Value),
-                new SqlParameter("@tt", de.TrangThai ?? "Đang mở")
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@lopID", de.LopHocID),
+                new NpgsqlParameter("@gvID", de.GiaoVienID),
+                new NpgsqlParameter("@ten", de.TenDeThi),
+                new NpgsqlParameter("@mon", de.MonHoc ?? ""),
+                new NpgsqlParameter("@socau", de.SoCau),
+                new NpgsqlParameter("@tg", de.ThoiGian),
+                new NpgsqlParameter("@han", (object)de.HanNop ?? DBNull.Value),
+                new NpgsqlParameter("@tt", de.TrangThai ?? "Đang mở")
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
@@ -81,15 +81,15 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             string sql = @"INSERT INTO CauHoi (DeThiID, NoiDung, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, ThuTu)
                            VALUES (@deID, @nd, @a, @b, @c, @d, @dung, @thutu)";
-            SqlParameter[] pars = {
-                new SqlParameter("@deID", ch.DeThiID),
-                new SqlParameter("@nd", ch.NoiDung),
-                new SqlParameter("@a", ch.DapAnA),
-                new SqlParameter("@b", ch.DapAnB),
-                new SqlParameter("@c", ch.DapAnC),
-                new SqlParameter("@d", ch.DapAnD),
-                new SqlParameter("@dung", ch.DapAnDung),
-                new SqlParameter("@thutu", ch.ThuTu)
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@deID", ch.DeThiID),
+                new NpgsqlParameter("@nd", ch.NoiDung),
+                new NpgsqlParameter("@a", ch.DapAnA),
+                new NpgsqlParameter("@b", ch.DapAnB),
+                new NpgsqlParameter("@c", ch.DapAnC),
+                new NpgsqlParameter("@d", ch.DapAnD),
+                new NpgsqlParameter("@dung", ch.DapAnDung),
+                new NpgsqlParameter("@thutu", ch.ThuTu)
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }

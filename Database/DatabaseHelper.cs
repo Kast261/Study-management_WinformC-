@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace BLT_Quan_Ly_Hoc_Tap.Database
 {
@@ -11,28 +12,45 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
     {
         public static string ConnectionString = ConfigurationManager.ConnectionStrings["ChuoiKetNoi"].ConnectionString;
 
-        public static SqlConnection GetConnection() => new SqlConnection(ConnectionString);
+        public static NpgsqlConnection GetConnection() => new NpgsqlConnection(ConnectionString);
 
-        public static bool KiemTraKetNoi()
+        public static bool KiemTraKetNoi(out string loi)
         {
             try
             {
-                using (SqlConnection conn = GetConnection())
+                using (NpgsqlConnection conn = GetConnection())
                 {
                     conn.Open();
-                    return true;
+
+                    using (NpgsqlCommand cmd =
+                           new NpgsqlCommand("SELECT 1", conn))
+                    {
+                        cmd.ExecuteScalar();
+                    }
                 }
+
+                loi = null;
+                return true;
             }
-            catch { return false; }
+            catch (Npgsql.NpgsqlException ex)
+            {
+                loi = ex.ToString();
+
+                if (ex.InnerException != null)
+                    loi += "\n\nChi tiết:\n" + ex.InnerException;
+
+                MessageBox.Show(loi, "Lỗi SSL");
+                return false;
+            }
         }
 
-        public static DataTable ExecuteQuery(string sql, params SqlParameter[] pars)
+        public static DataTable ExecuteQuery(string sql, params NpgsqlParameter[] pars)
         {
-            using (SqlConnection conn = GetConnection())
-            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            using (NpgsqlConnection conn = GetConnection())
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
             {
                 if (pars != null && pars.Length > 0) cmd.Parameters.AddRange(pars);
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd))
                 {
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -41,12 +59,12 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
             }
         }
 
-        public static int ExecuteNonQuery(string sql, params SqlParameter[] pars)
+        public static int ExecuteNonQuery(string sql, params NpgsqlParameter[] pars)
         {
-            using (SqlConnection conn = GetConnection())
+            using (NpgsqlConnection conn = GetConnection())
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     if (pars != null && pars.Length > 0) cmd.Parameters.AddRange(pars);
                     return cmd.ExecuteNonQuery();
@@ -54,12 +72,12 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
             }
         }
 
-        public static object ExecuteScalar(string sql, params SqlParameter[] pars)
+        public static object ExecuteScalar(string sql, params NpgsqlParameter[] pars)
         {
-            using (SqlConnection conn = GetConnection())
+            using (NpgsqlConnection conn = GetConnection())
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     if (pars != null && pars.Length > 0) cmd.Parameters.AddRange(pars);
                     return cmd.ExecuteScalar();
@@ -68,16 +86,16 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
         }
 
         // 1. Thực thi chuỗi lệnh SQL có Transaction (Atomic)
-        public static bool ExecuteTransaction(Action<SqlCommand> action)
+        public static bool ExecuteTransaction(Action<NpgsqlCommand> action)
         {
-            using (SqlConnection conn = GetConnection())
+            using (NpgsqlConnection conn = GetConnection())
             {
                 conn.Open();
-                using (SqlTransaction trans = conn.BeginTransaction())
+                using (NpgsqlTransaction trans = conn.BeginTransaction())
                 {
                     try
                     {
-                        using (SqlCommand cmd = conn.CreateCommand())
+                        using (NpgsqlCommand cmd = conn.CreateCommand())
                         {
                             cmd.Transaction = trans;
                             action(cmd);
@@ -94,17 +112,17 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
             }
         }
 
-        // 2. Hàm Generic tự động chuyển SqlDataReader sang List<T>
-        public static List<T> ExecuteReaderToList<T>(string sql, params SqlParameter[] pars) where T : new()
+        // 2. Hàm Generic tự động chuyển NpgsqlDataReader sang List<T>
+        public static List<T> ExecuteReaderToList<T>(string sql, params NpgsqlParameter[] pars) where T : new()
         {
             List<T> list = new List<T>();
-            using (SqlConnection conn = GetConnection())
+            using (NpgsqlConnection conn = GetConnection())
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                 {
                     if (pars != null && pars.Length > 0) cmd.Parameters.AddRange(pars);
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (NpgsqlDataReader reader = cmd.ExecuteReader())
                     {
                         PropertyInfo[] props = typeof(T).GetProperties();
                         while (reader.Read())

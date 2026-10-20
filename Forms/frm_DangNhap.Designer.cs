@@ -68,9 +68,8 @@
             this.checkBox1.Location = new System.Drawing.Point(524, 316);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(165, 24);
+            this.checkBox1.Size = new System.Drawing.Size(18, 17);
             this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "Hiện Thị Mặt Khẩu";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -166,7 +165,7 @@
             this.txt_MatKhau.MaxLength = 32767;
             this.txt_MatKhau.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.txt_MatKhau.Name = "txt_MatKhau";
-            this.txt_MatKhau.PasswordChar = '*';
+            this.txt_MatKhau.PasswordChar = '\0';
             this.txt_MatKhau.PrefixSuffixText = null;
             this.txt_MatKhau.ReadOnly = false;
             this.txt_MatKhau.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -180,6 +179,7 @@
             this.txt_MatKhau.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txt_MatKhau.TrailingIcon = null;
             this.txt_MatKhau.UseSystemPasswordChar = false;
+            this.txt_MatKhau.TextChanged += new System.EventHandler(this.txt_MatKhau_TextChanged);
             // 
             // txt_TaiKhoan
             // 
