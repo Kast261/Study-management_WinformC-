@@ -221,6 +221,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 Column2.DataPropertyName = "TenKhoaHoc";
                 Column3.DataPropertyName = "LichHoc";
                 Column4.DataPropertyName = "SiSo";
+                dtGV_LopHoc.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 dtGV_LopHoc.DataSource = dt;
 
                 // Load danh sách lớp vào combobox duyệt & giao bài thi
@@ -351,6 +352,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (cboDuyet_ChonLop.SelectedValue != null && int.TryParse(cboDuyet_ChonLop.SelectedValue.ToString(), out int lopID))
             {
                 DataTable dt = _lopDAL.LayDangKyTheoLop(lopID);
+
+                dgvDangKyChoDuyet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 dgvDangKyChoDuyet.DataSource = dt;
             }
         }

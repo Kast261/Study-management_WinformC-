@@ -29,12 +29,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             string loi;
 
-            if (DatabaseHelper.KiemTraKetNoi(out loi))
+            if (!DatabaseHelper.KiemTraKetNoi(out loi))
             {
-                MessageBox.Show("Kết nối Supabase thành công!");
-            }
-            else
-            {
+               
                 MessageBox.Show(
                     loi,
                     "Lỗi kết nối PostgreSQL");

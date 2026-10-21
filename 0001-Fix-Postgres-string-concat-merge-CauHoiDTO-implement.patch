@@ -1,0 +1,231 @@
+From 7368e28179344727d8552610536523adca70b10e Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Wed, 21 Oct 2026 03:30:16 +0000
+Subject: [PATCH] Fix Postgres string concat, merge CauHoiDTO, implement stub
+ DAL methods
+
+- LopHocDAL: replace SQL Server-style `+` string concatenation with `||`
+  (3 queries failed on PostgreSQL: "operator does not exist: varchar + unknown"),
+  which broke the student "Lop hoc" tabs.
+- Remove duplicate DAL/CauHoiDTO; use Models.CauHoi everywhere. The grid is
+  bound to List<CauHoi> but the click handler cast to CauHoiDTO (always null),
+  so selecting a question never filled the edit form.
+- DeThiDAL: implement XoaCauHoi (blocked when answers exist), SuaCauHoi and
+  LayKetQuaTheoDeThi, which previously returned fake true / an empty table.
+- frm_GiaoVien: bind result grid columns (DataPropertyName) and handle the
+  delete-question exception.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01EjpmnwinkVm4f1iLTaTUkK
+---
+ BLT_Quan_Ly_Hoc_Tap.csproj |  1 -
+ DAL/CauHoiDTO.cs           | 15 -------------
+ DAL/DeThiDAL.cs            | 44 +++++++++++++++++++++++++++++---------
+ DAL/LopHocDAL.cs           |  6 +++---
+ Forms/frm_GiaoVien.cs      | 28 +++++++++++++++++-------
+ 5 files changed, 57 insertions(+), 37 deletions(-)
+ delete mode 100644 DAL/CauHoiDTO.cs
+
+diff --git a/BLT_Quan_Ly_Hoc_Tap.csproj b/BLT_Quan_Ly_Hoc_Tap.csproj
+index 484df32..1fcfd05 100644
+--- a/BLT_Quan_Ly_Hoc_Tap.csproj
++++ b/BLT_Quan_Ly_Hoc_Tap.csproj
+@@ -99,7 +99,6 @@
+   </ItemGroup>
+   <ItemGroup>
+     <Compile Include="ColorScheme.cs" />
+-    <Compile Include="DAL\CauHoiDTO.cs" />
+     <Compile Include="DAL\DeThiDAL.cs" />
+     <Compile Include="DAL\GiaoVienDAL.cs" />
+     <Compile Include="DAL\HocSinhDAL.cs" />
+diff --git a/DAL/CauHoiDTO.cs b/DAL/CauHoiDTO.cs
+deleted file mode 100644
+index baa95c2..0000000
+--- a/DAL/CauHoiDTO.cs
++++ /dev/null
+@@ -1,15 +0,0 @@
+-﻿namespace BLT_Quan_Ly_Hoc_Tap.DAL
+-{
+-    public class CauHoiDTO
+-    {
+-        public int CauHoiID { get; set; }
+-        public int DeThiID { get; set; }
+-        public string NoiDung { get; set; }
+-        public string DapAnA { get; set; }
+-        public string DapAnB { get; set; }
+-        public string DapAnC { get; set; }
+-        public string DapAnD { get; set; }
+-        public string DapAnDung { get; set; }
+-        public int ThuTu { get; set; }
+-    }
+-}
+\ No newline at end of file
+diff --git a/DAL/DeThiDAL.cs b/DAL/DeThiDAL.cs
+index 1996da8..287d3d7 100644
+--- a/DAL/DeThiDAL.cs
++++ b/DAL/DeThiDAL.cs
+@@ -77,7 +77,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
+             };
+             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+         }
+-        public bool ThemCauHoi(CauHoiDTO ch)
++        public bool ThemCauHoi(CauHoi ch)
+         {
+             string sql = @"INSERT INTO CauHoi (DeThiID, NoiDung, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, ThuTu)
+                            VALUES (@deID, @nd, @a, @b, @c, @d, @dung, @thutu)";
+@@ -93,20 +93,44 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
+             };
+             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+         }
+-        public bool XoaCauHoi(int maCauHoi) // Thay đổi kiểu dữ liệu/tham số cho phù hợp với logic của bạn
++        public bool XoaCauHoi(int cauHoiID)
+         {
+-            // Code thực thi việc xóa câu hỏi trong Database
+-            return true;
++            // Không cho xóa nếu đã có học sinh làm bài với câu hỏi này (giữ nguyên lịch sử điểm)
++            string checkSql = "SELECT COUNT(*) FROM ChiTietBaiLam WHERE CauHoiID = @id";
++            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new NpgsqlParameter("@id", cauHoiID)));
++            if (count > 0)
++            {
++                throw new Exception("Không thể xóa câu hỏi này vì đã có học sinh làm bài với câu hỏi này!");
++            }
++
++            string sql = "DELETE FROM CauHoi WHERE CauHoiID = @id";
++            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter("@id", cauHoiID)) > 0;
+         }
+-        public bool SuaCauHoi(CauHoiDTO cauHoi) // Truyền tham số tương ứng
++        public bool SuaCauHoi(CauHoi ch)
+         {
+-            // Code thực thi việc sửa câu hỏi trong Database
+-            return true;
++            string sql = @"UPDATE CauHoi
++                           SET NoiDung = @nd, DapAnA = @a, DapAnB = @b, DapAnC = @c, DapAnD = @d, DapAnDung = @dung
++                           WHERE CauHoiID = @id";
++            NpgsqlParameter[] pars = {
++                new NpgsqlParameter("@nd", ch.NoiDung),
++                new NpgsqlParameter("@a", ch.DapAnA),
++                new NpgsqlParameter("@b", ch.DapAnB),
++                new NpgsqlParameter("@c", ch.DapAnC),
++                new NpgsqlParameter("@d", ch.DapAnD),
++                new NpgsqlParameter("@dung", ch.DapAnDung),
++                new NpgsqlParameter("@id", ch.CauHoiID)
++            };
++            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+         }
+-        public DataTable LayKetQuaTheoDeThi(int maDeThi) // Hoặc kiểu trả về List<KetQua> tùy bạn
++        public DataTable LayKetQuaTheoDeThi(int maDeThi)
+         {
+-            // Code thực thi việc lấy dữ liệu
+-            return new DataTable();
++            string sql = @"SELECT hs.HoTen, d.TenDeThi, k.SoCauDung, k.Diem, k.ThoiGianNop
++                           FROM KetQuaThi k
++                           JOIN HocSinh hs ON hs.HocSinhID = k.HocSinhID
++                           JOIN DeThi d ON d.DeThiID = k.DeThiID
++                           WHERE k.DeThiID = @id
++                           ORDER BY k.ThoiGianNop DESC";
++            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter("@id", maDeThi));
+         }
+     }
+ }
+diff --git a/DAL/LopHocDAL.cs b/DAL/LopHocDAL.cs
+index 6fb2aae..bf02623 100644
+--- a/DAL/LopHocDAL.cs
++++ b/DAL/LopHocDAL.cs
+@@ -172,7 +172,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
+                     COALESCE(l.LichHoc, 'Chưa có') AS LichHoc,
+                     l.NgayBatDau,
+                     l.NgayKetThuc,
+-                    CAST((SELECT COUNT(*) FROM DangKyLop dk WHERE dk.LopHocID = l.LopHocID AND dk.TrangThai = 'Đã duyệt') AS varchar(10)) + '/' + CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
++                    CAST((SELECT COUNT(*) FROM DangKyLop dk WHERE dk.LopHocID = l.LopHocID AND dk.TrangThai = 'Đã duyệt') AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                     COALESCE(l.SiSoToiDa, 40) AS SiSoToiDa,
+                     (SELECT COUNT(*) FROM DangKyLop dk WHERE dk.LopHocID = l.LopHocID AND dk.TrangThai = 'Đã duyệt') AS SiSoHienTai,
+                     COALESCE(l.TrangThai, 'Đang mở') AS TrangThai
+@@ -203,7 +203,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
+                     COALESCE(l.LichHoc, 'Chưa có') AS LichHoc, 
+                     l.NgayBatDau,
+                     l.NgayKetThuc,
+-                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) + '/' + CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
++                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                     CASE 
+                         WHEN dk.TrangThai = 'Chờ duyệt' THEN 'Chờ duyệt'
+                         ELSE 'Đang học'
+@@ -224,7 +224,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
+                     COALESCE(l.LichHoc, 'Chưa có') AS LichHoc, 
+                     l.NgayBatDau,
+                     l.NgayKetThuc,
+-                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) + '/' + CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
++                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                     'Đang học' AS TrangThaiHoc,
+                     0 AS DangKyID,
+                     COALESCE(l.TrangThai, 'Đang mở') AS TrangThaiLop
+diff --git a/Forms/frm_GiaoVien.cs b/Forms/frm_GiaoVien.cs
+index a56a164..6d6c413 100644
+--- a/Forms/frm_GiaoVien.cs
++++ b/Forms/frm_GiaoVien.cs
+@@ -429,8 +429,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
+         {
+             if (e.RowIndex >= 0 && e.RowIndex < dgvDanhSachCauHoi.Rows.Count)
+             {
+-                // Đổi 'CauHoi' thành 'CauHoiDTO'
+-                CauHoiDTO q = dgvDanhSachCauHoi.Rows[e.RowIndex].DataBoundItem as CauHoiDTO;
++                CauHoi q = dgvDanhSachCauHoi.Rows[e.RowIndex].DataBoundItem as CauHoi;
+                 if (q != null)
+                 {
+                     _selectedCauHoiID = q.CauHoiID;
+@@ -460,7 +459,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
+             }
+ 
+             int deID = Convert.ToInt32(cmbGV_ChonDeThi.SelectedValue);
+-            CauHoiDTO ch = new CauHoiDTO
++            CauHoi ch = new CauHoi
+             {
+                 DeThiID = deID,
+                 NoiDung = txtCH_NoiDung.Text.Trim(),
+@@ -495,7 +494,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
+                 return;
+             }
+ 
+-            CauHoiDTO ch = new CauHoiDTO
++            CauHoi ch = new CauHoi
+             {
+                 CauHoiID = _selectedCauHoiID,
+                 NoiDung = txtCH_NoiDung.Text.Trim(),
+@@ -524,11 +523,18 @@ namespace BLT_Quan_Ly_Hoc_Tap
+ 
+             if (MessageBox.Show("Xóa câu hỏi này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+             {
+-                if (_deThiDAL.XoaCauHoi(_selectedCauHoiID))
++                try
++                {
++                    if (_deThiDAL.XoaCauHoi(_selectedCauHoiID))
++                    {
++                        MessageBox.Show("Đã xóa câu hỏi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
++                        cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
++                        LamMoiFormCauHoi();
++                    }
++                }
++                catch (Exception ex)
+                 {
+-                    MessageBox.Show("Đã xóa câu hỏi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+-                    cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
+-                    LamMoiFormCauHoi();
++                    MessageBox.Show(ex.Message, "Không thể xóa", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                 }
+             }
+         }
+@@ -585,6 +591,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
+             if (cboKQ_ChonDeThi.SelectedValue != null && int.TryParse(cboKQ_ChonDeThi.SelectedValue.ToString(), out int deID))
+             {
+                 DataTable dt = _deThiDAL.LayKetQuaTheoDeThi(deID);
++                dgvKetQuaHocSinh.AutoGenerateColumns = false;
++                dataGridViewTextBoxColumn25.DataPropertyName = "HoTen";
++                dataGridViewTextBoxColumn26.DataPropertyName = "TenDeThi";
++                dataGridViewTextBoxColumn27.DataPropertyName = "SoCauDung";
++                dataGridViewTextBoxColumn28.DataPropertyName = "Diem";
++                dataGridViewTextBoxColumn29.DataPropertyName = "ThoiGianNop";
+                 dgvKetQuaHocSinh.DataSource = dt;
+             }
+         }
+-- 
+2.43.0
+
