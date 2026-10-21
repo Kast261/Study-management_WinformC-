@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.materialTabControl1 = new ReaLTaiizor.Controls.MaterialTabControl();
             this.pageDashboard = new System.Windows.Forms.TabPage();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -233,16 +233,16 @@
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            chartArea5.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.chart1.Legends.Add(legend5);
             this.chart1.Location = new System.Drawing.Point(6, 186);
             this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series5.ChartArea = "ChartArea1";
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.chart1.Series.Add(series5);
             this.chart1.Size = new System.Drawing.Size(684, 274);
             this.chart1.TabIndex = 6;
             this.chart1.Text = "chart1";
@@ -509,7 +509,6 @@
             this.txtGV_ChuyenMon.Size = new System.Drawing.Size(353, 60);
             this.txtGV_ChuyenMon.TabIndex = 11;
             this.txtGV_ChuyenMon.TabStop = false;
-            this.txtGV_ChuyenMon.Text = "materialTextBoxEdit11";
             this.txtGV_ChuyenMon.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_ChuyenMon.TrailingIcon = null;
             this.txtGV_ChuyenMon.UseSystemPasswordChar = false;
@@ -542,7 +541,6 @@
             this.txtGV_SoDienThoai.Size = new System.Drawing.Size(353, 60);
             this.txtGV_SoDienThoai.TabIndex = 10;
             this.txtGV_SoDienThoai.TabStop = false;
-            this.txtGV_SoDienThoai.Text = "materialTextBoxEdit1";
             this.txtGV_SoDienThoai.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_SoDienThoai.TrailingIcon = null;
             this.txtGV_SoDienThoai.UseSystemPasswordChar = false;
@@ -575,7 +573,6 @@
             this.txtGV_HoTen.Size = new System.Drawing.Size(353, 60);
             this.txtGV_HoTen.TabIndex = 2;
             this.txtGV_HoTen.TabStop = false;
-            this.txtGV_HoTen.Text = "materialTextBoxEdit11";
             this.txtGV_HoTen.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_HoTen.TrailingIcon = null;
             this.txtGV_HoTen.UseSystemPasswordChar = false;
@@ -631,7 +628,6 @@
             this.txtGV_NgaySinh.Size = new System.Drawing.Size(353, 60);
             this.txtGV_NgaySinh.TabIndex = 2;
             this.txtGV_NgaySinh.TabStop = false;
-            this.txtGV_NgaySinh.Text = "materialTextBoxEdit1";
             this.txtGV_NgaySinh.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_NgaySinh.TrailingIcon = null;
             this.txtGV_NgaySinh.UseSystemPasswordChar = false;
@@ -685,7 +681,6 @@
             this.txtGV_Email.Size = new System.Drawing.Size(353, 60);
             this.txtGV_Email.TabIndex = 2;
             this.txtGV_Email.TabStop = false;
-            this.txtGV_Email.Text = "materialTextBoxEdit1";
             this.txtGV_Email.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_Email.TrailingIcon = null;
             this.txtGV_Email.UseSystemPasswordChar = false;
@@ -739,7 +734,6 @@
             this.txtGV_DiaChi.Size = new System.Drawing.Size(353, 60);
             this.txtGV_DiaChi.TabIndex = 2;
             this.txtGV_DiaChi.TabStop = false;
-            this.txtGV_DiaChi.Text = "materialTextBoxEdit1";
             this.txtGV_DiaChi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_DiaChi.TrailingIcon = null;
             this.txtGV_DiaChi.UseSystemPasswordChar = false;
@@ -2143,7 +2137,6 @@
             this.txtTK_TaiKhoanDangNhap.Size = new System.Drawing.Size(527, 60);
             this.txtTK_TaiKhoanDangNhap.TabIndex = 1;
             this.txtTK_TaiKhoanDangNhap.TabStop = false;
-            this.txtTK_TaiKhoanDangNhap.Text = "Tên Đăng Nhập";
             this.txtTK_TaiKhoanDangNhap.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtTK_TaiKhoanDangNhap.TrailingIcon = null;
             this.txtTK_TaiKhoanDangNhap.UseSystemPasswordChar = false;
@@ -2197,7 +2190,6 @@
             this.txtTK_MatKhau.Size = new System.Drawing.Size(527, 60);
             this.txtTK_MatKhau.TabIndex = 1;
             this.txtTK_MatKhau.TabStop = false;
-            this.txtTK_MatKhau.Text = "Mật Khẩu";
             this.txtTK_MatKhau.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtTK_MatKhau.TrailingIcon = null;
             this.txtTK_MatKhau.UseSystemPasswordChar = false;

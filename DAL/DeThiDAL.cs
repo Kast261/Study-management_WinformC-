@@ -14,17 +14,26 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
     {
         public DataTable LayDeThiTheoLop(int lopID)
         {
-            string sql = "SELECT * FROM DeThi WHERE LopHocID = @lopID";
+            string sql = @"SELECT DeThiID, TenDeThi, MoTa, ThoiGian, MonHoc, SoCau,
+                                  GiaoVienID, LopHocID, NgayTao, HanNop, TrangThai
+                           FROM DeThi WHERE LopHocID = @lopID";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@lopID", lopID) });
         }
         public DataTable LayDeThiTheoGiaoVien(int gvID)
         {
-            string sql = "SELECT * FROM DeThi WHERE GiaoVienID = @gvID";
+            string sql = @"SELECT d.DeThiID, d.TenDeThi, d.MoTa, d.ThoiGian, d.MonHoc, d.SoCau,
+                                  d.GiaoVienID, d.LopHocID, d.NgayTao, d.HanNop, d.TrangThai,
+                                  l.TenLop
+                           FROM DeThi d
+                           LEFT JOIN LopHoc l ON l.LopHocID = d.LopHocID
+                           WHERE d.GiaoVienID = @gvID";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@gvID", gvID) });
         }
         public DeThi LayTheoID(int deThiID)
         {
-            string sql = "SELECT * FROM DeThi WHERE DeThiID = @id";
+            string sql = @"SELECT DeThiID, TenDeThi, MoTa, ThoiGian, MonHoc, SoCau,
+                                  GiaoVienID, LopHocID, NgayTao, HanNop, TrangThai
+                           FROM DeThi WHERE DeThiID = @id";
             DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", deThiID) });
             if (dt.Rows.Count == 0) return null;
             DataRow r = dt.Rows[0];
@@ -42,7 +51,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public List<CauHoi> LayDanhSachCauHoi(int deThiID)
         {
             var list = new List<CauHoi>();
-            string sql = "SELECT * FROM CauHoi WHERE DeThiID = @id ORDER BY ThuTu ASC";
+            string sql = @"SELECT CauHoiID, DeThiID, NoiDung, DapAnA, DapAnB,
+                                  DapAnC, DapAnD, DapAnDung, ThuTu
+                           FROM CauHoi WHERE DeThiID = @id ORDER BY ThuTu ASC";
             DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", deThiID) });
             foreach (DataRow r in dt.Rows)
             {

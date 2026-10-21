@@ -20,7 +20,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public KhoaHoc LayTheoID(int id)
         {
-            string sql = "SELECT * FROM KhoaHoc WHERE KhoaHocID = @id";
+            string sql = "SELECT KhoaHocID, TenKhoaHoc, MoTa FROM KhoaHoc WHERE KhoaHocID = @id";
             DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) });
             if (dt.Rows.Count == 0) return null;
             DataRow r = dt.Rows[0];

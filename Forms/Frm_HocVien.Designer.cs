@@ -39,6 +39,9 @@
             this.materialCard2 = new ReaLTaiizor.Controls.MaterialCard();
             this.btnHV_VaoLopHoc = new ReaLTaiizor.Controls.ForeverButton();
             this.dgvHV_DeThiSapToi = new System.Windows.Forms.DataGridView();
+            this.BT_DeThi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BT_HanNop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BT_SoCau = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.materialLabel9 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialCard15 = new ReaLTaiizor.Controls.MaterialCard();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -124,9 +127,6 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BT_SoCau = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BT_HanNop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BT_DeThi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabHocVien.SuspendLayout();
             this.pageHV_TrangChu.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -310,6 +310,24 @@
             this.dgvHV_DeThiSapToi.Size = new System.Drawing.Size(493, 734);
             this.dgvHV_DeThiSapToi.TabIndex = 8;
             // 
+            // BT_DeThi
+            // 
+            this.BT_DeThi.HeaderText = "Đề Thi";
+            this.BT_DeThi.MinimumWidth = 6;
+            this.BT_DeThi.Name = "BT_DeThi";
+            // 
+            // BT_HanNop
+            // 
+            this.BT_HanNop.HeaderText = "Hạn Nộp";
+            this.BT_HanNop.MinimumWidth = 6;
+            this.BT_HanNop.Name = "BT_HanNop";
+            // 
+            // BT_SoCau
+            // 
+            this.BT_SoCau.HeaderText = "Số Câu";
+            this.BT_SoCau.MinimumWidth = 6;
+            this.BT_SoCau.Name = "BT_SoCau";
+            // 
             // materialLabel9
             // 
             this.materialLabel9.AutoSize = true;
@@ -448,7 +466,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 43.62519F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 56.37481F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(2051, 1041);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1578, 1041);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // materialCard1
@@ -464,7 +482,7 @@
             this.materialCard1.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialCard1.Name = "materialCard1";
             this.materialCard1.Padding = new System.Windows.Forms.Padding(17);
-            this.materialCard1.Size = new System.Drawing.Size(2017, 553);
+            this.materialCard1.Size = new System.Drawing.Size(1544, 553);
             this.materialCard1.TabIndex = 5;
             // 
             // dtHV_LopDangHoc
@@ -482,7 +500,7 @@
             this.dtHV_LopDangHoc.Name = "dtHV_LopDangHoc";
             this.dtHV_LopDangHoc.RowHeadersWidth = 51;
             this.dtHV_LopDangHoc.RowTemplate.Height = 24;
-            this.dtHV_LopDangHoc.Size = new System.Drawing.Size(1983, 519);
+            this.dtHV_LopDangHoc.Size = new System.Drawing.Size(1510, 519);
             this.dtHV_LopDangHoc.TabIndex = 6;
             // 
             // Column16
@@ -532,21 +550,24 @@
             // 
             // tableLayoutPanel9
             // 
+            this.tableLayoutPanel9.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tableLayoutPanel9.ColumnCount = 1;
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel9.Controls.Add(this.dtHV_LopHoc, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel10, 0, 1);
-            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 2;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.83036F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.16964F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(2045, 448);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1572, 448);
             this.tableLayoutPanel9.TabIndex = 6;
             // 
             // dtHV_LopHoc
             // 
+            this.dtHV_LopHoc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dtHV_LopHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dtHV_LopHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtHV_LopHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -555,12 +576,11 @@
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5});
-            this.dtHV_LopHoc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtHV_LopHoc.Location = new System.Drawing.Point(3, 3);
             this.dtHV_LopHoc.Name = "dtHV_LopHoc";
             this.dtHV_LopHoc.RowHeadersWidth = 51;
             this.dtHV_LopHoc.RowTemplate.Height = 24;
-            this.dtHV_LopHoc.Size = new System.Drawing.Size(2039, 383);
+            this.dtHV_LopHoc.Size = new System.Drawing.Size(1566, 383);
             this.dtHV_LopHoc.TabIndex = 7;
             // 
             // dataGridViewTextBoxColumn1
@@ -703,7 +723,6 @@
             // 
             // dgvHV_DanhSachDeThi
             // 
-            this.dgvHV_DanhSachDeThi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvHV_DanhSachDeThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvHV_DanhSachDeThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.DeThi,
@@ -726,42 +745,49 @@
             this.DeThi.HeaderText = "Đề Thi";
             this.DeThi.MinimumWidth = 6;
             this.DeThi.Name = "DeThi";
+            this.DeThi.Width = 125;
             // 
             // Column1
             // 
             this.Column1.HeaderText = "Môn";
             this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
+            this.Column1.Width = 125;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "Số Câu";
             this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
+            this.Column2.Width = 125;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "Thời Gian";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
+            this.Column3.Width = 125;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "Hạn Nộp";
             this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
+            this.Column4.Width = 125;
             // 
             // Column5
             // 
             this.Column5.HeaderText = "Trạng Thái";
             this.Column5.MinimumWidth = 6;
             this.Column5.Name = "Column5";
+            this.Column5.Width = 125;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "Điểm";
             this.Column6.MinimumWidth = 6;
             this.Column6.Name = "Column6";
+            this.Column6.Width = 125;
             // 
             // btnHV_BatDauLamBai
             // 
@@ -924,19 +950,19 @@
             // 
             // Column22
             // 
-            this.Column22.HeaderText = "Tên";
+            this.Column22.HeaderText = "Đề Thi";
             this.Column22.MinimumWidth = 6;
             this.Column22.Name = "Column22";
             // 
             // Column23
             // 
-            this.Column23.HeaderText = "Bài Thi";
+            this.Column23.HeaderText = "Môn Học";
             this.Column23.MinimumWidth = 6;
             this.Column23.Name = "Column23";
             // 
             // Column24
             // 
-            this.Column24.HeaderText = "Thời GIan làm";
+            this.Column24.HeaderText = "Nộp Lúc";
             this.Column24.MinimumWidth = 6;
             this.Column24.Name = "Column24";
             // 
@@ -983,9 +1009,9 @@
             this.materialLabel14.Location = new System.Drawing.Point(3, 3);
             this.materialLabel14.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialLabel14.Name = "materialLabel14";
-            this.materialLabel14.Size = new System.Drawing.Size(215, 37);
+            this.materialLabel14.Size = new System.Drawing.Size(103, 37);
             this.materialLabel14.TabIndex = 0;
-            this.materialLabel14.Text = "materialLabel14";
+            this.materialLabel14.Text = "Kết quả";
             // 
             // pageHV_ThongTin
             // 
@@ -1041,9 +1067,8 @@
             this.materialLabel23.Location = new System.Drawing.Point(69, 193);
             this.materialLabel23.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialLabel23.Name = "materialLabel23";
-            this.materialLabel23.Size = new System.Drawing.Size(147, 24);
+            this.materialLabel23.Size = new System.Drawing.Size(1, 0);
             this.materialLabel23.TabIndex = 0;
-            this.materialLabel23.Text = "materialLabel21";
             // 
             // materialLabel22
             // 
@@ -1053,9 +1078,8 @@
             this.materialLabel22.Location = new System.Drawing.Point(69, 164);
             this.materialLabel22.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialLabel22.Name = "materialLabel22";
-            this.materialLabel22.Size = new System.Drawing.Size(147, 24);
+            this.materialLabel22.Size = new System.Drawing.Size(1, 0);
             this.materialLabel22.TabIndex = 0;
-            this.materialLabel22.Text = "materialLabel21";
             // 
             // materialLabel21
             // 
@@ -1065,9 +1089,8 @@
             this.materialLabel21.Location = new System.Drawing.Point(69, 128);
             this.materialLabel21.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialLabel21.Name = "materialLabel21";
-            this.materialLabel21.Size = new System.Drawing.Size(147, 24);
+            this.materialLabel21.Size = new System.Drawing.Size(1, 0);
             this.materialLabel21.TabIndex = 0;
-            this.materialLabel21.Text = "materialLabel21";
             // 
             // materialCard12
             // 
@@ -1136,7 +1159,6 @@
             this.txtHV_Profile_HoTen.Size = new System.Drawing.Size(540, 60);
             this.txtHV_Profile_HoTen.TabIndex = 1;
             this.txtHV_Profile_HoTen.TabStop = false;
-            this.txtHV_Profile_HoTen.Text = "Lương Trung Thành";
             this.txtHV_Profile_HoTen.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_Profile_HoTen.TrailingIcon = null;
             this.txtHV_Profile_HoTen.UseSystemPasswordChar = false;
@@ -1217,7 +1239,6 @@
             this.txtHV_Profile_DiaChi.Size = new System.Drawing.Size(541, 60);
             this.txtHV_Profile_DiaChi.TabIndex = 1;
             this.txtHV_Profile_DiaChi.TabStop = false;
-            this.txtHV_Profile_DiaChi.Text = "materialTextBoxEdit1";
             this.txtHV_Profile_DiaChi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_Profile_DiaChi.TrailingIcon = null;
             this.txtHV_Profile_DiaChi.UseSystemPasswordChar = false;
@@ -1274,7 +1295,6 @@
             this.txtHV_Profile_SDT.Size = new System.Drawing.Size(540, 60);
             this.txtHV_Profile_SDT.TabIndex = 1;
             this.txtHV_Profile_SDT.TabStop = false;
-            this.txtHV_Profile_SDT.Text = "materialTextBoxEdit1";
             this.txtHV_Profile_SDT.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_Profile_SDT.TrailingIcon = null;
             this.txtHV_Profile_SDT.UseSystemPasswordChar = false;
@@ -1307,7 +1327,6 @@
             this.txtHV_Profile_Email.Size = new System.Drawing.Size(541, 60);
             this.txtHV_Profile_Email.TabIndex = 1;
             this.txtHV_Profile_Email.TabStop = false;
-            this.txtHV_Profile_Email.Text = "materialTextBoxEdit1";
             this.txtHV_Profile_Email.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_Profile_Email.TrailingIcon = null;
             this.txtHV_Profile_Email.UseSystemPasswordChar = false;
@@ -1384,7 +1403,6 @@
             this.txtHV_MatKhauCu.Size = new System.Drawing.Size(380, 60);
             this.txtHV_MatKhauCu.TabIndex = 1;
             this.txtHV_MatKhauCu.TabStop = false;
-            this.txtHV_MatKhauCu.Text = "Lương Trung Thành";
             this.txtHV_MatKhauCu.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_MatKhauCu.TrailingIcon = null;
             this.txtHV_MatKhauCu.UseSystemPasswordChar = false;
@@ -1432,7 +1450,6 @@
             this.txtHV_MatKhauMoi.Size = new System.Drawing.Size(380, 60);
             this.txtHV_MatKhauMoi.TabIndex = 1;
             this.txtHV_MatKhauMoi.TabStop = false;
-            this.txtHV_MatKhauMoi.Text = "Lương Trung Thành";
             this.txtHV_MatKhauMoi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_MatKhauMoi.TrailingIcon = null;
             this.txtHV_MatKhauMoi.UseSystemPasswordChar = false;
@@ -1465,7 +1482,6 @@
             this.txtHV_XacNhanMatKhau.Size = new System.Drawing.Size(380, 60);
             this.txtHV_XacNhanMatKhau.TabIndex = 1;
             this.txtHV_XacNhanMatKhau.TabStop = false;
-            this.txtHV_XacNhanMatKhau.Text = "Lương Trung Thành";
             this.txtHV_XacNhanMatKhau.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_XacNhanMatKhau.TrailingIcon = null;
             this.txtHV_XacNhanMatKhau.UseSystemPasswordChar = false;
@@ -1526,24 +1542,6 @@
             this.Column9.Name = "Column9";
             this.Column9.Width = 125;
             // 
-            // BT_SoCau
-            // 
-            this.BT_SoCau.HeaderText = "Số Câu";
-            this.BT_SoCau.MinimumWidth = 6;
-            this.BT_SoCau.Name = "BT_SoCau";
-            // 
-            // BT_HanNop
-            // 
-            this.BT_HanNop.HeaderText = "Hạn Nộp";
-            this.BT_HanNop.MinimumWidth = 6;
-            this.BT_HanNop.Name = "BT_HanNop";
-            // 
-            // BT_DeThi
-            // 
-            this.BT_DeThi.HeaderText = "Đề Thi";
-            this.BT_DeThi.MinimumWidth = 6;
-            this.BT_DeThi.Name = "BT_DeThi";
-            // 
             // HocVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1554,6 +1552,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HocVien";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.HocVien_Load);
             this.tabHocVien.ResumeLayout(false);
             this.pageHV_TrangChu.ResumeLayout(false);

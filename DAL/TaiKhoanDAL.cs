@@ -21,7 +21,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             if (string.IsNullOrWhiteSpace(tenDangNhap) || string.IsNullOrEmpty(matKhauNhap))
                 return null;
 
-            string sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = @user";
+            string sql = @"SELECT TaiKhoanID, TenDangNhap, MatKhau, VaiTro,
+                                  NguoiDungID, TrangThaiKhoa
+                           FROM TaiKhoan WHERE TenDangNhap = @user";
             NpgsqlParameter[] pars = { new NpgsqlParameter("@user", tenDangNhap.Trim()) };
 
             DataTable dt = DatabaseHelper.ExecuteQuery(sql, pars);
@@ -125,7 +127,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public List<TaiKhoan> GetAll()
         {
             var list = new List<TaiKhoan>();
-            string sql = "SELECT * FROM TaiKhoan";
+            string sql = @"SELECT TaiKhoanID, TenDangNhap, MatKhau, VaiTro,
+                                  NguoiDungID, TrangThaiKhoa
+                           FROM TaiKhoan";
             DataTable dt = DatabaseHelper.ExecuteQuery(sql);
             foreach (DataRow row in dt.Rows)
             {

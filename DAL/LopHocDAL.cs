@@ -122,13 +122,15 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             dk.LopHocID,
             dk.HocSinhID,
             hs.HoTen,
-            hs.GioiTinh,
             hs.Email,
             hs.SoDienThoai,
+            l.TenLop,
+            l.SiSoToiDa AS SiSo,
             dk.NgayDangKy,
             dk.TrangThai
         FROM DangKyLop dk
         JOIN HocSinh hs ON dk.HocSinhID = hs.HocSinhID
+        JOIN LopHoc l ON dk.LopHocID = l.LopHocID
         WHERE dk.LopHocID = @lopID AND dk.TrangThai = 'Chờ duyệt'
         ORDER BY dk.NgayDangKy ASC";
 

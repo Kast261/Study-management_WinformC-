@@ -19,7 +19,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
         public HocSinh LayTheoID(int id)
         {
-            string sql = "SELECT * FROM HocSinh WHERE HocSinhID = @id";
+            string sql = @"SELECT HocSinhID, HoTen, Email, SoDienThoai, DiaChi,
+                                  NgaySinh, GioiTinh, LopHocID, TaiKhoanID
+                           FROM HocSinh WHERE HocSinhID = @id";
             DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) });
             if (dt.Rows.Count == 0) return null;
             DataRow r = dt.Rows[0];

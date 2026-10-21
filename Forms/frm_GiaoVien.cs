@@ -110,6 +110,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void SetupEventHandlers()
         {
             // Tab Lớp học
+            dgvGV_LopCuaToi.AutoGenerateColumns = false;
+            dataGridViewTextBoxColumn7.DataPropertyName = "TenLop";
+            dataGridViewTextBoxColumn8.DataPropertyName = "SiSo";
+            dataGridViewTextBoxColumn9.DataPropertyName = "LichHoc";
             btnGV_TaoLop.Click += btnGV_TaoLop_Click;
             btnGV_SuaLop.Click += btnGV_SuaLop_Click;
             btnGV_DongDangKi.Click += btnGV_DongDangKi_Click;
@@ -219,8 +223,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 dtGV_LopHoc.AutoGenerateColumns = false;
                 Column1.DataPropertyName = "TenLop";
                 Column2.DataPropertyName = "TenKhoaHoc";
-                Column3.DataPropertyName = "LichHoc";
-                Column4.DataPropertyName = "SiSo";
+                Column3.DataPropertyName = "SiSo";
+                Column4.DataPropertyName = "TrangThai";
                 dtGV_LopHoc.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 dtGV_LopHoc.DataSource = dt;
 

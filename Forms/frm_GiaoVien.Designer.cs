@@ -640,7 +640,6 @@
             this.txtGV_TenLop.Size = new System.Drawing.Size(404, 60);
             this.txtGV_TenLop.TabIndex = 1;
             this.txtGV_TenLop.TabStop = false;
-            this.txtGV_TenLop.Text = "materialTextBoxEdit22";
             this.txtGV_TenLop.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_TenLop.TrailingIcon = null;
             this.txtGV_TenLop.UseSystemPasswordChar = false;
@@ -712,7 +711,6 @@
             this.txtGV_LichHoc.Size = new System.Drawing.Size(407, 60);
             this.txtGV_LichHoc.TabIndex = 1;
             this.txtGV_LichHoc.TabStop = false;
-            this.txtGV_LichHoc.Text = "materialTextBoxEdit13";
             this.txtGV_LichHoc.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_LichHoc.TrailingIcon = null;
             this.txtGV_LichHoc.UseSystemPasswordChar = false;
@@ -760,7 +758,6 @@
             this.txtGV_SiSo.Size = new System.Drawing.Size(404, 60);
             this.txtGV_SiSo.TabIndex = 1;
             this.txtGV_SiSo.TabStop = false;
-            this.txtGV_SiSo.Text = "materialTextBoxEdit13";
             this.txtGV_SiSo.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_SiSo.TrailingIcon = null;
             this.txtGV_SiSo.UseSystemPasswordChar = false;
@@ -793,7 +790,6 @@
             this.txtGV_NgayBatDau.Size = new System.Drawing.Size(404, 60);
             this.txtGV_NgayBatDau.TabIndex = 1;
             this.txtGV_NgayBatDau.TabStop = false;
-            this.txtGV_NgayBatDau.Text = "materialTextBoxEdit13";
             this.txtGV_NgayBatDau.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_NgayBatDau.TrailingIcon = null;
             this.txtGV_NgayBatDau.UseSystemPasswordChar = false;
@@ -826,7 +822,6 @@
             this.txtGV_NgayKetThuc.Size = new System.Drawing.Size(407, 60);
             this.txtGV_NgayKetThuc.TabIndex = 1;
             this.txtGV_NgayKetThuc.TabStop = false;
-            this.txtGV_NgayKetThuc.Text = "materialTextBoxEdit13";
             this.txtGV_NgayKetThuc.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_NgayKetThuc.TrailingIcon = null;
             this.txtGV_NgayKetThuc.UseSystemPasswordChar = false;
@@ -884,7 +879,6 @@
             // 
             // dtGV_LopHoc
             // 
-            this.dtGV_LopHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.None;
             this.dtGV_LopHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtGV_LopHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -904,24 +898,28 @@
             this.Column1.HeaderText = "Lớp";
             this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
+            this.Column1.Width = 125;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "Khóa Học";
             this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
+            this.Column2.Width = 125;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "Sĩ Số";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
+            this.Column3.Width = 125;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "Trạng Thái";
             this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
+            this.Column4.Width = 125;
             // 
             // materialLabel36
             // 
@@ -982,7 +980,6 @@
             // 
             // dgvDangKyChoDuyet
             // 
-            this.dgvDangKyChoDuyet.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.None;
             this.dgvDangKyChoDuyet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDangKyChoDuyet.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn13,
@@ -1004,36 +1001,42 @@
             this.dataGridViewTextBoxColumn13.HeaderText = "Học Viên";
             this.dataGridViewTextBoxColumn13.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
+            this.dataGridViewTextBoxColumn13.Width = 125;
             // 
             // dataGridViewTextBoxColumn14
             // 
             this.dataGridViewTextBoxColumn14.HeaderText = "Email";
             this.dataGridViewTextBoxColumn14.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            this.dataGridViewTextBoxColumn14.Width = 125;
             // 
             // dataGridViewTextBoxColumn15
             // 
             this.dataGridViewTextBoxColumn15.HeaderText = "Điện Thoại";
             this.dataGridViewTextBoxColumn15.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
+            this.dataGridViewTextBoxColumn15.Width = 125;
             // 
             // dataGridViewTextBoxColumn16
             // 
             this.dataGridViewTextBoxColumn16.HeaderText = "Lớp";
             this.dataGridViewTextBoxColumn16.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
+            this.dataGridViewTextBoxColumn16.Width = 125;
             // 
             // dataGridViewTextBoxColumn17
             // 
             this.dataGridViewTextBoxColumn17.HeaderText = "Sĩ Số";
             this.dataGridViewTextBoxColumn17.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
+            this.dataGridViewTextBoxColumn17.Width = 125;
             // 
             // dataGridViewTextBoxColumn18
             // 
             this.dataGridViewTextBoxColumn18.HeaderText = "Ngày Đăng Kí";
             this.dataGridViewTextBoxColumn18.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
+            this.dataGridViewTextBoxColumn18.Width = 125;
             // 
             // btnDuyet_TuChoi
             // 
@@ -1202,7 +1205,6 @@
             this.txtGV_DeThi.Size = new System.Drawing.Size(512, 60);
             this.txtGV_DeThi.TabIndex = 10;
             this.txtGV_DeThi.TabStop = false;
-            this.txtGV_DeThi.Text = "materialTextBoxEdit1";
             this.txtGV_DeThi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_DeThi.TrailingIcon = null;
             this.txtGV_DeThi.UseSystemPasswordChar = false;
@@ -1234,7 +1236,6 @@
             this.txtCH_NoiDung.Size = new System.Drawing.Size(526, 60);
             this.txtCH_NoiDung.TabIndex = 1;
             this.txtCH_NoiDung.TabStop = false;
-            this.txtCH_NoiDung.Text = "materialTextBoxEdit1";
             this.txtCH_NoiDung.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtCH_NoiDung.TrailingIcon = null;
             this.txtCH_NoiDung.UseSystemPasswordChar = false;
@@ -1266,7 +1267,6 @@
             this.txtCH_DapAnA.Size = new System.Drawing.Size(526, 60);
             this.txtCH_DapAnA.TabIndex = 2;
             this.txtCH_DapAnA.TabStop = false;
-            this.txtCH_DapAnA.Text = "materialTextBoxEdit2";
             this.txtCH_DapAnA.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtCH_DapAnA.TrailingIcon = null;
             this.txtCH_DapAnA.UseSystemPasswordChar = false;
@@ -1298,7 +1298,6 @@
             this.txtCH_DapAnB.Size = new System.Drawing.Size(526, 60);
             this.txtCH_DapAnB.TabIndex = 3;
             this.txtCH_DapAnB.TabStop = false;
-            this.txtCH_DapAnB.Text = "materialTextBoxEdit3";
             this.txtCH_DapAnB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtCH_DapAnB.TrailingIcon = null;
             this.txtCH_DapAnB.UseSystemPasswordChar = false;
@@ -1330,7 +1329,6 @@
             this.txtCH_DapAnC.Size = new System.Drawing.Size(526, 60);
             this.txtCH_DapAnC.TabIndex = 4;
             this.txtCH_DapAnC.TabStop = false;
-            this.txtCH_DapAnC.Text = "materialTextBoxEdit4";
             this.txtCH_DapAnC.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtCH_DapAnC.TrailingIcon = null;
             this.txtCH_DapAnC.UseSystemPasswordChar = false;
@@ -1362,7 +1360,6 @@
             this.txtCH_DapAnD.Size = new System.Drawing.Size(526, 60);
             this.txtCH_DapAnD.TabIndex = 5;
             this.txtCH_DapAnD.TabStop = false;
-            this.txtCH_DapAnD.Text = "materialTextBoxEdit5";
             this.txtCH_DapAnD.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtCH_DapAnD.TrailingIcon = null;
             this.txtCH_DapAnD.UseSystemPasswordChar = false;
@@ -1480,25 +1477,25 @@
             // 
             // dataGridViewTextBoxColumn19
             // 
-            this.dataGridViewTextBoxColumn19.HeaderText = "Đề Thi";
+            this.dataGridViewTextBoxColumn19.HeaderText = "Mã Đề";
             this.dataGridViewTextBoxColumn19.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
             // 
             // dataGridViewTextBoxColumn20
             // 
-            this.dataGridViewTextBoxColumn20.HeaderText = "Môn";
+            this.dataGridViewTextBoxColumn20.HeaderText = "Câu Hỏi";
             this.dataGridViewTextBoxColumn20.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
             // 
             // dataGridViewTextBoxColumn21
             // 
-            this.dataGridViewTextBoxColumn21.HeaderText = "Câu Hỏi";
+            this.dataGridViewTextBoxColumn21.HeaderText = "Đáp Án Đúng";
             this.dataGridViewTextBoxColumn21.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
             // 
             // dataGridViewTextBoxColumn22
             // 
-            this.dataGridViewTextBoxColumn22.HeaderText = "Đáp Án Đúng ";
+            this.dataGridViewTextBoxColumn22.HeaderText = "Thứ Tự";
             this.dataGridViewTextBoxColumn22.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
             // 
@@ -1632,7 +1629,6 @@
             this.txtDe_SoCau.Size = new System.Drawing.Size(393, 60);
             this.txtDe_SoCau.TabIndex = 3;
             this.txtDe_SoCau.TabStop = false;
-            this.txtDe_SoCau.Text = "materialTextBoxEdit1";
             this.txtDe_SoCau.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtDe_SoCau.TrailingIcon = null;
             this.txtDe_SoCau.UseSystemPasswordChar = false;
@@ -1666,7 +1662,6 @@
             this.txtDe_ThoiGian.Size = new System.Drawing.Size(393, 60);
             this.txtDe_ThoiGian.TabIndex = 1;
             this.txtDe_ThoiGian.TabStop = false;
-            this.txtDe_ThoiGian.Text = "txtDe_ThoiGian";
             this.txtDe_ThoiGian.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtDe_ThoiGian.TrailingIcon = null;
             this.txtDe_ThoiGian.UseSystemPasswordChar = false;
@@ -2063,7 +2058,6 @@
             this.txtGV_MatKhauCu.Size = new System.Drawing.Size(415, 60);
             this.txtGV_MatKhauCu.TabIndex = 1;
             this.txtGV_MatKhauCu.TabStop = false;
-            this.txtGV_MatKhauCu.Text = "Lương Trung Thành";
             this.txtGV_MatKhauCu.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_MatKhauCu.TrailingIcon = null;
             this.txtGV_MatKhauCu.UseSystemPasswordChar = false;
@@ -2111,7 +2105,6 @@
             this.txtGV_MatKhauMoi.Size = new System.Drawing.Size(416, 60);
             this.txtGV_MatKhauMoi.TabIndex = 1;
             this.txtGV_MatKhauMoi.TabStop = false;
-            this.txtGV_MatKhauMoi.Text = "Lương Trung Thành";
             this.txtGV_MatKhauMoi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_MatKhauMoi.TrailingIcon = null;
             this.txtGV_MatKhauMoi.UseSystemPasswordChar = false;
@@ -2144,7 +2137,6 @@
             this.txtGV_XacNhanMatKhau.Size = new System.Drawing.Size(416, 60);
             this.txtGV_XacNhanMatKhau.TabIndex = 1;
             this.txtGV_XacNhanMatKhau.TabStop = false;
-            this.txtGV_XacNhanMatKhau.Text = "Lương Trung Thành";
             this.txtGV_XacNhanMatKhau.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_XacNhanMatKhau.TrailingIcon = null;
             this.txtGV_XacNhanMatKhau.UseSystemPasswordChar = false;
@@ -2228,7 +2220,6 @@
             this.txtGV_Profile_HoTen.Size = new System.Drawing.Size(415, 60);
             this.txtGV_Profile_HoTen.TabIndex = 1;
             this.txtGV_Profile_HoTen.TabStop = false;
-            this.txtGV_Profile_HoTen.Text = "Lương Trung Thành";
             this.txtGV_Profile_HoTen.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_Profile_HoTen.TrailingIcon = null;
             this.txtGV_Profile_HoTen.UseSystemPasswordChar = false;
@@ -2300,7 +2291,6 @@
             this.txtGV_Profile_DiaChi.Size = new System.Drawing.Size(416, 60);
             this.txtGV_Profile_DiaChi.TabIndex = 1;
             this.txtGV_Profile_DiaChi.TabStop = false;
-            this.txtGV_Profile_DiaChi.Text = "materialTextBoxEdit1";
             this.txtGV_Profile_DiaChi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_Profile_DiaChi.TrailingIcon = null;
             this.txtGV_Profile_DiaChi.UseSystemPasswordChar = false;
@@ -2333,7 +2323,6 @@
             this.txtGV_Profile_SDT.Size = new System.Drawing.Size(415, 60);
             this.txtGV_Profile_SDT.TabIndex = 1;
             this.txtGV_Profile_SDT.TabStop = false;
-            this.txtGV_Profile_SDT.Text = "materialTextBoxEdit1";
             this.txtGV_Profile_SDT.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_Profile_SDT.TrailingIcon = null;
             this.txtGV_Profile_SDT.UseSystemPasswordChar = false;
@@ -2366,7 +2355,6 @@
             this.txtGV_Profile_Email.Size = new System.Drawing.Size(416, 60);
             this.txtGV_Profile_Email.TabIndex = 1;
             this.txtGV_Profile_Email.TabStop = false;
-            this.txtGV_Profile_Email.Text = "materialTextBoxEdit1";
             this.txtGV_Profile_Email.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_Profile_Email.TrailingIcon = null;
             this.txtGV_Profile_Email.UseSystemPasswordChar = false;
@@ -2422,7 +2410,7 @@
             this.dataGridView7.Name = "dataGridView7";
             this.dataGridView7.RowHeadersWidth = 51;
             this.dataGridView7.RowTemplate.Height = 24;
-            this.dataGridView7.Size = new System.Drawing.Size(32, -57);
+            this.dataGridView7.Size = new System.Drawing.Size(32, 0);
             this.dataGridView7.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn1
@@ -2511,7 +2499,7 @@
             this.dataGridView8.Name = "dataGridView8";
             this.dataGridView8.RowHeadersWidth = 51;
             this.dataGridView8.RowTemplate.Height = 24;
-            this.dataGridView8.Size = new System.Drawing.Size(32, -57);
+            this.dataGridView8.Size = new System.Drawing.Size(32, 0);
             this.dataGridView8.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn4
@@ -2661,6 +2649,7 @@
             this.Controls.Add(this.materialTabControl1);
             this.Name = "frm_GiaoVien";
             this.Text = "GiaoVien";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.GiaoVien_Load);
             this.materialTabControl1.ResumeLayout(false);
             this.pageGV_TrangChu.ResumeLayout(false);

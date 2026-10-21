@@ -41,6 +41,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 tabHocVien.SelectedIndexChanged += TabHocVien_SelectedIndexChanged;
+                ConfigureDataGrids();
                 LoadThongTinHocVien();
                 LoadLopHoc();
                 LoadLichSuThi();
@@ -56,15 +57,48 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 {
                     btnHV_DangKy.Click += btnDangKyLop_Click;
                 }
+
                 btnHV_HuyDangKi.Click += btnHV_HuyDangKi_Click;
 
                 // Gán sự kiện lưu hồ sơ cá nhân
                 btnHV_LuuProfile.Click += btnHV_LuuProfile_Click;
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi tải thông tin học viên: " + ex.Message, "Thông báo");
             }
+        }
+
+        private void ConfigureDataGrids()
+        {
+            dgvHV_LopDangHoc.AutoGenerateColumns = false;
+            Lop.DataPropertyName = "TenLop";
+            GiaoVien.DataPropertyName = "TenGiaoVien";
+            LichHoc.DataPropertyName = "LichHoc";
+
+            dtHV_LopHoc.AutoGenerateColumns = false;
+            dataGridViewTextBoxColumn1.DataPropertyName = "TenLop";
+            dataGridViewTextBoxColumn2.DataPropertyName = "TenKhoaHoc";
+            dataGridViewTextBoxColumn3.DataPropertyName = "TenGiaoVien";
+            dataGridViewTextBoxColumn4.DataPropertyName = "SiSo";
+            dataGridViewTextBoxColumn5.DataPropertyName = "TrangThai";
+
+            dtHV_LopDangHoc.AutoGenerateColumns = false;
+            Column16.DataPropertyName = "TenLop";
+            Column10.DataPropertyName = "LichHoc";
+            Column17.DataPropertyName = "TenKhoaHoc";
+            Column18.DataPropertyName = "TenGiaoVien";
+            Column21.DataPropertyName = "TrangThaiLop";
+
+            dgvHV_LichSuThi.AutoGenerateColumns = false;
+            Column22.DataPropertyName = "TenDeThi";
+            Column23.DataPropertyName = "MonHoc";
+            Column24.DataPropertyName = "ThoiGianNop";
+            Column25.DataPropertyName = "Diem";
+
+            dgvHV_DanhSachDeThi.AutoGenerateColumns = false;
+            dgvHV_DanhSachDeThi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
         }
 
         private void LoadThongTinHocVien()

@@ -19,7 +19,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
         public GiaoVien LayTheoID(int id)
         {
-            string sql = "SELECT * FROM GiaoVien WHERE GiaoVienID = @id";
+            string sql = @"SELECT GiaoVienID, HoTen, Email, SoDienThoai, DiaChi,
+                                  NgaySinh, ChuyenMon, GioiTinh, TaiKhoanID
+                           FROM GiaoVien WHERE GiaoVienID = @id";
             DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) });
             if (dt.Rows.Count == 0) return null;
             DataRow r = dt.Rows[0];
