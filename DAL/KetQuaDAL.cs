@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace BLT_Quan_Ly_Hoc_Tap.DAL
 {
     public class KetQuaDAL
@@ -67,7 +68,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                            JOIN CauHoi c ON ct.CauHoiID = c.CauHoiID
                            WHERE ct.KetQuaID = @kqID
                            ORDER BY c.ThuTu ASC";
-            return DatabaseHelper.ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@kqID", ketQuaID) });
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@kqID", ketQuaID) });
         }
     }
 }
