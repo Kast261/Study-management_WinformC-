@@ -194,50 +194,85 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         /// <summary>
         /// Lấy các lớp và khóa học hiện tại đang học hoặc đang chờ duyệt (cho DataGrid thứ hai)
         /// </summary>
-        public DataTable LayLopHocVienDangHocVaChoDuyet(int hsID)
+     public DataTable LayLopHocVienDangHocVaChoDuyet(int hsID)
         {
             string sql = @"
-                SELECT 
-                    l.LopHocID, 
-                    l.TenLop, 
-                    COALESCE(k.TenKhoaHoc, 'Chưa phân loại') AS TenKhoaHoc, 
-                    COALESCE(g.HoTen, 'Chưa phân công') AS TenGiaoVien, 
-                    COALESCE(l.LichHoc, 'Chưa có') AS LichHoc, 
-                    l.NgayBatDau,
-                    l.NgayKetThuc,
-                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
-                    CASE 
-                        WHEN dk.TrangThai = 'Chờ duyệt' THEN 'Chờ duyệt'
-                        ELSE 'Đang học'
-                    END AS TrangThaiHoc,
-                    dk.DangKyID,
-                    COALESCE(l.TrangThai, 'Đang mở') AS TrangThaiLop
-                FROM DangKyLop dk
-                JOIN LopHoc l ON dk.LopHocID = l.LopHocID
-                LEFT JOIN KhoaHoc k ON l.KhoaHocID = k.KhoaHocID
-                LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
-                WHERE dk.HocSinhID = @hsID AND dk.TrangThai IN ('Đã duyệt', 'Chờ duyệt')
-                UNION
-                SELECT 
-                    l.LopHocID, 
-                    l.TenLop, 
-                    COALESCE(k.TenKhoaHoc, 'Chưa phân loại') AS TenKhoaHoc, 
-                    COALESCE(g.HoTen, 'Chưa phân công') AS TenGiaoVien, 
-                    COALESCE(l.LichHoc, 'Chưa có') AS LichHoc, 
-                    l.NgayBatDau,
-                    l.NgayKetThuc,
-                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
-                    'Đang học' AS TrangThaiHoc,
-                    0 AS DangKyID,
-                    COALESCE(l.TrangThai, 'Đang mở') AS TrangThaiLop
-                FROM HocSinh hs
-                JOIN LopHoc l ON hs.LopHocID = l.LopHocID
-                LEFT JOIN KhoaHoc k ON l.KhoaHocID = k.KhoaHocID
-                LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
-                WHERE hs.HocSinhID = @hsID AND hs.LopHocID IS NOT NULL
-                  AND l.LopHocID NOT IN (SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND TrangThai IN ('Đã duyệt', 'Chờ duyệt'))
-                ORDER BY LopHocID DESC";
-            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@hsID", hsID) });
+        SELECT 
+            l.LopHocID, 
+            l.TenLop, 
+            COALESCE(k.TenKhoaHoc, 'Chưa phân loại') AS TenKhoaHoc, 
+            COALESCE(g.HoTen, 'Chưa phân công') AS TenGiaoVien, 
+            COALESCE(l.LichHoc, 'Chưa có') AS LichHoc, 
+            l.NgayBatDau,
+            l.NgayKetThuc,
+
+            CAST((
+                SELECT COUNT(*)
+                FROM DangKyLop dk2
+                WHERE dk2.LopHocID = l.LopHocID
+                  AND dk2.TrangThai = 'Đã duyệt'
+            ) AS varchar(10))
+            || '/' ||
+            CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+
+            dk.TrangThai AS TrangThaiDangKy,
+            dk.DangKyID,
+            COALESCE(l.TrangThai, 'Đang mở') AS TrangThaiLop
+
+        FROM DangKyLop dk
+        JOIN LopHoc l ON dk.LopHocID = l.LopHocID
+        LEFT JOIN KhoaHoc k ON l.KhoaHocID = k.KhoaHocID
+        LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
+
+        WHERE dk.HocSinhID = @hsID
+          AND dk.TrangThai IN ('Đã duyệt', 'Chờ duyệt', 'Từ chối')
+
+        UNION
+
+        SELECT 
+            l.LopHocID, 
+            l.TenLop, 
+            COALESCE(k.TenKhoaHoc, 'Chưa phân loại') AS TenKhoaHoc, 
+            COALESCE(g.HoTen, 'Chưa phân công') AS TenGiaoVien, 
+            COALESCE(l.LichHoc, 'Chưa có') AS LichHoc, 
+            l.NgayBatDau,
+            l.NgayKetThuc,
+
+            CAST((
+                SELECT COUNT(*)
+                FROM DangKyLop dk2
+                WHERE dk2.LopHocID = l.LopHocID
+                  AND dk2.TrangThai = 'Đã duyệt'
+            ) AS varchar(10))
+            || '/' ||
+            CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+
+            'Đang học' AS TrangThaiDangKy,
+            0 AS DangKyID,
+            COALESCE(l.TrangThai, 'Đang mở') AS TrangThaiLop
+
+        FROM HocSinh hs
+        JOIN LopHoc l ON hs.LopHocID = l.LopHocID
+        LEFT JOIN KhoaHoc k ON l.KhoaHocID = k.KhoaHocID
+        LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
+
+        WHERE hs.HocSinhID = @hsID
+          AND hs.LopHocID IS NOT NULL
+          AND l.LopHocID NOT IN (
+              SELECT LopHocID
+              FROM DangKyLop
+              WHERE HocSinhID = @hsID
+                AND TrangThai IN ('Đã duyệt', 'Chờ duyệt', 'Từ chối')
+          )
+
+        ORDER BY LopHocID DESC";
+
+            return DatabaseHelper.ExecuteQuery(
+                sql,
+                new NpgsqlParameter[]
+                {
+            new NpgsqlParameter("@hsID", hsID)
+                });
         }
 
         /// <summary>

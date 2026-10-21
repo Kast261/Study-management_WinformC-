@@ -89,7 +89,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             Column10.DataPropertyName = "LichHoc";
             Column17.DataPropertyName = "TenKhoaHoc";
             Column18.DataPropertyName = "TenGiaoVien";
-            Column21.DataPropertyName = "TrangThaiLop";
+            Column21.DataPropertyName = "TrangThaiDangKy";
 
             dgvHV_LichSuThi.AutoGenerateColumns = false;
             Column22.DataPropertyName = "TenDeThi";
@@ -99,6 +99,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             dgvHV_DanhSachDeThi.AutoGenerateColumns = false;
             dgvHV_DanhSachDeThi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            Helpers.DataGridViewHelper.CauHinhDoRongCot(dgvHV_DanhSachDeThi);
         }
 
         private void LoadThongTinHocVien()

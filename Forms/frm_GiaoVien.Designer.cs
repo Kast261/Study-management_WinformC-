@@ -879,6 +879,8 @@
             // 
             // dtGV_LopHoc
             // 
+            this.dtGV_LopHoc.AutoGenerateColumns = false;
+            this.dtGV_LopHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.None;
             this.dtGV_LopHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtGV_LopHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -898,28 +900,24 @@
             this.Column1.HeaderText = "Lớp";
             this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
-            this.Column1.Width = 125;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "Khóa Học";
             this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
-            this.Column2.Width = 125;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "Sĩ Số";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
-            this.Column3.Width = 125;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "Trạng Thái";
             this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
-            this.Column4.Width = 125;
             // 
             // materialLabel36
             // 
@@ -980,6 +978,8 @@
             // 
             // dgvDangKyChoDuyet
             // 
+            this.dgvDangKyChoDuyet.AutoGenerateColumns = false;
+            this.dgvDangKyChoDuyet.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.None;
             this.dgvDangKyChoDuyet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDangKyChoDuyet.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn13,
@@ -1001,42 +1001,36 @@
             this.dataGridViewTextBoxColumn13.HeaderText = "Học Viên";
             this.dataGridViewTextBoxColumn13.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
-            this.dataGridViewTextBoxColumn13.Width = 125;
             // 
             // dataGridViewTextBoxColumn14
             // 
             this.dataGridViewTextBoxColumn14.HeaderText = "Email";
             this.dataGridViewTextBoxColumn14.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
-            this.dataGridViewTextBoxColumn14.Width = 125;
             // 
             // dataGridViewTextBoxColumn15
             // 
             this.dataGridViewTextBoxColumn15.HeaderText = "Điện Thoại";
             this.dataGridViewTextBoxColumn15.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
-            this.dataGridViewTextBoxColumn15.Width = 125;
             // 
             // dataGridViewTextBoxColumn16
             // 
             this.dataGridViewTextBoxColumn16.HeaderText = "Lớp";
             this.dataGridViewTextBoxColumn16.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
-            this.dataGridViewTextBoxColumn16.Width = 125;
             // 
             // dataGridViewTextBoxColumn17
             // 
             this.dataGridViewTextBoxColumn17.HeaderText = "Sĩ Số";
             this.dataGridViewTextBoxColumn17.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
-            this.dataGridViewTextBoxColumn17.Width = 125;
             // 
             // dataGridViewTextBoxColumn18
             // 
             this.dataGridViewTextBoxColumn18.HeaderText = "Ngày Đăng Kí";
             this.dataGridViewTextBoxColumn18.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
-            this.dataGridViewTextBoxColumn18.Width = 125;
             // 
             // btnDuyet_TuChoi
             // 
@@ -2410,7 +2404,7 @@
             this.dataGridView7.Name = "dataGridView7";
             this.dataGridView7.RowHeadersWidth = 51;
             this.dataGridView7.RowTemplate.Height = 24;
-            this.dataGridView7.Size = new System.Drawing.Size(32, 0);
+            this.dataGridView7.Size = new System.Drawing.Size(32, -57);
             this.dataGridView7.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn1
@@ -2499,7 +2493,7 @@
             this.dataGridView8.Name = "dataGridView8";
             this.dataGridView8.RowHeadersWidth = 51;
             this.dataGridView8.RowTemplate.Height = 24;
-            this.dataGridView8.Size = new System.Drawing.Size(32, 0);
+            this.dataGridView8.Size = new System.Drawing.Size(32, -57);
             this.dataGridView8.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn4

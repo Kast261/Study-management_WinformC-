@@ -138,6 +138,7 @@
     <Compile Include="Forms\Frm_KiemTra.Designer.cs">
       <DependentUpon>Frm_KiemTra.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DataGridView.cs" />
     <Compile Include="Helpers\Passwords.cs" />
     <Compile Include="Helpers\Session.cs" />
     <Compile Include="Helpers\Validation.cs" />

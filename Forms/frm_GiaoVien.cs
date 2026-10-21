@@ -353,12 +353,29 @@ namespace BLT_Quan_Ly_Hoc_Tap
         #region 3. Tab Duyệt Học Viên Đăng Ký
         private void cboDuyet_ChonLop_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboDuyet_ChonLop.SelectedValue != null && int.TryParse(cboDuyet_ChonLop.SelectedValue.ToString(), out int lopID))
+            if (cboDuyet_ChonLop.SelectedValue != null &&
+                int.TryParse(cboDuyet_ChonLop.SelectedValue.ToString(),
+                             out int lopID))
             {
                 DataTable dt = _lopDAL.LayDangKyTheoLop(lopID);
 
-                dgvDangKyChoDuyet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                // Không tự tạo thêm cột
+                dgvDangKyChoDuyet.AutoGenerateColumns = false;
+
+                // Ánh xạ cột Designer với cột trong DataTable
+                dgvDangKyChoDuyet.Columns[0].DataPropertyName = "HoTen";
+                dgvDangKyChoDuyet.Columns[1].DataPropertyName = "Email";
+                dgvDangKyChoDuyet.Columns[2].DataPropertyName = "SoDienThoai";
+                dgvDangKyChoDuyet.Columns[3].DataPropertyName = "TenLop";
+                dgvDangKyChoDuyet.Columns[4].DataPropertyName = "SiSo";
+                dgvDangKyChoDuyet.Columns[5].DataPropertyName = "NgayDangKy";
+
+                dgvDangKyChoDuyet.AutoSizeColumnsMode =
+                    DataGridViewAutoSizeColumnsMode.None;
+
+                dgvDangKyChoDuyet.DataSource = null;
                 dgvDangKyChoDuyet.DataSource = dt;
+
             }
         }
 
@@ -418,9 +435,26 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 cboKQ_ChonDeThi.ValueMember = "DeThiID";
 
                 // Bảng quản lý đề thi
+                dgvDanhSachDeThi.AutoGenerateColumns = false;
+
+                // Ánh xạ 5 cột giao diện với dữ liệu SQL
+                dgvDanhSachDeThi.Columns[0].DataPropertyName = "TenDeThi";
+                dgvDanhSachDeThi.Columns[1].DataPropertyName = "MonHoc";
+                dgvDanhSachDeThi.Columns[2].DataPropertyName = "ThoiGian";
+                dgvDanhSachDeThi.Columns[3].DataPropertyName = "TenLop";
+                dgvDanhSachDeThi.Columns[4].DataPropertyName = "SoCau";
+
                 dgvDanhSachDeThi.DataSource = dt;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi tải danh sách đề thi: " + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
 
         private void cmbGV_ChonDeThi_SelectedIndexChanged(object sender, EventArgs e)
@@ -428,6 +462,15 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (cmbGV_ChonDeThi.SelectedValue != null && int.TryParse(cmbGV_ChonDeThi.SelectedValue.ToString(), out int deID))
             {
                 var listCH = _deThiDAL.LayDanhSachCauHoi(deID);
+
+                dgvDanhSachCauHoi.AutoGenerateColumns = false;
+
+                // Ánh xạ các cột đã có trong Designer
+                dataGridViewTextBoxColumn19.DataPropertyName = "DeThiID";
+                dataGridViewTextBoxColumn20.DataPropertyName = "NoiDung";
+                dataGridViewTextBoxColumn21.DataPropertyName = "DapAnDung";
+                dataGridViewTextBoxColumn22.DataPropertyName = "ThuTu";
+
                 dgvDanhSachCauHoi.DataSource = listCH;
             }
         }
