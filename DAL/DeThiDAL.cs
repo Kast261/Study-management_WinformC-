@@ -77,7 +77,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
-        public bool ThemCauHoi(CauHoiDTO ch)
+        public bool ThemCauHoi(CauHoi ch)
         {
             string sql = @"INSERT INTO CauHoi (DeThiID, NoiDung, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, ThuTu)
                            VALUES (@deID, @nd, @a, @b, @c, @d, @dung, @thutu)";
@@ -93,20 +93,44 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
-        public bool XoaCauHoi(int maCauHoi) // Thay đổi kiểu dữ liệu/tham số cho phù hợp với logic của bạn
+        public bool XoaCauHoi(int cauHoiID)
         {
-            // Code thực thi việc xóa câu hỏi trong Database
-            return true;
+            // Không cho xóa nếu đã có học sinh làm bài với câu hỏi này (giữ nguyên lịch sử điểm)
+            string checkSql = "SELECT COUNT(*) FROM ChiTietBaiLam WHERE CauHoiID = @id";
+            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new NpgsqlParameter("@id", cauHoiID)));
+            if (count > 0)
+            {
+                throw new Exception("Không thể xóa câu hỏi này vì đã có học sinh làm bài với câu hỏi này!");
+            }
+
+            string sql = "DELETE FROM CauHoi WHERE CauHoiID = @id";
+            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter("@id", cauHoiID)) > 0;
         }
-        public bool SuaCauHoi(CauHoiDTO cauHoi) // Truyền tham số tương ứng
+        public bool SuaCauHoi(CauHoi ch)
         {
-            // Code thực thi việc sửa câu hỏi trong Database
-            return true;
+            string sql = @"UPDATE CauHoi
+                           SET NoiDung = @nd, DapAnA = @a, DapAnB = @b, DapAnC = @c, DapAnD = @d, DapAnDung = @dung
+                           WHERE CauHoiID = @id";
+            NpgsqlParameter[] pars = {
+                new NpgsqlParameter("@nd", ch.NoiDung),
+                new NpgsqlParameter("@a", ch.DapAnA),
+                new NpgsqlParameter("@b", ch.DapAnB),
+                new NpgsqlParameter("@c", ch.DapAnC),
+                new NpgsqlParameter("@d", ch.DapAnD),
+                new NpgsqlParameter("@dung", ch.DapAnDung),
+                new NpgsqlParameter("@id", ch.CauHoiID)
+            };
+            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
-        public DataTable LayKetQuaTheoDeThi(int maDeThi) // Hoặc kiểu trả về List<KetQua> tùy bạn
+        public DataTable LayKetQuaTheoDeThi(int maDeThi)
         {
-            // Code thực thi việc lấy dữ liệu
-            return new DataTable();
+            string sql = @"SELECT hs.HoTen, d.TenDeThi, k.SoCauDung, k.Diem, k.ThoiGianNop
+                           FROM KetQuaThi k
+                           JOIN HocSinh hs ON hs.HocSinhID = k.HocSinhID
+                           JOIN DeThi d ON d.DeThiID = k.DeThiID
+                           WHERE k.DeThiID = @id
+                           ORDER BY k.ThoiGianNop DESC";
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter("@id", maDeThi));
         }
     }
 }

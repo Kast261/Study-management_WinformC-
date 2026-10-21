@@ -172,7 +172,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     COALESCE(l.LichHoc, 'Chưa có') AS LichHoc,
                     l.NgayBatDau,
                     l.NgayKetThuc,
-                    CAST((SELECT COUNT(*) FROM DangKyLop dk WHERE dk.LopHocID = l.LopHocID AND dk.TrangThai = 'Đã duyệt') AS varchar(10)) + '/' + CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                    CAST((SELECT COUNT(*) FROM DangKyLop dk WHERE dk.LopHocID = l.LopHocID AND dk.TrangThai = 'Đã duyệt') AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
                     COALESCE(l.SiSoToiDa, 40) AS SiSoToiDa,
                     (SELECT COUNT(*) FROM DangKyLop dk WHERE dk.LopHocID = l.LopHocID AND dk.TrangThai = 'Đã duyệt') AS SiSoHienTai,
                     COALESCE(l.TrangThai, 'Đang mở') AS TrangThai
@@ -203,7 +203,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     COALESCE(l.LichHoc, 'Chưa có') AS LichHoc, 
                     l.NgayBatDau,
                     l.NgayKetThuc,
-                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) + '/' + CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
                     CASE 
                         WHEN dk.TrangThai = 'Chờ duyệt' THEN 'Chờ duyệt'
                         ELSE 'Đang học'
@@ -224,7 +224,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     COALESCE(l.LichHoc, 'Chưa có') AS LichHoc, 
                     l.NgayBatDau,
                     l.NgayKetThuc,
-                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) + '/' + CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                    CAST((SELECT COUNT(*) FROM DangKyLop dk2 WHERE dk2.LopHocID = l.LopHocID AND dk2.TrangThai = 'Đã duyệt') AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
                     'Đang học' AS TrangThaiHoc,
                     0 AS DangKyID,
                     COALESCE(l.TrangThai, 'Đang mở') AS TrangThaiLop

@@ -432,8 +432,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             if (e.RowIndex >= 0 && e.RowIndex < dgvDanhSachCauHoi.Rows.Count)
             {
-                // Đổi 'CauHoi' thành 'CauHoiDTO'
-                CauHoiDTO q = dgvDanhSachCauHoi.Rows[e.RowIndex].DataBoundItem as CauHoiDTO;
+                CauHoi q = dgvDanhSachCauHoi.Rows[e.RowIndex].DataBoundItem as CauHoi;
                 if (q != null)
                 {
                     _selectedCauHoiID = q.CauHoiID;
@@ -463,7 +462,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
 
             int deID = Convert.ToInt32(cmbGV_ChonDeThi.SelectedValue);
-            CauHoiDTO ch = new CauHoiDTO
+            CauHoi ch = new CauHoi
             {
                 DeThiID = deID,
                 NoiDung = txtCH_NoiDung.Text.Trim(),
@@ -498,7 +497,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
-            CauHoiDTO ch = new CauHoiDTO
+            CauHoi ch = new CauHoi
             {
                 CauHoiID = _selectedCauHoiID,
                 NoiDung = txtCH_NoiDung.Text.Trim(),
@@ -527,11 +526,18 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             if (MessageBox.Show("Xóa câu hỏi này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (_deThiDAL.XoaCauHoi(_selectedCauHoiID))
+                try
                 {
-                    MessageBox.Show("Đã xóa câu hỏi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
-                    LamMoiFormCauHoi();
+                    if (_deThiDAL.XoaCauHoi(_selectedCauHoiID))
+                    {
+                        MessageBox.Show("Đã xóa câu hỏi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
+                        LamMoiFormCauHoi();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Không thể xóa", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -588,6 +594,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (cboKQ_ChonDeThi.SelectedValue != null && int.TryParse(cboKQ_ChonDeThi.SelectedValue.ToString(), out int deID))
             {
                 DataTable dt = _deThiDAL.LayKetQuaTheoDeThi(deID);
+                dgvKetQuaHocSinh.AutoGenerateColumns = false;
+                dataGridViewTextBoxColumn25.DataPropertyName = "HoTen";
+                dataGridViewTextBoxColumn26.DataPropertyName = "TenDeThi";
+                dataGridViewTextBoxColumn27.DataPropertyName = "SoCauDung";
+                dataGridViewTextBoxColumn28.DataPropertyName = "Diem";
+                dataGridViewTextBoxColumn29.DataPropertyName = "ThoiGianNop";
                 dgvKetQuaHocSinh.DataSource = dt;
             }
         }
