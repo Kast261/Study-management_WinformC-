@@ -149,7 +149,133 @@ INSERT INTO TaiKhoan (TenDangNhap, MatKhau, VaiTro, NguoiDungID) VALUES
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khởi tạo DB: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi khởi tạo DB: " + ex.Message, "Thông Báo Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+        }
+
+        private static void SeedData()
+        {
+            string defaultPass = Passwords.Hash("123456");
+
+            // Seed GiaoVien
+            int countGV = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM GiaoVien"));
+            if (countGV == 0)
+            {
+                string sqlGV = @"
+                    INSERT INTO GiaoVien (HoTen, Email, SoDienThoai, DiaChi, NgaySinh, ChuyenMon, GioiTinh, TaiKhoanID) 
+                    VALUES (N'Nguyễn Văn Thầy', 'gv1@school.edu.vn', '0901234567', N'Hà Nội', '1988-05-15', N'Công nghệ thông tin', N'Nam', 2);
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlGV);
+            }
+
+            // Seed KhoaHoc
+            int countKH = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM KhoaHoc"));
+            if (countKH == 0)
+            {
+                string sqlKH = @"
+                    INSERT INTO KhoaHoc (TenKhoaHoc, MoTa) 
+                    VALUES (N'Lập trình C# WinForms', N'Khóa học lập trình trực quan C# WinForms từ cơ bản đến nâng cao');
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlKH);
+            }
+
+            // Seed LopHoc
+            int countLH = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM LopHoc"));
+            if (countLH == 0)
+            {
+                string sqlLH = @"
+                    INSERT INTO LopHoc (TenLop, GiaoVienID, KhoaHocID, NgayBatDau, NgayKetThuc, SiSoToiDa, LichHoc, TrangThai)
+                    VALUES (N'CNTT-K65', 1, 1, '2026-01-01', '2026-06-01', 40, N'Thứ 2, 4, 6 (18:00 - 20:00)', N'Đang mở');
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlLH);
+            }
+
+            // Seed HocSinh
+            int countHS = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM HocSinh"));
+            if (countHS == 0)
+            {
+                string sqlHS = @"
+                    INSERT INTO HocSinh (HoTen, Email, SoDienThoai, DiaChi, NgaySinh, GioiTinh, LopHocID, TaiKhoanID)
+                    VALUES (N'Trần Thị Trò', 'hs1@student.edu.vn', '0987654321', N'Hà Nội', '2006-09-18', N'Nữ', 1, 3);
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlHS);
+            }
+
+            // Seed DangKyLop
+            int countDK = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM DangKyLop"));
+            if (countDK == 0)
+            {
+                string sqlDK = @"
+                    INSERT INTO DangKyLop (LopHocID, HocSinhID, TrangThai, NgayDangKy) 
+                    VALUES (1, 1, N'Đã duyệt', GETDATE());
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlDK);
+            }
+
+            // Seed TaiKhoan
+            int countTK = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM TaiKhoan"));
+            if (countTK == 0)
+            {
+                string sqlTK = $@"
+                    INSERT INTO TaiKhoan (TenDangNhap, MatKhau, VaiTro, NguoiDungID, TrangThaiKhoa) VALUES
+                    ('admin', '{defaultPass}', 'Admin', 0, 0),
+                    ('giaovien1', '{defaultPass}', 'GiaoVien', 1, 0),
+                    ('hocsinh1', '{defaultPass}', 'HocSinh', 1, 0);
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlTK);
+            }
+
+            // Seed DeThi
+            int countDT = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM DeThi"));
+            if (countDT == 0)
+            {
+                string sqlDT = @"
+                    INSERT INTO DeThi (TenDeThi, MoTa, ThoiGian, MonHoc, SoCau, GiaoVienID, LopHocID, NgayTao, HanNop, TrangThai)
+                    VALUES (N'Kiểm tra giữa kỳ C# WinForms', N'Bài thi trắc nghiệm kiến thức C# & Windows Forms', 15, N'Lập trình C# WinForms', 5, 1, 1, GETDATE(), DATEADD(day, 30, GETDATE()), N'Đang mở');
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlDT);
+            }
+
+            // Seed CauHoi
+            int countCH = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM CauHoi"));
+            if (countCH == 0)
+            {
+                string sqlCH = @"
+                    INSERT INTO CauHoi (NoiDung, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, DeThiID, ThuTu) VALUES
+                    (N'Trong C#, ký hiệu nào được sử dụng để khai báo một lớp kế thừa từ một lớp cha?', N':', N'inherits', N'extends', N'implements', 'A', 1, 1),
+                    (N'Trong Windows Forms, sự kiện mặc định phát sinh khi nhấp đúp vào Button trong cửa sổ thiết kế là gì?', N'DoubleClick', N'Click', N'MouseClick', N'Hover', 'B', 1, 2),
+                    (N'Control nào thường được sử dụng nhiều nhất để hiển thị và chỉnh sửa bảng dữ liệu trong WinForms?', N'ListBox', N'ListView', N'DataGridView', N'TableLayout', 'C', 1, 3),
+                    (N'Trong kiến trúc phân lớp (3-Tier), tầng nào đảm nhiệm việc giao tiếp trực tiếp với cơ sở dữ liệu?', N'GUI (Presentation)', N'BLL (Business Logic)', N'DAL (Data Access Layer)', N'DTO / Model', 'C', 1, 4),
+                    (N'Câu lệnh SQL nào dùng để trích xuất dữ liệu từ một hoặc nhiều bảng?', N'INSERT', N'UPDATE', N'DELETE', N'SELECT', 'D', 1, 5);
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlCH);
+            }
+
+            // Seed KetQuaThi
+            int countKQ = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM KetQuaThi"));
+            if (countKQ == 0)
+            {
+                string sqlKQ = @"
+                    INSERT INTO KetQuaThi (HocSinhID, DeThiID, Diem, SoCauDung, ThoiGianNop, TrangThai)
+                    VALUES (1, 1, 10.0, 5, GETDATE(), N'Hoàn thành');
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlKQ);
+            }
+
+            // Seed ChiTietBaiLam
+            int countCT = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM ChiTietBaiLam"));
+            if (countCT == 0)
+            {
+                string sqlCT = @"
+                    INSERT INTO ChiTietBaiLam (KetQuaID, CauHoiID, DapAnChon, LaDung) VALUES
+                    (1, 1, 'A', 1),
+                    (1, 2, 'B', 1),
+                    (1, 3, 'C', 1),
+                    (1, 4, 'C', 1),
+                    (1, 5, 'D', 1);
+                ";
+                DatabaseHelper.ExecuteNonQuery(sqlCT);
             }
         }
     }
