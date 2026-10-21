@@ -337,5 +337,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             Application.Exit();
         }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

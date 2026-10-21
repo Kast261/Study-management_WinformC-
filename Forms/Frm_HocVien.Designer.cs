@@ -39,9 +39,6 @@
             this.materialCard2 = new ReaLTaiizor.Controls.MaterialCard();
             this.btnHV_VaoLopHoc = new ReaLTaiizor.Controls.ForeverButton();
             this.dgvHV_DeThiSapToi = new System.Windows.Forms.DataGridView();
-            this.BT_DeThi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BT_HanNop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BT_SoCau = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.materialLabel9 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialCard15 = new ReaLTaiizor.Controls.MaterialCard();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -127,6 +124,9 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BT_SoCau = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BT_HanNop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BT_DeThi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabHocVien.SuspendLayout();
             this.pageHV_TrangChu.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -198,16 +198,17 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.60736F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.39264F));
             this.tableLayoutPanel2.Controls.Add(this.materialCard3, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.materialCard2, 0, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 287);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(2055, 802);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1578, 802);
             this.tableLayoutPanel2.TabIndex = 9;
+            this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
             // materialCard3
             // 
@@ -218,12 +219,12 @@
             this.materialCard3.Controls.Add(this.dgvHV_LopDangHoc);
             this.materialCard3.Depth = 0;
             this.materialCard3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard3.Location = new System.Drawing.Point(1044, 17);
+            this.materialCard3.Location = new System.Drawing.Point(578, 17);
             this.materialCard3.Margin = new System.Windows.Forms.Padding(17);
             this.materialCard3.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialCard3.Name = "materialCard3";
             this.materialCard3.Padding = new System.Windows.Forms.Padding(17);
-            this.materialCard3.Size = new System.Drawing.Size(994, 768);
+            this.materialCard3.Size = new System.Drawing.Size(983, 768);
             this.materialCard3.TabIndex = 11;
             // 
             // dgvHV_LopDangHoc
@@ -239,7 +240,7 @@
             this.dgvHV_LopDangHoc.Name = "dgvHV_LopDangHoc";
             this.dgvHV_LopDangHoc.RowHeadersWidth = 51;
             this.dgvHV_LopDangHoc.RowTemplate.Height = 24;
-            this.dgvHV_LopDangHoc.Size = new System.Drawing.Size(960, 734);
+            this.dgvHV_LopDangHoc.Size = new System.Drawing.Size(949, 734);
             this.dgvHV_LopDangHoc.TabIndex = 8;
             // 
             // Lop
@@ -275,7 +276,7 @@
             this.materialCard2.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialCard2.Name = "materialCard2";
             this.materialCard2.Padding = new System.Windows.Forms.Padding(17);
-            this.materialCard2.Size = new System.Drawing.Size(993, 768);
+            this.materialCard2.Size = new System.Drawing.Size(527, 768);
             this.materialCard2.TabIndex = 10;
             // 
             // btnHV_VaoLopHoc
@@ -306,26 +307,8 @@
             this.dgvHV_DeThiSapToi.Name = "dgvHV_DeThiSapToi";
             this.dgvHV_DeThiSapToi.RowHeadersWidth = 51;
             this.dgvHV_DeThiSapToi.RowTemplate.Height = 24;
-            this.dgvHV_DeThiSapToi.Size = new System.Drawing.Size(959, 734);
+            this.dgvHV_DeThiSapToi.Size = new System.Drawing.Size(493, 734);
             this.dgvHV_DeThiSapToi.TabIndex = 8;
-            // 
-            // BT_DeThi
-            // 
-            this.BT_DeThi.HeaderText = "Đề Thi";
-            this.BT_DeThi.MinimumWidth = 6;
-            this.BT_DeThi.Name = "BT_DeThi";
-            // 
-            // BT_HanNop
-            // 
-            this.BT_HanNop.HeaderText = "Hạn Nộp";
-            this.BT_HanNop.MinimumWidth = 6;
-            this.BT_HanNop.Name = "BT_HanNop";
-            // 
-            // BT_SoCau
-            // 
-            this.BT_SoCau.HeaderText = "Số Câu";
-            this.BT_SoCau.MinimumWidth = 6;
-            this.BT_SoCau.Name = "BT_SoCau";
             // 
             // materialLabel9
             // 
@@ -1543,6 +1526,24 @@
             this.Column9.Name = "Column9";
             this.Column9.Width = 125;
             // 
+            // BT_SoCau
+            // 
+            this.BT_SoCau.HeaderText = "Số Câu";
+            this.BT_SoCau.MinimumWidth = 6;
+            this.BT_SoCau.Name = "BT_SoCau";
+            // 
+            // BT_HanNop
+            // 
+            this.BT_HanNop.HeaderText = "Hạn Nộp";
+            this.BT_HanNop.MinimumWidth = 6;
+            this.BT_HanNop.Name = "BT_HanNop";
+            // 
+            // BT_DeThi
+            // 
+            this.BT_DeThi.HeaderText = "Đề Thi";
+            this.BT_DeThi.MinimumWidth = 6;
+            this.BT_DeThi.Name = "BT_DeThi";
+            // 
             // HocVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1668,9 +1669,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Lop;
         private System.Windows.Forms.DataGridViewTextBoxColumn GiaoVien;
         private System.Windows.Forms.DataGridViewTextBoxColumn LichHoc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BT_DeThi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BT_HanNop;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BT_SoCau;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
@@ -1697,5 +1695,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BT_DeThi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BT_HanNop;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BT_SoCau;
     }
 }
