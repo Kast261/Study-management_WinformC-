@@ -14,7 +14,19 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
     {
         public DataTable LayTatCa()
         {
-            string sql = "SELECT GiaoVienID, HoTen, NgaySinh, GioiTinh, ChuyenMon, Email, SoDienThoai, DiaChi FROM GiaoVien";
+            string sql = @"
+                SELECT 
+                    gv.GiaoVienID, 
+                    gv.HoTen, 
+                    gv.NgaySinh, 
+                    gv.GioiTinh, 
+                    gv.ChuyenMon, 
+                    gv.Email, 
+                    gv.SoDienThoai, 
+                    gv.DiaChi,
+                    (SELECT COUNT(*) FROM LopHoc l WHERE l.GiaoVienID = gv.GiaoVienID) AS SoLop
+                FROM GiaoVien gv
+                ORDER BY gv.GiaoVienID ASC";
             return DatabaseHelper.ExecuteQuery(sql);
         }
         public GiaoVien LayTheoID(int id)
@@ -77,8 +89,20 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
         public DataTable TimKiem(string tuKhoa)
         {
-            string sql = @"SELECT GiaoVienID, HoTen, NgaySinh, GioiTinh, ChuyenMon, Email, SoDienThoai, DiaChi 
-                           FROM GiaoVien WHERE HoTen LIKE @kw OR Email LIKE @kw OR SoDienThoai LIKE @kw OR ChuyenMon LIKE @kw";
+            string sql = @"
+                SELECT 
+                    gv.GiaoVienID, 
+                    gv.HoTen, 
+                    gv.NgaySinh, 
+                    gv.GioiTinh, 
+                    gv.ChuyenMon, 
+                    gv.Email, 
+                    gv.SoDienThoai, 
+                    gv.DiaChi,
+                    (SELECT COUNT(*) FROM LopHoc l WHERE l.GiaoVienID = gv.GiaoVienID) AS SoLop
+                FROM GiaoVien gv
+                WHERE gv.HoTen ILIKE @kw OR gv.Email ILIKE @kw OR gv.SoDienThoai ILIKE @kw OR gv.ChuyenMon ILIKE @kw
+                ORDER BY gv.GiaoVienID ASC";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@kw", "%" + tuKhoa + "%") });
         }
     }

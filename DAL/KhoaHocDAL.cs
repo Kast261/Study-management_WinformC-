@@ -18,6 +18,22 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             return DatabaseHelper.ExecuteQuery(sql);
         }
 
+        public DataTable LayKhoaHocTheoGiaoVien(int gvID)
+        {
+            string sql = @"
+                SELECT DISTINCT k.KhoaHocID, k.TenKhoaHoc, k.MoTa 
+                FROM KhoaHoc k
+                WHERE k.KhoaHocID IN (SELECT l.KhoaHocID FROM LopHoc l WHERE l.GiaoVienID = @gvID AND l.KhoaHocID IS NOT NULL)
+                   OR LOWER(k.TenKhoaHoc) = (SELECT LOWER(COALESCE(g.ChuyenMon, '')) FROM GiaoVien g WHERE g.GiaoVienID = @gvID)
+                ORDER BY k.TenKhoaHoc";
+            DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@gvID", gvID) });
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                return LayTatCa();
+            }
+            return dt;
+        }
+
         public KhoaHoc LayTheoID(int id)
         {
             string sql = "SELECT KhoaHocID, TenKhoaHoc, MoTa FROM KhoaHoc WHERE KhoaHocID = @id";

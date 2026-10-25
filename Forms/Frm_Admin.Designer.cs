@@ -1,4 +1,4 @@
-﻿namespace BLT_Quan_Ly_Hoc_Tap
+namespace BLT_Quan_Ly_Hoc_Tap
 {
     partial class Frm_Admin
     {
@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.materialTabControl1 = new ReaLTaiizor.Controls.MaterialTabControl();
             this.pageDashboard = new System.Windows.Forms.TabPage();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -67,8 +67,12 @@
             this.dgvGiaoVien = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtGV_TimKiem = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.materialLabel7 = new ReaLTaiizor.Controls.MaterialLabel();
@@ -93,6 +97,9 @@
             this.dgvHocVien = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -144,9 +151,11 @@
             this.materialLabel10 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialCard10 = new ReaLTaiizor.Controls.MaterialCard();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
+            this.TimTK = new System.Windows.Forms.TableLayoutPanel();
             this.btnTK_DatLaiMatKhau = new ReaLTaiizor.Controls.MaterialButton();
             this.btnTK_KhoaMoKhoa = new ReaLTaiizor.Controls.MaterialButton();
+            this.txt_TimTaiKhoan = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
+            this.foreverButton1 = new ReaLTaiizor.Controls.ForeverButton();
             this.dgvTaiKhoan = new System.Windows.Forms.DataGridView();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -192,7 +201,7 @@
             this.tableLayoutPanel11.SuspendLayout();
             this.materialCard10.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
-            this.tableLayoutPanel13.SuspendLayout();
+            this.TimTK.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTaiKhoan)).BeginInit();
             this.SuspendLayout();
             // 
@@ -233,16 +242,16 @@
             // 
             // chart1
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chart1.Legends.Add(legend5);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(6, 186);
             this.chart1.Name = "chart1";
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.chart1.Series.Add(series5);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(684, 274);
             this.chart1.TabIndex = 6;
             this.chart1.Text = "chart1";
@@ -848,8 +857,12 @@
             this.dgvGiaoVien.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
+            this.Column18,
+            this.Column19,
             this.Column3,
             this.Column4,
+            this.Column16,
+            this.Column17,
             this.Column5});
             this.dgvGiaoVien.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvGiaoVien.Location = new System.Drawing.Point(17, 77);
@@ -871,6 +884,18 @@
             this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
             // 
+            // Column18
+            // 
+            this.Column18.HeaderText = "Giới Tính";
+            this.Column18.MinimumWidth = 6;
+            this.Column18.Name = "Column18";
+            // 
+            // Column19
+            // 
+            this.Column19.HeaderText = "Ngày Sinh";
+            this.Column19.MinimumWidth = 6;
+            this.Column19.Name = "Column19";
+            // 
             // Column3
             // 
             this.Column3.HeaderText = "Chuyên Môn";
@@ -882,6 +907,18 @@
             this.Column4.HeaderText = "Email";
             this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
+            // 
+            // Column16
+            // 
+            this.Column16.HeaderText = "Địa Chỉ";
+            this.Column16.MinimumWidth = 6;
+            this.Column16.Name = "Column16";
+            // 
+            // Column17
+            // 
+            this.Column17.HeaderText = "Số Điện Thoại";
+            this.Column17.MinimumWidth = 6;
+            this.Column17.Name = "Column17";
             // 
             // Column5
             // 
@@ -1368,6 +1405,9 @@
             this.dgvHocVien.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
+            this.Column20,
+            this.Column21,
+            this.Column22,
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5});
@@ -1390,6 +1430,24 @@
             this.dataGridViewTextBoxColumn2.HeaderText = "Họ Tên";
             this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // Column20
+            // 
+            this.Column20.HeaderText = "Ngày Sinh";
+            this.Column20.MinimumWidth = 6;
+            this.Column20.Name = "Column20";
+            // 
+            // Column21
+            // 
+            this.Column21.HeaderText = "Giới Tính";
+            this.Column21.MinimumWidth = 6;
+            this.Column21.Name = "Column21";
+            // 
+            // Column22
+            // 
+            this.Column22.HeaderText = "Điện Thoại";
+            this.Column22.MinimumWidth = 6;
+            this.Column22.Name = "Column22";
             // 
             // dataGridViewTextBoxColumn3
             // 
@@ -2277,7 +2335,7 @@
             // 
             this.tableLayoutPanel12.ColumnCount = 1;
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel12.Controls.Add(this.tableLayoutPanel13, 0, 1);
+            this.tableLayoutPanel12.Controls.Add(this.TimTK, 0, 1);
             this.tableLayoutPanel12.Controls.Add(this.dgvTaiKhoan, 0, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel12.Location = new System.Drawing.Point(17, 17);
@@ -2288,20 +2346,24 @@
             this.tableLayoutPanel12.Size = new System.Drawing.Size(835, 614);
             this.tableLayoutPanel12.TabIndex = 3;
             // 
-            // tableLayoutPanel13
+            // TimTK
             // 
-            this.tableLayoutPanel13.ColumnCount = 2;
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel13.Controls.Add(this.btnTK_DatLaiMatKhau, 0, 0);
-            this.tableLayoutPanel13.Controls.Add(this.btnTK_KhoaMoKhoa, 1, 0);
-            this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 524);
-            this.tableLayoutPanel13.Name = "tableLayoutPanel13";
-            this.tableLayoutPanel13.RowCount = 1;
-            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(829, 87);
-            this.tableLayoutPanel13.TabIndex = 5;
+            this.TimTK.ColumnCount = 4;
+            this.TimTK.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.TimTK.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.TimTK.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.35464F));
+            this.TimTK.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.70567F));
+            this.TimTK.Controls.Add(this.btnTK_DatLaiMatKhau, 0, 0);
+            this.TimTK.Controls.Add(this.btnTK_KhoaMoKhoa, 1, 0);
+            this.TimTK.Controls.Add(this.txt_TimTaiKhoan, 3, 0);
+            this.TimTK.Controls.Add(this.foreverButton1, 2, 0);
+            this.TimTK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TimTK.Location = new System.Drawing.Point(3, 524);
+            this.TimTK.Name = "TimTK";
+            this.TimTK.RowCount = 1;
+            this.TimTK.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.TimTK.Size = new System.Drawing.Size(829, 87);
+            this.TimTK.TabIndex = 5;
             // 
             // btnTK_DatLaiMatKhau
             // 
@@ -2317,7 +2379,7 @@
             this.btnTK_DatLaiMatKhau.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.btnTK_DatLaiMatKhau.Name = "btnTK_DatLaiMatKhau";
             this.btnTK_DatLaiMatKhau.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnTK_DatLaiMatKhau.Size = new System.Drawing.Size(406, 45);
+            this.btnTK_DatLaiMatKhau.Size = new System.Drawing.Size(199, 45);
             this.btnTK_DatLaiMatKhau.TabIndex = 0;
             this.btnTK_DatLaiMatKhau.Text = "Đặt Lại Mật Khẩu";
             this.btnTK_DatLaiMatKhau.Type = ReaLTaiizor.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -2333,17 +2395,64 @@
             this.btnTK_KhoaMoKhoa.HighEmphasis = true;
             this.btnTK_KhoaMoKhoa.Icon = null;
             this.btnTK_KhoaMoKhoa.IconType = ReaLTaiizor.Controls.MaterialButton.MaterialIconType.Rebase;
-            this.btnTK_KhoaMoKhoa.Location = new System.Drawing.Point(418, 36);
+            this.btnTK_KhoaMoKhoa.Location = new System.Drawing.Point(211, 36);
             this.btnTK_KhoaMoKhoa.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnTK_KhoaMoKhoa.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.btnTK_KhoaMoKhoa.Name = "btnTK_KhoaMoKhoa";
             this.btnTK_KhoaMoKhoa.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnTK_KhoaMoKhoa.Size = new System.Drawing.Size(407, 45);
+            this.btnTK_KhoaMoKhoa.Size = new System.Drawing.Size(199, 45);
             this.btnTK_KhoaMoKhoa.TabIndex = 1;
             this.btnTK_KhoaMoKhoa.Text = "Khóa/ Mở Tài Khoản";
             this.btnTK_KhoaMoKhoa.Type = ReaLTaiizor.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnTK_KhoaMoKhoa.UseAccentColor = true;
             this.btnTK_KhoaMoKhoa.UseVisualStyleBackColor = true;
+            // 
+            // txt_TimTaiKhoan
+            // 
+            this.txt_TimTaiKhoan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txt_TimTaiKhoan.AnimateReadOnly = false;
+            this.txt_TimTaiKhoan.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txt_TimTaiKhoan.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txt_TimTaiKhoan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txt_TimTaiKhoan.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txt_TimTaiKhoan.Depth = 0;
+            this.txt_TimTaiKhoan.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txt_TimTaiKhoan.HideSelection = true;
+            this.txt_TimTaiKhoan.Hint = "Tìm Tài Khoản Theo Tên Học Viên";
+            this.txt_TimTaiKhoan.LeadingIcon = null;
+            this.txt_TimTaiKhoan.Location = new System.Drawing.Point(535, 24);
+            this.txt_TimTaiKhoan.MaxLength = 32767;
+            this.txt_TimTaiKhoan.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.txt_TimTaiKhoan.Name = "txt_TimTaiKhoan";
+            this.txt_TimTaiKhoan.PasswordChar = '\0';
+            this.txt_TimTaiKhoan.PrefixSuffixText = null;
+            this.txt_TimTaiKhoan.ReadOnly = false;
+            this.txt_TimTaiKhoan.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txt_TimTaiKhoan.SelectedText = "";
+            this.txt_TimTaiKhoan.SelectionLength = 0;
+            this.txt_TimTaiKhoan.SelectionStart = 0;
+            this.txt_TimTaiKhoan.ShortcutsEnabled = true;
+            this.txt_TimTaiKhoan.Size = new System.Drawing.Size(291, 60);
+            this.txt_TimTaiKhoan.TabIndex = 2;
+            this.txt_TimTaiKhoan.TabStop = false;
+            this.txt_TimTaiKhoan.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txt_TimTaiKhoan.TrailingIcon = null;
+            this.txt_TimTaiKhoan.UseSystemPasswordChar = false;
+            // 
+            // foreverButton1
+            // 
+            this.foreverButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.foreverButton1.BackColor = System.Drawing.Color.Transparent;
+            this.foreverButton1.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
+            this.foreverButton1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.foreverButton1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.foreverButton1.Location = new System.Drawing.Point(417, 44);
+            this.foreverButton1.Name = "foreverButton1";
+            this.foreverButton1.Rounded = false;
+            this.foreverButton1.Size = new System.Drawing.Size(112, 40);
+            this.foreverButton1.TabIndex = 3;
+            this.foreverButton1.Text = "Tìm Kiếm";
+            this.foreverButton1.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             // 
             // dgvTaiKhoan
             // 
@@ -2474,8 +2583,8 @@
             this.tableLayoutPanel11.PerformLayout();
             this.materialCard10.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
-            this.tableLayoutPanel13.ResumeLayout(false);
-            this.tableLayoutPanel13.PerformLayout();
+            this.TimTK.ResumeLayout(false);
+            this.TimTK.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTaiKhoan)).EndInit();
             this.ResumeLayout(false);
 
@@ -2538,11 +2647,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.DataGridView dgvGiaoVien;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private ReaLTaiizor.Controls.MaterialCard materialCard5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
@@ -2563,11 +2667,6 @@
         private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_TimKiem;
         private ReaLTaiizor.Controls.MaterialTextBoxEdit txtGV_SoDienThoai;
         private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_SoDienThoai;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private ReaLTaiizor.Controls.MaterialCard materialCard12;
@@ -2581,7 +2680,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
+        private System.Windows.Forms.TableLayoutPanel TimTK;
         private System.Windows.Forms.DataGridView dgvTaiKhoan;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
@@ -2606,5 +2705,24 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column22;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private ReaLTaiizor.Controls.MaterialTextBoxEdit txt_TimTaiKhoan;
+        private ReaLTaiizor.Controls.ForeverButton foreverButton1;
     }
 }

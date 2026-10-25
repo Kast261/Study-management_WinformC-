@@ -38,13 +38,18 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 SELECT 
                     l.LopHocID, 
                     l.TenLop, 
+                    l.KhoaHocID,
+                    COALESCE(k.TenKhoaHoc, N'Chưa phân loại') AS TenKhoaHoc,
                     CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
-                    k.TenKhoaHoc, 
+                    COALESCE(l.SiSoToiDa, 40) AS SiSoToiDa,
+                    l.NgayBatDau,
+                    l.NgayKetThuc,
                     l.LichHoc,
-                    l.TrangThai
+                    COALESCE(l.TrangThai, 'Đang mở') AS TrangThai
                 FROM LopHoc l
                 LEFT JOIN KhoaHoc k ON l.KhoaHocID = k.KhoaHocID
-                WHERE l.GiaoVienID = @gvID";
+                WHERE l.GiaoVienID = @gvID
+                ORDER BY l.LopHocID DESC";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@gvID", gvID) });
         }
 
@@ -70,15 +75,17 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool ThemLop(LopHoc lop)
         {
-            string sql = @"INSERT INTO LopHoc (KhoaHocID, GiaoVienID, TenLop, LichHoc, SiSoToiDa, TrangThai) 
-                           VALUES (@khID, @gvID, @ten, @lich, @siso, @tt)";
+            string sql = @"INSERT INTO LopHoc (KhoaHocID, GiaoVienID, TenLop, LichHoc, SiSoToiDa, TrangThai, NgayBatDau, NgayKetThuc) 
+                           VALUES (@khID, @gvID, @ten, @lich, @siso, @tt, @nbd, @nkt)";
             NpgsqlParameter[] pars = {
                 new NpgsqlParameter("@khID", lop.KhoaHocID > 0 ? (object)lop.KhoaHocID : DBNull.Value),
                 new NpgsqlParameter("@gvID", lop.GiaoVienID > 0 ? (object)lop.GiaoVienID : DBNull.Value),
                 new NpgsqlParameter("@ten", lop.TenLop),
                 new NpgsqlParameter("@lich", lop.LichHoc ?? ""),
                 new NpgsqlParameter("@siso", lop.SiSoToiDa > 0 ? lop.SiSoToiDa : 40),
-                new NpgsqlParameter("@tt", lop.TrangThai ?? "Đang mở")
+                new NpgsqlParameter("@tt", lop.TrangThai ?? "Đang mở"),
+                new NpgsqlParameter("@nbd", lop.NgayBatDau.HasValue ? (object)lop.NgayBatDau.Value : DBNull.Value),
+                new NpgsqlParameter("@nkt", lop.NgayKetThuc.HasValue ? (object)lop.NgayKetThuc.Value : DBNull.Value)
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
@@ -89,13 +96,19 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                            SET KhoaHocID = @khID, 
                                GiaoVienID = @gvID, 
                                TenLop = @ten, 
-                               SiSoToiDa = @siso 
+                               LichHoc = @lich,
+                               SiSoToiDa = @siso,
+                               NgayBatDau = @nbd,
+                               NgayKetThuc = @nkt
                            WHERE LopHocID = @id";
             NpgsqlParameter[] pars = {
                 new NpgsqlParameter("@khID", lop.KhoaHocID > 0 ? (object)lop.KhoaHocID : DBNull.Value),
                 new NpgsqlParameter("@gvID", lop.GiaoVienID > 0 ? (object)lop.GiaoVienID : DBNull.Value),
                 new NpgsqlParameter("@ten", lop.TenLop),
+                new NpgsqlParameter("@lich", lop.LichHoc ?? ""),
                 new NpgsqlParameter("@siso", lop.SiSoToiDa > 0 ? lop.SiSoToiDa : 40),
+                new NpgsqlParameter("@nbd", lop.NgayBatDau.HasValue ? (object)lop.NgayBatDau.Value : DBNull.Value),
+                new NpgsqlParameter("@nkt", lop.NgayKetThuc.HasValue ? (object)lop.NgayKetThuc.Value : DBNull.Value),
                 new NpgsqlParameter("@id", lop.LopHocID)
             };
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
@@ -114,6 +127,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             string sql = "DELETE FROM LopHoc WHERE LopHocID = @id";
             return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", lopID) }) > 0;
         }
+
         public DataTable LayDangKyTheoLop(int lopHocID)
         {
             string sql = @"
@@ -125,16 +139,52 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             hs.Email,
             hs.SoDienThoai,
             l.TenLop,
-            l.SiSoToiDa AS SiSo,
+            CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
             dk.NgayDangKy,
             dk.TrangThai
         FROM DangKyLop dk
         JOIN HocSinh hs ON dk.HocSinhID = hs.HocSinhID
         JOIN LopHoc l ON dk.LopHocID = l.LopHocID
-        WHERE dk.LopHocID = @lopID AND dk.TrangThai = 'Chờ duyệt'
+        WHERE dk.LopHocID = @lopID AND (dk.TrangThai = 'Chờ duyệt' OR dk.TrangThai IS NULL)
         ORDER BY dk.NgayDangKy ASC";
 
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@lopID", lopHocID) });
+        }
+
+        public DataTable LayDangKyChoDuyet(int gvID, int lopHocID = 0)
+        {
+            string sql = @"
+        SELECT 
+            dk.DangKyID,
+            dk.LopHocID,
+            dk.HocSinhID,
+            hs.HoTen,
+            hs.Email,
+            hs.SoDienThoai,
+            l.TenLop,
+            CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+            dk.NgayDangKy,
+            COALESCE(dk.TrangThai, 'Chờ duyệt') AS TrangThai
+        FROM DangKyLop dk
+        JOIN HocSinh hs ON dk.HocSinhID = hs.HocSinhID
+        JOIN LopHoc l ON dk.LopHocID = l.LopHocID
+        WHERE l.GiaoVienID = @gvID AND (dk.TrangThai = 'Chờ duyệt' OR dk.TrangThai IS NULL)";
+
+            if (lopHocID > 0)
+            {
+                sql += " AND dk.LopHocID = @lopID ORDER BY dk.NgayDangKy ASC";
+                return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { 
+                    new NpgsqlParameter("@gvID", gvID),
+                    new NpgsqlParameter("@lopID", lopHocID) 
+                });
+            }
+            else
+            {
+                sql += " ORDER BY dk.NgayDangKy ASC";
+                return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { 
+                    new NpgsqlParameter("@gvID", gvID) 
+                });
+            }
         }
         public bool DuyetDangKy(int dangKyID, int lopHocID, int hocSinhID)
         {

@@ -1,4 +1,4 @@
-﻿namespace BLT_Quan_Ly_Hoc_Tap
+namespace BLT_Quan_Ly_Hoc_Tap
 {
     partial class HocVien
     {
@@ -37,11 +37,12 @@
             this.GiaoVien = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LichHoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.materialCard2 = new ReaLTaiizor.Controls.MaterialCard();
-            this.btnHV_VaoLopHoc = new ReaLTaiizor.Controls.ForeverButton();
             this.dgvHV_DeThiSapToi = new System.Windows.Forms.DataGridView();
             this.BT_DeThi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BT_HanNop = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BT_SoCau = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pnlHV_HomeDeThi_Buttons = new System.Windows.Forms.Panel();
+            this.btnHV_VaoLopHoc = new ReaLTaiizor.Controls.ForeverButton();
             this.materialLabel9 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialCard15 = new ReaLTaiizor.Controls.MaterialCard();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -58,7 +59,10 @@
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pnlHV_LopDangHoc_Buttons = new System.Windows.Forms.Panel();
             this.foreverButton6 = new ReaLTaiizor.Controls.ForeverButton();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.dtHV_LopHoc = new System.Windows.Forms.DataGridView();
@@ -83,6 +87,7 @@
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pnlHV_BaiThi_Buttons = new System.Windows.Forms.Panel();
             this.btnHV_BatDauLamBai = new ReaLTaiizor.Controls.ForeverButton();
             this.btnHV_LamMoiDeThi = new ReaLTaiizor.Controls.MaterialButton();
             this.cboHV_LocMonHoc = new ReaLTaiizor.Controls.MaterialComboBox();
@@ -134,12 +139,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvHV_LopDangHoc)).BeginInit();
             this.materialCard2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHV_DeThiSapToi)).BeginInit();
+            this.pnlHV_HomeDeThi_Buttons.SuspendLayout();
             this.materialCard15.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pageHV_LopHoc.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.materialCard1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopDangHoc)).BeginInit();
+            this.pnlHV_LopDangHoc_Buttons.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopHoc)).BeginInit();
             this.tableLayoutPanel10.SuspendLayout();
@@ -147,6 +154,7 @@
             this.tableLayoutPanel4.SuspendLayout();
             this.materialCard8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHV_DanhSachDeThi)).BeginInit();
+            this.pnlHV_BaiThi_Buttons.SuspendLayout();
             this.pageHV_KetQua.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHV_LichSuThi)).BeginInit();
@@ -267,8 +275,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.materialCard2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard2.Controls.Add(this.btnHV_VaoLopHoc);
             this.materialCard2.Controls.Add(this.dgvHV_DeThiSapToi);
+            this.materialCard2.Controls.Add(this.pnlHV_HomeDeThi_Buttons);
             this.materialCard2.Depth = 0;
             this.materialCard2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialCard2.Location = new System.Drawing.Point(17, 17);
@@ -278,21 +286,6 @@
             this.materialCard2.Padding = new System.Windows.Forms.Padding(17);
             this.materialCard2.Size = new System.Drawing.Size(527, 768);
             this.materialCard2.TabIndex = 10;
-            // 
-            // btnHV_VaoLopHoc
-            // 
-            this.btnHV_VaoLopHoc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnHV_VaoLopHoc.BackColor = System.Drawing.Color.Transparent;
-            this.btnHV_VaoLopHoc.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
-            this.btnHV_VaoLopHoc.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHV_VaoLopHoc.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnHV_VaoLopHoc.Location = new System.Drawing.Point(9, 713);
-            this.btnHV_VaoLopHoc.Name = "btnHV_VaoLopHoc";
-            this.btnHV_VaoLopHoc.Rounded = false;
-            this.btnHV_VaoLopHoc.Size = new System.Drawing.Size(170, 40);
-            this.btnHV_VaoLopHoc.TabIndex = 9;
-            this.btnHV_VaoLopHoc.Text = "Làm Bài";
-            this.btnHV_VaoLopHoc.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             // 
             // dgvHV_DeThiSapToi
             // 
@@ -307,7 +300,7 @@
             this.dgvHV_DeThiSapToi.Name = "dgvHV_DeThiSapToi";
             this.dgvHV_DeThiSapToi.RowHeadersWidth = 51;
             this.dgvHV_DeThiSapToi.RowTemplate.Height = 24;
-            this.dgvHV_DeThiSapToi.Size = new System.Drawing.Size(493, 734);
+            this.dgvHV_DeThiSapToi.Size = new System.Drawing.Size(493, 679);
             this.dgvHV_DeThiSapToi.TabIndex = 8;
             // 
             // BT_DeThi
@@ -327,6 +320,29 @@
             this.BT_SoCau.HeaderText = "Số Câu";
             this.BT_SoCau.MinimumWidth = 6;
             this.BT_SoCau.Name = "BT_SoCau";
+            // 
+            // pnlHV_HomeDeThi_Buttons
+            // 
+            this.pnlHV_HomeDeThi_Buttons.Controls.Add(this.btnHV_VaoLopHoc);
+            this.pnlHV_HomeDeThi_Buttons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlHV_HomeDeThi_Buttons.Location = new System.Drawing.Point(17, 696);
+            this.pnlHV_HomeDeThi_Buttons.Name = "pnlHV_HomeDeThi_Buttons";
+            this.pnlHV_HomeDeThi_Buttons.Size = new System.Drawing.Size(493, 55);
+            this.pnlHV_HomeDeThi_Buttons.TabIndex = 11;
+            // 
+            // btnHV_VaoLopHoc
+            // 
+            this.btnHV_VaoLopHoc.BackColor = System.Drawing.Color.Transparent;
+            this.btnHV_VaoLopHoc.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
+            this.btnHV_VaoLopHoc.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHV_VaoLopHoc.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnHV_VaoLopHoc.Location = new System.Drawing.Point(0, 5);
+            this.btnHV_VaoLopHoc.Name = "btnHV_VaoLopHoc";
+            this.btnHV_VaoLopHoc.Rounded = false;
+            this.btnHV_VaoLopHoc.Size = new System.Drawing.Size(170, 40);
+            this.btnHV_VaoLopHoc.TabIndex = 9;
+            this.btnHV_VaoLopHoc.Text = "Làm Bài";
+            this.btnHV_VaoLopHoc.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             // 
             // materialLabel9
             // 
@@ -441,6 +457,7 @@
             // 
             // pageHV_LopHoc
             // 
+            this.pageHV_LopHoc.AutoScroll = true;
             this.pageHV_LopHoc.Controls.Add(this.tableLayoutPanel3);
             this.pageHV_LopHoc.Controls.Add(this.materialLabel11);
             this.pageHV_LopHoc.Controls.Add(this.materialLabel10);
@@ -473,7 +490,7 @@
             // 
             this.materialCard1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.materialCard1.Controls.Add(this.dtHV_LopDangHoc);
-            this.materialCard1.Controls.Add(this.foreverButton6);
+            this.materialCard1.Controls.Add(this.pnlHV_LopDangHoc_Buttons);
             this.materialCard1.Depth = 0;
             this.materialCard1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.materialCard1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -494,13 +511,15 @@
             this.Column10,
             this.Column17,
             this.Column18,
+            this.Column11,
+            this.Column12,
             this.Column21});
             this.dtHV_LopDangHoc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtHV_LopDangHoc.Location = new System.Drawing.Point(17, 17);
             this.dtHV_LopDangHoc.Name = "dtHV_LopDangHoc";
             this.dtHV_LopDangHoc.RowHeadersWidth = 51;
             this.dtHV_LopDangHoc.RowTemplate.Height = 24;
-            this.dtHV_LopDangHoc.Size = new System.Drawing.Size(1510, 519);
+            this.dtHV_LopDangHoc.Size = new System.Drawing.Size(1510, 464);
             this.dtHV_LopDangHoc.TabIndex = 6;
             // 
             // Column16
@@ -527,20 +546,40 @@
             this.Column18.MinimumWidth = 6;
             this.Column18.Name = "Column18";
             // 
+            // Column11
+            // 
+            this.Column11.HeaderText = "Ngày Bắt Đầu";
+            this.Column11.MinimumWidth = 6;
+            this.Column11.Name = "Column11";
+            // 
+            // Column12
+            // 
+            this.Column12.HeaderText = "Ngày Kết Thúc";
+            this.Column12.MinimumWidth = 6;
+            this.Column12.Name = "Column12";
+            // 
             // Column21
             // 
             this.Column21.HeaderText = "Trạng Thái";
             this.Column21.MinimumWidth = 6;
             this.Column21.Name = "Column21";
             // 
+            // pnlHV_LopDangHoc_Buttons
+            // 
+            this.pnlHV_LopDangHoc_Buttons.Controls.Add(this.foreverButton6);
+            this.pnlHV_LopDangHoc_Buttons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlHV_LopDangHoc_Buttons.Location = new System.Drawing.Point(17, 481);
+            this.pnlHV_LopDangHoc_Buttons.Name = "pnlHV_LopDangHoc_Buttons";
+            this.pnlHV_LopDangHoc_Buttons.Size = new System.Drawing.Size(1510, 55);
+            this.pnlHV_LopDangHoc_Buttons.TabIndex = 7;
+            // 
             // foreverButton6
             // 
-            this.foreverButton6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.foreverButton6.BackColor = System.Drawing.Color.Transparent;
             this.foreverButton6.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
             this.foreverButton6.Cursor = System.Windows.Forms.Cursors.Hand;
             this.foreverButton6.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.foreverButton6.Location = new System.Drawing.Point(17, 496);
+            this.foreverButton6.Location = new System.Drawing.Point(0, 7);
             this.foreverButton6.Name = "foreverButton6";
             this.foreverButton6.Rounded = false;
             this.foreverButton6.Size = new System.Drawing.Size(154, 40);
@@ -550,11 +589,11 @@
             // 
             // tableLayoutPanel9
             // 
-            this.tableLayoutPanel9.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tableLayoutPanel9.ColumnCount = 1;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel9.Controls.Add(this.dtHV_LopHoc, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel10, 0, 1);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 2;
@@ -677,6 +716,7 @@
             // 
             // pageHV_BaiThi
             // 
+            this.pageHV_BaiThi.AutoScroll = true;
             this.pageHV_BaiThi.Controls.Add(this.tableLayoutPanel4);
             this.pageHV_BaiThi.Controls.Add(this.cboHV_LocMonHoc);
             this.pageHV_BaiThi.Controls.Add(this.materialLabel13);
@@ -709,8 +749,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.materialCard8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.materialCard8.Controls.Add(this.dgvHV_DanhSachDeThi);
-            this.materialCard8.Controls.Add(this.btnHV_BatDauLamBai);
-            this.materialCard8.Controls.Add(this.btnHV_LamMoiDeThi);
+            this.materialCard8.Controls.Add(this.pnlHV_BaiThi_Buttons);
             this.materialCard8.Depth = 0;
             this.materialCard8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialCard8.Location = new System.Drawing.Point(17, 17);
@@ -732,12 +771,12 @@
             this.Column4,
             this.Column5,
             this.Column6});
-            this.dgvHV_DanhSachDeThi.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvHV_DanhSachDeThi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvHV_DanhSachDeThi.Location = new System.Drawing.Point(17, 17);
             this.dgvHV_DanhSachDeThi.Name = "dgvHV_DanhSachDeThi";
             this.dgvHV_DanhSachDeThi.RowHeadersWidth = 51;
             this.dgvHV_DanhSachDeThi.RowTemplate.Height = 24;
-            this.dgvHV_DanhSachDeThi.Size = new System.Drawing.Size(1510, 450);
+            this.dgvHV_DanhSachDeThi.Size = new System.Drawing.Size(1510, 762);
             this.dgvHV_DanhSachDeThi.TabIndex = 3;
             // 
             // DeThi
@@ -789,14 +828,23 @@
             this.Column6.Name = "Column6";
             this.Column6.Width = 125;
             // 
+            // pnlHV_BaiThi_Buttons
+            // 
+            this.pnlHV_BaiThi_Buttons.Controls.Add(this.btnHV_BatDauLamBai);
+            this.pnlHV_BaiThi_Buttons.Controls.Add(this.btnHV_LamMoiDeThi);
+            this.pnlHV_BaiThi_Buttons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlHV_BaiThi_Buttons.Location = new System.Drawing.Point(17, 779);
+            this.pnlHV_BaiThi_Buttons.Name = "pnlHV_BaiThi_Buttons";
+            this.pnlHV_BaiThi_Buttons.Size = new System.Drawing.Size(1510, 55);
+            this.pnlHV_BaiThi_Buttons.TabIndex = 4;
+            // 
             // btnHV_BatDauLamBai
             // 
-            this.btnHV_BatDauLamBai.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnHV_BatDauLamBai.BackColor = System.Drawing.Color.Transparent;
             this.btnHV_BatDauLamBai.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
             this.btnHV_BatDauLamBai.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnHV_BatDauLamBai.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnHV_BatDauLamBai.Location = new System.Drawing.Point(20, 767);
+            this.btnHV_BatDauLamBai.Location = new System.Drawing.Point(0, 5);
             this.btnHV_BatDauLamBai.Name = "btnHV_BatDauLamBai";
             this.btnHV_BatDauLamBai.Rounded = false;
             this.btnHV_BatDauLamBai.Size = new System.Drawing.Size(158, 45);
@@ -806,7 +854,6 @@
             // 
             // btnHV_LamMoiDeThi
             // 
-            this.btnHV_LamMoiDeThi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnHV_LamMoiDeThi.AutoSize = false;
             this.btnHV_LamMoiDeThi.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnHV_LamMoiDeThi.Density = ReaLTaiizor.Controls.MaterialButton.MaterialButtonDensity.Default;
@@ -814,7 +861,7 @@
             this.btnHV_LamMoiDeThi.HighEmphasis = true;
             this.btnHV_LamMoiDeThi.Icon = null;
             this.btnHV_LamMoiDeThi.IconType = ReaLTaiizor.Controls.MaterialButton.MaterialIconType.Rebase;
-            this.btnHV_LamMoiDeThi.Location = new System.Drawing.Point(199, 767);
+            this.btnHV_LamMoiDeThi.Location = new System.Drawing.Point(175, 5);
             this.btnHV_LamMoiDeThi.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnHV_LamMoiDeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.btnHV_LamMoiDeThi.Name = "btnHV_LamMoiDeThi";
@@ -1056,7 +1103,7 @@
             this.materialCard11.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialCard11.Name = "materialCard11";
             this.materialCard11.Padding = new System.Windows.Forms.Padding(17);
-            this.materialCard11.Size = new System.Drawing.Size(272, 234);
+            this.materialCard11.Size = new System.Drawing.Size(383, 440);
             this.materialCard11.TabIndex = 0;
             // 
             // materialLabel23
@@ -1552,7 +1599,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HocVien";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.HocVien_Load);
             this.tabHocVien.ResumeLayout(false);
             this.pageHV_TrangChu.ResumeLayout(false);
@@ -1562,6 +1608,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvHV_LopDangHoc)).EndInit();
             this.materialCard2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHV_DeThiSapToi)).EndInit();
+            this.pnlHV_HomeDeThi_Buttons.ResumeLayout(false);
             this.materialCard15.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1570,6 +1617,7 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.materialCard1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopDangHoc)).EndInit();
+            this.pnlHV_LopDangHoc_Buttons.ResumeLayout(false);
             this.tableLayoutPanel9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopHoc)).EndInit();
             this.tableLayoutPanel10.ResumeLayout(false);
@@ -1578,6 +1626,7 @@
             this.tableLayoutPanel4.ResumeLayout(false);
             this.materialCard8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHV_DanhSachDeThi)).EndInit();
+            this.pnlHV_BaiThi_Buttons.ResumeLayout(false);
             this.pageHV_KetQua.ResumeLayout(false);
             this.pageHV_KetQua.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -1689,13 +1738,18 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BT_DeThi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BT_HanNop;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BT_SoCau;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BT_DeThi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BT_HanNop;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BT_SoCau;
+        private System.Windows.Forms.Panel pnlHV_HomeDeThi_Buttons;
+        private System.Windows.Forms.Panel pnlHV_LopDangHoc_Buttons;
+        private System.Windows.Forms.Panel pnlHV_BaiThi_Buttons;
     }
 }

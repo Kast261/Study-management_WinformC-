@@ -23,6 +23,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             InitializeComponent();
             this.AcceptButton = btn_DangNhap;
+            txt_TaiKhoan.TextChanged += txt_TaiKhoan_TextChanged;
         }
 
         private void frm_DangNhap_Load(object sender, EventArgs e)
@@ -36,12 +37,34 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     loi,
                     "Lỗi kết nối PostgreSQL");
             }
-            string savedUser = _taiKhoanDAL.DocGhiNho();
-            if (!string.IsNullOrEmpty(savedUser))
+            TaiThongTinGhiNho();
+        }
+
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (this.Visible)
             {
-                txt_TaiKhoan.Text = savedUser;
+                TaiThongTinGhiNho();
+            }
+        }
+
+        private void TaiThongTinGhiNho()
+        {
+            var remember = _taiKhoanDAL.DocGhiNho();
+            if (!string.IsNullOrEmpty(remember.TenDangNhap))
+            {
+                txt_TaiKhoan.Text = remember.TenDangNhap;
                 check_GhiNho.Checked = true;
-                txt_MatKhau.Focus();
+                if (!string.IsNullOrEmpty(remember.MatKhau))
+                {
+                    txt_MatKhau.Text = remember.MatKhau;
+                    txt_MatKhau.UseSystemPasswordChar = true;
+                }
+                else
+                {
+                    txt_MatKhau.Focus();
+                }
             }
         }
 
@@ -86,9 +109,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 // 3. TASK-05: Xử lý lưu/xóa "Ghi Nhớ Đăng Nhập"
                 if (check_GhiNho.Checked)
-                    _taiKhoanDAL.LuuGhiNho(username);
+                    _taiKhoanDAL.LuuGhiNho(username, password);
                 else
-                    _taiKhoanDAL.LuuGhiNho(string.Empty);
+                    _taiKhoanDAL.XoaGhiNho(username);
 
                 // 4. Lưu vào Session
                 Session.TaiKhoanID = tk.TaiKhoanID;
@@ -145,7 +168,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 };
 
                 this.Hide();
-                txt_MatKhau.Clear();
+                if (!check_GhiNho.Checked)
+                {
+                    txt_MatKhau.Clear();
+                }
                 nextForm.Show();
             }
             catch (Exception ex)
@@ -153,9 +179,51 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 MessageBox.Show("Lỗi khi đăng nhập: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void check_GhiNho_CheckedChanged(object sender, EventArgs e)
         {
+            if (check_GhiNho.Checked)
+            {
+                string currentUsername = txt_TaiKhoan.Text.Trim();
+                string savedPass = _taiKhoanDAL.LayMatKhauGhiNho(currentUsername);
 
+                if (!string.IsNullOrEmpty(savedPass))
+                {
+                    txt_MatKhau.Text = savedPass;
+                    txt_MatKhau.UseSystemPasswordChar = true;
+                }
+                else
+                {
+                    var last = _taiKhoanDAL.DocGhiNho();
+                    if (!string.IsNullOrEmpty(last.MatKhau))
+                    {
+                        if (string.IsNullOrEmpty(currentUsername))
+                        {
+                            txt_TaiKhoan.Text = last.TenDangNhap;
+                        }
+                        txt_MatKhau.Text = last.MatKhau;
+                        txt_MatKhau.UseSystemPasswordChar = true;
+                    }
+                }
+            }
+            else
+            {
+                txt_MatKhau.Clear();
+            }
+        }
+
+        private void txt_TaiKhoan_TextChanged(object sender, EventArgs e)
+        {
+            if (check_GhiNho.Checked)
+            {
+                string u = txt_TaiKhoan.Text.Trim();
+                string pass = _taiKhoanDAL.LayMatKhauGhiNho(u);
+                if (!string.IsNullOrEmpty(pass))
+                {
+                    txt_MatKhau.Text = pass;
+                    txt_MatKhau.UseSystemPasswordChar = true;
+                }
+            }
         }
 
         private void materialCard1_Paint(object sender, PaintEventArgs e)

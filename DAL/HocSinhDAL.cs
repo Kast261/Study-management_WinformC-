@@ -14,7 +14,19 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
     {
         public DataTable LayTatCa()
         {
-            string sql = "SELECT HocSinhID, HoTen, NgaySinh, GioiTinh, Email, SoDienThoai, DiaChi FROM HocSinh";
+            string sql = @"
+                SELECT 
+                    hs.HocSinhID, 
+                    hs.HoTen, 
+                    hs.NgaySinh, 
+                    hs.GioiTinh, 
+                    hs.Email, 
+                    hs.SoDienThoai, 
+                    hs.DiaChi,
+                    COALESCE(l.TenLop, 'Chưa xếp lớp') AS TenLop
+                FROM HocSinh hs
+                LEFT JOIN LopHoc l ON hs.LopHocID = l.LopHocID
+                ORDER BY hs.HocSinhID ASC";
             return DatabaseHelper.ExecuteQuery(sql);
         }
         public HocSinh LayTheoID(int id)
@@ -73,8 +85,20 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
         public DataTable TimKiem(string tuKhoa)
         {
-            string sql = @"SELECT HocSinhID, HoTen, NgaySinh, GioiTinh, Email, SoDienThoai, DiaChi 
-                           FROM HocSinh WHERE HoTen LIKE @kw OR Email LIKE @kw OR SoDienThoai LIKE @kw";
+            string sql = @"
+                SELECT 
+                    hs.HocSinhID, 
+                    hs.HoTen, 
+                    hs.NgaySinh, 
+                    hs.GioiTinh, 
+                    hs.Email, 
+                    hs.SoDienThoai, 
+                    hs.DiaChi,
+                    COALESCE(l.TenLop, 'Chưa xếp lớp') AS TenLop
+                FROM HocSinh hs
+                LEFT JOIN LopHoc l ON hs.LopHocID = l.LopHocID
+                WHERE hs.HoTen ILIKE @kw OR hs.Email ILIKE @kw OR hs.SoDienThoai ILIKE @kw
+                ORDER BY hs.HocSinhID ASC";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@kw", "%" + tuKhoa + "%") });
         }
     }

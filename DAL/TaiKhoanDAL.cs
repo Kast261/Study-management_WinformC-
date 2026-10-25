@@ -97,7 +97,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             };
         }
 
-        public void LuuGhiNho(string tenDangNhap)
+        public void LuuGhiNho(string tenDangNhap, string matKhau = "")
         {
             try
             {
@@ -107,21 +107,148 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 }
                 else
                 {
-                    File.WriteAllText(_rememberFilePath, tenDangNhap.Trim());
+                    var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                    if (File.Exists(_rememberFilePath))
+                    {
+                        var lines = File.ReadAllLines(_rememberFilePath);
+                        foreach (var line in lines)
+                        {
+                            if (string.IsNullOrWhiteSpace(line)) continue;
+                            var parts = line.Split(new char[] { '\t' }, 2);
+                            if (parts.Length == 2)
+                            {
+                                dict[parts[0].Trim()] = GiaiMaMatKhau(parts[1].Trim());
+                            }
+                            else if (parts.Length == 1 && !dict.ContainsKey(parts[0].Trim()))
+                            {
+                                dict[parts[0].Trim()] = "";
+                            }
+                        }
+                    }
+
+                    dict[tenDangNhap.Trim()] = matKhau ?? "";
+
+                    var outLines = new List<string>();
+                    outLines.Add($"{tenDangNhap.Trim()}\t{MaHoaMatKhau(matKhau ?? "")}");
+                    foreach (var kvp in dict)
+                    {
+                        if (!string.Equals(kvp.Key, tenDangNhap.Trim(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            outLines.Add($"{kvp.Key}\t{MaHoaMatKhau(kvp.Value)}");
+                        }
+                    }
+
+                    File.WriteAllLines(_rememberFilePath, outLines);
                 }
             }
             catch { /* Bỏ qua lỗi ghi file nếu không có quyền */ }
         }
 
-        public string DocGhiNho()
+        public (string TenDangNhap, string MatKhau) DocGhiNho()
         {
             try
             {
                 if (File.Exists(_rememberFilePath))
-                    return File.ReadAllText(_rememberFilePath).Trim();
+                {
+                    var lines = File.ReadAllLines(_rememberFilePath);
+                    foreach (var line in lines)
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) continue;
+                        var parts = line.Split(new char[] { '\t' }, 2);
+                        if (parts.Length == 2)
+                        {
+                            return (parts[0].Trim(), GiaiMaMatKhau(parts[1].Trim()));
+                        }
+                        else if (parts.Length == 1)
+                        {
+                            return (parts[0].Trim(), "");
+                        }
+                    }
+                }
+            }
+            catch { }
+            return (string.Empty, string.Empty);
+        }
+
+        public string LayMatKhauGhiNho(string tenDangNhap)
+        {
+            if (string.IsNullOrWhiteSpace(tenDangNhap)) return string.Empty;
+            try
+            {
+                if (File.Exists(_rememberFilePath))
+                {
+                    var lines = File.ReadAllLines(_rememberFilePath);
+                    foreach (var line in lines)
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) continue;
+                        var parts = line.Split(new char[] { '\t' }, 2);
+                        if (parts.Length >= 1 && string.Equals(parts[0].Trim(), tenDangNhap.Trim(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            return parts.Length == 2 ? GiaiMaMatKhau(parts[1].Trim()) : "";
+                        }
+                    }
+                }
             }
             catch { }
             return string.Empty;
+        }
+
+        public void XoaGhiNho(string tenDangNhap = null)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(tenDangNhap))
+                {
+                    if (File.Exists(_rememberFilePath)) File.Delete(_rememberFilePath);
+                }
+                else if (File.Exists(_rememberFilePath))
+                {
+                    var lines = File.ReadAllLines(_rememberFilePath);
+                    var remaining = new List<string>();
+                    foreach (var line in lines)
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) continue;
+                        var parts = line.Split(new char[] { '\t' }, 2);
+                        if (!string.Equals(parts[0].Trim(), tenDangNhap.Trim(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            remaining.Add(line);
+                        }
+                    }
+                    if (remaining.Count == 0)
+                        File.Delete(_rememberFilePath);
+                    else
+                        File.WriteAllLines(_rememberFilePath, remaining);
+                }
+            }
+            catch { }
+        }
+
+        private static string MaHoaMatKhau(string plain)
+        {
+            if (string.IsNullOrEmpty(plain)) return "";
+            try
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(plain);
+                return Convert.ToBase64String(bytes);
+            }
+            catch
+            {
+                return plain;
+            }
+        }
+
+        private static string GiaiMaMatKhau(string cipher)
+        {
+            if (string.IsNullOrEmpty(cipher)) return "";
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(cipher);
+                return Encoding.UTF8.GetString(bytes);
+            }
+            catch
+            {
+                return cipher;
+            }
         }
 
         public List<TaiKhoan> GetAll()
@@ -204,11 +331,46 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 ELSE 'Hoạt động'
             END AS TrangThaiHienThi
         FROM TaiKhoan tk
-        LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND tk.NguoiDungID = gv.GiaoVienID
-        LEFT JOIN HocSinh hs  ON tk.VaiTro = 'HocSinh'  AND tk.NguoiDungID = hs.HocSinhID
+        LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND (tk.NguoiDungID = gv.GiaoVienID OR gv.TaiKhoanID = tk.TaiKhoanID)
+        LEFT JOIN HocSinh hs  ON tk.VaiTro = 'HocSinh'  AND (tk.NguoiDungID = hs.HocSinhID OR hs.TaiKhoanID = tk.TaiKhoanID)
         ORDER BY tk.TaiKhoanID DESC";
 
             return DatabaseHelper.ExecuteQuery(sql);
+        }
+
+        public DataTable TimKiemTheoTenSinhVien(string tenSinhVien)
+        {
+            if (string.IsNullOrWhiteSpace(tenSinhVien))
+            {
+                return LayTatCaCoTenNguoiDung();
+            }
+
+            string sql = @"
+        SELECT 
+            tk.TaiKhoanID,
+            tk.TenDangNhap,
+            tk.VaiTro,
+            tk.NguoiDungID,
+            COALESCE(tk.TrangThaiKhoa, FALSE) AS TrangThaiKhoa,
+            CASE 
+                WHEN tk.VaiTro = 'GiaoVien' THEN COALESCE(gv.HoTen, '(Chưa liên kết)')
+                WHEN tk.VaiTro = 'HocSinh'  THEN COALESCE(hs.HoTen, '(Chưa liên kết)')
+                WHEN tk.VaiTro = 'Admin'    THEN 'Quản trị viên hệ thống'
+                ELSE '(Chưa xác định)'
+            END AS TenNguoiDung,
+            CASE 
+                WHEN COALESCE(tk.TrangThaiKhoa, FALSE) = TRUE THEN 'Đã khóa'
+                ELSE 'Hoạt động'
+            END AS TrangThaiHienThi
+        FROM TaiKhoan tk
+        LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND (tk.NguoiDungID = gv.GiaoVienID OR gv.TaiKhoanID = tk.TaiKhoanID)
+        LEFT JOIN HocSinh hs  ON tk.VaiTro = 'HocSinh'  AND (tk.NguoiDungID = hs.HocSinhID OR hs.TaiKhoanID = tk.TaiKhoanID)
+        WHERE (tk.VaiTro = 'HocSinh' AND (hs.HoTen ILIKE @kw OR tk.TenDangNhap ILIKE @kw))
+        ORDER BY tk.TaiKhoanID DESC";
+
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] {
+                new NpgsqlParameter("@kw", "%" + tenSinhVien.Trim() + "%")
+            });
         }
         public bool ThemTaiKhoan(string tenDangNhap, string matKhauPlain, string vaiTro, int nguoiDungID)
         {

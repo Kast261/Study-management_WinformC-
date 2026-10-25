@@ -177,11 +177,18 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 dgvGiaoVien.AutoGenerateColumns = false;
+                dgvGiaoVien.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
                 Column1.DataPropertyName = "GiaoVienID";
                 Column2.DataPropertyName = "HoTen";
+                Column18.DataPropertyName = "GioiTinh";
+                Column19.DataPropertyName = "NgaySinh";
+                Column19.DefaultCellStyle.Format = "dd/MM/yyyy";
                 Column3.DataPropertyName = "ChuyenMon";
                 Column4.DataPropertyName = "Email";
-                Column5.DataPropertyName = "SoDienThoai";
+                Column16.DataPropertyName = "DiaChi";
+                Column17.DataPropertyName = "SoDienThoai";
+                Column5.DataPropertyName = "SoLop";
 
                 dgvGiaoVien.DataSource = _gvDAL.LayTatCa();
             }
@@ -393,11 +400,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 dgvHocVien.AutoGenerateColumns = false;
+                dgvHocVien.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
                 dataGridViewTextBoxColumn1.DataPropertyName = "HocSinhID";
                 dataGridViewTextBoxColumn2.DataPropertyName = "HoTen";
-                dataGridViewTextBoxColumn3.DataPropertyName = "GioiTinh";
+                Column20.DataPropertyName = "NgaySinh";
+                Column20.DefaultCellStyle.Format = "dd/MM/yyyy";
+                Column21.DataPropertyName = "GioiTinh";
+                Column22.DataPropertyName = "SoDienThoai";
+                dataGridViewTextBoxColumn3.DataPropertyName = "TenLop";
                 dataGridViewTextBoxColumn4.DataPropertyName = "Email";
-                dataGridViewTextBoxColumn5.DataPropertyName = "SoDienThoai";
+                dataGridViewTextBoxColumn5.DataPropertyName = "DiaChi";
 
                 dgvHocVien.DataSource = _hsDAL.LayTatCa();
             }
@@ -897,6 +910,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 if (dgvTaiKhoan == null) return;
                 dgvTaiKhoan.AutoGenerateColumns = false;
+                dgvTaiKhoan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 Column9.DataPropertyName  = "TenDangNhap";
                 Column10.DataPropertyName = "VaiTro";
                 Column11.DataPropertyName = "TenNguoiDung";
@@ -916,6 +930,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (txtTK_TaiKhoanDangNhap != null) txtTK_TaiKhoanDangNhap.Clear();
             if (txtTK_MatKhau != null) txtTK_MatKhau.Clear();
             if (cmbTK_VaiTro != null && cmbTK_VaiTro.Items.Count > 0) cmbTK_VaiTro.SelectedIndex = 0;
+            if (txt_TimTaiKhoan != null) txt_TimTaiKhoan.Clear();
             UpdateNutKhoaMoKhoa();
         }
 
@@ -930,11 +945,64 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void SetupTaiKhoanEvents()
         {
-            if (btnTK_TaoTaiKhoan != null)  btnTK_TaoTaiKhoan.Click  += btnTK_TaoTaiKhoan_Click;
-            if (btnTK_KhoaMoKhoa != null)   btnTK_KhoaMoKhoa.Click   += btnTK_KhoaMoKhoa_Click;
-            if (btnTK_DatLaiMatKhau != null) btnTK_DatLaiMatKhau.Click += btnTK_DatLaiMatKhau_Click;
-            if (dgvTaiKhoan != null)         dgvTaiKhoan.CellClick    += dgvTaiKhoan_CellClick;
-            if (cmbTK_VaiTro != null)        cmbTK_VaiTro.SelectedIndexChanged += cmbTK_VaiTro_Changed;
+            if (btnTK_TaoTaiKhoan != null)   btnTK_TaoTaiKhoan.Click   += btnTK_TaoTaiKhoan_Click;
+            if (btnTK_KhoaMoKhoa != null)    btnTK_KhoaMoKhoa.Click    += btnTK_KhoaMoKhoa_Click;
+            if (btnTK_DatLaiMatKhau != null) btnTK_DatLaiMatKhau.Click  += btnTK_DatLaiMatKhau_Click;
+            if (dgvTaiKhoan != null)          dgvTaiKhoan.CellClick     += dgvTaiKhoan_CellClick;
+            if (cmbTK_VaiTro != null)         cmbTK_VaiTro.SelectedIndexChanged += cmbTK_VaiTro_Changed;
+            if (foreverButton1 != null)       foreverButton1.Click      += btnTimTaiKhoan_Click;
+            if (txt_TimTaiKhoan != null)
+            {
+                txt_TimTaiKhoan.KeyDown     += txt_TimTaiKhoan_KeyDown;
+                txt_TimTaiKhoan.TextChanged += txt_TimTaiKhoan_TextChanged;
+            }
+        }
+
+        private void btnTimTaiKhoan_Click(object sender, EventArgs e)
+        {
+            ThucHienTimKiemTaiKhoan();
+        }
+
+        private void txt_TimTaiKhoan_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                ThucHienTimKiemTaiKhoan();
+            }
+        }
+
+        private void txt_TimTaiKhoan_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txt_TimTaiKhoan.Text))
+            {
+                LoadDanhSachTaiKhoan();
+            }
+        }
+
+        private void ThucHienTimKiemTaiKhoan()
+        {
+            try
+            {
+                string kw = txt_TimTaiKhoan?.Text?.Trim() ?? "";
+                if (string.IsNullOrEmpty(kw) || kw == "materialTextBoxEdit1" || kw == "Tên cần tìm")
+                {
+                    LoadDanhSachTaiKhoan();
+                    return;
+                }
+
+                DataTable dt = _tkDAL.TimKiemTheoTenSinhVien(kw);
+                dgvTaiKhoan.DataSource = dt;
+
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không tìm thấy tài khoản của sinh viên có tên: " + kw, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tìm kiếm tài khoản: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void cmbTK_VaiTro_Changed(object sender, EventArgs e)
