@@ -489,7 +489,24 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     return;
                 }
 
-                XuatChiTietBaiLamRaExcel(dtChiTiet);
+                string tenDeThi = "";
+                string diem = "";
+                string thoiGianNop = "";
+
+                if (row.DataBoundItem is DataRowView drvRow)
+                {
+                    if (drvRow.Row.Table.Columns.Contains("TenDeThi")) tenDeThi = drvRow["TenDeThi"]?.ToString() ?? "";
+                    if (drvRow.Row.Table.Columns.Contains("Diem")) diem = drvRow["Diem"]?.ToString() ?? "";
+                    if (drvRow.Row.Table.Columns.Contains("ThoiGianNop")) thoiGianNop = drvRow["ThoiGianNop"]?.ToString() ?? "";
+                }
+                else
+                {
+                    if (dgvHV_LichSuThi.Columns.Contains("Column22")) tenDeThi = row.Cells["Column22"].Value?.ToString() ?? "";
+                    if (dgvHV_LichSuThi.Columns.Contains("Column25")) diem = row.Cells["Column25"].Value?.ToString() ?? "";
+                    if (dgvHV_LichSuThi.Columns.Contains("Column24")) thoiGianNop = row.Cells["Column24"].Value?.ToString() ?? "";
+                }
+
+                XuatChiTietBaiLamRaExcel(dtChiTiet, tenDeThi, diem, thoiGianNop);
             }
             catch (Exception ex)
             {
@@ -497,39 +514,41 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void XuatChiTietBaiLamRaExcel(DataTable dt)
+        private void XuatChiTietBaiLamRaExcel(DataTable dt, string tenDeThi, string diem, string thoiGianNop)
         {
-            SaveFileDialog sfd = new SaveFileDialog
+            var columns = new List<ExcelExportHelper.ColumnDefinition>
             {
-                Filter = "Excel CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
-                FileName = $"ChiTietBaiLam_{DateTime.Now:yyyyMMdd_HHmmss}.csv"
+                new ExcelExportHelper.ColumnDefinition { FieldName = "ThuTu", HeaderText = "STT", Width = 45, Alignment = "Center", IsNumeric = true },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "CauHoi", HeaderText = "Câu Hỏi", Width = 320, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnA", HeaderText = "Đáp Án A", Width = 150, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnB", HeaderText = "Đáp Án B", Width = 150, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnC", HeaderText = "Đáp Án C", Width = 150, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnD", HeaderText = "Đáp Án D", Width = 150, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnDung", HeaderText = "Đáp Án Đúng", Width = 95, Alignment = "Center" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnChon", HeaderText = "Đáp Án Chọn", Width = 100, Alignment = "Center" },
+                new ExcelExportHelper.ColumnDefinition {
+                    FieldName = "LaDung",
+                    HeaderText = "Kết Quả",
+                    Width = 90,
+                    Alignment = "Center",
+                    ValueFormatter = val => {
+                        if (val == null || val == DBNull.Value) return "";
+                        bool isTrue = false;
+                        if (val is bool b) isTrue = b;
+                        else bool.TryParse(val.ToString(), out isTrue);
+                        return isTrue ? "ĐÚNG" : "SAI";
+                    }
+                }
             };
 
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("\uFEFF"); // Ghi UTF-8 BOM để hiển thị tiếng Việt trên Excel
-                sb.AppendLine("STT;Câu Hỏi;Đáp Án A;Đáp Án B;Đáp Án C;Đáp Án D;Đáp Án Đúng;Đáp Án Đã Chọn;Kết Quả");
-
-                foreach (DataRow r in dt.Rows)
-                {
-                    string stt = r["ThuTu"]?.ToString();
-                    string cauHoi = $"\"{r["CauHoi"]?.ToString().Replace("\"", "\"\"")}\"";
-                    string a = $"\"{r["DapAnA"]?.ToString().Replace("\"", "\"\"")}\"";
-                    string b = $"\"{r["DapAnB"]?.ToString().Replace("\"", "\"\"")}\"";
-                    string c = $"\"{r["DapAnC"]?.ToString().Replace("\"", "\"\"")}\"";
-                    string d = $"\"{r["DapAnD"]?.ToString().Replace("\"", "\"\"")}\"";
-                    string dung = r["DapAnDung"]?.ToString();
-                    string chon = r["DapAnChon"]?.ToString();
-                    bool laDung = Convert.ToBoolean(r["LaDung"]);
-                    string kqText = laDung ? "ĐÚNG" : "SAI";
-
-                    sb.AppendLine($"{stt};{cauHoi};{a};{b};{c};{d};{dung};{chon};{kqText}");
-                }
-
-                File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
-                MessageBox.Show("Xuất file kết quả bài thi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            string subTitle = $"Đề thi: {tenDeThi} | Điểm: {diem} | Nộp lúc: {thoiGianNop} | Học viên: {Session.TenDangNhap}";
+            ExcelExportHelper.ExportDataTable(
+                dt,
+                columns,
+                $"ChiTietBaiLam_{DateTime.Now:yyyyMMdd_HHmmss}.xls",
+                "BẢNG KẾT QUẢ CHI TIẾT BÀI THI",
+                subTitle
+            );
         }
 
         private void TabHocVien_SelectedIndexChanged(object sender, EventArgs e)

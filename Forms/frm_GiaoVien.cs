@@ -1434,48 +1434,20 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
-            SaveFileDialog sfd = new SaveFileDialog
+            string tenDeThi = cboKQ_ChonDeThi.Text;
+            if (string.IsNullOrWhiteSpace(tenDeThi) || tenDeThi == "Đề Thi")
             {
-                Filter = "CSV File (*.csv)|*.csv|Excel File (*.xls)|*.xls",
-                FileName = $"KetQuaThi_{DateTime.Now:yyyyMMdd_HHmm}.csv"
-            };
-
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    StringBuilder sb = new StringBuilder();
-                    // Tiêu đề cột
-                    for (int i = 0; i < dgvKetQuaHocSinh.Columns.Count; i++)
-                    {
-                        sb.Append($"\"{dgvKetQuaHocSinh.Columns[i].HeaderText}\"");
-                        if (i < dgvKetQuaHocSinh.Columns.Count - 1) sb.Append(",");
-                    }
-                    sb.AppendLine();
-
-                    // Dữ liệu từng dòng
-                    foreach (DataGridViewRow row in dgvKetQuaHocSinh.Rows)
-                    {
-                        if (!row.IsNewRow)
-                        {
-                            for (int i = 0; i < dgvKetQuaHocSinh.Columns.Count; i++)
-                            {
-                                sb.Append($"\"{row.Cells[i].Value?.ToString()}\"");
-                                if (i < dgvKetQuaHocSinh.Columns.Count - 1) sb.Append(",");
-                            }
-                            sb.AppendLine();
-                        }
-                    }
-
-                    // Ghi ra file với chuẩn UTF-8 BOM để Excel không lỗi font tiếng Việt
-                    File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
-                    MessageBox.Show("Xuất file kết quả thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi xuất file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                tenDeThi = "Tất cả đề thi";
             }
+
+            string subTitle = $"Đề thi: {tenDeThi} | Ngày xuất: {DateTime.Now:dd/MM/yyyy HH:mm} | Người xuất: {Session.TenDangNhap}";
+
+            ExcelExportHelper.ExportDataGridView(
+                dgvKetQuaHocSinh,
+                $"KetQuaThi_{DateTime.Now:yyyyMMdd_HHmmss}.xls",
+                "BÁO CÁO KẾT QUẢ BÀI THI",
+                subTitle
+            );
         }
         #endregion
 

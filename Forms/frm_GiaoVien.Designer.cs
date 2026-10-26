@@ -146,6 +146,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridViewTextBoxColumn28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlKQ_Buttons = new System.Windows.Forms.Panel();
+            this.btnKQ_BaoCao = new ReaLTaiizor.Controls.ForeverButton();
             this.btnKQ_XuatExcel = new ReaLTaiizor.Controls.ForeverButton();
             this.cboKQ_ChonDeThi = new ReaLTaiizor.Controls.MaterialComboBox();
             this.materialLabel43 = new ReaLTaiizor.Controls.MaterialLabel();
@@ -2006,12 +2007,27 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // pnlKQ_Buttons
             // 
+            this.pnlKQ_Buttons.Controls.Add(this.btnKQ_BaoCao);
             this.pnlKQ_Buttons.Controls.Add(this.btnKQ_XuatExcel);
             this.pnlKQ_Buttons.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlKQ_Buttons.Location = new System.Drawing.Point(17, 589);
             this.pnlKQ_Buttons.Name = "pnlKQ_Buttons";
             this.pnlKQ_Buttons.Size = new System.Drawing.Size(1351, 55);
             this.pnlKQ_Buttons.TabIndex = 6;
+            // 
+            // btnKQ_BaoCao
+            // 
+            this.btnKQ_BaoCao.BackColor = System.Drawing.Color.Transparent;
+            this.btnKQ_BaoCao.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.btnKQ_BaoCao.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnKQ_BaoCao.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnKQ_BaoCao.Location = new System.Drawing.Point(214, 5);
+            this.btnKQ_BaoCao.Name = "btnKQ_BaoCao";
+            this.btnKQ_BaoCao.Rounded = false;
+            this.btnKQ_BaoCao.Size = new System.Drawing.Size(189, 45);
+            this.btnKQ_BaoCao.TabIndex = 5;
+            this.btnKQ_BaoCao.Text = "Báo Cáo";
+            this.btnKQ_BaoCao.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             // 
             // btnKQ_XuatExcel
             // 
@@ -3033,5 +3049,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.Panel pnlKQ_Buttons;
         private ReaLTaiizor.Controls.MaterialComboBox cmbGV_MonHoc;
         private ReaLTaiizor.Controls.ForeverButton btnDe_XoaDeThi;
+        private ReaLTaiizor.Controls.ForeverButton btnKQ_BaoCao;
     }
 }
