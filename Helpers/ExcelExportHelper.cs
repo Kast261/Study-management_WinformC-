@@ -75,8 +75,305 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
         }
 
         /// <summary>
-        /// Hiển thị hộp thoại lưu file và xuất dữ liệu DataTable ra file Excel (.xls) hoặc CSV (.csv)
+        /// Xuất file báo cáo "BẢNG ĐIỂM HỌC SINH" nhóm theo môn học.
+        /// DataTable phải có các cột: MonHoc, TenDeThi, ThoiGianNop, Diem
         /// </summary>
+        public static void ExportBangDiemHocSinh(
+            DataTable dt,
+            string tenHocSinh,
+            string tenMonHocLoc,
+            DateTime? tuNgay,
+            DateTime? denNgay,
+            string nguoiLapBieu)
+        {
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu điểm để xuất báo cáo!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "Excel Workbook (*.xls)|*.xls",
+                FilterIndex = 1,
+                FileName = $"BangDiem_{tenHocSinh.Replace(" ", "_")}_{DateTime.Now:yyyyMMdd_HHmmss}.xls"
+            };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+            try
+            {
+                string monHocHienThi = string.IsNullOrWhiteSpace(tenMonHocLoc) ? "Tất cả" : tenMonHocLoc;
+                string tuNgayStr  = tuNgay.HasValue  ? tuNgay.Value.ToString("dd/MM/yyyy")  : "---";
+                string denNgayStr = denNgay.HasValue ? denNgay.Value.ToString("dd/MM/yyyy") : "---";
+                string dieuKienLoc = $"Điều kiện lọc:  Môn học: {monHocHienThi};  Từ {tuNgayStr} đến {denNgayStr}";
+
+                // Nhóm theo môn học
+                var groups = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<DataRow>>(StringComparer.OrdinalIgnoreCase);
+                foreach (DataRow row in dt.Rows)
+                {
+                    string monHoc = row["MonHoc"]?.ToString() ?? "(Chưa xác định)";
+                    if (!groups.ContainsKey(monHoc))
+                        groups[monHoc] = new System.Collections.Generic.List<DataRow>();
+                    groups[monHoc].Add(row);
+                }
+
+                // Tính điểm trung bình tổng
+                double tongDiem = 0;
+                int tongBai = 0;
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (double.TryParse(row["Diem"]?.ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double d))
+                    {
+                        tongDiem += d;
+                        tongBai++;
+                    }
+                }
+                double diemTB = tongBai > 0 ? Math.Round(tongDiem / tongBai, 2) : 0;
+
+                StringBuilder sb = new StringBuilder();
+                sb.Append(GetBangDiemXmlHeader());
+                sb.AppendLine("  <Table>");
+
+                // Cột: STT(45) | ĐềThi(260) | MônHọc(120) | NộpLúc(150) | Điểm(80)
+                sb.AppendLine("   <Column ss:Width=\"45\"/>");
+                sb.AppendLine("   <Column ss:Width=\"260\"/>");
+                sb.AppendLine("   <Column ss:Width=\"120\"/>");
+                sb.AppendLine("   <Column ss:Width=\"150\"/>");
+                sb.AppendLine("   <Column ss:Width=\"80\"/>");
+
+                // Dòng 1: Tiêu đề báo cáo (merge 5 cột)
+                sb.AppendLine("   <Row ss:Height=\"48\">");
+                sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_Title\"><Data ss:Type=\"String\">BẢNG ĐIỂM HỌC SINH</Data></Cell>");
+                sb.AppendLine("   </Row>");
+
+                // Dòng 2: Họ tên học sinh
+                sb.AppendLine("   <Row ss:Height=\"22\">");
+                sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_SubTitle\"><Data ss:Type=\"String\">Học sinh: {EscapeXml(tenHocSinh)}</Data></Cell>");
+                sb.AppendLine("   </Row>");
+
+                // Dòng 3: Điều kiện lọc
+                sb.AppendLine("   <Row ss:Height=\"22\">");
+                sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_SubTitle\"><Data ss:Type=\"String\">{EscapeXml(dieuKienLoc)}</Data></Cell>");
+                sb.AppendLine("   </Row>");
+
+                // Dòng trống
+                sb.AppendLine("   <Row ss:Height=\"8\"/>");
+
+                // Dòng Header
+                sb.AppendLine("   <Row ss:Height=\"28\">");
+                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">STT</Data></Cell>");
+                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Đề thi</Data></Cell>");
+                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Môn học</Data></Cell>");
+                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Nộp lúc</Data></Cell>");
+                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Điểm</Data></Cell>");
+                sb.AppendLine("   </Row>");
+
+                // Dữ liệu nhóm theo môn học
+                int stt = 1;
+                foreach (var kvp in groups)
+                {
+                    string monHoc = kvp.Key;
+                    var rows = kvp.Value;
+                    int soRecord = rows.Count;
+
+                    // Dòng nhóm môn học
+                    sb.AppendLine("   <Row ss:Height=\"24\">");
+                    sb.AppendLine($"    <Cell ss:MergeAcross=\"3\" ss:StyleID=\"BD_GroupHeader\"><Data ss:Type=\"String\">Môn học: {EscapeXml(monHoc)} ({soRecord} bản ghi)</Data></Cell>");
+                    sb.AppendLine("    <Cell ss:StyleID=\"BD_GroupHeaderRight\"><Data ss:Type=\"String\"></Data></Cell>");
+                    sb.AppendLine("   </Row>");
+
+                    // Dữ liệu từng bài trong nhóm
+                    foreach (DataRow row in rows)
+                    {
+                        string tenDeThi   = row["TenDeThi"]?.ToString() ?? "";
+                        string thoiGianNop = "";
+                        if (row["ThoiGianNop"] != DBNull.Value && DateTime.TryParse(row["ThoiGianNop"]?.ToString(), out DateTime dt2))
+                            thoiGianNop = dt2.ToString("dd/MM/yyyy HH:mm");
+                        double diem = 0;
+                        bool isDiem = double.TryParse(row["Diem"]?.ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out diem);
+
+                        sb.AppendLine("   <Row ss:Height=\"22\">");
+                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellCenter\"><Data ss:Type=\"Number\">{stt++}</Data></Cell>");
+                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellLeft\"><Data ss:Type=\"String\">{EscapeXml(tenDeThi)}</Data></Cell>");
+                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellCenter\"><Data ss:Type=\"String\">{EscapeXml(monHoc)}</Data></Cell>");
+                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellCenter\"><Data ss:Type=\"String\">{EscapeXml(thoiGianNop)}</Data></Cell>");
+                        if (isDiem)
+                            sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellRight\"><Data ss:Type=\"Number\">{diem.ToString(System.Globalization.CultureInfo.InvariantCulture)}</Data></Cell>");
+                        else
+                            sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellRight\"><Data ss:Type=\"String\">{EscapeXml(row["Diem"]?.ToString() ?? "")}</Data></Cell>");
+                        sb.AppendLine("   </Row>");
+                    }
+                }
+
+                // Dòng ĐIỂM TRUNG BÌNH
+                sb.AppendLine("   <Row ss:Height=\"28\">");
+                sb.AppendLine($"    <Cell ss:MergeAcross=\"3\" ss:StyleID=\"BD_DiemTB\"><Data ss:Type=\"String\">ĐIỂM TRUNG BÌNH ({tongBai} bài)</Data></Cell>");
+                sb.AppendLine($"    <Cell ss:StyleID=\"BD_DiemTBRight\"><Data ss:Type=\"Number\">{diemTB.ToString(System.Globalization.CultureInfo.InvariantCulture)}</Data></Cell>");
+                sb.AppendLine("   </Row>");
+
+                // Dòng trống
+                sb.AppendLine("   <Row ss:Height=\"16\"/>");
+
+                // Dòng chữ ký người lập biểu (căn phải)
+                sb.AppendLine("   <Row ss:Height=\"22\">");
+                sb.AppendLine("    <Cell ss:MergeAcross=\"2\"><Data ss:Type=\"String\"></Data></Cell>");
+                sb.AppendLine($"    <Cell ss:MergeAcross=\"1\" ss:StyleID=\"BD_ChuKy\"><Data ss:Type=\"String\">Người lập biểu</Data></Cell>");
+                sb.AppendLine("   </Row>");
+                sb.AppendLine("   <Row ss:Height=\"20\">");
+                sb.AppendLine("    <Cell ss:MergeAcross=\"2\"><Data ss:Type=\"String\"></Data></Cell>");
+                sb.AppendLine($"    <Cell ss:MergeAcross=\"1\" ss:StyleID=\"BD_ChuKyNote\"><Data ss:Type=\"String\">(Ký, ghi rõ họ tên)</Data></Cell>");
+                sb.AppendLine("   </Row>");
+
+                // Dòng trang
+                sb.AppendLine("   <Row ss:Height=\"22\">");
+                sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_Page\"><Data ss:Type=\"String\">Trang 1/1</Data></Cell>");
+                sb.AppendLine("   </Row>");
+
+                sb.AppendLine("  </Table>");
+                sb.AppendLine(" </Worksheet>");
+                sb.AppendLine("</Workbook>");
+
+                File.WriteAllText(sfd.FileName, sb.ToString(), new UTF8Encoding(true));
+
+                DialogResult dr = MessageBox.Show(
+                    "Xuất báo cáo thành công!\nBạn có muốn mở file vừa xuất không?",
+                    "Thông báo",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information);
+
+                if (dr == DialogResult.Yes)
+                {
+                    try { System.Diagnostics.Process.Start(sfd.FileName); } catch { }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi xuất báo cáo: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private static string GetBangDiemXmlHeader()
+        {
+            return @"<?xml version=""1.0"" encoding=""utf-8""?>
+<?mso-application progid=""Excel.Sheet""?>
+<Workbook xmlns=""urn:schemas-microsoft-com:office:spreadsheet""
+ xmlns:o=""urn:schemas-microsoft-com:office:office""
+ xmlns:x=""urn:schemas-microsoft-com:office:excel""
+ xmlns:ss=""urn:schemas-microsoft-com:office:spreadsheet""
+ xmlns:html=""http://www.w3.org/TR/REC-html40"">
+ <Styles>
+  <Style ss:ID=""Default"" ss:Name=""Normal"">
+   <Alignment ss:Vertical=""Center""/>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""11"" ss:Color=""#000000""/>
+  </Style>
+  <Style ss:ID=""BD_Title"">
+   <Alignment ss:Horizontal=""Center"" ss:Vertical=""Center""/>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""18"" ss:Bold=""1"" ss:Color=""#003366""/>
+  </Style>
+  <Style ss:ID=""BD_SubTitle"">
+   <Alignment ss:Horizontal=""Center"" ss:Vertical=""Center""/>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""11"" ss:Italic=""1"" ss:Color=""#555555""/>
+  </Style>
+  <Style ss:ID=""BD_Header"">
+   <Alignment ss:Horizontal=""Center"" ss:Vertical=""Center"" ss:WrapText=""1""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""2"" ss:Color=""#003366""/>
+    <Border ss:Position=""Left""   ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#A0A0A0""/>
+    <Border ss:Position=""Right""  ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#A0A0A0""/>
+    <Border ss:Position=""Top""    ss:LineStyle=""Continuous"" ss:Weight=""2"" ss:Color=""#003366""/>
+   </Borders>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""12"" ss:Bold=""1"" ss:Color=""#FFFFFF""/>
+   <Interior ss:Color=""#003366"" ss:Pattern=""Solid""/>
+  </Style>
+  <Style ss:ID=""BD_GroupHeader"">
+   <Alignment ss:Horizontal=""Left"" ss:Vertical=""Center""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#C0C0C0""/>
+    <Border ss:Position=""Left""   ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#C0C0C0""/>
+    <Border ss:Position=""Right""  ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#C0C0C0""/>
+    <Border ss:Position=""Top""    ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#C0C0C0""/>
+   </Borders>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""11"" ss:Bold=""1"" ss:Color=""#003366""/>
+   <Interior ss:Color=""#E8F0FE"" ss:Pattern=""Solid""/>
+  </Style>
+  <Style ss:ID=""BD_GroupHeaderRight"">
+   <Alignment ss:Horizontal=""Right"" ss:Vertical=""Center""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#C0C0C0""/>
+    <Border ss:Position=""Right""  ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#C0C0C0""/>
+    <Border ss:Position=""Top""    ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#C0C0C0""/>
+   </Borders>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""11"" ss:Bold=""1"" ss:Color=""#003366""/>
+   <Interior ss:Color=""#E8F0FE"" ss:Pattern=""Solid""/>
+  </Style>
+  <Style ss:ID=""BD_CellLeft"">
+   <Alignment ss:Horizontal=""Left"" ss:Vertical=""Center""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+    <Border ss:Position=""Left""   ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+    <Border ss:Position=""Right""  ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+    <Border ss:Position=""Top""    ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+   </Borders>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""11""/>
+  </Style>
+  <Style ss:ID=""BD_CellCenter"">
+   <Alignment ss:Horizontal=""Center"" ss:Vertical=""Center""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+    <Border ss:Position=""Left""   ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+    <Border ss:Position=""Right""  ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+    <Border ss:Position=""Top""    ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+   </Borders>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""11""/>
+  </Style>
+  <Style ss:ID=""BD_CellRight"">
+   <Alignment ss:Horizontal=""Right"" ss:Vertical=""Center""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+    <Border ss:Position=""Left""   ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+    <Border ss:Position=""Right""  ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+    <Border ss:Position=""Top""    ss:LineStyle=""Continuous"" ss:Weight=""1"" ss:Color=""#D0D0D0""/>
+   </Borders>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""11""/>
+  </Style>
+  <Style ss:ID=""BD_DiemTB"">
+   <Alignment ss:Horizontal=""Left"" ss:Vertical=""Center""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""2"" ss:Color=""#003366""/>
+    <Border ss:Position=""Left""   ss:LineStyle=""Continuous"" ss:Weight=""2"" ss:Color=""#003366""/>
+    <Border ss:Position=""Top""    ss:LineStyle=""Continuous"" ss:Weight=""2"" ss:Color=""#003366""/>
+   </Borders>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""12"" ss:Bold=""1"" ss:Color=""#7B3F00""/>
+   <Interior ss:Color=""#FFF3CD"" ss:Pattern=""Solid""/>
+  </Style>
+  <Style ss:ID=""BD_DiemTBRight"">
+   <Alignment ss:Horizontal=""Right"" ss:Vertical=""Center""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""2"" ss:Color=""#003366""/>
+    <Border ss:Position=""Right""  ss:LineStyle=""Continuous"" ss:Weight=""2"" ss:Color=""#003366""/>
+    <Border ss:Position=""Top""    ss:LineStyle=""Continuous"" ss:Weight=""2"" ss:Color=""#003366""/>
+   </Borders>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""12"" ss:Bold=""1"" ss:Color=""#7B3F00""/>
+   <Interior ss:Color=""#FFF3CD"" ss:Pattern=""Solid""/>
+  </Style>
+  <Style ss:ID=""BD_ChuKy"">
+   <Alignment ss:Horizontal=""Center"" ss:Vertical=""Center""/>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""11"" ss:Bold=""1""/>
+  </Style>
+  <Style ss:ID=""BD_ChuKyNote"">
+   <Alignment ss:Horizontal=""Center"" ss:Vertical=""Center""/>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""10"" ss:Italic=""1"" ss:Color=""#666666""/>
+  </Style>
+  <Style ss:ID=""BD_Page"">
+   <Alignment ss:Horizontal=""Center"" ss:Vertical=""Center""/>
+   <Font ss:FontName=""Times New Roman"" ss:Size=""10"" ss:Italic=""1"" ss:Color=""#888888""/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name=""BangDiem"">
+";
+        }
+
+
         public static void ExportDataTable(
             DataTable dt,
             List<ColumnDefinition> columns,

@@ -331,13 +331,27 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public DataTable LayKetQuaTheoDeThi(int maDeThi)
         {
-            string sql = @"SELECT hs.HoTen, d.TenDeThi, k.SoCauDung, k.Diem, k.ThoiGianNop
+            string sql = @"SELECT hs.HocSinhID, hs.HoTen, d.TenDeThi, k.SoCauDung, k.Diem, k.ThoiGianNop
                            FROM KetQuaThi k
                            JOIN HocSinh hs ON hs.HocSinhID = k.HocSinhID
                            JOIN DeThi d ON d.DeThiID = k.DeThiID
                            WHERE k.DeThiID = @id
                            ORDER BY k.ThoiGianNop DESC";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter("@id", maDeThi));
+        }
+
+        /// <summary>
+        /// Lấy toàn bộ bảng điểm của một học sinh (tất cả đề thi đã làm),
+        /// trả về kết quả có MonHoc để nhóm khi xuất báo cáo.
+        /// </summary>
+        public DataTable LayBangDiemHocSinh(int hocSinhID)
+        {
+            string sql = @"SELECT d.MonHoc, d.TenDeThi, k.ThoiGianNop, k.Diem
+                           FROM KetQuaThi k
+                           JOIN DeThi d ON d.DeThiID = k.DeThiID
+                           WHERE k.HocSinhID = @hsID
+                           ORDER BY d.MonHoc ASC, k.ThoiGianNop ASC";
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter("@hsID", hocSinhID));
         }
         public int DemSoCauHoiHienTai(int deThiID)
         {

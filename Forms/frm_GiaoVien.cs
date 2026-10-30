@@ -278,6 +278,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // Tab Kết quả thi
             cboKQ_ChonDeThi.SelectedIndexChanged += cboKQ_ChonDeThi_SelectedIndexChanged;
             btnKQ_XuatExcel.Click += btnKQ_XuatExcel_Click;
+            btnKQ_BaoCao.Click   += btnKQ_BaoCao_Click;
 
             // Tab Thông tin cá nhân & Mật khẩu
             btnGV_CapNhatThongTin.Click += btnGV_CapNhatThongTin_Click;
@@ -1449,7 +1450,65 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 subTitle
             );
         }
+
+        private void btnKQ_BaoCao_Click(object sender, EventArgs e)
+        {
+            // Kiểm tra đã chọn dòng học sinh nào trong grid chưa
+            if (dgvKetQuaHocSinh.CurrentRow == null || dgvKetQuaHocSinh.Rows.Count == 0)
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn một học sinh trong danh sách trước khi xuất báo cáo!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow selectedRow = dgvKetQuaHocSinh.CurrentRow;
+
+            // Lấy HocSinhID từ DataSource của grid
+            int hocSinhID = 0;
+            string tenHocSinh = "";
+            try
+            {
+                DataRowView drv = selectedRow.DataBoundItem as DataRowView;
+                if (drv != null)
+                {
+                    hocSinhID  = Convert.ToInt32(drv["HocSinhID"]);
+                    tenHocSinh = drv["HoTen"]?.ToString() ?? "";
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Không thể lấy thông tin học sinh từ dòng đang chọn!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (hocSinhID <= 0)
+            {
+                MessageBox.Show("Không xác định được học sinh. Vui lòng chọn lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // Lấy toàn bộ bảng điểm của học sinh đó (tất cả môn)
+                DataTable dtBangDiem = _deThiDAL.LayBangDiemHocSinh(hocSinhID);
+
+                ExcelExportHelper.ExportBangDiemHocSinh(
+                    dt:           dtBangDiem,
+                    tenHocSinh:   tenHocSinh,
+                    tenMonHocLoc: null,               // không lọc môn học
+                    tuNgay:       null,               // không lọc ngày
+                    denNgay:      null,
+                    nguoiLapBieu: Session.TenDangNhap
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi xuất báo cáo: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         #endregion
+
 
         #region 7. Tab Thông Tin Cá Nhân & Đổi Mật Khẩu
         private void LoadThongTinCaNhan()
