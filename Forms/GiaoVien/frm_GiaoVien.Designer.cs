@@ -146,6 +146,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridViewTextBoxColumn28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlKQ_Buttons = new System.Windows.Forms.Panel();
+            this.btnKQ_HoTen = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
+            this.btnKQ_TimKiem = new ReaLTaiizor.Controls.ForeverButton();
             this.btnKQ_BaoCao = new ReaLTaiizor.Controls.ForeverButton();
             this.btnKQ_XuatExcel = new ReaLTaiizor.Controls.ForeverButton();
             this.cboKQ_ChonDeThi = new ReaLTaiizor.Controls.MaterialComboBox();
@@ -194,8 +196,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel27 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel28 = new ReaLTaiizor.Controls.MaterialLabel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnKQ_HoTen = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.btnKQ_TimKiem = new ReaLTaiizor.Controls.ForeverButton();
             this.materialTabControl1.SuspendLayout();
             this.pageGV_TrangChu.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
@@ -2019,6 +2019,51 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pnlKQ_Buttons.Size = new System.Drawing.Size(1351, 55);
             this.pnlKQ_Buttons.TabIndex = 6;
             // 
+            // btnKQ_HoTen
+            // 
+            this.btnKQ_HoTen.AnimateReadOnly = false;
+            this.btnKQ_HoTen.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.btnKQ_HoTen.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.btnKQ_HoTen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnKQ_HoTen.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.btnKQ_HoTen.Depth = 0;
+            this.btnKQ_HoTen.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnKQ_HoTen.HideSelection = true;
+            this.btnKQ_HoTen.Hint = "Họ Tên";
+            this.btnKQ_HoTen.LeadingIcon = null;
+            this.btnKQ_HoTen.Location = new System.Drawing.Point(675, -5);
+            this.btnKQ_HoTen.MaxLength = 32767;
+            this.btnKQ_HoTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.btnKQ_HoTen.Name = "btnKQ_HoTen";
+            this.btnKQ_HoTen.PasswordChar = '\0';
+            this.btnKQ_HoTen.PrefixSuffixText = null;
+            this.btnKQ_HoTen.ReadOnly = false;
+            this.btnKQ_HoTen.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnKQ_HoTen.SelectedText = "";
+            this.btnKQ_HoTen.SelectionLength = 0;
+            this.btnKQ_HoTen.SelectionStart = 0;
+            this.btnKQ_HoTen.ShortcutsEnabled = true;
+            this.btnKQ_HoTen.Size = new System.Drawing.Size(384, 60);
+            this.btnKQ_HoTen.TabIndex = 6;
+            this.btnKQ_HoTen.TabStop = false;
+            this.btnKQ_HoTen.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnKQ_HoTen.TrailingIcon = null;
+            this.btnKQ_HoTen.UseSystemPasswordChar = false;
+            // 
+            // btnKQ_TimKiem
+            // 
+            this.btnKQ_TimKiem.BackColor = System.Drawing.Color.Transparent;
+            this.btnKQ_TimKiem.BaseColor = System.Drawing.Color.DarkSlateGray;
+            this.btnKQ_TimKiem.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnKQ_TimKiem.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnKQ_TimKiem.Location = new System.Drawing.Point(439, 3);
+            this.btnKQ_TimKiem.Name = "btnKQ_TimKiem";
+            this.btnKQ_TimKiem.Rounded = false;
+            this.btnKQ_TimKiem.Size = new System.Drawing.Size(189, 45);
+            this.btnKQ_TimKiem.TabIndex = 5;
+            this.btnKQ_TimKiem.Text = "Tìm Kiếm";
+            this.btnKQ_TimKiem.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            // 
             // btnKQ_BaoCao
             // 
             this.btnKQ_BaoCao.BackColor = System.Drawing.Color.Transparent;
@@ -2566,7 +2611,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridView7.Name = "dataGridView7";
             this.dataGridView7.RowHeadersWidth = 51;
             this.dataGridView7.RowTemplate.Height = 24;
-            this.dataGridView7.Size = new System.Drawing.Size(32, 0);
+            this.dataGridView7.Size = new System.Drawing.Size(32, -57);
             this.dataGridView7.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn1
@@ -2655,7 +2700,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridView8.Name = "dataGridView8";
             this.dataGridView8.RowHeadersWidth = 51;
             this.dataGridView8.RowTemplate.Height = 24;
-            this.dataGridView8.Size = new System.Drawing.Size(32, 0);
+            this.dataGridView8.Size = new System.Drawing.Size(32, -57);
             this.dataGridView8.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn4
@@ -2796,51 +2841,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(94, 44);
             this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // btnKQ_HoTen
-            // 
-            this.btnKQ_HoTen.AnimateReadOnly = false;
-            this.btnKQ_HoTen.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.btnKQ_HoTen.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.btnKQ_HoTen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnKQ_HoTen.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.btnKQ_HoTen.Depth = 0;
-            this.btnKQ_HoTen.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnKQ_HoTen.HideSelection = true;
-            this.btnKQ_HoTen.Hint = "Họ Tên";
-            this.btnKQ_HoTen.LeadingIcon = null;
-            this.btnKQ_HoTen.Location = new System.Drawing.Point(675, -5);
-            this.btnKQ_HoTen.MaxLength = 32767;
-            this.btnKQ_HoTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.btnKQ_HoTen.Name = "btnKQ_HoTen";
-            this.btnKQ_HoTen.PasswordChar = '\0';
-            this.btnKQ_HoTen.PrefixSuffixText = null;
-            this.btnKQ_HoTen.ReadOnly = false;
-            this.btnKQ_HoTen.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnKQ_HoTen.SelectedText = "";
-            this.btnKQ_HoTen.SelectionLength = 0;
-            this.btnKQ_HoTen.SelectionStart = 0;
-            this.btnKQ_HoTen.ShortcutsEnabled = true;
-            this.btnKQ_HoTen.Size = new System.Drawing.Size(384, 60);
-            this.btnKQ_HoTen.TabIndex = 6;
-            this.btnKQ_HoTen.TabStop = false;
-            this.btnKQ_HoTen.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnKQ_HoTen.TrailingIcon = null;
-            this.btnKQ_HoTen.UseSystemPasswordChar = false;
-            // 
-            // btnKQ_TimKiem
-            // 
-            this.btnKQ_TimKiem.BackColor = System.Drawing.Color.Transparent;
-            this.btnKQ_TimKiem.BaseColor = System.Drawing.Color.DarkSlateGray;
-            this.btnKQ_TimKiem.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnKQ_TimKiem.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnKQ_TimKiem.Location = new System.Drawing.Point(439, 3);
-            this.btnKQ_TimKiem.Name = "btnKQ_TimKiem";
-            this.btnKQ_TimKiem.Rounded = false;
-            this.btnKQ_TimKiem.Size = new System.Drawing.Size(189, 45);
-            this.btnKQ_TimKiem.TabIndex = 5;
-            this.btnKQ_TimKiem.Text = "Tìm Kiếm";
-            this.btnKQ_TimKiem.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             // 
             // frm_GiaoVien
             // 

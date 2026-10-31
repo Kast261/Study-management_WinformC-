@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -118,75 +118,84 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\Interfaces\IDeThiService.cs" />
+    <Compile Include="BLL\Interfaces\ITaiKhoanService.cs" />
+    <Compile Include="BLL\Services\DeThiService.cs" />
+    <Compile Include="BLL\Services\GiaoVienService.cs" />
+    <Compile Include="BLL\Services\HocSinhService.cs" />
+    <Compile Include="BLL\Services\KetQuaService.cs" />
+    <Compile Include="BLL\Services\KhoaHocService.cs" />
+    <Compile Include="BLL\Services\LopHocService.cs" />
+    <Compile Include="BLL\Services\TaiKhoanService.cs" />
     <Compile Include="ColorScheme.cs" />
-    <Compile Include="DAL\DeThiDAL.cs" />
-    <Compile Include="DAL\GiaoVienDAL.cs" />
-    <Compile Include="DAL\HocSinhDAL.cs" />
-    <Compile Include="DAL\KetQuaDAL.cs" />
-    <Compile Include="DAL\KhoaHocDAL.cs" />
-    <Compile Include="DAL\LopHocDAL.cs" />
-    <Compile Include="DAL\TaiKhoanDAL.cs" />
+    <Compile Include="DAL\Repositories\DeThiDAL.cs" />
+    <Compile Include="DAL\Repositories\GiaoVienDAL.cs" />
+    <Compile Include="DAL\Repositories\HocSinhDAL.cs" />
+    <Compile Include="DAL\Repositories\KetQuaDAL.cs" />
+    <Compile Include="DAL\Repositories\KhoaHocDAL.cs" />
+    <Compile Include="DAL\Repositories\LopHocDAL.cs" />
+    <Compile Include="DAL\Repositories\TaiKhoanDAL.cs" />
     <Compile Include="Database\CreateDataBase.cs" />
     <Compile Include="Database\DatabaseHelper.cs" />
-    <Compile Include="Forms\frm_DangNhap.cs">
+    <Compile Include="Forms\Auth\frm_DangNhap.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frm_DangNhap.Designer.cs">
+    <Compile Include="Forms\Auth\frm_DangNhap.Designer.cs">
       <DependentUpon>frm_DangNhap.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Frm_Admin.cs">
+    <Compile Include="Forms\Admin\Frm_Admin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Frm_Admin.Designer.cs">
+    <Compile Include="Forms\Admin\Frm_Admin.Designer.cs">
       <DependentUpon>Frm_Admin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frm_GiaoVien.cs">
+    <Compile Include="Forms\GiaoVien\frm_GiaoVien.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frm_GiaoVien.Designer.cs">
+    <Compile Include="Forms\GiaoVien\frm_GiaoVien.Designer.cs">
       <DependentUpon>frm_GiaoVien.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Frm_HocVien.cs">
+    <Compile Include="Forms\HocSinh\Frm_HocVien.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Frm_HocVien.Designer.cs">
+    <Compile Include="Forms\HocSinh\Frm_HocVien.Designer.cs">
       <DependentUpon>Frm_HocVien.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Frm_KiemTra.cs">
+    <Compile Include="Forms\KiemTra\Frm_KiemTra.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Frm_KiemTra.Designer.cs">
+    <Compile Include="Forms\KiemTra\Frm_KiemTra.Designer.cs">
       <DependentUpon>Frm_KiemTra.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\DataGridView.cs" />
-    <Compile Include="Helpers\ExcelExportHelper.cs" />
-    <Compile Include="Helpers\Passwords.cs" />
-    <Compile Include="Helpers\Session.cs" />
-    <Compile Include="Helpers\Validation.cs" />
-    <Compile Include="Models\CauHoi.cs" />
-    <Compile Include="Models\DeThi.cs" />
-    <Compile Include="Models\GiaoVien.cs" />
-    <Compile Include="Models\HocSinh.cs" />
-    <Compile Include="Models\KetQuaThi.cs" />
-    <Compile Include="Models\KhoaHoc.cs" />
-    <Compile Include="Models\LopHoc.cs" />
-    <Compile Include="Models\TaiKhoan.cs" />
+    <Compile Include="Helpers\UI\DataGridView.cs" />
+    <Compile Include="Helpers\Export\ExcelExportHelper.cs" />
+    <Compile Include="Helpers\Security\Passwords.cs" />
+    <Compile Include="Helpers\Security\Session.cs" />
+    <Compile Include="Helpers\Validation\Validation.cs" />
+    <Compile Include="Models\Entities\CauHoi.cs" />
+    <Compile Include="Models\Entities\DeThi.cs" />
+    <Compile Include="Models\Entities\GiaoVien.cs" />
+    <Compile Include="Models\Entities\HocSinh.cs" />
+    <Compile Include="Models\Entities\KetQuaThi.cs" />
+    <Compile Include="Models\Entities\KhoaHoc.cs" />
+    <Compile Include="Models\Entities\LopHoc.cs" />
+    <Compile Include="Models\Entities\TaiKhoan.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
-    <EmbeddedResource Include="Forms\frm_DangNhap.resx">
+    <EmbeddedResource Include="Forms\Auth\frm_DangNhap.resx">
       <DependentUpon>frm_DangNhap.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Frm_Admin.resx">
+    <EmbeddedResource Include="Forms\Admin\Frm_Admin.resx">
       <DependentUpon>Frm_Admin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frm_GiaoVien.resx">
+    <EmbeddedResource Include="Forms\GiaoVien\frm_GiaoVien.resx">
       <DependentUpon>frm_GiaoVien.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Frm_HocVien.resx">
+    <EmbeddedResource Include="Forms\HocSinh\Frm_HocVien.resx">
       <DependentUpon>Frm_HocVien.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Frm_KiemTra.resx">
+    <EmbeddedResource Include="Forms\KiemTra\Frm_KiemTra.resx">
       <DependentUpon>Frm_KiemTra.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
