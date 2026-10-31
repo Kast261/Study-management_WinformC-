@@ -25,6 +25,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private readonly KhoaHocDAL _khDAL = new KhoaHocDAL();
         private readonly LopHocDAL _lopDAL = new LopHocDAL();
         private readonly TaiKhoanDAL _tkDAL = new TaiKhoanDAL();
+        
 
         private int _selectedGiaoVienID = 0;
         private int _selectedHocVienID = 0;
@@ -46,6 +47,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             SetupEventHandlers();
             SetupTaiKhoanEvents();
 
+         
             LoadDashboard();
             LoadDanhSachGiaoVien();
             LoadDanhSachHocVien();
@@ -142,33 +144,50 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                int soHV = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM HocSinh"));
-                int soGV = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM GiaoVien"));
-                int soKH = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM KhoaHoc"));
-                int soLop = Convert.ToInt32(DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM LopHoc"));
+                int soHV = Convert.ToInt32(
+            DatabaseHelper.ExecuteScalar(
+                "SELECT COUNT(*) FROM HocSinh"));
 
-                materialLabel1.Text = $"Học Viên: {soHV}";
-                materialLabel2.Text = $"Giáo Viên: {soGV}";
-                materialLabel3.Text = $"Khóa Học: {soKH}";
-                materialLabel4.Text = $"Lớp Học: {soLop}";
+                int soGV = Convert.ToInt32(
+                    DatabaseHelper.ExecuteScalar(
+                        "SELECT COUNT(*) FROM GiaoVien"));
 
-                chart1.Series.Clear();
-                Series series = new Series("Điểm trung bình") { ChartType = SeriesChartType.Column };
-                DataTable dtDiem = DatabaseHelper.ExecuteQuery(@"
-                    SELECT d.TenDeThi, AVG(k.Diem) AS DiemTB 
-                    FROM KetQuaThi k JOIN DeThi d ON k.DeThiID = d.DeThiID 
-                    GROUP BY d.TenDeThi
-                    ORDER BY DiemTB DESC
-                    LIMIT 5");
+                int soKH = Convert.ToInt32(
+                    DatabaseHelper.ExecuteScalar(
+                        "SELECT COUNT(*) FROM KhoaHoc"));
 
-                foreach (DataRow r in dtDiem.Rows)
-                {
-                    series.Points.AddXY(r["TenDeThi"].ToString(), Convert.ToDouble(r["DiemTB"]));
-                }
-                chart1.Series.Add(series);
+                int soLop = Convert.ToInt32(
+                    DatabaseHelper.ExecuteScalar(
+                        "SELECT COUNT(*) FROM LopHoc"));
+
+
+                materialLabel1.Text = $"HỌC VIÊN\n{soHV:N0}";
+                materialLabel2.Text = $"GIÁO VIÊN\n{soGV:N0}";
+                materialLabel3.Text = $"KHÓA HỌC\n{soKH:N0}";
+                materialLabel4.Text = $"LỚP HỌC\n{soLop:N0}";
+
+
+
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+           "Không thể tải Dashboard:\n" + ex.Message,
+           "Lỗi",
+           MessageBoxButtons.OK,
+           MessageBoxIcon.Error);
+            }
+            finally
+            {
+
+            }
         }
+
+        
+
+       
+
+
         #endregion
 
         #region Quản lý Giáo Viên

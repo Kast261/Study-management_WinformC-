@@ -2611,7 +2611,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridView7.Name = "dataGridView7";
             this.dataGridView7.RowHeadersWidth = 51;
             this.dataGridView7.RowTemplate.Height = 24;
-            this.dataGridView7.Size = new System.Drawing.Size(32, -57);
+            this.dataGridView7.Size = new System.Drawing.Size(32, 0);
             this.dataGridView7.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn1
@@ -2700,7 +2700,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridView8.Name = "dataGridView8";
             this.dataGridView8.RowHeadersWidth = 51;
             this.dataGridView8.RowTemplate.Height = 24;
-            this.dataGridView8.Size = new System.Drawing.Size(32, -57);
+            this.dataGridView8.Size = new System.Drawing.Size(32, 0);
             this.dataGridView8.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn4

@@ -161,6 +161,12 @@
     <Compile Include="Forms\HocSinh\Frm_HocVien.Designer.cs">
       <DependentUpon>Frm_HocVien.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\KiemTra\FrmKetQuaBaiThi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\KiemTra\FrmKetQuaBaiThi.Designer.cs">
+      <DependentUpon>FrmKetQuaBaiThi.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\KiemTra\Frm_KiemTra.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\HocSinh\Frm_HocVien.resx">
       <DependentUpon>Frm_HocVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\KiemTra\FrmKetQuaBaiThi.resx">
+      <DependentUpon>FrmKetQuaBaiThi.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\KiemTra\Frm_KiemTra.resx">
       <DependentUpon>Frm_KiemTra.cs</DependentUpon>

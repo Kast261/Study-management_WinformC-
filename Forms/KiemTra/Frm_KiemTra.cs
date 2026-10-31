@@ -1,4 +1,5 @@
 using BLT_Quan_Ly_Hoc_Tap.DAL;
+using BLT_Quan_Ly_Hoc_Tap.Forms.KiemTra;
 using BLT_Quan_Ly_Hoc_Tap.Helpers;
 using BLT_Quan_Ly_Hoc_Tap.Models;
 using ReaLTaiizor.Manager;
@@ -15,7 +16,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private readonly KetQuaDAL _ketQuaDAL = new KetQuaDAL();
         private DeThi _deThi;
         private List<CauHoi> _cauHois = new List<CauHoi>();
-        private Dictionary<int, string> _dapAnChon = new Dictionary<int, string>(); // index câu -> 'A'/'B'/'C'/'D'
+        private Dictionary<int, string> _dapAnChon = new Dictionary<int, string>(); 
         private int _currentIndex = 0;
         private int _thoiGianConLai; // tính theo giây
         private Timer _timer;
@@ -174,48 +175,119 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // Nếu chọn No thì hộp thoại đóng lại, thí sinh tiếp tục làm bài bình thường
         }
 
+
         private void NopBai()
         {
-            _daNopBai = true;
+            // Tránh nộp bài nhiều lần
+            if (_daNopBai)
+                return;
+
+            int tongSoCau = _cauHois.Count;
+
+            if (tongSoCau == 0)
+            {
+                MessageBox.Show(
+                    "Bài thi không có câu hỏi!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
             int soCauDung = 0;
 
-            for (int i = 0; i < _cauHois.Count; i++)
+            // Đếm số câu trả lời đúng
+            for (int i = 0; i < tongSoCau; i++)
             {
                 CauHoi q = _cauHois[i];
-                if (_dapAnChon.ContainsKey(i) && string.Equals(_dapAnChon[i], q.DapAnDung, StringComparison.OrdinalIgnoreCase))
+
+                if (_dapAnChon.ContainsKey(i) &&
+                    string.Equals(
+                        _dapAnChon[i],
+                        q.DapAnDung,
+                        StringComparison.OrdinalIgnoreCase))
                 {
                     soCauDung++;
                 }
             }
 
-            decimal diem = Math.Round(((decimal)soCauDung / _cauHois.Count) * 10, 2);
+            // Tính điểm trên thang 10
+            decimal diem = Math.Round(
+                ((decimal)soCauDung / tongSoCau) * 10,
+                2);
 
-            // Lưu kết quả bài thi vào cơ sở dữ liệu
-            KetQuaThi kq = new KetQuaThi
+            // Chặn nộp trùng trong phiên hiện tại
+            _daNopBai = true;
+
+            try
             {
-                HocSinhID = Session.NguoiDungID,
-                DeThiID = _deThiID,
-                SoCauDung = soCauDung,
-                Diem = diem,
-                ThoiGianNop = DateTime.Now,
-                TrangThai = "Hoàn thành"
-            };
+                // Lưu kết quả bài thi
+                KetQuaThi kq = new KetQuaThi
+                {
+                    HocSinhID = Session.NguoiDungID,
+                    DeThiID = _deThiID,
+                    SoCauDung = soCauDung,
+                    Diem = diem,
+                    ThoiGianNop = DateTime.Now,
+                    TrangThai = "Hoàn thành"
+                };
 
-            int kqID = _ketQuaDAL.LuuKetQua(kq);
+                int kqID = _ketQuaDAL.LuuKetQua(kq);
 
-            for (int i = 0; i < _cauHois.Count; i++)
+                // Lưu chi tiết từng câu trả lời
+                for (int i = 0; i < tongSoCau; i++)
+                {
+                    CauHoi q = _cauHois[i];
+
+                    string chon = _dapAnChon.ContainsKey(i)
+                        ? _dapAnChon[i]
+                        : "";
+
+                    bool laDung = string.Equals(
+                        chon,
+                        q.DapAnDung,
+                        StringComparison.OrdinalIgnoreCase);
+
+                    _ketQuaDAL.LuuChiTietBaiLam(
+                        kqID,
+                        q.CauHoiID,
+                        chon,
+                        laDung);
+                }
+            }
+            catch (Exception ex)
             {
-                CauHoi q = _cauHois[i];
-                string chon = _dapAnChon.ContainsKey(i) ? _dapAnChon[i] : "";
-                bool laDung = string.Equals(chon, q.DapAnDung, StringComparison.OrdinalIgnoreCase);
-                _ketQuaDAL.LuuChiTietBaiLam(kqID, q.CauHoiID, chon, laDung);
+                // Cho phép thử lại nếu lưu thất bại
+                // Chú ý: cần transaction để tránh lưu một phần
+                _daNopBai = false;
+
+                MessageBox.Show(
+                    "Lỗi khi lưu kết quả bài thi:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return;
             }
 
-            MessageBox.Show($"Bạn đã hoàn thành bài thi!\nSố câu đúng: {soCauDung}/{_cauHois.Count}\nĐiểm số: {diem}/10",
-                            "Kết quả bài thi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Hiển thị Form kết quả thay cho MessageBox
+            using (FrmKetQuaBaiThi frm = new FrmKetQuaBaiThi(
+                soCauDung,
+                tongSoCau,
+                (double)diem))
+            {
+                frm.ShowDialog(this);
 
+                if (frm.YeuCauXemLai)
+                {
+                    // TODO: Tích hợp chức năng xem lại bài thi.
+                }
+            }
+
+            // Đóng Form làm bài sau khi xem kết quả
             this.Close();
         }
+
 
         private void Frm_KiemTra_FormClosing(object sender, FormClosingEventArgs e)
         {

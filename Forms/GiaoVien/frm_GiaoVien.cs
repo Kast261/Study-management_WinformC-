@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace BLT_Quan_Ly_Hoc_Tap
 {
@@ -60,7 +61,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 lblGV_LoiChao.Text = $"Xin Chào, {Session.HoTen ?? Session.TenDangNhap}";
 
                 InitDropdowns();
-                SetupEventHandlers();
+               
 
                 // Load dữ liệu ban đầu cho các tab
                 LoadLopHocCuaToi();
@@ -397,7 +398,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 // Cập nhật lớp học cho form Đề thi theo môn học hiện tại
                 FilterLopTheoMonHoc(cboDe_MonHoc.SelectedItem?.ToString());
             }
-            catch { }
+            catch(Exception ex) {
+                MessageBox.Show(
+      "Lỗi tải danh sách lớp học:\n" + ex.Message,
+      "Lỗi",
+      MessageBoxButtons.OK,
+      MessageBoxIcon.Error);
+            }
         }
 
         private void dtGV_LopHoc_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -414,7 +421,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     if (drv["NgayBatDau"] != DBNull.Value)
                     {
                         DateTime dtStart = Convert.ToDateTime(drv["NgayBatDau"]);
-                        txtGV_NgayBatDau.Text = dtStart.ToString("yyyy-MM-dd");
+                        txtGV_NgayBatDau.Text = dtStart.ToString("dd/MM/yyyy");
                     }
                     else
                     {
@@ -424,7 +431,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     if (drv["NgayKetThuc"] != DBNull.Value)
                     {
                         DateTime dtEnd = Convert.ToDateTime(drv["NgayKetThuc"]);
-                        txtGV_NgayKetThuc.Text = dtEnd.ToString("yyyy-MM-dd");
+                        txtGV_NgayKetThuc.Text = dtEnd.ToString("dd/MM/yyyy");
                     }
                     else
                     {
@@ -466,10 +473,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             int khID = cmbGV_KhoaHoc.SelectedValue != null ? Convert.ToInt32(cmbGV_KhoaHoc.SelectedValue) : 1;
 
-            DateTime? nbd = null;
-            if (DateTime.TryParse(txtGV_NgayBatDau.Text.Trim(), out DateTime dtStart)) nbd = dtStart;
-            DateTime? nkt = null;
-            if (DateTime.TryParse(txtGV_NgayKetThuc.Text.Trim(), out DateTime dtEnd)) nkt = dtEnd;
+            if (!LayNgayLopHoc(
+                out DateTime nbd,
+                out DateTime nkt))
+            {
+                return;
+            }
 
             LopHoc lop = new LopHoc
             {
@@ -515,10 +524,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             int khID = cmbGV_KhoaHoc.SelectedValue != null ? Convert.ToInt32(cmbGV_KhoaHoc.SelectedValue) : 1;
 
-            DateTime? nbd = null;
-            if (DateTime.TryParse(txtGV_NgayBatDau.Text.Trim(), out DateTime dtStart)) nbd = dtStart;
-            DateTime? nkt = null;
-            if (DateTime.TryParse(txtGV_NgayKetThuc.Text.Trim(), out DateTime dtEnd)) nkt = dtEnd;
+            if (!KiemTraNgayLopHoc(
+                out DateTime nbd,
+                out DateTime nkt))
+            {
+                return;
+            }
 
             LopHoc lop = new LopHoc
             {
@@ -556,6 +567,122 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
             }
         }
+
+        private bool KiemTraNgayLopHoc(
+            out DateTime ngayBatDau,
+            out DateTime ngayKetThuc)
+        {
+            ngayBatDau = DateTime.MinValue;
+            ngayKetThuc = DateTime.MinValue;
+
+            string[] formats =
+            {
+        "dd/MM/yyyy",
+        "d/M/yyyy",
+        "yyyy-MM-dd"
+    };
+
+            bool hopLeBatDau = DateTime.TryParseExact(
+                txtGV_NgayBatDau.Text.Trim(),
+                formats,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out ngayBatDau);
+
+            if (!hopLeBatDau)
+            {
+                MessageBox.Show(
+                    "Ngày bắt đầu không hợp lệ!\n" +
+                    "Vui lòng nhập theo định dạng dd/MM/yyyy.",
+                    "Lỗi dữ liệu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                txtGV_NgayBatDau.Focus();
+                return false;
+            }
+
+            bool hopLeKetThuc = DateTime.TryParseExact(
+                txtGV_NgayKetThuc.Text.Trim(),
+                formats,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out ngayKetThuc);
+
+            if (!hopLeKetThuc)
+            {
+                MessageBox.Show(
+                    "Ngày kết thúc không hợp lệ!\n" +
+                    "Vui lòng nhập theo định dạng dd/MM/yyyy.",
+                    "Lỗi dữ liệu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                txtGV_NgayKetThuc.Focus();
+                return false;
+            }
+
+            if (ngayKetThuc < ngayBatDau)
+            {
+                MessageBox.Show(
+                    "Ngày kết thúc không được trước ngày bắt đầu!",
+                    "Lỗi dữ liệu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool LayNgayLopHoc(
+            out DateTime ngayBatDau,
+            out DateTime ngayKetThuc)
+        {
+            string[] dinhDang =
+            {
+        "dd/MM/yyyy",
+        "d/M/yyyy",
+        "yyyy-MM-dd"
+    };
+
+            bool ok1 = DateTime.TryParseExact(
+                txtGV_NgayBatDau.Text.Trim(),
+                dinhDang,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out ngayBatDau);
+
+            bool ok2 = DateTime.TryParseExact(
+                txtGV_NgayKetThuc.Text.Trim(),
+                dinhDang,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out ngayKetThuc);
+
+            if (!ok1 || !ok2)
+            {
+                MessageBox.Show(
+                    "Vui lòng nhập ngày bắt đầu và kết thúc " +
+                    "theo định dạng dd/MM/yyyy!",
+                    "Lỗi ngày tháng",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (ngayKetThuc < ngayBatDau)
+            {
+                MessageBox.Show(
+                    "Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu!");
+                return false;
+            }
+
+            return true;
+        }
+
+
         #endregion
 
         #region 3. Tab Duyệt Học Viên Đăng Ký
@@ -678,8 +805,21 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     dgvDanhSachDeThi.Columns[3].DataPropertyName = "TenLop";
                     dgvDanhSachDeThi.Columns[4].DataPropertyName = "SoCau";
                 }
+                // Chỉ lấy các đề thi đã có câu hỏi
+                DataTable deThiCoCauHoi = dt.Clone();
+
+                foreach (DataRow r in dt.Rows)
+                {
+                    if (r["SoCau"] != DBNull.Value &&
+                        Convert.ToInt32(r["SoCau"]) > 0)
+                    {
+                        deThiCoCauHoi.ImportRow(r);
+                    }
+                }
+
+                // Hiển thị danh sách đề thi có câu hỏi
                 dgvDanhSachDeThi.DataSource = null;
-                dgvDanhSachDeThi.DataSource = dt;
+                dgvDanhSachDeThi.DataSource = deThiCoCauHoi;
 
                 // Khôi phục lại đề thi đang chọn nếu có
                 if (currentDeID > 0)
@@ -756,83 +896,98 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void CauHinhLuoiCauHoi()
         {
-            dgvDanhSachCauHoi.AutoGenerateColumns = false;
-            dgvDanhSachCauHoi.Columns.Clear();
-
-            // 1. Cột Thứ tự (STT)
-            dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
+            dgvDanhSachCauHoi.SuspendLayout();
+            try
             {
-                Name = "colThuTu",
-                HeaderText = "STT",
-                DataPropertyName = "ThuTu",
-                Width = 60,
-                DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
-            });
+                dgvDanhSachCauHoi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
-            // 2. Cột Nội dung câu hỏi
-            dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colNoiDung",
-                HeaderText = "Nội Dung Câu Hỏi",
-                DataPropertyName = "NoiDung",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 35
-            });
+                dgvDanhSachCauHoi.AutoGenerateColumns = false;
 
-            // 3. Cột Đáp án A
-            dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colDapAnA",
-                HeaderText = "Đáp Án A",
-                DataPropertyName = "DapAnA",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 15
-            });
-
-            // 4. Cột Đáp án B
-            dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colDapAnB",
-                HeaderText = "Đáp Án B",
-                DataPropertyName = "DapAnB",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 15
-            });
-
-            // 5. Cột Đáp án C
-            dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colDapAnC",
-                HeaderText = "Đáp Án C",
-                DataPropertyName = "DapAnC",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 15
-            });
-
-            // 6. Cột Đáp án D
-            dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colDapAnD",
-                HeaderText = "Đáp Án D",
-                DataPropertyName = "DapAnD",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 15
-            });
-
-            // 7. Cột Đáp án Đúng
-            dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colDapAnDung",
-                HeaderText = "Đ.Án Đúng",
-                DataPropertyName = "DapAnDung",
-                Width = 90,
-                DefaultCellStyle = new DataGridViewCellStyle
+                dgvDanhSachCauHoi.Columns.Clear();
+                dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
                 {
-                    Alignment = DataGridViewContentAlignment.MiddleCenter,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(35, 168, 109)
-                }
-            });
+                    Name = "colThuTu",
+                    HeaderText = "STT",
+                    DataPropertyName = "ThuTu",
+                    Width = 60,
+                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
+                });
+
+                // 2. Cột Nội dung câu hỏi
+                dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = "colNoiDung",
+                    HeaderText = "Nội Dung Câu Hỏi",
+                    DataPropertyName = "NoiDung",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = 35
+                });
+
+                // 3. Cột Đáp án A
+                dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = "colDapAnA",
+                    HeaderText = "Đáp Án A",
+                    DataPropertyName = "DapAnA",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = 15
+                });
+
+                // 4. Cột Đáp án B
+                dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = "colDapAnB",
+                    HeaderText = "Đáp Án B",
+                    DataPropertyName = "DapAnB",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = 15
+                });
+
+                // 5. Cột Đáp án C
+                dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = "colDapAnC",
+                    HeaderText = "Đáp Án C",
+                    DataPropertyName = "DapAnC",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = 15
+                });
+
+                // 6. Cột Đáp án D
+                dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = "colDapAnD",
+                    HeaderText = "Đáp Án D",
+                    DataPropertyName = "DapAnD",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = 15
+                });
+
+                // 7. Cột Đáp án Đúng
+                dgvDanhSachCauHoi.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = "colDapAnDung",
+                    HeaderText = "Đ.Án Đúng",
+                    DataPropertyName = "DapAnDung",
+                    Width = 90,
+                    DefaultCellStyle = new DataGridViewCellStyle
+                    {
+                        Alignment = DataGridViewContentAlignment.MiddleCenter,
+                        Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                        ForeColor = Color.FromArgb(35, 168, 109)
+                    }
+                });
+
+
+            }
+            finally
+            {
+                dgvDanhSachCauHoi.ResumeLayout();
+            }
+
+
+           
+            
         }
 
         private void cmbGV_ChonDeThi_SelectedIndexChanged(object sender, EventArgs e)

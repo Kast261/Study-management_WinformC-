@@ -17,7 +17,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             d.DeThiID AS ""DeThiID"", 
             d.TenDeThi AS ""TenDeThi"", 
             d.MonHoc AS ""MonHoc"", 
-            COALESCE((SELECT COUNT(*) FROM CauHoi c WHERE c.DeThiID = d.DeThiID), d.SoCau, 0) AS ""SoCau"", 
+            (SELECT COUNT(*)
+                FROM CauHoi c
+                WHERE c.DeThiID = d.DeThiID) AS ""SoCau"", 
             d.ThoiGian AS ""ThoiGian"", 
             d.HanNop AS ""HanNop"", 
             l.TenLop AS ""TenLop"",
