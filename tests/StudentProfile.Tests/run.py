@@ -11,11 +11,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dotnet", default="dotnet")
     parser.add_argument("--docker-host")
+    parser.add_argument("--project", help="Optional test project; defaults to the student profile tests")
     args = parser.parse_args()
     docker = ["docker"]
     if args.docker_host:
         docker += ["--host", args.docker_host]
-    project = str(Path(__file__).with_name("StudentProfile.Tests.csproj"))
+    project = str(Path(args.project).resolve()) if args.project else str(Path(__file__).with_name("StudentProfile.Tests.csproj"))
     test_env = dict(os.environ)
     test_env["DOTNET_CLI_TELEMETRY_OPTOUT"] = "1"
     subprocess.run(

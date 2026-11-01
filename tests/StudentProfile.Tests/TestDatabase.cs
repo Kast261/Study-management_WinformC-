@@ -19,6 +19,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
     public static class DatabaseHelper
     {
         public static string ConnectionString;
+        public static NpgsqlConnection GetConnection() => new NpgsqlConnection(ConnectionString);
 
         public static DataTable ExecuteQuery(string sql, params NpgsqlParameter[] parameters)
         {
