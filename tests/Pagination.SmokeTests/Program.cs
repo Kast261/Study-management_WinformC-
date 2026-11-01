@@ -24,6 +24,7 @@ internal static class Program
             BoundTableAndExport();
             TypedModelList();
             ManualColumnsRemainBound();
+            ScrolledPageIsReplaced();
             TableLayoutAndHiddenTab();
             Console.WriteLine("PASS: " + assertions + " WinForms pagination assertions");
             return 0;
@@ -103,6 +104,9 @@ internal static class Program
             grid.Sort(grid.Columns["ID"], ListSortDirection.Descending);
             Application.DoEvents();
             Check((int)grid.Rows[0].Cells["ID"].Value == 43, "Grid sorting must include every page");
+            Click(grid, "Trang sau");
+            Check((int)grid.Rows[0].Cells["ID"].Value == 33 && grid.SortOrder == SortOrder.Descending,
+                "Replacing a page must preserve both sorted data and the grid sort direction");
             Check(DataGridViewPager.ShowItem(grid, "id", 5), "ComboBox selection on another page must be locatable");
             Check(grid.Rows.Cast<DataGridViewRow>().Any(r => (int)r.Cells["ID"].Value == 5), "Located row must be on the displayed page");
             Check((int)grid.CurrentRow.Cells["ID"].Value == 5, "CurrentRow must match the ComboBox selection, not the first row of its page");
@@ -181,6 +185,35 @@ internal static class Program
             Click(grid, "Trang sau");
             Check((int)grid.Rows[0].Cells["colID"].Value == 21, "Manual columns must remain bound on later pages");
             Check(DataGridViewPager.GetExportRows(grid, grid.Columns.Cast<DataGridViewColumn>().ToList()).Count() == 42, "Export must also support manual Designer columns");
+            form.Close();
+        }
+    }
+
+    private static void ScrolledPageIsReplaced()
+    {
+        using (var form = new Form { ClientSize = new Size(660, 245) })
+        {
+            var grid = new DataGridView { Name = "classes", Dock = DockStyle.Fill };
+            grid.DataError += (s, e) => { throw e.Exception; };
+            form.Controls.Add(grid);
+            DataGridViewPager.AttachAll(form);
+            form.Show();
+            grid.DataSource = Table(31);
+            Footer(grid).Controls.OfType<ComboBox>().Single().SelectedItem = 10;
+            Application.DoEvents();
+            grid.FirstDisplayedScrollingRowIndex = 5;
+            Click(grid, "Trang sau");
+            Check(Page(grid).Value == 2, "Next button must change the current page number");
+            Check(grid.Rows.Cast<DataGridViewRow>().Select(r => (int)r.Cells["ID"].Value).SequenceEqual(Enumerable.Range(11, 10)),
+                "Page 2 must replace page 1 with exactly IDs 11-20");
+            Check(grid.FirstDisplayedScrollingRowIndex == 0, "A new page must start at its first row even after scrolling the previous page");
+            Click(grid, "Trang trước");
+            Check((int)grid.Rows[0].Cells["ID"].Value == 1 && grid.FirstDisplayedScrollingRowIndex == 0,
+                "Previous page must also replace rows and reset scrolling");
+            grid.DataSource = Table(11);
+            Click(grid, "Trang sau");
+            Check(grid.Rows.Count == 1 && (int)grid.Rows[0].Cells["ID"].Value == 11,
+                "11 records at 10 per page must show only record 11 on page 2");
             form.Close();
         }
     }

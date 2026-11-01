@@ -149,6 +149,19 @@ namespace Pagination.Tests
         }
 
         [Fact]
+        public void RestoringSortAfterRebindingDoesNotJumpBackToPageOne()
+        {
+            using var pages = new PagedBindingList(10);
+            pages.SetSource(Table(45));
+            PropertyDescriptor property = ((ITypedList)pages).GetItemProperties(null)["ID"];
+            ((IBindingList)pages).ApplySort(property, ListSortDirection.Descending);
+            pages.GoToPage(3);
+            ((IBindingList)pages).ApplySort(property, ListSortDirection.Descending);
+            Assert.Equal(3, pages.PageNumber);
+            Assert.Equal(25, ((DataRowView)pages[0])["ID"]);
+        }
+
+        [Fact]
         public void CanLocateComboBoxSelectionOnAnotherPage()
         {
             using var pages = new PagedBindingList(10);
