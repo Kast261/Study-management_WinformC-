@@ -132,6 +132,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblHV_Ten = new System.Windows.Forms.Label();
+            this.lblHV_NgaySinh = new System.Windows.Forms.Label();
             this.tabHocVien.SuspendLayout();
             this.pageHV_TrangChu.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -1093,6 +1095,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // materialCard11
             // 
             this.materialCard11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard11.Controls.Add(this.lblHV_NgaySinh);
+            this.materialCard11.Controls.Add(this.lblHV_Ten);
             this.materialCard11.Controls.Add(this.materialLabel23);
             this.materialCard11.Controls.Add(this.materialLabel22);
             this.materialCard11.Controls.Add(this.materialLabel21);
@@ -1589,6 +1593,24 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column9.Name = "Column9";
             this.Column9.Width = 125;
             // 
+            // lblHV_Ten
+            // 
+            this.lblHV_Ten.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHV_Ten.Location = new System.Drawing.Point(28, 288);
+            this.lblHV_Ten.Name = "lblHV_Ten";
+            this.lblHV_Ten.Size = new System.Drawing.Size(312, 30);
+            this.lblHV_Ten.TabIndex = 1;
+            this.lblHV_Ten.Text = "Lương Trung Thành";
+            // 
+            // lblHV_NgaySinh
+            // 
+            this.lblHV_NgaySinh.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHV_NgaySinh.Location = new System.Drawing.Point(28, 344);
+            this.lblHV_NgaySinh.Name = "lblHV_NgaySinh";
+            this.lblHV_NgaySinh.Size = new System.Drawing.Size(312, 30);
+            this.lblHV_NgaySinh.TabIndex = 1;
+            this.lblHV_NgaySinh.Text = "16/04/2006";
+            // 
             // HocVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1751,5 +1773,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.Panel pnlHV_HomeDeThi_Buttons;
         private System.Windows.Forms.Panel pnlHV_LopDangHoc_Buttons;
         private System.Windows.Forms.Panel pnlHV_BaiThi_Buttons;
+        private System.Windows.Forms.Label lblHV_NgaySinh;
+        private System.Windows.Forms.Label lblHV_Ten;
     }
 }

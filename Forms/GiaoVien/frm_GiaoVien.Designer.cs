@@ -155,7 +155,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageGV_ThongTin = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.materialCard33 = new ReaLTaiizor.Controls.MaterialCard();
-            this.lbl_MonHoc = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblGV_BoMon = new ReaLTaiizor.Controls.MaterialLabel();
             this.lblGV_Ten = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialCard34 = new ReaLTaiizor.Controls.MaterialCard();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -2161,7 +2161,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // materialCard33
             // 
             this.materialCard33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard33.Controls.Add(this.lbl_MonHoc);
+            this.materialCard33.Controls.Add(this.lblGV_BoMon);
             this.materialCard33.Controls.Add(this.lblGV_Ten);
             this.materialCard33.Depth = 0;
             this.materialCard33.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -2174,24 +2174,24 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialCard33.Size = new System.Drawing.Size(381, 420);
             this.materialCard33.TabIndex = 3;
             // 
-            // lbl_MonHoc
+            // lblGV_BoMon
             // 
-            this.lbl_MonHoc.AutoSize = true;
-            this.lbl_MonHoc.Depth = 0;
-            this.lbl_MonHoc.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lbl_MonHoc.Location = new System.Drawing.Point(94, 311);
-            this.lbl_MonHoc.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lbl_MonHoc.Name = "lbl_MonHoc";
-            this.lbl_MonHoc.Size = new System.Drawing.Size(103, 24);
-            this.lbl_MonHoc.TabIndex = 0;
-            this.lbl_MonHoc.Text = "Lập Trình C";
+            this.lblGV_BoMon.AutoSize = true;
+            this.lblGV_BoMon.Depth = 0;
+            this.lblGV_BoMon.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblGV_BoMon.Location = new System.Drawing.Point(115, 310);
+            this.lblGV_BoMon.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblGV_BoMon.Name = "lblGV_BoMon";
+            this.lblGV_BoMon.Size = new System.Drawing.Size(103, 24);
+            this.lblGV_BoMon.TabIndex = 0;
+            this.lblGV_BoMon.Text = "Lập Trình C";
             // 
             // lblGV_Ten
             // 
             this.lblGV_Ten.AutoSize = true;
             this.lblGV_Ten.Depth = 0;
             this.lblGV_Ten.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblGV_Ten.Location = new System.Drawing.Point(64, 263);
+            this.lblGV_Ten.Location = new System.Drawing.Point(84, 275);
             this.lblGV_Ten.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.lblGV_Ten.Name = "lblGV_Ten";
             this.lblGV_Ten.Size = new System.Drawing.Size(175, 24);
@@ -3089,7 +3089,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
-        private ReaLTaiizor.Controls.MaterialLabel lbl_MonHoc;
+        private ReaLTaiizor.Controls.MaterialLabel lblGV_BoMon;
         private ReaLTaiizor.Controls.MaterialLabel lblGV_Ten;
         private ReaLTaiizor.Controls.ForeverButton btnCH_TaoDeThi;
         private System.Windows.Forms.Panel pnlDuyet_Buttons;
