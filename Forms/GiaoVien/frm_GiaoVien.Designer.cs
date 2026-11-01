@@ -196,6 +196,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel27 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel28 = new ReaLTaiizor.Controls.MaterialLabel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnCH_NhapExcel = new ReaLTaiizor.Controls.ForeverButton();
             this.materialTabControl1.SuspendLayout();
             this.pageGV_TrangChu.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
@@ -1194,6 +1195,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.tableLayoutPanel7.Controls.Add(this.btnCH_NhapExcel, 2, 0);
             this.tableLayoutPanel7.Controls.Add(this.cmbGV_MonHoc, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.txtGV_DeThi, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.txtCH_NoiDung, 0, 1);
@@ -2611,7 +2613,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridView7.Name = "dataGridView7";
             this.dataGridView7.RowHeadersWidth = 51;
             this.dataGridView7.RowTemplate.Height = 24;
-            this.dataGridView7.Size = new System.Drawing.Size(32, 0);
+            this.dataGridView7.Size = new System.Drawing.Size(32, -57);
             this.dataGridView7.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn1
@@ -2700,7 +2702,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridView8.Name = "dataGridView8";
             this.dataGridView8.RowHeadersWidth = 51;
             this.dataGridView8.RowTemplate.Height = 24;
-            this.dataGridView8.Size = new System.Drawing.Size(32, 0);
+            this.dataGridView8.Size = new System.Drawing.Size(32, -57);
             this.dataGridView8.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn4
@@ -2841,6 +2843,21 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(94, 44);
             this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // btnCH_NhapExcel
+            // 
+            this.btnCH_NhapExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCH_NhapExcel.BackColor = System.Drawing.Color.Transparent;
+            this.btnCH_NhapExcel.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
+            this.btnCH_NhapExcel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCH_NhapExcel.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnCH_NhapExcel.Location = new System.Drawing.Point(879, 12);
+            this.btnCH_NhapExcel.Name = "btnCH_NhapExcel";
+            this.btnCH_NhapExcel.Rounded = false;
+            this.btnCH_NhapExcel.Size = new System.Drawing.Size(224, 54);
+            this.btnCH_NhapExcel.TabIndex = 13;
+            this.btnCH_NhapExcel.Text = "Nhập Excel";
+            this.btnCH_NhapExcel.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             // 
             // frm_GiaoVien
             // 
@@ -3100,5 +3117,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private ReaLTaiizor.Controls.ForeverButton btnKQ_BaoCao;
         private ReaLTaiizor.Controls.MaterialTextBoxEdit btnKQ_HoTen;
         private ReaLTaiizor.Controls.ForeverButton btnKQ_TimKiem;
+        private ReaLTaiizor.Controls.ForeverButton btnCH_NhapExcel;
     }
 }
