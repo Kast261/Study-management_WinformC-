@@ -23,14 +23,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             InitializeComponent();
             this.AcceptButton = btn_DangNhap;
-            txt_TaiKhoan.TextChanged += txt_TaiKhoan_TextChanged;
+            txt_TaiKhoan.TextChanged += Txt_TaiKhoan_TextChanged;
         }
 
-        private void frm_DangNhap_Load(object sender, EventArgs e)
+        private void Frm_DangNhap_Load(object sender, EventArgs e)
         {
-            string loi;
+            if (IsDesignTime) return;
 
-            if (!DatabaseHelper.KiemTraKetNoi(out loi))
+            if (!DatabaseHelper.KiemTraKetNoi(out string loi))
             {
                
                 MessageBox.Show(
@@ -40,10 +40,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             TaiThongTinGhiNho();
         }
 
+        private bool IsDesignTime => DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime;
+
         protected override void OnVisibleChanged(EventArgs e)
         {
             base.OnVisibleChanged(e);
-            if (this.Visible)
+            if (this.Visible && !IsDesignTime)
             {
                 TaiThongTinGhiNho();
             }
@@ -51,14 +53,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void TaiThongTinGhiNho()
         {
-            var remember = _taiKhoanDAL.DocGhiNho();
-            if (!string.IsNullOrEmpty(remember.TenDangNhap))
+            var (tenDangNhap, matKhau) = _taiKhoanDAL.DocGhiNho();
+            if (!string.IsNullOrEmpty(tenDangNhap))
             {
-                txt_TaiKhoan.Text = remember.TenDangNhap;
+                txt_TaiKhoan.Text = tenDangNhap;
                 check_GhiNho.Checked = true;
-                if (!string.IsNullOrEmpty(remember.MatKhau))
+                if (!string.IsNullOrEmpty(matKhau))
                 {
-                    txt_MatKhau.Text = remember.MatKhau;
+                    txt_MatKhau.Text = matKhau;
                     txt_MatKhau.UseSystemPasswordChar = true;
                 }
                 else
@@ -68,7 +70,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void btn_DangNhap_Click(object sender, EventArgs e)
+        private void Btn_DangNhap_Click(object sender, EventArgs e)
         {
             string username = txt_TaiKhoan.Text.Trim();
             string password = txt_MatKhau.Text.Trim();
@@ -180,7 +182,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void check_GhiNho_CheckedChanged(object sender, EventArgs e)
+        private void Check_GhiNho_CheckedChanged(object sender, EventArgs e)
         {
             if (check_GhiNho.Checked)
             {
@@ -194,14 +196,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
                 else
                 {
-                    var last = _taiKhoanDAL.DocGhiNho();
-                    if (!string.IsNullOrEmpty(last.MatKhau))
+                    var (tenDangNhap, matKhau) = _taiKhoanDAL.DocGhiNho();
+                    if (!string.IsNullOrEmpty(matKhau))
                     {
                         if (string.IsNullOrEmpty(currentUsername))
                         {
-                            txt_TaiKhoan.Text = last.TenDangNhap;
+                            txt_TaiKhoan.Text = tenDangNhap;
                         }
-                        txt_MatKhau.Text = last.MatKhau;
+                        txt_MatKhau.Text = matKhau;
                         txt_MatKhau.UseSystemPasswordChar = true;
                     }
                 }
@@ -212,7 +214,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void txt_TaiKhoan_TextChanged(object sender, EventArgs e)
+        private void Txt_TaiKhoan_TextChanged(object sender, EventArgs e)
         {
             if (check_GhiNho.Checked)
             {
@@ -226,17 +228,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void materialCard1_Paint(object sender, PaintEventArgs e)
+        private void MaterialCard1_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
             txt_MatKhau.UseSystemPasswordChar = !checkBox1.Checked;
         }
 
-        private void txt_MatKhau_TextChanged(object sender, EventArgs e)
+        private void Txt_MatKhau_TextChanged(object sender, EventArgs e)
         {
             txt_MatKhau.UseSystemPasswordChar = true;
             checkBox1.Checked = false;
