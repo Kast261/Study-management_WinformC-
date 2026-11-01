@@ -6,6 +6,7 @@ using ReaLTaiizor.Manager;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -17,6 +18,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private readonly LopHocDAL _lopDAL = new LopHocDAL();
         private readonly DeThiDAL _deThiDAL = new DeThiDAL();
         private readonly KetQuaDAL _ketQuaDAL = new KetQuaDAL();
+        private readonly HocSinhDAL _hocSinhDAL = new HocSinhDAL();
+        private readonly TaiKhoanDAL _taiKhoanDAL = new TaiKhoanDAL();
 
         private int _selectedLopDangKyID = 0;
         private int _selectedLopDangHocID = 0;
@@ -28,6 +31,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         public HocVien()
         {
             InitializeComponent();
+            KhoiTaoHoSoCaNhan();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
@@ -36,12 +40,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void HocVien_Load(object sender, EventArgs e)
         {
+            tabHocVien.SelectedIndexChanged += TabHocVien_SelectedIndexChanged;
+            if (!LoadThongTinHocVien()) return;
             try
             {
-                tabHocVien.SelectedIndexChanged += TabHocVien_SelectedIndexChanged;
-
                 ConfigureDataGrids();
-                LoadThongTinHocVien();
                 LoadLopHoc();
                 LoadDanhSachDeThi();
                 LoadLichSuThi();
@@ -59,9 +62,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (foreverButton6 != null) foreverButton6.Click += btnDangKyLop_Click;
                 if (btnHV_DangKy != null) btnHV_DangKy.Click += btnDangKyLop_Click;
                 if (btnHV_HuyDangKi != null) btnHV_HuyDangKi.Click += btnHV_HuyDangKi_Click;
-
-                // Sự kiện lưu hồ sơ cá nhân
-                if (btnHV_LuuProfile != null) btnHV_LuuProfile.Click += btnHV_LuuProfile_Click;
 
                 // Sự kiện lọc môn học và các nút Bài Thi
                 if (cboHV_LocMonHoc != null) cboHV_LocMonHoc.SelectedIndexChanged += cboHV_LocMonHoc_SelectedIndexChanged;
@@ -263,26 +263,84 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LoadDanhSachDeThi();
         }
 
-        private void LoadThongTinHocVien()
+        private void KhoiTaoHoSoCaNhan()
         {
-            try
+            cboHV_Profile_GioiTinh.Items.Clear();
+            cboHV_Profile_GioiTinh.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
+            cboHV_Profile_GioiTinh.SelectedIndex = -1;
+            txtHV_Profile_HoTen.MaxLength = 100;
+            txtHV_Profile_Email.MaxLength = 100;
+            txtHV_Profile_SDT.MaxLength = 10;
+            txtHV_Profile_DiaChi.MaxLength = 255;
+            txtHV_Profile_NgaySinh.MaxLength = 10;
+            txtHV_Profile_NgaySinh.Clear();
+            txtHV_Profile_HienThiTen.Text = string.Empty;
+            txtHV_Profile_HTNTNS.Text = string.Empty;
+            txtHV_MatKhauCu.Clear();
+            txtHV_MatKhauMoi.Clear();
+            txtHV_XacNhanMatKhau.Clear();
+            btnHV_LuuProfile.Enabled = false;
+            btnHV_DoiMatKhau.Enabled = false;
+        }
+
+        private bool CoPhienHocSinhHopLe()
+        {
+            return Session.IsHocSinh && Session.TaiKhoanID > 0;
+        }
+
+        private void HienThiHoSo(HocSinh hs)
+        {
+            string ngaySinh = hs.NgaySinh?.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) ?? "";
+            txtHV_Profile_HoTen.Text = hs.HoTen ?? "";
+            txtHV_Profile_NgaySinh.Text = ngaySinh;
+            txtHV_Profile_Email.Text = hs.Email ?? "";
+            txtHV_Profile_SDT.Text = hs.SoDienThoai ?? "";
+            txtHV_Profile_DiaChi.Text = hs.DiaChi ?? "";
+            cboHV_Profile_GioiTinh.SelectedIndex = -1;
+            foreach (object item in cboHV_Profile_GioiTinh.Items)
             {
-                if (Session.NguoiDungID > 0)
+                if (string.Equals(item.ToString(), hs.GioiTinh?.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
-                    HocSinh hs = new HocSinhDAL().LayTheoID(Session.NguoiDungID);
-                    if (hs != null)
-                    {
-                        txtHV_Profile_HoTen.Text = hs.HoTen;
-                        txtHV_Profile_Email.Text = hs.Email;
-                        txtHV_Profile_SDT.Text = hs.SoDienThoai;
-                        txtHV_Profile_DiaChi.Text = hs.DiaChi;
-                        if (hs.NgaySinh.HasValue)
-                            txtHV_Profile_NgaySinh.Text = hs.NgaySinh.Value.ToString("dd/MM/yyyy");
-                        cboHV_Profile_GioiTinh.SelectedItem = hs.GioiTinh;
-                    }
+                    cboHV_Profile_GioiTinh.SelectedItem = item;
+                    break;
                 }
             }
-            catch { }
+
+            Session.HoTen = hs.HoTen;
+            txtHV_Profile_HienThiTen.Text = hs.HoTen ?? "";
+            txtHV_Profile_HTNTNS.Text = ngaySinh;
+            lblHV_LoiChao.Text = "Xin chào, " + hs.HoTen;
+        }
+
+        private bool LoadThongTinHocVien()
+        {
+            btnHV_LuuProfile.Enabled = false;
+            btnHV_DoiMatKhau.Enabled = CoPhienHocSinhHopLe();
+            if (!CoPhienHocSinhHopLe())
+            {
+                MessageBox.Show("Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.", "Thông báo");
+                return false;
+            }
+
+            try
+            {
+                HocSinh hs = _hocSinhDAL.LayTheoTaiKhoan(Session.TaiKhoanID);
+                if (hs == null)
+                {
+                    MessageBox.Show("Không tìm thấy hồ sơ học sinh được liên kết với tài khoản. Vui lòng liên hệ quản trị viên.", "Thông báo");
+                    return false;
+                }
+
+                Session.NguoiDungID = hs.HocSinhID;
+                HienThiHoSo(hs);
+                btnHV_LuuProfile.Enabled = true;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải hồ sơ học sinh: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
 
         private void LoadLopHoc()
@@ -407,19 +465,44 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void btnHV_LuuProfile_Click(object sender, EventArgs e)
+        private void BtnHV_LuuProfile_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtHV_Profile_HoTen.Text))
+            if (!CoPhienHocSinhHopLe() || Session.NguoiDungID <= 0)
             {
-                MessageBox.Show("Họ tên không được để trống!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Không xác định được hồ sơ học sinh. Vui lòng đăng nhập lại.", "Thông báo");
                 return;
             }
 
-            DateTime? ngaySinh = null;
-            if (!string.IsNullOrWhiteSpace(txtHV_Profile_NgaySinh.Text) &&
-                DateTime.TryParse(txtHV_Profile_NgaySinh.Text.Trim(), out DateTime dt))
+            if (string.IsNullOrWhiteSpace(txtHV_Profile_HoTen.Text))
             {
-                ngaySinh = dt;
+                MessageBox.Show("Họ tên không được để trống!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_Profile_HoTen.Focus();
+                return;
+            }
+
+            if (!Validation.IsValidProfileBirthDate(txtHV_Profile_NgaySinh.Text, out DateTime? ngaySinh, out string loi))
+            {
+                MessageBox.Show(loi, "Ngày sinh không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_Profile_NgaySinh.Focus();
+                return;
+            }
+            if (cboHV_Profile_GioiTinh.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn giới tính.", "Thông báo");
+                cboHV_Profile_GioiTinh.Focus();
+                return;
+            }
+            if (!Validation.IsValidEmail(txtHV_Profile_Email.Text, out loi))
+            {
+                MessageBox.Show(loi, "Email không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_Profile_Email.Focus();
+                return;
+            }
+            if (!Validation.IsValidPhone(txtHV_Profile_SDT.Text, out loi))
+            {
+                MessageBox.Show(loi, "Số điện thoại không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHV_Profile_SDT.Focus();
+                return;
             }
 
             HocSinh hs = new HocSinh
@@ -433,14 +516,65 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 NgaySinh = ngaySinh
             };
 
-            if (new HocSinhDAL().Sua(hs))
+            btnHV_LuuProfile.Enabled = false;
+            try
             {
+                if (!_hocSinhDAL.CapNhatHoSoCaNhan(Session.TaiKhoanID, hs))
+                {
+                    MessageBox.Show("Không thể cập nhật hồ sơ. Tài khoản hoặc liên kết học sinh có thể đã thay đổi. Vui lòng đăng nhập lại.", "Thông báo");
+                    return;
+                }
+                HienThiHoSo(hs);
                 MessageBox.Show("Cập nhật thông tin thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Session.HoTen = hs.HoTen;
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Cập nhật thông tin thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể lưu hồ sơ: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnHV_LuuProfile.Enabled = CoPhienHocSinhHopLe();
+            }
+        }
+
+        private void BtnHV_DoiMatKhau_Click(object sender, EventArgs e)
+        {
+            if (!CoPhienHocSinhHopLe())
+            {
+                MessageBox.Show("Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.", "Thông báo");
+                return;
+            }
+
+            string matKhauCu = txtHV_MatKhauCu.Text;
+            string matKhauMoi = txtHV_MatKhauMoi.Text;
+            if (!Validation.IsValidPasswordChange(matKhauCu, matKhauMoi, txtHV_XacNhanMatKhau.Text, out string loi))
+            {
+                MessageBox.Show(loi, "Thông tin mật khẩu không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            btnHV_DoiMatKhau.Enabled = false;
+            try
+            {
+                if (!_taiKhoanDAL.DoiMatKhauCaNhan(Session.TaiKhoanID, matKhauCu, matKhauMoi))
+                {
+                    MessageBox.Show("Mật khẩu hiện tại không đúng hoặc tài khoản đã thay đổi. Vui lòng kiểm tra lại.", "Không thể đổi mật khẩu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                _taiKhoanDAL.XoaGhiNho(Session.TenDangNhap);
+                txtHV_MatKhauCu.Clear();
+                txtHV_MatKhauMoi.Clear();
+                txtHV_XacNhanMatKhau.Clear();
+                MessageBox.Show("Đổi mật khẩu thành công. Hãy dùng mật khẩu mới trong lần đăng nhập tiếp theo.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể đổi mật khẩu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnHV_DoiMatKhau.Enabled = CoPhienHocSinhHopLe();
             }
         }
 

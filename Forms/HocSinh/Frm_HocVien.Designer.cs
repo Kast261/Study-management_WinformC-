@@ -132,8 +132,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lblHV_Ten = new System.Windows.Forms.Label();
-            this.lblHV_NgaySinh = new System.Windows.Forms.Label();
+            this.txtHV_Profile_HienThiTen = new System.Windows.Forms.Label();
+            this.txtHV_Profile_HTNTNS = new System.Windows.Forms.Label();
             this.tabHocVien.SuspendLayout();
             this.pageHV_TrangChu.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -1095,8 +1095,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // materialCard11
             // 
             this.materialCard11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard11.Controls.Add(this.lblHV_NgaySinh);
-            this.materialCard11.Controls.Add(this.lblHV_Ten);
+            this.materialCard11.Controls.Add(this.txtHV_Profile_HTNTNS);
+            this.materialCard11.Controls.Add(this.txtHV_Profile_HienThiTen);
             this.materialCard11.Controls.Add(this.materialLabel23);
             this.materialCard11.Controls.Add(this.materialLabel22);
             this.materialCard11.Controls.Add(this.materialLabel21);
@@ -1228,6 +1228,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.btnHV_LuuProfile.TabIndex = 4;
             this.btnHV_LuuProfile.Text = "Lưu Thay Đổi";
             this.btnHV_LuuProfile.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.btnHV_LuuProfile.Click += new System.EventHandler(this.BtnHV_LuuProfile_Click);
             // 
             // txtHV_Profile_NgaySinh
             // 
@@ -1240,7 +1241,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_Profile_NgaySinh.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtHV_Profile_NgaySinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtHV_Profile_NgaySinh.HideSelection = true;
-            this.txtHV_Profile_NgaySinh.Hint = "Ngày Sinh";
+            this.txtHV_Profile_NgaySinh.Hint = "Ngày sinh (dd/MM/yyyy)";
             this.txtHV_Profile_NgaySinh.LeadingIcon = null;
             this.txtHV_Profile_NgaySinh.Location = new System.Drawing.Point(549, 3);
             this.txtHV_Profile_NgaySinh.MaxLength = 32767;
@@ -1257,7 +1258,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_Profile_NgaySinh.Size = new System.Drawing.Size(541, 60);
             this.txtHV_Profile_NgaySinh.TabIndex = 1;
             this.txtHV_Profile_NgaySinh.TabStop = false;
-            this.txtHV_Profile_NgaySinh.Text = "materialTextBoxEdit1";
+            this.txtHV_Profile_NgaySinh.Text = "";
             this.txtHV_Profile_NgaySinh.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_Profile_NgaySinh.TrailingIcon = null;
             this.txtHV_Profile_NgaySinh.UseSystemPasswordChar = false;
@@ -1392,7 +1393,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel25.Name = "materialLabel25";
             this.materialLabel25.Size = new System.Drawing.Size(147, 24);
             this.materialLabel25.TabIndex = 0;
-            this.materialLabel25.Text = "materialLabel25";
+            this.materialLabel25.Text = "Cập nhật hồ sơ";
             // 
             // materialCard13
             // 
@@ -1456,7 +1457,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_MatKhauCu.TabStop = false;
             this.txtHV_MatKhauCu.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_MatKhauCu.TrailingIcon = null;
-            this.txtHV_MatKhauCu.UseSystemPasswordChar = false;
+            this.txtHV_MatKhauCu.UseSystemPasswordChar = true;
             // 
             // btnHV_DoiMatKhau
             // 
@@ -1472,6 +1473,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.btnHV_DoiMatKhau.TabIndex = 5;
             this.btnHV_DoiMatKhau.Text = "Đổi Mật Khẩu";
             this.btnHV_DoiMatKhau.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.btnHV_DoiMatKhau.Click += new System.EventHandler(this.BtnHV_DoiMatKhau_Click);
             // 
             // txtHV_MatKhauMoi
             // 
@@ -1503,7 +1505,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_MatKhauMoi.TabStop = false;
             this.txtHV_MatKhauMoi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_MatKhauMoi.TrailingIcon = null;
-            this.txtHV_MatKhauMoi.UseSystemPasswordChar = false;
+            this.txtHV_MatKhauMoi.UseSystemPasswordChar = true;
             // 
             // txtHV_XacNhanMatKhau
             // 
@@ -1535,7 +1537,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_XacNhanMatKhau.TabStop = false;
             this.txtHV_XacNhanMatKhau.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_XacNhanMatKhau.TrailingIcon = null;
-            this.txtHV_XacNhanMatKhau.UseSystemPasswordChar = false;
+            this.txtHV_XacNhanMatKhau.UseSystemPasswordChar = true;
             // 
             // materialLabel20
             // 
@@ -1593,23 +1595,23 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column9.Name = "Column9";
             this.Column9.Width = 125;
             // 
-            // lblHV_Ten
+            // txtHV_Profile_HienThiTen
             // 
-            this.lblHV_Ten.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHV_Ten.Location = new System.Drawing.Point(28, 288);
-            this.lblHV_Ten.Name = "lblHV_Ten";
-            this.lblHV_Ten.Size = new System.Drawing.Size(312, 30);
-            this.lblHV_Ten.TabIndex = 1;
-            this.lblHV_Ten.Text = "Lương Trung Thành";
+            this.txtHV_Profile_HienThiTen.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHV_Profile_HienThiTen.Location = new System.Drawing.Point(28, 288);
+            this.txtHV_Profile_HienThiTen.Name = "txtHV_Profile_HienThiTen";
+            this.txtHV_Profile_HienThiTen.Size = new System.Drawing.Size(312, 30);
+            this.txtHV_Profile_HienThiTen.TabIndex = 1;
+            this.txtHV_Profile_HienThiTen.Text = "";
             // 
-            // lblHV_NgaySinh
+            // txtHV_Profile_HTNTNS
             // 
-            this.lblHV_NgaySinh.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHV_NgaySinh.Location = new System.Drawing.Point(28, 344);
-            this.lblHV_NgaySinh.Name = "lblHV_NgaySinh";
-            this.lblHV_NgaySinh.Size = new System.Drawing.Size(312, 30);
-            this.lblHV_NgaySinh.TabIndex = 1;
-            this.lblHV_NgaySinh.Text = "16/04/2006";
+            this.txtHV_Profile_HTNTNS.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHV_Profile_HTNTNS.Location = new System.Drawing.Point(28, 344);
+            this.txtHV_Profile_HTNTNS.Name = "txtHV_Profile_HTNTNS";
+            this.txtHV_Profile_HTNTNS.Size = new System.Drawing.Size(312, 30);
+            this.txtHV_Profile_HTNTNS.TabIndex = 1;
+            this.txtHV_Profile_HTNTNS.Text = "";
             // 
             // HocVien
             // 
@@ -1773,7 +1775,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.Panel pnlHV_HomeDeThi_Buttons;
         private System.Windows.Forms.Panel pnlHV_LopDangHoc_Buttons;
         private System.Windows.Forms.Panel pnlHV_BaiThi_Buttons;
-        private System.Windows.Forms.Label lblHV_NgaySinh;
-        private System.Windows.Forms.Label lblHV_Ten;
+        private System.Windows.Forms.Label txtHV_Profile_HTNTNS;
+        private System.Windows.Forms.Label txtHV_Profile_HienThiTen;
     }
 }

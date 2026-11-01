@@ -109,6 +109,41 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             return true;
         }
 
+        public static bool IsValidProfileBirthDate(string input, out DateTime? validDate, out string errorMessage)
+        {
+            validDate = null;
+            if (!DateTime.TryParseExact(input?.Trim(), new[] { "d/M/yyyy", "dd/MM/yyyy" },
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
+            {
+                errorMessage = "Vui lòng nhập ngày sinh hợp lệ theo định dạng dd/MM/yyyy.";
+                return false;
+            }
+
+            return IsValidBirthDate(date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+                out validDate, out errorMessage);
+        }
+
+        public static bool IsValidPasswordChange(string oldPassword, string newPassword,
+            string confirmation, out string errorMessage)
+        {
+            if (string.IsNullOrWhiteSpace(oldPassword))
+                errorMessage = "Vui lòng nhập mật khẩu hiện tại.";
+            else if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 6)
+                errorMessage = "Mật khẩu mới phải có ít nhất 6 ký tự.";
+            else if (!string.Equals(newPassword, newPassword.Trim(), StringComparison.Ordinal))
+                errorMessage = "Mật khẩu mới không được có khoảng trắng ở đầu hoặc cuối.";
+            else if (!string.Equals(newPassword, confirmation, StringComparison.Ordinal))
+                errorMessage = "Xác nhận mật khẩu không khớp với mật khẩu mới.";
+            else if (string.Equals(oldPassword, newPassword, StringComparison.Ordinal))
+                errorMessage = "Mật khẩu mới phải khác mật khẩu hiện tại.";
+            else
+            {
+                errorMessage = string.Empty;
+                return true;
+            }
+            return false;
+        }
+
         public static bool IsValidBirthDate(string dateStr)
         {
             return IsValidBirthDate(dateStr, out _, out _);

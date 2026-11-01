@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="all" />
+    <PackageReference Include="Npgsql" Version="6.0.11" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../DAL/Repositories/HocSinhDAL.cs" Link="Production/HocSinhDAL.cs" />
+    <Compile Include="../../DAL/Repositories/TaiKhoanDAL.cs" Link="Production/TaiKhoanDAL.cs" />
+    <Compile Include="../../Models/Entities/HocSinh.cs" Link="Production/HocSinh.cs" />
+    <Compile Include="../../Models/Entities/TaiKhoan.cs" Link="Production/TaiKhoan.cs" />
+    <Compile Include="../../Helpers/Validation/Validation.cs" Link="Production/Validation.cs" />
+    <Compile Include="../../Helpers/Security/Passwords.cs" Link="Production/Passwords.cs" />
+  </ItemGroup>
+</Project>
