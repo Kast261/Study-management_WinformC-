@@ -60,7 +60,7 @@
             this.materialCard1.Padding = new System.Windows.Forms.Padding(17);
             this.materialCard1.Size = new System.Drawing.Size(673, 511);
             this.materialCard1.TabIndex = 0;
-            this.materialCard1.Paint += new System.Windows.Forms.PaintEventHandler(this.materialCard1_Paint);
+            this.materialCard1.Paint += new System.Windows.Forms.PaintEventHandler(this.MaterialCard1_Paint);
             // 
             // checkBox1
             // 
@@ -70,7 +70,7 @@
             this.checkBox1.Size = new System.Drawing.Size(18, 17);
             this.checkBox1.TabIndex = 7;
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
             // 
             // labelEdit2
             // 
@@ -127,7 +127,7 @@
             this.btn_DangNhap.Type = ReaLTaiizor.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btn_DangNhap.UseAccentColor = false;
             this.btn_DangNhap.UseVisualStyleBackColor = true;
-            this.btn_DangNhap.Click += new System.EventHandler(this.btn_DangNhap_Click);
+            this.btn_DangNhap.Click += new System.EventHandler(this.Btn_DangNhap_Click);
             // 
             // check_GhiNho
             // 
@@ -145,7 +145,7 @@
             this.check_GhiNho.Text = "Ghi Nhớ Đăng Nhập";
             this.check_GhiNho.UseAccentColor = false;
             this.check_GhiNho.UseVisualStyleBackColor = true;
-            this.check_GhiNho.CheckedChanged += new System.EventHandler(this.check_GhiNho_CheckedChanged);
+            this.check_GhiNho.CheckedChanged += new System.EventHandler(this.Check_GhiNho_CheckedChanged);
             // 
             // txt_MatKhau
             // 
@@ -177,7 +177,7 @@
             this.txt_MatKhau.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txt_MatKhau.TrailingIcon = null;
             this.txt_MatKhau.UseSystemPasswordChar = false;
-            this.txt_MatKhau.TextChanged += new System.EventHandler(this.txt_MatKhau_TextChanged);
+            this.txt_MatKhau.TextChanged += new System.EventHandler(this.Txt_MatKhau_TextChanged);
             // 
             // txt_TaiKhoan
             // 
@@ -219,7 +219,7 @@
             this.Controls.Add(this.materialCard1);
             this.Name = "frm_DangNhap";
             this.Text = "Đăng Nhập";
-            this.Load += new System.EventHandler(this.frm_DangNhap_Load);
+            this.Load += new System.EventHandler(this.Frm_DangNhap_Load);
             this.materialCard1.ResumeLayout(false);
             this.materialCard1.PerformLayout();
             this.ResumeLayout(false);
