@@ -36,9 +36,24 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             this.DoubleBuffered = true;
             InitializeComponent();
+            DataGridViewPager.AttachAll(this, KhiDoiTrang);
             this.DrawerTabControl = materialTabControl1;
 
             this.FormClosed += Frm_Admin_FormClosed;
+        }
+
+        private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
+        {
+            if (grid == dgvGiaoVien) _selectedGiaoVienID = 0;
+            if (grid == dgvHocVien) _selectedHocVienID = 0;
+            if (grid == dgvKhoaHoc) _selectedKhoaHocID = 0;
+            if (grid == dgvLopHoc) _selectedLopHocID = 0;
+            if (grid == dgvTaiKhoan)
+            {
+                _selectedTaiKhoanID = 0;
+                _selectedTrangThaiKhoa = false;
+                UpdateNutKhoaMoKhoa();
+            }
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
