@@ -26,3 +26,7 @@ Các bài kiểm thử này không cần kết nối cơ sở dữ liệu. Phân
 DataTable/DataView/danh sách đã tải, mặc định 20 dòng/trang. Kết quả xuất Excel
 và CSV vẫn bao gồm toàn bộ dữ liệu sau lọc và sắp xếp. Bố cục ReaLTaiizor và
 Windows Forms Designer vẫn cần được kiểm tra trực tiếp trong Visual Studio.
+
+Kiểm thử giao diện cũng kiểm tra trường hợp cuộn xuống ở trang trước rồi bấm
+trang sau: dữ liệu phải được thay hoàn toàn và vị trí cuộn trở về dòng đầu.
+Với 11 dòng và kích thước trang là 10, trang 2 chỉ chứa dòng thứ 11.

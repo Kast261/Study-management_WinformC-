@@ -149,6 +149,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
         protected override ListSortDirection SortDirectionCore => sortDirection;
         protected override void ApplySortCore(PropertyDescriptor property, ListSortDirection direction)
         {
+            if (sortProperty != null && string.Equals(sortProperty.Name, property.Name, StringComparison.OrdinalIgnoreCase)
+                && sortDirection == direction) return;
             sortProperty = property;
             sortDirection = direction;
             RefreshSource(true, PageChangeReason.Sort);

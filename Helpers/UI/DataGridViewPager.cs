@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
@@ -14,17 +15,29 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             = new ConditionalWeakTable<DataGridView, DataGridViewPager>();
         private readonly DataGridView grid;
         private readonly PagedBindingList rows = new PagedBindingList();
-        private readonly Button first = MakeButton("|<", "Trang đầu");
-        private readonly Button previous = MakeButton("<", "Trang trước");
-        private readonly Button next = MakeButton(">", "Trang sau");
-        private readonly Button last = MakeButton(">|", "Trang cuối");
-        private readonly NumericUpDown page = new NumericUpDown { Width = 54, Minimum = 0, Maximum = 0 };
-        private readonly ComboBox size = new ComboBox { Width = 55, DropDownStyle = ComboBoxStyle.DropDownList };
-        private readonly Label summary = new Label { AutoSize = true, Margin = new Padding(3, 7, 3, 0) };
+        private readonly Button first = MakeButton("«", "Trang đầu");
+        private readonly Button previous = MakeButton("‹", "Trang trước");
+        private readonly Button next = MakeButton("›", "Trang sau");
+        private readonly Button last = MakeButton("»", "Trang cuối");
+        private readonly NumericUpDown page = new NumericUpDown
+        {
+            Width = 60, Minimum = 0, Maximum = 0, TextAlign = HorizontalAlignment.Center,
+            BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(4, 5, 4, 0), CausesValidation = false
+        };
+        private readonly ComboBox size = new ComboBox
+        {
+            Width = 66, DropDownStyle = ComboBoxStyle.DropDownList,
+            Margin = new Padding(4, 5, 4, 0), CausesValidation = false
+        };
+        private readonly Label summary = new Label { AutoSize = true, Margin = new Padding(4, 9, 6, 0) };
+        private readonly Font toolbarFont = new Font(SystemFonts.MessageBoxFont.FontFamily, 10F);
+        private readonly Font navigationFont = new Font(SystemFonts.MessageBoxFont.FontFamily, 16F, FontStyle.Bold);
+        private readonly ToolTip tips = new ToolTip { InitialDelay = 350, ShowAlways = true };
         private readonly Action<DataGridView, PageChangeReason> changed;
         private bool updating;
         private bool rebinding;
         private bool preserveSelection;
+        private int? pendingScrollRow;
 
         private DataGridViewPager(DataGridView grid, Action<DataGridView, PageChangeReason> changed)
         {
@@ -35,22 +48,28 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             {
                 Name = grid.Name + "_Pagination",
                 Dock = DockStyle.Bottom,
-                Height = 52,
+                Height = 68,
                 WrapContents = false,
                 AutoScroll = true,
-                Padding = new Padding(3),
-                BackColor = SystemColors.Control,
-                Font = SystemFonts.MessageBoxFont
+                Padding = new Padding(6, 8, 6, 4),
+                BackColor = Color.FromArgb(245, 248, 247),
+                ForeColor = Color.FromArgb(45, 65, 55),
+                Font = toolbarFont
             };
+            foreach (Button button in new[] { first, previous, next, last })
+            {
+                button.Font = navigationFont;
+                tips.SetToolTip(button, button.AccessibleName);
+            }
             size.Items.AddRange(new object[] { 10, 20, 50, 100 });
             size.SelectedItem = 20;
             page.AccessibleName = "Số trang";
             size.AccessibleName = "Số dòng mỗi trang";
             toolbar.Controls.AddRange(new Control[]
             {
-                first, previous, new Label { Text = "Trang", AutoSize = true, Margin = new Padding(3, 7, 0, 0) },
+                first, previous, new Label { Text = "Trang", AutoSize = true, Margin = new Padding(6, 9, 0, 0) },
                 page, summary, next, last, size,
-                new Label { Text = "dòng/trang", AutoSize = true, Margin = new Padding(0, 7, 3, 0) }
+                new Label { Text = "dòng/trang", AutoSize = true, Margin = new Padding(0, 9, 3, 0) }
             });
             WrapGrid(grid, toolbar);
 
@@ -63,13 +82,18 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             rows.PageChanged += PageChanged;
             grid.DataSourceChanged += DataSourceChanged;
             grid.DataBindingComplete += DataBindingComplete;
+            grid.VisibleChanged += GridVisibleChanged;
             grid.Disposed += GridDisposed;
             BindSource();
         }
 
         private static Button MakeButton(string text, string accessibleName)
         {
-            return new Button { Text = text, AccessibleName = accessibleName, Width = 32, Height = 26 };
+            return new PaginationButton
+            {
+                Text = text, AccessibleName = accessibleName, Width = 42, Height = 36,
+                Margin = new Padding(2, 0, 2, 0), Cursor = Cursors.Hand, CausesValidation = false
+            };
         }
 
         private static void WrapGrid(DataGridView grid, Control toolbar)
@@ -149,11 +173,53 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             }
             finally { rebinding = false; }
             ClearSelection();
+            ScrollToRow(0);
         }
 
         private void DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            if (!rebinding && !preserveSelection) ClearSelection();
+            if (!rebinding && !preserveSelection)
+            {
+                ClearSelection();
+                if (pendingScrollRow.HasValue) ScrollToRow(pendingScrollRow.Value);
+            }
+        }
+
+        private void GridVisibleChanged(object sender, EventArgs e)
+        {
+            if (pendingScrollRow.HasValue) ScrollToRow(pendingScrollRow.Value);
+        }
+
+        private void ScrollToRow(int index)
+        {
+            pendingScrollRow = index;
+            if (!grid.Visible || !grid.IsHandleCreated || grid.Rows.Count == 0) return;
+            int target = Math.Max(0, Math.Min(index, grid.Rows.Count - 1));
+            while (target < grid.Rows.Count && (!grid.Rows[target].Visible || grid.Rows[target].Frozen)) target++;
+            if (target < grid.Rows.Count) grid.FirstDisplayedScrollingRowIndex = target;
+            grid.HorizontalScrollingOffset = 0;
+            pendingScrollRow = null;
+        }
+
+        private void ReplaceDisplayedPage()
+        {
+            if (rebinding) return;
+            rebinding = true;
+            try
+            {
+                // Recreate the grid's binding/currency manager for this slice.
+                // This also discards the previous page's cached rows and scroll position.
+                grid.DataSource = null;
+                grid.DataSource = rows;
+                IBindingList sorted = rows;
+                if (sorted.IsSorted)
+                {
+                    DataGridViewColumn column = grid.Columns.Cast<DataGridViewColumn>().FirstOrDefault(
+                        c => string.Equals(c.DataPropertyName, sorted.SortProperty.Name, StringComparison.OrdinalIgnoreCase));
+                    if (column != null) grid.Sort(column, sorted.SortDirection);
+                }
+            }
+            finally { rebinding = false; }
         }
 
         private void ClearSelection()
@@ -164,6 +230,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
 
         private void PageChanged(object sender, PageChangedEventArgs e)
         {
+            ReplaceDisplayedPage();
             updating = true;
             try
             {
@@ -172,11 +239,15 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
                 page.Value = rows.PageNumber;
                 page.Minimum = rows.PageCount == 0 ? 0 : 1;
                 page.Enabled = rows.PageCount > 0;
-                summary.Text = $"/ {rows.PageCount} · {rows.TotalCount:N0} dòng";
+                int start = rows.TotalCount == 0 ? 0 : rows.StartIndex + 1;
+                int end = rows.StartIndex + rows.Count;
+                summary.Text = $"/ {rows.PageCount} · {start:N0}–{end:N0}/{rows.TotalCount:N0} dòng";
+                tips.SetToolTip(summary, $"Đang hiển thị dòng {start:N0} đến {end:N0} trên tổng {rows.TotalCount:N0} dòng");
                 first.Enabled = previous.Enabled = rows.PageNumber > 1;
                 next.Enabled = last.Enabled = rows.PageNumber < rows.PageCount;
             }
             finally { updating = false; }
+            ScrollToRow(0);
             if (!preserveSelection)
             {
                 if (!rebinding) ClearSelection();
@@ -203,7 +274,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
                             grid.ClearSelection();
                             grid.CurrentCell = row.Cells[column.Index];
                             row.Selected = true;
-                            grid.FirstDisplayedScrollingRowIndex = row.Index;
+                            pager.ScrollToRow(row.Index);
                         }
                         return true;
                     }
@@ -234,10 +305,59 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
         {
             grid.DataSourceChanged -= DataSourceChanged;
             grid.DataBindingComplete -= DataBindingComplete;
+            grid.VisibleChanged -= GridVisibleChanged;
             grid.Disposed -= GridDisposed;
             rows.PageChanged -= PageChanged;
             rows.Dispose();
+            tips.Dispose();
+            toolbarFont.Dispose();
+            navigationFont.Dispose();
             pagers.Remove(grid);
+        }
+
+        private sealed class PaginationButton : Button
+        {
+            private bool hovered;
+            private bool pressed;
+
+            public PaginationButton()
+            {
+                SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint
+                    | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+                FlatStyle = FlatStyle.Flat;
+                FlatAppearance.BorderSize = 0;
+                UseVisualStyleBackColor = false;
+            }
+
+            protected override void OnMouseEnter(EventArgs e) { hovered = true; Invalidate(); base.OnMouseEnter(e); }
+            protected override void OnMouseLeave(EventArgs e) { hovered = pressed = false; Invalidate(); base.OnMouseLeave(e); }
+            protected override void OnMouseDown(MouseEventArgs e) { pressed = e.Button == MouseButtons.Left; Invalidate(); base.OnMouseDown(e); }
+            protected override void OnMouseUp(MouseEventArgs e) { pressed = false; Invalidate(); base.OnMouseUp(e); }
+            protected override void OnEnabledChanged(EventArgs e) { hovered = pressed = false; Invalidate(); base.OnEnabledChanged(e); }
+
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                e.Graphics.Clear(Parent?.BackColor ?? SystemColors.Control);
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                Color fill = !Enabled ? Color.FromArgb(227, 234, 230)
+                    : pressed ? Color.FromArgb(17, 112, 73)
+                    : hovered ? Color.FromArgb(21, 144, 94) : Color.FromArgb(35, 168, 109);
+                using (var shape = new GraphicsPath())
+                {
+                    const int diameter = 14;
+                    shape.AddArc(0, 0, diameter, diameter, 180, 90);
+                    shape.AddArc(Width - diameter - 1, 0, diameter, diameter, 270, 90);
+                    shape.AddArc(Width - diameter - 1, Height - diameter - 1, diameter, diameter, 0, 90);
+                    shape.AddArc(0, Height - diameter - 1, diameter, diameter, 90, 90);
+                    shape.CloseFigure();
+                    using (var brush = new SolidBrush(fill)) e.Graphics.FillPath(brush, shape);
+                }
+                TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle,
+                    Enabled ? Color.White : Color.FromArgb(146, 160, 152),
+                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
+                if (Focused && ShowFocusCues)
+                    ControlPaint.DrawFocusRectangle(e.Graphics, Rectangle.Inflate(ClientRectangle, -5, -5));
+            }
         }
     }
 }
