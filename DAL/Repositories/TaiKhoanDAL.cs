@@ -293,6 +293,35 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
 
+        public bool DoiMatKhauCaNhan(int taiKhoanID, string matKhauCu, string matKhauMoi)
+        {
+            if (!Validation.IsValidPasswordChange(matKhauCu, matKhauMoi, matKhauMoi, out _))
+                return false;
+
+            string dieuKien = @"TaiKhoanID = @id
+                AND LOWER(VaiTro) IN ('hocsinh', 'hocvien')
+                AND COALESCE(TrangThaiKhoa, FALSE) = FALSE";
+            object result = DatabaseHelper.ExecuteScalar(
+                "SELECT MatKhau FROM TaiKhoan WHERE " + dieuKien,
+                new NpgsqlParameter("@id", taiKhoanID));
+
+            if (result == null || result == DBNull.Value) return false;
+            string matKhauDaLuu = result.ToString();
+            bool daBamMatKhau = matKhauDaLuu.Length == 64 && matKhauDaLuu.All(Uri.IsHexDigit);
+            bool matKhauDung = Passwords.Verify(matKhauCu, matKhauDaLuu)
+                || (!daBamMatKhau && string.Equals(matKhauCu, matKhauDaLuu, StringComparison.Ordinal));
+            if (!matKhauDung)
+                return false;
+
+            // Chỉ ghi nếu mật khẩu chưa bị đổi bởi một thao tác khác.
+            return DatabaseHelper.ExecuteNonQuery(
+                "UPDATE TaiKhoan SET MatKhau = @moi WHERE " + dieuKien
+                    + " AND MatKhau = @cu",
+                new NpgsqlParameter("@id", taiKhoanID),
+                new NpgsqlParameter("@moi", Passwords.Hash(matKhauMoi)),
+                new NpgsqlParameter("@cu", matKhauDaLuu)) == 1;
+        }
+
         public bool KhoaHoacMoKhoaTaiKhoan(int taiKhoanID, bool khoa)
         {
             // Cập nhật cả TrangThaiKhoa hoặc TrangThai tuỳ schema
