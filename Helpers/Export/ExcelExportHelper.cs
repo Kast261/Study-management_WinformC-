@@ -484,16 +484,13 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
 
             // Các Dòng Dữ Liệu
             int stt = 1;
-            foreach (DataGridViewRow row in dgv.Rows)
+            foreach (object[] values in DataGridViewPager.GetExportRows(dgv, visibleCols))
             {
-                if (row.IsNewRow) continue;
-
                 sb.AppendLine("   <Row ss:Height=\"22\">");
                 sb.AppendLine($"    <Cell ss:StyleID=\"CellCenter\"><Data ss:Type=\"Number\">{stt++}</Data></Cell>");
 
-                foreach (var col in visibleCols)
+                foreach (object cellVal in values)
                 {
-                    object cellVal = row.Cells[col.Index].Value;
                     string strVal = cellVal?.ToString() ?? string.Empty;
 
                     // Kiểm tra xem là số hay chuỗi
@@ -758,13 +755,12 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
 
             // Dữ liệu
             int stt = 1;
-            foreach (DataGridViewRow row in dgv.Rows)
+            foreach (object[] values in DataGridViewPager.GetExportRows(dgv, visibleCols))
             {
-                if (row.IsNewRow) continue;
                 List<string> rowValues = new List<string> { (stt++).ToString() };
-                foreach (var col in visibleCols)
+                foreach (object cellValue in values)
                 {
-                    string val = row.Cells[col.Index].Value?.ToString() ?? string.Empty;
+                    string val = cellValue?.ToString() ?? string.Empty;
                     rowValues.Add($"\"{EscapeCsv(val)}\"");
                 }
                 sb.AppendLine(string.Join(",", rowValues));

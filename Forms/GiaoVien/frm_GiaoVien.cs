@@ -27,9 +27,25 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             this.DoubleBuffered = true;
             InitializeComponent();
+            DataGridViewPager.AttachAll(this, KhiDoiTrang);
             this.DrawerTabControl = materialTabControl1;
             this.FormClosed += Frm_GiaoVien_FormClosed;
             SetupEventHandlers();
+        }
+
+        private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
+        {
+            if (grid == dtGV_LopHoc) _selectedLopHocID = 0;
+            if (grid == dgvDanhSachCauHoi) _selectedCauHoiID = 0;
+            if (grid == dgvDanhSachDeThi)
+            {
+                _selectedDeThiID = 0;
+                if (reason != PageChangeReason.Data)
+                {
+                    cmbGV_ChonDeThi.SelectedIndex = -1;
+                    dgvDanhSachCauHoi.DataSource = null;
+                }
+            }
         }
 
         private void Frm_GiaoVien_FormClosed(object sender, FormClosedEventArgs e)
@@ -835,6 +851,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 // Cập nhật số câu hiển thị
                 if (_selectedDeThiID > 0 && dt != null)
                 {
+                    DataGridViewPager.ShowItem(dgvDanhSachDeThi, "DeThiID", _selectedDeThiID);
                     for (int i = 0; i < dgvDanhSachDeThi.Rows.Count; i++)
                     {
                         if (dgvDanhSachDeThi.Rows[i].DataBoundItem is DataRowView rowView)
@@ -1039,6 +1056,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
+                DataGridViewPager.ShowItem(dgvDanhSachDeThi, "DeThiID", deID);
                 if (dgvDanhSachDeThi == null || dgvDanhSachDeThi.Rows.Count == 0) return;
                 for (int i = 0; i < dgvDanhSachDeThi.Rows.Count; i++)
                 {

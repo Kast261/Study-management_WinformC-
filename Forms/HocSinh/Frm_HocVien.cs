@@ -31,11 +31,19 @@ namespace BLT_Quan_Ly_Hoc_Tap
         public HocVien()
         {
             InitializeComponent();
+            DataGridViewPager.AttachAll(this, KhiDoiTrang);
             KhoiTaoHoSoCaNhan();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             this.DrawerTabControl = tabHocVien;
+        }
+
+        private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
+        {
+            if (grid == dtHV_LopHoc) _selectedLopDangKyID = 0;
+            if (grid == dtHV_LopDangHoc) _selectedLopDangHocID = 0;
+            if (grid == dgvHV_DanhSachDeThi) _selectedDeThiID = 0;
         }
 
         private void HocVien_Load(object sender, EventArgs e)

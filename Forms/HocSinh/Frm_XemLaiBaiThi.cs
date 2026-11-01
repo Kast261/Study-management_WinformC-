@@ -1,4 +1,5 @@
 using BLT_Quan_Ly_Hoc_Tap.DAL;
+using BLT_Quan_Ly_Hoc_Tap.Helpers;
 using ReaLTaiizor.Manager;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms
             _ketQuaID = ketQuaID;
             InitializeComponent();
             InitCustomControls();
+            DataGridViewPager.AttachAll(this);
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
