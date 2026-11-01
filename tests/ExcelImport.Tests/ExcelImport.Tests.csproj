@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="all" />
+    <PackageReference Include="Npgsql" Version="6.0.11" />
+    <PackageReference Include="ExcelDataReader" Version="3.7.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../Helpers/Import/CauHoiExcelReader.cs" Link="Production/CauHoiExcelReader.cs" />
+    <Compile Include="../../DAL/Repositories/CauHoiImportDAL.cs" Link="Production/CauHoiImportDAL.cs" />
+    <Compile Include="../../DAL/Repositories/DeThiDAL.cs" Link="Production/DeThiDAL.cs" />
+    <Compile Include="../../Models/Entities/CauHoi.cs" Link="Production/CauHoi.cs" />
+    <Compile Include="../../Models/Entities/DeThi.cs" Link="Production/DeThi.cs" />
+    <Compile Include="../../Models/Entities/KetQuaNhapCauHoi.cs" Link="Production/KetQuaNhapCauHoi.cs" />
+    <Compile Include="../../Helpers/Security/Passwords.cs" Link="Production/Passwords.cs" />
+    <Compile Include="../StudentProfile.Tests/TestDatabase.cs" Link="TestDatabase.cs" />
+    <None Include="Fixtures/*.xlsx" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Fixtures/*.xls" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../Templates/CauHoi_Mau.xlsx" Link="Fixtures/CauHoi_Mau.xlsx" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

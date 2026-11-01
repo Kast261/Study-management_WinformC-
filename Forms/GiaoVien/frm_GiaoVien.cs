@@ -8,6 +8,8 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BLT_Quan_Ly_Hoc_Tap
 {
@@ -22,6 +24,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private int _selectedCauHoiID = 0;
         private int _selectedDeThiID   = 0;  // ID đề thi đang chọn trên tab Đề Thi
         private bool _isSyncingMonHoc = false; // Cờ chống lặp vô tận khi đồng bộ môn học giữa 2 tab
+        private bool _dangNhapExcel;
 
         public frm_GiaoVien()
         {
@@ -280,6 +283,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
             btnCH_Them.Click += btnCH_Them_Click;
             btnCH_Sua.Click += btnCH_Sua_Click;
             btnCH_Xoa.Click += btnCH_Xoa_Click;
+            btnCH_NhapExcel.Click += BtnCH_NhapExcel_Click;
+            if (components == null) components = new System.ComponentModel.Container();
+            var excelMenu = new ContextMenuStrip(components);
+            excelMenu.Items.Add("Lưu file Excel mẫu...", null, LuuFileExcelMau_Click);
+            btnCH_NhapExcel.ContextMenuStrip = excelMenu;
+            var excelTip = new ToolTip(components);
+            excelTip.SetToolTip(btnCH_NhapExcel, "Nhập câu hỏi từ .xlsx hoặc .xls. Nhấp chuột phải để lưu file Excel mẫu.");
             dgvDanhSachCauHoi.CellClick += dgvDanhSachCauHoi_CellClick;
 
             // Tab Câu hỏi – Tạo đề thi mới
@@ -1090,6 +1100,144 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     txtCH_DapAnC.Text = q.DapAnC;
                     txtCH_DapAnD.Text = q.DapAnD;
                     cboCH_DapAnDung.SelectedItem = q.DapAnDung;
+                }
+            }
+        }
+
+        private DeThi ChonDeThiNhapExcel()
+        {
+            string ten = txtGV_DeThi.Text.Trim();
+            int.TryParse(cmbGV_ChonDeThi.SelectedValue?.ToString(), out int deID);
+            DataTable table = cmbGV_ChonDeThi.DataSource as DataTable;
+            DataRow selected = table?.Rows.Cast<DataRow>().FirstOrDefault(r => Convert.ToInt32(r["DeThiID"]) == deID);
+
+            if (!string.IsNullOrWhiteSpace(ten)
+                && (selected == null || !string.Equals(selected["TenDeThi"].ToString().Trim(), ten, StringComparison.OrdinalIgnoreCase)))
+            {
+                DataRow[] matches = table?.Rows.Cast<DataRow>().Where(r =>
+                    string.Equals(r["TenDeThi"].ToString().Trim(), ten, StringComparison.OrdinalIgnoreCase)).ToArray()
+                    ?? new DataRow[0];
+                if (matches.Length > 1)
+                    throw new InvalidOperationException("Có nhiều đề cùng tên. Hãy chọn chính xác đề trong danh sách trước khi nhập Excel.");
+                selected = matches.FirstOrDefault();
+                deID = selected == null ? 0 : Convert.ToInt32(selected["DeThiID"]);
+            }
+
+            string monHoc = (cmbGV_MonHoc.SelectedItem?.ToString() ?? cmbGV_MonHoc.Text).Trim();
+            if (deID <= 0 && (string.IsNullOrWhiteSpace(ten) || ten.Length > 150
+                || string.IsNullOrWhiteSpace(monHoc) || monHoc.Length > 100))
+                throw new InvalidOperationException("Hãy nhập tên đề mới (tối đa 150 ký tự) và chọn môn học, hoặc chọn một đề đã có.");
+            return new DeThi
+            {
+                DeThiID = deID, GiaoVienID = Session.NguoiDungID,
+                TenDeThi = selected?["TenDeThi"].ToString() ?? ten, MonHoc = monHoc
+            };
+        }
+
+        private void LuuFileExcelMau_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string template = Path.Combine(Application.StartupPath, "Templates", "CauHoi_Mau.xlsx");
+                using (var dialog = new SaveFileDialog
+                {
+                    Title = "Lưu file mẫu nhập câu hỏi", Filter = "Excel (*.xlsx)|*.xlsx",
+                    FileName = "CauHoi_Mau.xlsx", DefaultExt = "xlsx", RestoreDirectory = true
+                })
+                {
+                    if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                    if (!string.Equals(Path.GetFullPath(template), Path.GetFullPath(dialog.FileName), StringComparison.OrdinalIgnoreCase))
+                        File.Copy(template, dialog.FileName, true);
+                    MessageBox.Show(this, "Đã lưu file mẫu. Hãy điền câu hỏi vào sheet CauHoi, lưu lại rồi chọn Nhập Excel.", "Thông báo");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Không thể lưu file mẫu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void BtnCH_NhapExcel_Click(object sender, EventArgs e)
+        {
+            if (_dangNhapExcel) return;
+            if (!Session.IsGiaoVien || Session.TaiKhoanID <= 0 || Session.NguoiDungID <= 0)
+            {
+                MessageBox.Show(this, "Vui lòng đăng nhập bằng tài khoản giáo viên đã liên kết hồ sơ.", "Thông báo");
+                return;
+            }
+            int taiKhoanID = Session.TaiKhoanID;
+            int giaoVienID = Session.NguoiDungID;
+            Control[] inputs = { btnCH_NhapExcel, btnCH_Them, btnCH_Sua, btnCH_Xoa,
+                btnCH_TaoDeThi, cmbGV_ChonDeThi, cmbGV_MonHoc, txtGV_DeThi };
+            bool[] enabled = inputs.Select(control => control.Enabled).ToArray();
+            _dangNhapExcel = true;
+            try
+            {
+                DeThi target = ChonDeThiNhapExcel();
+                foreach (Control input in inputs) input.Enabled = false;
+                string path;
+                using (var dialog = new OpenFileDialog
+                {
+                    Title = "Chọn file Excel câu hỏi", Filter = "File Excel (*.xlsx;*.xls)|*.xlsx;*.xls",
+                    CheckFileExists = true, Multiselect = false, RestoreDirectory = true
+                })
+                {
+                    if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                    path = dialog.FileName;
+                }
+                UseWaitCursor = true;
+                var questions = await Task.Run(() => CauHoiExcelReader.Read(path));
+                if (IsDisposed || Disposing) return;
+                if (!Session.IsGiaoVien || Session.TaiKhoanID != taiKhoanID || Session.NguoiDungID != giaoVienID)
+                    throw new InvalidOperationException("Phiên đăng nhập đã thay đổi. Vui lòng đăng nhập lại trước khi nhập câu hỏi.");
+                UseWaitCursor = false;
+                string destination = target.DeThiID > 0
+                    ? $"Thêm vào cuối đề \"{target.TenDeThi}\". Các câu hỏi hiện có được giữ nguyên."
+                    : $"Tạo đề mới \"{target.TenDeThi}\" thuộc môn \"{target.MonHoc}\" (chưa giao cho lớp).";
+                if (MessageBox.Show(this, $"File: {Path.GetFileName(path)}\nĐã kiểm tra {questions.Count:N0} câu hỏi hợp lệ.\n\n{destination}\n\nBạn có muốn nhập không?",
+                    "Xác nhận nhập câu hỏi", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+
+                UseWaitCursor = true;
+                KetQuaNhapCauHoi result = await Task.Run(() => new CauHoiImportDAL().Nhap(taiKhoanID, target, questions));
+                if (IsDisposed || Disposing || Session.TaiKhoanID != taiKhoanID || Session.NguoiDungID != giaoVienID) return;
+                try
+                {
+                    _selectedDeThiID = result.DeThiID;
+                    LoadDeThiCombobox();
+                    cmbGV_ChonDeThi.SelectedValue = result.DeThiID;
+                    if (!int.TryParse(cmbGV_ChonDeThi.SelectedValue?.ToString(), out int displayedID) || displayedID != result.DeThiID)
+                        throw new InvalidOperationException("Chưa tải được đề vừa nhập trong danh sách.");
+                    _selectedDeThiID = result.DeThiID;
+                    cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
+                    LamMoiFormCauHoi();
+                }
+                catch (Exception ex)
+                {
+                    UseWaitCursor = false;
+                    MessageBox.Show(this, $"Đã lưu {result.SoCauDaNhap:N0} câu hỏi vào đề \"{result.TenDeThi}\", nhưng chưa làm mới được giao diện.\nHãy mở lại form để tải dữ liệu; không cần nhập lại file.\n\n{ex.Message}",
+                        "Đã lưu câu hỏi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                UseWaitCursor = false;
+                MessageBox.Show(this, $"Đã nhập {result.SoCauDaNhap:N0} câu hỏi vào đề \"{result.TenDeThi}\".\nTổng số câu hiện tại: {result.TongSoCau:N0}.",
+                    "Nhập Excel thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                if (!IsDisposed && !Disposing)
+                {
+                    UseWaitCursor = false;
+                    MessageBox.Show(this, "Không thể nhập câu hỏi từ Excel:\n" + ex.Message, "Lỗi nhập Excel", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            finally
+            {
+                _dangNhapExcel = false;
+                if (!IsDisposed && !Disposing)
+                {
+                    UseWaitCursor = false;
+                    for (int i = 0; i < inputs.Length; i++)
+                        if (!inputs[i].IsDisposed) inputs[i].Enabled = enabled[i];
                 }
             }
         }
