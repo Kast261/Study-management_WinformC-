@@ -30,3 +30,21 @@ Windows Forms Designer vẫn cần được kiểm tra trực tiếp trong Visua
 Kiểm thử giao diện cũng kiểm tra trường hợp cuộn xuống ở trang trước rồi bấm
 trang sau: dữ liệu phải được thay hoàn toàn và vị trí cuộn trở về dòng đầu.
 Với 11 dòng và kích thước trang là 10, trang 2 chỉ chứa dòng thứ 11.
+
+## Kiểm thử layout Fill và binding lồng nhau
+
+Helper phân trang cập nhật binding, toolbar, ô chọn và cuộn qua `BeginInvoke` khi grid đã có handle.
+Điều này tránh thay đổi layout ngay trong `DataSourceChanged`, `DataBindingComplete` hoặc lúc tab vừa hiện.
+Model và dữ liệu xuất được cập nhật trước; các thay đổi hiển thị được gộp ở lượt UI kế tiếp.
+`DataGridViewPager.ShowItem` trả về việc tìm thấy item; ô chọn/cuộn cũng được áp dụng ở lượt UI đó.
+
+Smoke test bơm message loop sau thao tác UI để kiểm tra trạng thái đã hoàn tất. Ứng dụng không cần
+thêm `Application.DoEvents()`, `Thread.Sleep()` hoặc bắt lỗi toàn cục trong `Program.Main`.
+
+Các tình huống hồi quy gồm kiểm tra độ sâu `DataSourceChanged`, 40 lần chuyển tab đăng ký/bài thi
+kèm resize cột Fill và sắp xếp/phân trang, yêu cầu đổi nguồn mới thay thế yêu cầu cũ,
+đóng form khi còn cập nhật chờ và tạo lại handle của grid.
+
+Trên Windows, chạy smoke executable và thử chuyển hai tab thật với dữ liệu nhiều hơn một trang.
+Nếu vẫn gặp `InvalidOperationException`, cần lấy toàn bộ Call Stack để phân biệt thao tác WinForms
+khác với đường cập nhật helper đã được kiểm tra; tên grid hay vị trí `Application.Run` chưa đủ xác định stack đó.
