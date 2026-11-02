@@ -96,6 +96,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.materialCard28 = new ReaLTaiizor.Controls.MaterialCard();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnCH_NhapExcel = new ReaLTaiizor.Controls.ForeverButton();
             this.cmbGV_MonHoc = new ReaLTaiizor.Controls.MaterialComboBox();
             this.txtGV_DeThi = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.txtCH_NoiDung = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
@@ -196,7 +197,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel27 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel28 = new ReaLTaiizor.Controls.MaterialLabel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnCH_NhapExcel = new ReaLTaiizor.Controls.ForeverButton();
             this.materialTabControl1.SuspendLayout();
             this.pageGV_TrangChu.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
@@ -1220,6 +1220,21 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel7.Size = new System.Drawing.Size(1317, 363);
             this.tableLayoutPanel7.TabIndex = 2;
             // 
+            // btnCH_NhapExcel
+            // 
+            this.btnCH_NhapExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCH_NhapExcel.BackColor = System.Drawing.Color.Transparent;
+            this.btnCH_NhapExcel.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
+            this.btnCH_NhapExcel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCH_NhapExcel.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnCH_NhapExcel.Location = new System.Drawing.Point(879, 12);
+            this.btnCH_NhapExcel.Name = "btnCH_NhapExcel";
+            this.btnCH_NhapExcel.Rounded = false;
+            this.btnCH_NhapExcel.Size = new System.Drawing.Size(224, 54);
+            this.btnCH_NhapExcel.TabIndex = 13;
+            this.btnCH_NhapExcel.Text = "Nhập Excel";
+            this.btnCH_NhapExcel.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            // 
             // cmbGV_MonHoc
             // 
             this.cmbGV_MonHoc.AutoResize = false;
@@ -1286,6 +1301,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtCH_NoiDung.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.txtCH_NoiDung.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
             this.txtCH_NoiDung.Depth = 0;
+            this.txtCH_NoiDung.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtCH_NoiDung.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtCH_NoiDung.HideSelection = true;
             this.txtCH_NoiDung.Hint = "Nhập nội dung câu hỏi";
@@ -1317,6 +1333,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtCH_DapAnA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.txtCH_DapAnA.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
             this.txtCH_DapAnA.Depth = 0;
+            this.txtCH_DapAnA.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtCH_DapAnA.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtCH_DapAnA.HideSelection = true;
             this.txtCH_DapAnA.Hint = "Nhập nội dung Đáp án A";
@@ -1348,6 +1365,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtCH_DapAnB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.txtCH_DapAnB.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
             this.txtCH_DapAnB.Depth = 0;
+            this.txtCH_DapAnB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtCH_DapAnB.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtCH_DapAnB.HideSelection = true;
             this.txtCH_DapAnB.Hint = "Nhập nội dung Đáp án B";
@@ -1379,6 +1397,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtCH_DapAnC.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.txtCH_DapAnC.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
             this.txtCH_DapAnC.Depth = 0;
+            this.txtCH_DapAnC.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtCH_DapAnC.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtCH_DapAnC.HideSelection = true;
             this.txtCH_DapAnC.Hint = "Nhập nội dung Đáp án C";
@@ -1410,6 +1429,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtCH_DapAnD.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.txtCH_DapAnD.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
             this.txtCH_DapAnD.Depth = 0;
+            this.txtCH_DapAnD.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtCH_DapAnD.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtCH_DapAnD.HideSelection = true;
             this.txtCH_DapAnD.Hint = "Nhập nội dung Đáp án D";
@@ -1438,6 +1458,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cboCH_DapAnDung.AutoResize = false;
             this.cboCH_DapAnDung.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cboCH_DapAnDung.Depth = 0;
+            this.cboCH_DapAnDung.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboCH_DapAnDung.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.cboCH_DapAnDung.DropDownHeight = 218;
             this.cboCH_DapAnDung.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -2843,21 +2864,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(94, 44);
             this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // btnCH_NhapExcel
-            // 
-            this.btnCH_NhapExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCH_NhapExcel.BackColor = System.Drawing.Color.Transparent;
-            this.btnCH_NhapExcel.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
-            this.btnCH_NhapExcel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCH_NhapExcel.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnCH_NhapExcel.Location = new System.Drawing.Point(879, 12);
-            this.btnCH_NhapExcel.Name = "btnCH_NhapExcel";
-            this.btnCH_NhapExcel.Rounded = false;
-            this.btnCH_NhapExcel.Size = new System.Drawing.Size(224, 54);
-            this.btnCH_NhapExcel.TabIndex = 13;
-            this.btnCH_NhapExcel.Text = "Nhập Excel";
-            this.btnCH_NhapExcel.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             // 
             // frm_GiaoVien
             // 
