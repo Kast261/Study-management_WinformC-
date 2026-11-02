@@ -73,7 +73,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void Btn_DangNhap_Click(object sender, EventArgs e)
         {
             string username = txt_TaiKhoan.Text.Trim();
-            string password = txt_MatKhau.Text.Trim();
+            string password = txt_MatKhau.Text;
 
             // 1. Validate Input
             if (string.IsNullOrEmpty(username))
@@ -106,6 +106,21 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (tk.TrangThaiKhoa)
                 {
                     MessageBox.Show("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Quản trị viên!", "Tài khoản bị khóa", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    return;
+                }
+
+                if (!string.Equals(tk.VaiTro, "Admin", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(tk.VaiTro, "GiaoVien", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(tk.VaiTro, "HocSinh", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(tk.VaiTro, "HocVien", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("Vai trò tài khoản không hợp lệ. Vui lòng liên hệ quản trị viên.", "Không thể đăng nhập");
+                    return;
+                }
+
+                if (!string.Equals(tk.VaiTro, "Admin", StringComparison.OrdinalIgnoreCase) && tk.NguoiDungID <= 0)
+                {
+                    MessageBox.Show("Tài khoản chưa liên kết với một hồ sơ duy nhất. Vui lòng liên hệ quản trị viên.", "Không thể đăng nhập");
                     return;
                 }
 
@@ -197,7 +212,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 else
                 {
                     var (tenDangNhap, matKhau) = _taiKhoanDAL.DocGhiNho();
-                    if (!string.IsNullOrEmpty(matKhau))
+                    if (string.IsNullOrEmpty(currentUsername) && !string.IsNullOrEmpty(matKhau))
                     {
                         if (string.IsNullOrEmpty(currentUsername))
                         {
@@ -220,11 +235,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 string u = txt_TaiKhoan.Text.Trim();
                 string pass = _taiKhoanDAL.LayMatKhauGhiNho(u);
-                if (!string.IsNullOrEmpty(pass))
-                {
-                    txt_MatKhau.Text = pass;
-                    txt_MatKhau.UseSystemPasswordChar = true;
-                }
+                txt_MatKhau.Text = pass ?? string.Empty;
+                txt_MatKhau.UseSystemPasswordChar = true;
             }
         }
 

@@ -1,6 +1,7 @@
 using BLT_Quan_Ly_Hoc_Tap.DAL;
 using BLT_Quan_Ly_Hoc_Tap.Models;
 using System.Data;
+using System.Collections.Generic;
 
 namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
 {
@@ -21,6 +22,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
         public bool KiemTraDaThi(int hocSinhID, int deThiID)
         {
             return _ketQuaDAL.KiemTraDaThi(hocSinhID, deThiID);
+        }
+
+        public KetQuaThi NopBai(int taiKhoanID, int hocSinhID, int deThiID, IDictionary<int, string> dapAn)
+        {
+            return _ketQuaDAL.NopBai(taiKhoanID, hocSinhID, deThiID, dapAn);
         }
 
         public int LuuKetQua(KetQuaThi kq)

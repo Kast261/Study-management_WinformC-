@@ -18,6 +18,7 @@ namespace Dashboard.Tests
             public DashboardDatabase()
             {
                 DatabaseHelper.ExecuteNonQuery(@"
+                    CREATE TABLE DangKyLop (LopHocID integer, HocSinhID integer, TrangThai text);
                     CREATE TABLE GiaoVien (GiaoVienID integer PRIMARY KEY, HoTen text);
                     CREATE TABLE KhoaHoc (KhoaHocID integer PRIMARY KEY, TenKhoaHoc text);
                     CREATE TABLE LopHoc (
@@ -75,6 +76,22 @@ namespace Dashboard.Tests
             Assert.Equal(6, courses.Rows.Count);
             Assert.Equal(new[] { 8, 1, 2, 3, 4, 5 },
                 courses.Rows.Cast<System.Data.DataRow>().Select(r => Convert.ToInt32(r["KhoaHocID"])));
+        }
+
+        [Fact]
+        public void DashboardCountsApprovedClassesEvenWhenPrimaryClassChanges()
+        {
+            using var db = new DashboardDatabase();
+            DatabaseHelper.ExecuteNonQuery(@"
+                INSERT INTO KhoaHoc VALUES (1,'Toán'),(2,'Anh');
+                INSERT INTO LopHoc VALUES (1,'Toán A',NULL,1,30),(2,'Anh A',NULL,2,30);
+                INSERT INTO HocSinh (HocSinhID,LopHocID) VALUES (1,2);
+                INSERT INTO DangKyLop VALUES (1,1,'Đã duyệt'),(2,1,'Đã duyệt');");
+            var dal = new DashboardDAL();
+            using var courses = dal.LayHocVienTheoKhoaHoc();
+            Assert.All(courses.Rows.Cast<System.Data.DataRow>(),r=>Assert.Equal(1L,Convert.ToInt64(r["SoHocVien"])));
+            using var classes = dal.LayLopMoiNhat();
+            Assert.All(classes.Rows.Cast<System.Data.DataRow>(),r=>Assert.Equal(1L,Convert.ToInt64(r["SoHocVien"])));
         }
 
         [Fact]

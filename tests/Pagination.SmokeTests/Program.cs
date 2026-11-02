@@ -26,6 +26,7 @@ internal static class Program
             ManualColumnsRemainBound();
             ScrolledPageIsReplaced();
             TableLayoutAndHiddenTab();
+            GradeReportUsesInvariantDecimals();
             Console.WriteLine("PASS: " + assertions + " WinForms pagination assertions");
             return 0;
         }
@@ -41,6 +42,36 @@ internal static class Program
         if (!condition) throw new InvalidOperationException(message);
         assertions++;
         Console.WriteLine("PASS: " + message);
+    }
+
+    private static void GradeReportUsesInvariantDecimals()
+    {
+        var previous = System.Globalization.CultureInfo.CurrentCulture;
+        try
+        {
+            foreach (string culture in new[] { "vi-VN", "en-US" })
+            {
+                System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo(culture);
+                var table = new DataTable();
+                table.Columns.Add("MonHoc", typeof(string));
+                table.Columns.Add("TenDeThi", typeof(string));
+                table.Columns.Add("ThoiGianNop", typeof(DateTime));
+                table.Columns.Add("Diem", typeof(decimal));
+                table.Rows.Add("Toán", "Đề 1", new DateTime(2026,1,1), 7.5M);
+                table.Rows.Add("Toán", "Đề 2", new DateTime(2026,1,2), 8.5M);
+                string xml = ExcelExportHelper.TaoXmlBangDiem(table, "A&B <Học viên>", "", null, null);
+                var document = new System.Xml.XmlDocument();
+                document.LoadXml(xml);
+                var ns = new System.Xml.XmlNamespaceManager(document.NameTable);
+                ns.AddNamespace("ss", "urn:schemas-microsoft-com:office:spreadsheet");
+                var numbers = document.SelectNodes("//ss:Data[@ss:Type='Number']", ns)
+                    .Cast<System.Xml.XmlNode>().Select(node => node.InnerText).ToList();
+                Check(numbers.Contains("7.5") && numbers.Contains("8.5"), culture + ": grade report must retain decimal scores 7.5 and 8.5");
+                Check(numbers.Last() == "8", culture + ": grade report average must be 8, not 80");
+                Check(document.InnerText.Contains("A&B <Học viên>"), culture + ": grade report must escape names as valid XML");
+            }
+        }
+        finally { System.Globalization.CultureInfo.CurrentCulture = previous; }
     }
 
     private static DataTable Table(int count)

@@ -18,10 +18,12 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             // HocSinh.LopHocID là lớp hiện tại; không tính đăng ký đang chờ duyệt.
             return DatabaseHelper.ExecuteQuery(@"
-                SELECT k.KhoaHocID, k.TenKhoaHoc, COUNT(h.HocSinhID) AS SoHocVien
+                SELECT k.KhoaHocID, k.TenKhoaHoc, COUNT(DISTINCT h.HocSinhID) AS SoHocVien
                 FROM KhoaHoc k
                 LEFT JOIN LopHoc l ON l.KhoaHocID = k.KhoaHocID
-                LEFT JOIN HocSinh h ON h.LopHocID = l.LopHocID
+                LEFT JOIN HocSinh h ON h.LopHocID = l.LopHocID OR EXISTS (
+                    SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID
+                      AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')
                 GROUP BY k.KhoaHocID, k.TenKhoaHoc
                 ORDER BY SoHocVien DESC, k.TenKhoaHoc, k.KhoaHocID
                 LIMIT 6");
@@ -33,11 +35,13 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             return DatabaseHelper.ExecuteQuery(@"
                 SELECT l.LopHocID, l.TenLop,
                        COALESCE(g.HoTen, 'Chưa phân công') AS TenGiaoVien,
-                       COUNT(h.HocSinhID) AS SoHocVien,
+                       COUNT(DISTINCT h.HocSinhID) AS SoHocVien,
                        COALESCE(l.SiSoToiDa, 40) AS SiSoToiDa
                 FROM LopHoc l
                 LEFT JOIN GiaoVien g ON g.GiaoVienID = l.GiaoVienID
-                LEFT JOIN HocSinh h ON h.LopHocID = l.LopHocID
+                LEFT JOIN HocSinh h ON h.LopHocID = l.LopHocID OR EXISTS (
+                    SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID
+                      AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')
                 GROUP BY l.LopHocID, l.TenLop, g.HoTen, l.SiSoToiDa
                 ORDER BY l.LopHocID DESC
                 LIMIT 5");

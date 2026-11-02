@@ -34,7 +34,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
             
             bool isPasswordCorrect = false;
-            if (hashInDb == matKhauNhap || Passwords.Verify(matKhauNhap, hashInDb))
+            bool daBamMatKhau = hashInDb.Length == 64 && hashInDb.All(Uri.IsHexDigit);
+            if (Passwords.Verify(matKhauNhap, hashInDb)
+                || (!daBamMatKhau && string.Equals(hashInDb, matKhauNhap, StringComparison.Ordinal)))
             {
                 isPasswordCorrect = true;
             }
@@ -62,20 +64,20 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             {
                 nguoiDungID = Convert.ToInt32(row["NguoiDungID"]);
             }
-            else
+            if (nguoiDungID <= 0)
             {
-                
                 try
                 {
                     if (string.Equals(vaiTro, "GiaoVien", StringComparison.OrdinalIgnoreCase))
                     {
-                        string sqlGV = "SELECT GiaoVienID FROM GiaoVien WHERE TaiKhoanID = @id";
+                        string sqlGV = "SELECT CASE WHEN COUNT(*)=1 THEN MIN(GiaoVienID) END FROM GiaoVien WHERE TaiKhoanID = @id";
                         object gvObj = DatabaseHelper.ExecuteScalar(sqlGV, new NpgsqlParameter[] { new NpgsqlParameter("@id", taiKhoanID) });
                         if (gvObj != null && gvObj != DBNull.Value) nguoiDungID = Convert.ToInt32(gvObj);
                     }
-                    else if (string.Equals(vaiTro, "HocSinh", StringComparison.OrdinalIgnoreCase))
+                    else if (string.Equals(vaiTro, "HocSinh", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(vaiTro, "HocVien", StringComparison.OrdinalIgnoreCase))
                     {
-                        string sqlHS = "SELECT HocSinhID FROM HocSinh WHERE TaiKhoanID = @id";
+                        string sqlHS = "SELECT CASE WHEN COUNT(*)=1 THEN MIN(HocSinhID) END FROM HocSinh WHERE TaiKhoanID = @id";
                         object hsObj = DatabaseHelper.ExecuteScalar(sqlHS, new NpgsqlParameter[] { new NpgsqlParameter("@id", taiKhoanID) });
                         if (hsObj != null && hsObj != DBNull.Value) nguoiDungID = Convert.ToInt32(hsObj);
                     }
@@ -295,12 +297,21 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool DoiMatKhauCaNhan(int taiKhoanID, string matKhauCu, string matKhauMoi)
         {
+            return DoiMatKhauTheoVaiTro(taiKhoanID, matKhauCu, matKhauMoi, false);
+        }
+
+        public bool DoiMatKhauGiaoVien(int taiKhoanID, string matKhauCu, string matKhauMoi)
+        {
+            return DoiMatKhauTheoVaiTro(taiKhoanID, matKhauCu, matKhauMoi, true);
+        }
+
+        private bool DoiMatKhauTheoVaiTro(int taiKhoanID, string matKhauCu, string matKhauMoi, bool giaoVien)
+        {
             if (!Validation.IsValidPasswordChange(matKhauCu, matKhauMoi, matKhauMoi, out _))
                 return false;
 
-            string dieuKien = @"TaiKhoanID = @id
-                AND LOWER(VaiTro) IN ('hocsinh', 'hocvien')
-                AND COALESCE(TrangThaiKhoa, FALSE) = FALSE";
+            string dieuKien = "TaiKhoanID = @id AND COALESCE(TrangThaiKhoa, FALSE) = FALSE AND "
+                + (giaoVien ? "LOWER(VaiTro) = 'giaovien'" : "LOWER(VaiTro) IN ('hocsinh', 'hocvien')");
             object result = DatabaseHelper.ExecuteScalar(
                 "SELECT MatKhau FROM TaiKhoan WHERE " + dieuKien,
                 new NpgsqlParameter("@id", taiKhoanID));
@@ -360,8 +371,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 ELSE 'Hoạt động'
             END AS TrangThaiHienThi
         FROM TaiKhoan tk
-        LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND (tk.NguoiDungID = gv.GiaoVienID OR gv.TaiKhoanID = tk.TaiKhoanID)
-        LEFT JOIN HocSinh hs  ON tk.VaiTro = 'HocSinh'  AND (tk.NguoiDungID = hs.HocSinhID OR hs.TaiKhoanID = tk.TaiKhoanID)
+        LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND (tk.NguoiDungID = gv.GiaoVienID OR (COALESCE(tk.NguoiDungID,0)=0 AND gv.TaiKhoanID = tk.TaiKhoanID))
+        LEFT JOIN HocSinh hs  ON tk.VaiTro = 'HocSinh'  AND (tk.NguoiDungID = hs.HocSinhID OR (COALESCE(tk.NguoiDungID,0)=0 AND hs.TaiKhoanID = tk.TaiKhoanID))
         ORDER BY tk.TaiKhoanID DESC";
 
             return DatabaseHelper.ExecuteQuery(sql);
@@ -392,8 +403,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 ELSE 'Hoạt động'
             END AS TrangThaiHienThi
         FROM TaiKhoan tk
-        LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND (tk.NguoiDungID = gv.GiaoVienID OR gv.TaiKhoanID = tk.TaiKhoanID)
-        LEFT JOIN HocSinh hs  ON tk.VaiTro = 'HocSinh'  AND (tk.NguoiDungID = hs.HocSinhID OR hs.TaiKhoanID = tk.TaiKhoanID)
+        LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND (tk.NguoiDungID = gv.GiaoVienID OR (COALESCE(tk.NguoiDungID,0)=0 AND gv.TaiKhoanID = tk.TaiKhoanID))
+        LEFT JOIN HocSinh hs  ON tk.VaiTro = 'HocSinh'  AND (tk.NguoiDungID = hs.HocSinhID OR (COALESCE(tk.NguoiDungID,0)=0 AND hs.TaiKhoanID = tk.TaiKhoanID))
         WHERE (tk.VaiTro = 'HocSinh' AND (hs.HoTen ILIKE @kw OR tk.TenDangNhap ILIKE @kw))
         ORDER BY tk.TaiKhoanID DESC";
 
@@ -403,56 +414,58 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
         public bool ThemTaiKhoan(string tenDangNhap, string matKhauPlain, string vaiTro, int nguoiDungID)
         {
-            // Kiểm tra tên đăng nhập đã tồn tại chưa
-            string checkSql = "SELECT COUNT(*) FROM TaiKhoan WHERE LOWER(TenDangNhap) = LOWER(@user)";
-            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new NpgsqlParameter[] {
-        new NpgsqlParameter("@user", tenDangNhap.Trim())
-    }));
-            if (count > 0) return false;
-
-            string hashPass = Passwords.Hash(matKhauPlain.Trim());
-            string sql = @"
-        INSERT INTO TaiKhoan (TenDangNhap, MatKhau, VaiTro, NguoiDungID, TrangThaiKhoa) 
-        VALUES (@user, @mk, @vaiTro, @nguoiDungID, FALSE)
-        RETURNING TaiKhoanID;";
-
-            NpgsqlParameter[] pars = {
-        new NpgsqlParameter("@user", tenDangNhap.Trim()),
-        new NpgsqlParameter("@mk", hashPass),
-        new NpgsqlParameter("@vaiTro", vaiTro),
-        new NpgsqlParameter("@nguoiDungID", nguoiDungID)
-    };
-
-            object result = DatabaseHelper.ExecuteScalar(sql, pars);
-            if (result == null || result == DBNull.Value) return false;
-
-            int newTaiKhoanID = Convert.ToInt32(result);
-
-            // Cập nhật TaiKhoanID ngược lại bảng thực thể
-            try
+            if (nguoiDungID < 0 || string.IsNullOrWhiteSpace(tenDangNhap) || string.IsNullOrWhiteSpace(matKhauPlain)
+                || (vaiTro != "Admin" && vaiTro != "GiaoVien" && vaiTro != "HocSinh")) return false;
+            string table = vaiTro == "GiaoVien" ? "GiaoVien" : vaiTro == "HocSinh" ? "HocSinh" : null;
+            if (table == null && nguoiDungID != 0) return false;
+            using (var conn = DatabaseHelper.GetConnection())
             {
-                if (vaiTro == "GiaoVien" && nguoiDungID > 0)
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
                 {
-                    DatabaseHelper.ExecuteNonQuery(
-                        "UPDATE GiaoVien SET TaiKhoanID = @tkID WHERE GiaoVienID = @gvID",
-                        new NpgsqlParameter[] {
-                    new NpgsqlParameter("@tkID", newTaiKhoanID),
-                    new NpgsqlParameter("@gvID", nguoiDungID)
-                        });
-                }
-                else if (vaiTro == "HocSinh" && nguoiDungID > 0)
-                {
-                    DatabaseHelper.ExecuteNonQuery(
-                        "UPDATE HocSinh SET TaiKhoanID = @tkID WHERE HocSinhID = @hsID",
-                        new NpgsqlParameter[] {
-                    new NpgsqlParameter("@tkID", newTaiKhoanID),
-                    new NpgsqlParameter("@hsID", nguoiDungID)
-                        });
+                    // Đồng bộ việc kiểm tra tên không phân biệt hoa/thường giữa các phiên ứng dụng.
+                    using (var nameLock = new NpgsqlCommand("SELECT pg_advisory_xact_lock(hashtext(LOWER(@ten)))", conn, transaction))
+                    {
+                        nameLock.Parameters.AddWithValue("ten", tenDangNhap.Trim()); nameLock.ExecuteNonQuery();
+                    }
+                    using (var exists = new NpgsqlCommand("SELECT 1 FROM TaiKhoan WHERE LOWER(TenDangNhap)=LOWER(@ten)", conn, transaction))
+                    {
+                        exists.Parameters.AddWithValue("ten", tenDangNhap.Trim());
+                        if (exists.ExecuteScalar() != null) return false;
+                    }
+                    if (table != null && nguoiDungID > 0)
+                    {
+                        using (var person = new NpgsqlCommand("SELECT " + table + "ID FROM " + table + " WHERE " + table + "ID=@id FOR UPDATE", conn, transaction))
+                        {
+                            person.Parameters.AddWithValue("id", nguoiDungID);
+                            if (person.ExecuteScalar() == null) return false;
+                        }
+                        using (var linked = new NpgsqlCommand("SELECT 1 FROM TaiKhoan tk JOIN " + table + " p ON p." + table + "ID=@id WHERE (tk.VaiTro=@role AND tk.NguoiDungID=@id) OR tk.TaiKhoanID=p.TaiKhoanID", conn, transaction))
+                        {
+                            linked.Parameters.AddWithValue("id", nguoiDungID); linked.Parameters.AddWithValue("role", vaiTro);
+                            if (linked.ExecuteScalar() != null) return false;
+                        }
+                    }
+                    int id;
+                    using (var insert = new NpgsqlCommand(@"
+                        INSERT INTO TaiKhoan (TenDangNhap,MatKhau,VaiTro,NguoiDungID,TrangThaiKhoa)
+                        VALUES (@ten,@mk,@role,@nguoi,FALSE) RETURNING TaiKhoanID", conn, transaction))
+                    {
+                        insert.Parameters.AddWithValue("ten", tenDangNhap.Trim()); insert.Parameters.AddWithValue("mk", Passwords.Hash(matKhauPlain));
+                        insert.Parameters.AddWithValue("role", vaiTro); insert.Parameters.AddWithValue("nguoi", nguoiDungID);
+                        id = Convert.ToInt32(insert.ExecuteScalar());
+                    }
+                    if (table != null && nguoiDungID > 0)
+                    {
+                        using (var link = new NpgsqlCommand("UPDATE " + table + " SET TaiKhoanID=@tk WHERE " + table + "ID=@id", conn, transaction))
+                        {
+                            link.Parameters.AddWithValue("tk", id); link.Parameters.AddWithValue("id", nguoiDungID);
+                            if (link.ExecuteNonQuery() != 1) return false;
+                        }
+                    }
+                    transaction.Commit(); return true;
                 }
             }
-            catch { /* Nếu bảng chưa có cột TaiKhoanID thì bỏ qua lỗi */ }
-
-            return true;
         }
     }
 }
