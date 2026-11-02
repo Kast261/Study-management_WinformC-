@@ -466,6 +466,23 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             }
         }
 
+        public DataTable LayTongHopKetQuaGanDay(int giaoVienID)
+        {
+            // Tổng hợp trực tiếp từ bài nộp để số câu hỏi/đăng ký lớp không nhân bản kết quả.
+            // Giữ cả đề đã đóng và bài nộp của học viên đã chuyển lớp.
+            return DatabaseHelper.ExecuteQuery(@"
+                SELECT d.DeThiID AS ""DeThiID"", d.TenDeThi AS ""TenDeThi"",
+                       COUNT(k.KetQuaID) AS ""DaNop"",
+                       ROUND(AVG(k.Diem)::numeric, 2) AS ""DiemTrungBinh"",
+                       MAX(k.ThoiGianNop) AS ""LanNopGanNhat""
+                FROM DeThi d
+                JOIN KetQuaThi k ON k.DeThiID=d.DeThiID
+                WHERE d.GiaoVienID=@gv
+                GROUP BY d.DeThiID, d.TenDeThi
+                ORDER BY MAX(k.ThoiGianNop) DESC NULLS LAST, d.DeThiID DESC",
+                new NpgsqlParameter("gv", giaoVienID));
+        }
+
         public DataTable LayKetQuaTheoDeThi(int maDeThi)
         {
             string sql = @"SELECT hs.HocSinhID, hs.HoTen, d.TenDeThi, k.SoCauDung, k.Diem, k.ThoiGianNop

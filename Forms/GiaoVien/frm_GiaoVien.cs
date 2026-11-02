@@ -25,11 +25,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private int _selectedDeThiID   = 0;  // ID đề thi đang chọn trên tab Đề Thi
         private bool _isSyncingMonHoc = false; // Cờ chống lặp vô tận khi đồng bộ môn học giữa 2 tab
         private bool _dangNhapExcel;
+        private bool _daTaiTrangChu;
 
         public frm_GiaoVien()
         {
             this.DoubleBuffered = true;
             InitializeComponent();
+            CauHinhKetQuaThiGanDay();
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
             this.DrawerTabControl = materialTabControl1;
             this.FormClosed += Frm_GiaoVien_FormClosed;
@@ -78,6 +80,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 lblGV_LoiChao.Text = $"Xin Chào, {Session.HoTen ?? Session.TenDangNhap}";
+                LoadKetQuaThiGanDay();
+                _daTaiTrangChu = true;
 
                 InitDropdowns();
                
@@ -342,7 +346,16 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
 
             // Tự động load dữ liệu mới nhất khi chuyển tab
-            if (tabText.Contains("Lớp") || materialTabControl1.SelectedTab == pageGV_LopHoc)
+            if (materialTabControl1.SelectedTab == pageGV_TrangChu)
+            {
+                // SelectedIndexChanged có thể chạy ngay trong InitializeComponent.
+                if (_daTaiTrangChu)
+                {
+                    LoadLopHocCuaToi();
+                    LoadKetQuaThiGanDay();
+                }
+            }
+            else if (tabText.Contains("Lớp") || materialTabControl1.SelectedTab == pageGV_LopHoc)
             {
                 LoadDanhSachLopQuanLy();
             }
@@ -376,6 +389,38 @@ namespace BLT_Quan_Ly_Hoc_Tap
         #endregion
 
         #region 2. Tab Trang Chủ & Quản Lý Lớp Học
+        private void CauHinhKetQuaThiGanDay()
+        {
+            // Cấu hình trước khi AttachAll bind nguồn rỗng để giữ nguyên cột Designer.
+            dgvGV_LichDay.AutoGenerateColumns = false;
+            dgvGV_LichDay.ReadOnly = true;
+            dgvGV_LichDay.AllowUserToDeleteRows = false;
+            dataGridViewTextBoxColumn10.DataPropertyName = "TenDeThi";
+            dataGridViewTextBoxColumn11.DataPropertyName = "DaNop";
+            dataGridViewTextBoxColumn11.DefaultCellStyle.Format = "N0";
+            dataGridViewTextBoxColumn12.DataPropertyName = "DiemTrungBinh";
+            dataGridViewTextBoxColumn12.DefaultCellStyle.Format = "0.00";
+            dataGridViewTextBoxColumn12.DefaultCellStyle.NullValue = "—";
+        }
+
+        private void LoadKetQuaThiGanDay()
+        {
+            try
+            {
+                DataTable results = _deThiDAL.LayTongHopKetQuaGanDay(Session.NguoiDungID);
+                dgvGV_LichDay.DataSource = results;
+                materialLabel34.Text = results.Rows.Count > 0
+                    ? "Kết quả bài thi gần đây"
+                    : "Kết quả bài thi gần đây — chưa có bài nộp";
+            }
+            catch (Exception ex)
+            {
+                dgvGV_LichDay.DataSource = null;
+                materialLabel34.Text = "Kết quả bài thi gần đây — không tải được";
+                MessageBox.Show("Không thể tải kết quả thi gần đây: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void LoadLopHocCuaToi()
         {
             try
