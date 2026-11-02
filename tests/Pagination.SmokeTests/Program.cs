@@ -24,6 +24,7 @@ internal static class Program
             BoundTableAndExport();
             TypedModelList();
             ManualColumnsRemainBound();
+            DateColumnsRemainBoundAcrossPages();
             ScrolledPageIsReplaced();
             TableLayoutAndHiddenTab();
             GradeReportUsesInvariantDecimals();
@@ -216,6 +217,38 @@ internal static class Program
             Click(grid, "Trang sau");
             Check((int)grid.Rows[0].Cells["colID"].Value == 21, "Manual columns must remain bound on later pages");
             Check(DataGridViewPager.GetExportRows(grid, grid.Columns.Cast<DataGridViewColumn>().ToList()).Count() == 42, "Export must also support manual Designer columns");
+            form.Close();
+        }
+    }
+
+    private static void DateColumnsRemainBoundAcrossPages()
+    {
+        using (var form = new Form { ClientSize = new Size(850, 450) })
+        {
+            var grid = new DataGridView { Dock = DockStyle.Fill, AutoGenerateColumns = false };
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name="Column11", DataPropertyName="NgayBatDau",
+                DefaultCellStyle=new DataGridViewCellStyle { Format="dd/MM/yyyy", NullValue="" }
+            });
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name="Column12", DataPropertyName="NgayKetThuc",
+                DefaultCellStyle=new DataGridViewCellStyle { Format="dd/MM/yyyy", NullValue="" }
+            });
+            var table = new DataTable();
+            table.Columns.Add("NgayBatDau",typeof(DateTime));
+            table.Columns.Add("NgayKetThuc",typeof(DateTime));
+            for (int i=0;i<21;i++) table.Rows.Add(new DateTime(2027,3,4),new DateTime(2027,6,15));
+            table.Rows[20]["NgayKetThuc"]=DBNull.Value;
+            form.Controls.Add(grid);
+            DataGridViewPager.AttachAll(form);
+            form.Show(); grid.DataSource=table; Application.DoEvents();
+            Check(grid.Rows[0].Cells["Column11"].FormattedValue.ToString()=="04/03/2027", "Start date must display as dd/MM/yyyy through the pager");
+            Check(grid.Rows[0].Cells["Column12"].FormattedValue.ToString()=="15/06/2027", "End date must display as dd/MM/yyyy through the pager");
+            Click(grid,"Trang sau");
+            Check(grid.Rows.Count==1 && grid.Rows[0].Cells["Column11"].FormattedValue.ToString()=="04/03/2027", "Date binding and formatting must survive moving to the next page");
+            Check(grid.Rows[0].Cells["Column12"].FormattedValue.ToString()=="", "Missing class dates must stay blank without inventing a default date");
             form.Close();
         }
     }
