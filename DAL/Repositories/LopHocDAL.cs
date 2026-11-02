@@ -18,7 +18,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 SELECT 
                     l.LopHocID, 
                     l.TenLop, 
-                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
                     COALESCE(k.TenKhoaHoc, 'Chưa phân loại') AS TenKhoaHoc, 
                     COALESCE(g.HoTen, 'Chưa phân công') AS TenGiaoVien, 
                     l.KhoaHocID, 
@@ -40,7 +40,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     l.TenLop, 
                     l.KhoaHocID,
                     COALESCE(k.TenKhoaHoc, N'Chưa phân loại') AS TenKhoaHoc,
-                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
                     COALESCE(l.SiSoToiDa, 40) AS SiSoToiDa,
                     l.NgayBatDau,
                     l.NgayKetThuc,
@@ -68,7 +68,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 WHERE l.LopHocID IN (
                     SELECT LopHocID FROM HocSinh WHERE HocSinhID = @hsID
                     UNION
-                    SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID
+                    SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND TrangThai = 'Đã duyệt'
                 )";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@hsID", hsID) });
         }
@@ -92,36 +92,57 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool SuaLop(LopHoc lop)
         {
-            string sql = @"UPDATE LopHoc 
-                           SET KhoaHocID = @khID, 
-                               GiaoVienID = @gvID, 
-                               TenLop = @ten, 
-                               LichHoc = @lich,
-                               SiSoToiDa = @siso,
-                               NgayBatDau = @nbd,
-                               NgayKetThuc = @nkt
-                           WHERE LopHocID = @id";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@khID", lop.KhoaHocID > 0 ? (object)lop.KhoaHocID : DBNull.Value),
-                new NpgsqlParameter("@gvID", lop.GiaoVienID > 0 ? (object)lop.GiaoVienID : DBNull.Value),
-                new NpgsqlParameter("@ten", lop.TenLop),
-                new NpgsqlParameter("@lich", lop.LichHoc ?? ""),
-                new NpgsqlParameter("@siso", lop.SiSoToiDa > 0 ? lop.SiSoToiDa : 40),
-                new NpgsqlParameter("@nbd", lop.NgayBatDau.HasValue ? (object)lop.NgayBatDau.Value : DBNull.Value),
-                new NpgsqlParameter("@nkt", lop.NgayKetThuc.HasValue ? (object)lop.NgayKetThuc.Value : DBNull.Value),
-                new NpgsqlParameter("@id", lop.LopHocID)
-            };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            return CapNhatLop(lop, false);
+        }
+
+        private bool CapNhatLop(LopHoc lop, bool giuLichVaNgay)
+        {
+            if (lop == null || string.IsNullOrWhiteSpace(lop.TenLop) || lop.SiSoToiDa <= 0) return false;
+            if (!giuLichVaNgay && lop.NgayBatDau.HasValue && lop.NgayKetThuc.HasValue
+                && lop.NgayKetThuc.Value < lop.NgayBatDau.Value) return false;
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    using (var locked = new NpgsqlCommand("SELECT LopHocID FROM LopHoc WHERE LopHocID=@id FOR UPDATE", conn, transaction))
+                    {
+                        locked.Parameters.AddWithValue("id", lop.LopHocID);
+                        if (locked.ExecuteScalar() == null) return false;
+                    }
+                    if (DemHocVien(conn, transaction, lop.LopHocID) > lop.SiSoToiDa) return false;
+                    string sql = "UPDATE LopHoc SET KhoaHocID=@kh, GiaoVienID=@gv, TenLop=@ten, SiSoToiDa=@siso"
+                        + (giuLichVaNgay ? "" : ", LichHoc=@lich, NgayBatDau=@nbd, NgayKetThuc=@nkt")
+                        + " WHERE LopHocID=@id";
+                    using (var update = new NpgsqlCommand(sql, conn, transaction))
+                    {
+                        update.Parameters.AddWithValue("kh", lop.KhoaHocID > 0 ? (object)lop.KhoaHocID : DBNull.Value);
+                        update.Parameters.AddWithValue("gv", lop.GiaoVienID > 0 ? (object)lop.GiaoVienID : DBNull.Value);
+                        update.Parameters.AddWithValue("ten", lop.TenLop.Trim()); update.Parameters.AddWithValue("siso", lop.SiSoToiDa);
+                        update.Parameters.AddWithValue("id", lop.LopHocID);
+                        if (!giuLichVaNgay)
+                        {
+                            update.Parameters.AddWithValue("lich", lop.LichHoc ?? "");
+                            update.Parameters.Add(new NpgsqlParameter("nbd", NpgsqlTypes.NpgsqlDbType.Date) {Value=(object)lop.NgayBatDau ?? DBNull.Value});
+                            update.Parameters.Add(new NpgsqlParameter("nkt", NpgsqlTypes.NpgsqlDbType.Date) {Value=(object)lop.NgayKetThuc ?? DBNull.Value});
+                        }
+                        if (update.ExecuteNonQuery() != 1) return false;
+                    }
+                    transaction.Commit(); return true;
+                }
+            }
         }
 
         public bool XoaLop(int lopID)
         {
             // Kiểm tra xem có học sinh nào đang trong lớp không
-            string checkSql = "SELECT COUNT(*) FROM HocSinh WHERE LopHocID = @id";
+            string checkSql = @"SELECT (SELECT COUNT(*) FROM HocSinh WHERE LopHocID=@id)
+                + (SELECT COUNT(*) FROM DangKyLop WHERE LopHocID=@id)
+                + (SELECT COUNT(*) FROM DeThi WHERE LopHocID=@id)";
             int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new NpgsqlParameter[] { new NpgsqlParameter("@id", lopID) }));
             if (count > 0)
             {
-                throw new Exception("Không thể xóa lớp vì đang có học sinh thuộc lớp này!");
+                throw new Exception("Không thể xóa lớp đã có học sinh, đăng ký hoặc đề thi. Hãy đóng đăng ký để giữ lịch sử.");
             }
 
             string sql = "DELETE FROM LopHoc WHERE LopHocID = @id";
@@ -139,7 +160,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             hs.Email,
             hs.SoDienThoai,
             l.TenLop,
-            CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+            CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
             dk.NgayDangKy,
             dk.TrangThai
         FROM DangKyLop dk
@@ -162,7 +183,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             hs.Email,
             hs.SoDienThoai,
             l.TenLop,
-            CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+            CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
             dk.NgayDangKy,
             COALESCE(dk.TrangThai, 'Chờ duyệt') AS TrangThai
         FROM DangKyLop dk
@@ -186,23 +207,74 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 });
             }
         }
-        public bool DuyetDangKy(int dangKyID, int lopHocID, int hocSinhID)
+        private static long DemHocVien(NpgsqlConnection conn, NpgsqlTransaction transaction, int lopHocID)
         {
-            string sql = @"
-        UPDATE DangKyLop SET TrangThai = 'Đã duyệt' WHERE DangKyID = @dkID;
-        UPDATE HocSinh SET LopHocID = @lopID WHERE HocSinhID = @hsID;";
-
-            NpgsqlParameter[] pars = {
-        new NpgsqlParameter("@dkID", dangKyID),
-        new NpgsqlParameter("@lopID", lopHocID),
-        new NpgsqlParameter("@hsID", hocSinhID)
-                };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            using (var cmd = new NpgsqlCommand(@"
+                SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=@lop OR EXISTS (
+                    SELECT 1 FROM DangKyLop dk WHERE dk.LopHocID=@lop
+                      AND dk.HocSinhID=h.HocSinhID AND dk.TrangThai='Đã duyệt')", conn, transaction))
+            {
+                cmd.Parameters.AddWithValue("lop", lopHocID);
+                return Convert.ToInt64(cmd.ExecuteScalar());
+            }
         }
-        public bool TuChoiDangKy(int dangKyID)
+
+        private static DataTable DocBang(NpgsqlConnection conn, NpgsqlTransaction transaction, string sql, params NpgsqlParameter[] parameters)
         {
-            string sql = "UPDATE DangKyLop SET TrangThai = 'Từ chối' WHERE DangKyID = @dkID";
-            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@dkID", dangKyID) }) > 0;
+            using (var cmd = new NpgsqlCommand(sql, conn, transaction))
+            {
+                cmd.Parameters.AddRange(parameters);
+                using (var adapter = new NpgsqlDataAdapter(cmd))
+                {
+                    var table = new DataTable(); adapter.Fill(table); return table;
+                }
+            }
+        }
+
+        public bool DuyetDangKy(int dangKyID, int lopHocID, int hocSinhID, int giaoVienID = 0)
+        {
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    using (var lop = DocBang(conn, transaction, @"
+                        SELECT COALESCE(SiSoToiDa,40) AS SucChua FROM LopHoc
+                        WHERE LopHocID=@lop AND COALESCE(TrangThai,'Đang mở')='Đang mở'
+                          AND (@gv=0 OR GiaoVienID=@gv) FOR UPDATE",
+                        new NpgsqlParameter("lop", lopHocID), new NpgsqlParameter("gv", giaoVienID)))
+                    {
+                        if (lop.Rows.Count != 1) return false;
+                        using (var hs = DocBang(conn, transaction, "SELECT HocSinhID FROM HocSinh WHERE HocSinhID=@hs FOR UPDATE", new NpgsqlParameter("hs", hocSinhID)))
+                            if (hs.Rows.Count != 1) return false;
+                        if (DemHocVien(conn, transaction, lopHocID) >= Convert.ToInt32(lop.Rows[0]["SucChua"])) return false;
+                    }
+                    using (var cmd = new NpgsqlCommand(@"
+                        UPDATE DangKyLop SET TrangThai='Đã duyệt'
+                        WHERE DangKyID=@dk AND LopHocID=@lop AND HocSinhID=@hs
+                          AND (TrangThai='Chờ duyệt' OR TrangThai IS NULL)", conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("dk", dangKyID); cmd.Parameters.AddWithValue("lop", lopHocID);
+                        cmd.Parameters.AddWithValue("hs", hocSinhID);
+                        if (cmd.ExecuteNonQuery() != 1) return false;
+                    }
+                    using (var cmd = new NpgsqlCommand("UPDATE HocSinh SET LopHocID=@lop WHERE HocSinhID=@hs", conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("lop", lopHocID); cmd.Parameters.AddWithValue("hs", hocSinhID);
+                        if (cmd.ExecuteNonQuery() != 1) return false;
+                    }
+                    transaction.Commit(); return true;
+                }
+            }
+        }
+
+        public bool TuChoiDangKy(int dangKyID, int giaoVienID = 0)
+        {
+            return DatabaseHelper.ExecuteNonQuery(@"
+                UPDATE DangKyLop dk SET TrangThai='Từ chối'
+                WHERE dk.DangKyID=@dk AND (dk.TrangThai='Chờ duyệt' OR dk.TrangThai IS NULL)
+                  AND EXISTS (SELECT 1 FROM LopHoc l WHERE l.LopHocID=dk.LopHocID AND (@gv=0 OR l.GiaoVienID=@gv))",
+                new NpgsqlParameter("dk", dangKyID), new NpgsqlParameter("gv", giaoVienID)) == 1;
         }
         public bool DongDangKyLop(int lopHocID)
         {
@@ -224,16 +296,16 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     COALESCE(l.LichHoc, 'Chưa có') AS LichHoc,
                     l.NgayBatDau,
                     l.NgayKetThuc,
-                    CAST((SELECT COUNT(*) FROM DangKyLop dk WHERE dk.LopHocID = l.LopHocID AND dk.TrangThai = 'Đã duyệt') AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
                     COALESCE(l.SiSoToiDa, 40) AS SiSoToiDa,
-                    (SELECT COUNT(*) FROM DangKyLop dk WHERE dk.LopHocID = l.LopHocID AND dk.TrangThai = 'Đã duyệt') AS SiSoHienTai,
+                    (SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')) AS SiSoHienTai,
                     COALESCE(l.TrangThai, 'Đang mở') AS TrangThai
                 FROM LopHoc l
                 LEFT JOIN KhoaHoc k ON l.KhoaHocID = k.KhoaHocID
                 LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
                 WHERE COALESCE(l.TrangThai, 'Đang mở') = 'Đang mở'
                   AND l.LopHocID NOT IN (
-                      SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND TrangThai IN ('Đã duyệt', 'Chờ duyệt')
+                      SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND LopHocID IS NOT NULL AND TrangThai IN ('Đã duyệt', 'Chờ duyệt')
                       UNION
                       SELECT COALESCE(LopHocID, 0) FROM HocSinh WHERE HocSinhID = @hsID
                   )
@@ -257,10 +329,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             l.NgayKetThuc,
 
             CAST((
-                SELECT COUNT(*)
-                FROM DangKyLop dk2
-                WHERE dk2.LopHocID = l.LopHocID
-                  AND dk2.TrangThai = 'Đã duyệt'
+                SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk2 WHERE dk2.HocSinhID=h.HocSinhID AND dk2.LopHocID=l.LopHocID AND dk2.TrangThai='Đã duyệt')
             ) AS varchar(10))
             || '/' ||
             CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
@@ -289,10 +358,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             l.NgayKetThuc,
 
             CAST((
-                SELECT COUNT(*)
-                FROM DangKyLop dk2
-                WHERE dk2.LopHocID = l.LopHocID
-                  AND dk2.TrangThai = 'Đã duyệt'
+                SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk2 WHERE dk2.HocSinhID=h.HocSinhID AND dk2.LopHocID=l.LopHocID AND dk2.TrangThai='Đã duyệt')
             ) AS varchar(10))
             || '/' ||
             CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
@@ -311,7 +377,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
           AND l.LopHocID NOT IN (
               SELECT LopHocID
               FROM DangKyLop
-              WHERE HocSinhID = @hsID
+              WHERE HocSinhID = @hsID AND LopHocID IS NOT NULL
                 AND TrangThai IN ('Đã duyệt', 'Chờ duyệt', 'Từ chối')
           )
 
@@ -330,156 +396,76 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         /// </summary>
         public bool DangKyLop(int lopHocID, int hocSinhID, out string thongBao)
         {
-            string checkLopSql = @"
-                SELECT 
-                    COALESCE(TrangThai, 'Đang mở') AS TrangThai,
-                    COALESCE(SiSoToiDa, 40) AS SiSoToiDa,
-                    (SELECT COUNT(*) FROM DangKyLop WHERE LopHocID = @lopID AND TrangThai = 'Đã duyệt') AS DaDuyet
-                FROM LopHoc 
-                WHERE LopHocID = @lopID";
-
-            DataTable dt = DatabaseHelper.ExecuteQuery(checkLopSql, new NpgsqlParameter[] { new NpgsqlParameter("@lopID", lopHocID) });
-            if (dt.Rows.Count == 0)
+            thongBao = "Lớp không còn mở, đã đủ sĩ số hoặc bạn đã đăng ký lớp này.";
+            using (var conn = DatabaseHelper.GetConnection())
             {
-                thongBao = "Lớp học không tồn tại!";
-                return false;
-            }
-
-            string trangThaiLop = dt.Rows[0]["TrangThai"].ToString();
-            int siSoToiDa = Convert.ToInt32(dt.Rows[0]["SiSoToiDa"]);
-            int daDuyet = Convert.ToInt32(dt.Rows[0]["DaDuyet"]);
-
-            if (trangThaiLop.Equals("Đã đóng", StringComparison.OrdinalIgnoreCase))
-            {
-                thongBao = "Lớp học này hiện đã đóng đăng ký, không thể đăng ký thêm!";
-                return false;
-            }
-
-            if (daDuyet >= siSoToiDa)
-            {
-                thongBao = $"Lớp học đã đủ sĩ số ({daDuyet}/{siSoToiDa}), không thể đăng ký!";
-                return false;
-            }
-
-            string checkDkSql = "SELECT DangKyID, TrangThai FROM DangKyLop WHERE LopHocID = @lopID AND HocSinhID = @hsID";
-            DataTable dtDk = DatabaseHelper.ExecuteQuery(checkDkSql, new NpgsqlParameter[] {
-                new NpgsqlParameter("@lopID", lopHocID),
-                new NpgsqlParameter("@hsID", hocSinhID)
-            });
-
-            if (dtDk.Rows.Count > 0)
-            {
-                string ttDk = dtDk.Rows[0]["TrangThai"]?.ToString();
-                int dkID = Convert.ToInt32(dtDk.Rows[0]["DangKyID"]);
-
-                if (ttDk == "Chờ duyệt")
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
                 {
-                    thongBao = "Bạn đã đăng ký lớp học này rồi và đang chờ giáo viên phê duyệt!";
-                    return false;
-                }
-                if (ttDk == "Đã duyệt")
-                {
-                    thongBao = "Bạn đã được duyệt vào học lớp này rồi!";
-                    return false;
-                }
-
-                // Cập nhật lại trạng thái thành Chờ duyệt
-                string updateSql = "UPDATE DangKyLop SET TrangThai = 'Chờ duyệt', NgayDangKy = CURRENT_TIMESTAMP WHERE DangKyID = @dkID";
-                int rows = DatabaseHelper.ExecuteNonQuery(updateSql, new NpgsqlParameter[] { new NpgsqlParameter("@dkID", dkID) });
-                if (rows > 0)
-                {
-                    thongBao = "Đăng ký thành công! Đơn đăng ký của bạn đang CHỜ DUYỆT bởi giáo viên.";
+                    using (var lop = DocBang(conn, transaction, @"
+                        SELECT COALESCE(SiSoToiDa,40) AS SucChua FROM LopHoc
+                        WHERE LopHocID=@lop AND COALESCE(TrangThai,'Đang mở')='Đang mở' FOR UPDATE",
+                        new NpgsqlParameter("lop", lopHocID)))
+                    {
+                        if (lop.Rows.Count != 1) return false;
+                        if (DemHocVien(conn, transaction, lopHocID) >= Convert.ToInt32(lop.Rows[0]["SucChua"])) return false;
+                    }
+                    using (var hs = DocBang(conn, transaction, "SELECT LopHocID FROM HocSinh WHERE HocSinhID=@hs FOR UPDATE", new NpgsqlParameter("hs", hocSinhID)))
+                    {
+                        if (hs.Rows.Count != 1 || (hs.Rows[0][0] != DBNull.Value && Convert.ToInt32(hs.Rows[0][0]) == lopHocID)) return false;
+                    }
+                    using (var registrations = DocBang(conn, transaction, @"
+                        SELECT DangKyID, TrangThai FROM DangKyLop WHERE LopHocID=@lop AND HocSinhID=@hs ORDER BY DangKyID DESC",
+                        new NpgsqlParameter("lop", lopHocID), new NpgsqlParameter("hs", hocSinhID)))
+                    {
+                        foreach (DataRow row in registrations.Rows)
+                            if (row["TrangThai"] == DBNull.Value || row["TrangThai"].ToString() == "Chờ duyệt" || row["TrangThai"].ToString() == "Đã duyệt") return false;
+                        string sql = registrations.Rows.Count == 0
+                            ? "INSERT INTO DangKyLop (LopHocID,HocSinhID,TrangThai,NgayDangKy) VALUES (@lop,@hs,'Chờ duyệt',CURRENT_TIMESTAMP)"
+                            : "UPDATE DangKyLop SET TrangThai='Chờ duyệt',NgayDangKy=CURRENT_TIMESTAMP WHERE DangKyID=@dk";
+                        using (var cmd = new NpgsqlCommand(sql, conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("lop", lopHocID); cmd.Parameters.AddWithValue("hs", hocSinhID);
+                            if (registrations.Rows.Count > 0) cmd.Parameters.AddWithValue("dk", Convert.ToInt32(registrations.Rows[0]["DangKyID"]));
+                            if (cmd.ExecuteNonQuery() != 1) return false;
+                        }
+                    }
+                    transaction.Commit();
+                    thongBao = "Đăng ký thành công! Đơn đăng ký đang chờ giáo viên phê duyệt.";
                     return true;
                 }
             }
-            else
-            {
-                string insertSql = @"INSERT INTO DangKyLop (LopHocID, HocSinhID, TrangThai, NgayDangKy) 
-                                     VALUES (@lopID, @hsID, 'Chờ duyệt', CURRENT_TIMESTAMP)";
-                int rows = DatabaseHelper.ExecuteNonQuery(insertSql, new NpgsqlParameter[] {
-                    new NpgsqlParameter("@lopID", lopHocID),
-                    new NpgsqlParameter("@hsID", hocSinhID)
-                });
-                if (rows > 0)
-                {
-                    thongBao = "Đăng ký thành công! Đơn đăng ký của bạn đang CHỜ DUYỆT bởi giáo viên.";
-                    return true;
-                }
-            }
-
-            thongBao = "Không thể đăng ký lớp học. Vui lòng thử lại sau!";
-            return false;
         }
 
-        /// <summary>
-        /// Học viên hủy đăng ký lớp học (chỉ khi lớp chưa đóng đăng ký và chưa quá hạn)
-        /// </summary>
         public bool HuyDangKyLop(int lopHocID, int hocSinhID, out string thongBao)
         {
-            string checkLopSql = @"
-                SELECT 
-                    COALESCE(TrangThai, 'Đang mở') AS TrangThai,
-                    COALESCE(SiSoToiDa, 40) AS SiSoToiDa,
-                    (SELECT COUNT(*) FROM DangKyLop WHERE LopHocID = @lopID AND TrangThai = 'Đã duyệt') AS DaDuyet
-                FROM LopHoc 
-                WHERE LopHocID = @lopID";
-
-            DataTable dt = DatabaseHelper.ExecuteQuery(checkLopSql, new NpgsqlParameter[] { new NpgsqlParameter("@lopID", lopHocID) });
-            if (dt.Rows.Count == 0)
+            thongBao = "Không thể hủy: lớp đã đóng, bạn chưa đăng ký hoặc đã được duyệt vào lớp.";
+            using (var conn = DatabaseHelper.GetConnection())
             {
-                thongBao = "Lớp học không tồn tại!";
-                return false;
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    using (var lop = DocBang(conn, transaction, "SELECT LopHocID FROM LopHoc WHERE LopHocID=@lop AND COALESCE(TrangThai,'Đang mở')='Đang mở' FOR UPDATE", new NpgsqlParameter("lop", lopHocID)))
+                        if (lop.Rows.Count != 1) return false;
+                    using (var hs = DocBang(conn, transaction, "SELECT LopHocID FROM HocSinh WHERE HocSinhID=@hs FOR UPDATE", new NpgsqlParameter("hs", hocSinhID)))
+                        if (hs.Rows.Count != 1 || (hs.Rows[0][0] != DBNull.Value && Convert.ToInt32(hs.Rows[0][0]) == lopHocID)) return false;
+                    using (var approved = DocBang(conn, transaction, "SELECT 1 FROM DangKyLop WHERE LopHocID=@lop AND HocSinhID=@hs AND TrangThai='Đã duyệt'",
+                        new NpgsqlParameter("lop", lopHocID), new NpgsqlParameter("hs", hocSinhID)))
+                        if (approved.Rows.Count > 0) return false;
+                    using (var cmd = new NpgsqlCommand("DELETE FROM DangKyLop WHERE LopHocID=@lop AND HocSinhID=@hs", conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("lop", lopHocID); cmd.Parameters.AddWithValue("hs", hocSinhID);
+                        if (cmd.ExecuteNonQuery() == 0) return false;
+                    }
+                    transaction.Commit(); thongBao = "Hủy đăng ký lớp học thành công!"; return true;
+                }
             }
+        }
 
-            string trangThaiLop = dt.Rows[0]["TrangThai"].ToString();
-            int siSoToiDa = Convert.ToInt32(dt.Rows[0]["SiSoToiDa"]);
-            int daDuyet = Convert.ToInt32(dt.Rows[0]["DaDuyet"]);
-
-            if (trangThaiLop.Equals("Đã đóng", StringComparison.OrdinalIgnoreCase))
-            {
-                thongBao = "Lớp học đã đóng đăng ký, bạn không thể hủy đăng ký vào thời điểm này!";
-                return false;
-            }
-
-            string checkDkSql = "SELECT DangKyID, TrangThai FROM DangKyLop WHERE LopHocID = @lopID AND HocSinhID = @hsID";
-            DataTable dtDk = DatabaseHelper.ExecuteQuery(checkDkSql, new NpgsqlParameter[] {
-                new NpgsqlParameter("@lopID", lopHocID),
-                new NpgsqlParameter("@hsID", hocSinhID)
-            });
-
-            bool daCoDon = dtDk.Rows.Count > 0;
-            string ttDk = daCoDon ? dtDk.Rows[0]["TrangThai"]?.ToString() : "";
-            int dkID = daCoDon ? Convert.ToInt32(dtDk.Rows[0]["DangKyID"]) : 0;
-
-            object hsLopObj = DatabaseHelper.ExecuteScalar("SELECT LopHocID FROM HocSinh WHERE HocSinhID = @hsID", new NpgsqlParameter("@hsID", hocSinhID));
-            int hsLopID = (hsLopObj != null && hsLopObj != DBNull.Value) ? Convert.ToInt32(hsLopObj) : 0;
-
-            if (!daCoDon && hsLopID != lopHocID)
-            {
-                thongBao = "Bạn chưa đăng ký lớp học này!";
-                return false;
-            }
-
-            if (daCoDon && ttDk == "Đã hủy")
-            {
-                thongBao = "Bạn đã hủy đăng ký lớp này trước đó rồi!";
-                return false;
-            }
-
-            // Xóa bản ghi đăng ký
-            if (daCoDon)
-            {
-                DatabaseHelper.ExecuteNonQuery("DELETE FROM DangKyLop WHERE DangKyID = @dkID", new NpgsqlParameter("@dkID", dkID));
-            }
-
-            // Nếu học sinh đang được gán lớp thì xóa gán
-            if (hsLopID == lopHocID)
-            {
-                DatabaseHelper.ExecuteNonQuery("UPDATE HocSinh SET LopHocID = NULL WHERE HocSinhID = @hsID", new NpgsqlParameter("@hsID", hocSinhID));
-            }
-
-            thongBao = "Hủy đăng ký lớp học thành công!";
-            return true;
+        public bool SuaThongTinLopCoBan(LopHoc lop)
+        {
+            // Form Admin không nhập lịch/ngày: không ghi đè các giá trị đó.
+            return CapNhatLop(lop, true);
         }
     }
 }

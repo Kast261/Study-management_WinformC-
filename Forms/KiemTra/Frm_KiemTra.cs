@@ -21,10 +21,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private int _thoiGianConLai; // tính theo giây
         private Timer _timer;
         private bool _daNopBai = false;
+        private bool _dangNopBai;
+        private DateTime _ketThucLuc;
 
         public Frm_KiemTra(int deThiID)
         {
             InitializeComponent();
+            FormClosing += Frm_KiemTra_FormClosing;
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
@@ -33,52 +36,65 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void KiemTra_Load(object sender, EventArgs e)
         {
-            _deThi = _deThiDAL.LayTheoID(_deThiID);
-            _cauHois = _deThiDAL.LayDanhSachCauHoi(_deThiID);
-
-            if (_deThi == null || _cauHois.Count == 0)
+            try
             {
-                MessageBox.Show("Đề thi chưa có câu hỏi nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.Close();
-                return;
+                if (!Session.IsHocSinh || !_deThiDAL.CoTheBatDauThi(Session.NguoiDungID, _deThiID))
+                {
+                    MessageBox.Show("Đề thi đã hết hạn, đã làm hoặc không thuộc lớp của bạn.", "Không thể bắt đầu thi");
+                    Close();
+                    return;
+                }
+                _deThi = _deThiDAL.LayTheoID(_deThiID);
+                _cauHois = _deThiDAL.LayDanhSachCauHoi(_deThiID);
+
+                if (_deThi == null || _cauHois.Count == 0)
+                {
+                    MessageBox.Show("Đề thi chưa có câu hỏi nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+
+                this.Text = $"BÀI THI: {_deThi.TenDeThi} - Môn: {_deThi.MonHoc}";
+                _ketThucLuc = DateTime.Now.AddMinutes(_deThi.ThoiGian);
+                if (_deThi.HanNop.HasValue && _deThi.HanNop.Value < _ketThucLuc)
+                    _ketThucLuc = _deThi.HanNop.Value;
+                _thoiGianConLai = Math.Max(0, (int)Math.Ceiling((_ketThucLuc - DateTime.Now).TotalSeconds));
+                lblKiemTra_SoCauHoi.Text = $"Thời gian: {_thoiGianConLai / 60:D2}:{_thoiGianConLai % 60:D2}";
+
+                // Timer đếm ngược
+                _timer = new Timer { Interval = 1000 };
+                _timer.Tick += Timer_Tick;
+                _timer.Start();
+
+                // Đăng ký sự kiện các nút điều hướng theo đúng tên button của bạn
+                btnKiemTra_CauTruoc.Click += (s, ev) => ChuyenCau(_currentIndex - 1);
+                btnKiemTra_CauSau.Click += (s, ev) => ChuyenCau(_currentIndex + 1);
+                btnKiemTra_NopBai.Click += (s, ev) => XacNhanNopBai();
+
+                // Đăng ký sự kiện chọn đáp án
+                radKiemTra_DapAnA.CheckedChanged += Radio_CheckedChanged;
+                radKiemTra_DapAnB.CheckedChanged += Radio_CheckedChanged;
+                radKiemTra_DapAnC.CheckedChanged += Radio_CheckedChanged;
+                radKiemTra_DapAnD.CheckedChanged += Radio_CheckedChanged;
+
+                HienThiCauHoi(_currentIndex);
+                CapNhatTienDoProgressBar();
             }
-
-            this.Text = $"BÀI THI: {_deThi.TenDeThi} - Môn: {_deThi.MonHoc}";
-            _thoiGianConLai = _deThi.ThoiGian * 60;
-
-            // Timer đếm ngược
-            _timer = new Timer { Interval = 1000 };
-            _timer.Tick += Timer_Tick;
-            _timer.Start();
-
-            // Đăng ký sự kiện các nút điều hướng theo đúng tên button của bạn
-            btnKiemTra_CauTruoc.Click += (s, ev) => ChuyenCau(_currentIndex - 1);
-            btnKiemTra_CauSau.Click += (s, ev) => ChuyenCau(_currentIndex + 1);
-            btnKiemTra_NopBai.Click += (s, ev) => XacNhanNopBai();
-
-            // Đăng ký sự kiện chọn đáp án
-            radKiemTra_DapAnA.CheckedChanged += Radio_CheckedChanged;
-            radKiemTra_DapAnB.CheckedChanged += Radio_CheckedChanged;
-            radKiemTra_DapAnC.CheckedChanged += Radio_CheckedChanged;
-            radKiemTra_DapAnD.CheckedChanged += Radio_CheckedChanged;
-
-            HienThiCauHoi(_currentIndex);
-            CapNhatTienDoProgressBar();
+            catch (Exception ex)
+            {
+                _daNopBai = true; // Không hỏi nộp bài khi chưa tải được phòng thi.
+                MessageBox.Show("Không thể mở bài thi: " + ex.Message, "Lỗi");
+                Close();
+            }
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (_thoiGianConLai > 0)
-            {
-                _thoiGianConLai--;
-                int phut = _thoiGianConLai / 60;
-                int giay = _thoiGianConLai % 60;
-                lblKiemTra_SoCauHoi.Text = $"Thời gian: {phut:D2}:{giay:D2}";
-            }
-            else
+            _thoiGianConLai = Math.Max(0, (int)Math.Ceiling((_ketThucLuc - DateTime.Now).TotalSeconds));
+            lblKiemTra_SoCauHoi.Text = $"Thời gian: {_thoiGianConLai / 60:D2}:{_thoiGianConLai % 60:D2}";
+            if (_thoiGianConLai == 0 && !_dangNopBai)
             {
                 _timer.Stop();
-                MessageBox.Show("Đã hết thời gian làm bài! Hệ thống tự động nộp bài.", "Hết giờ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 NopBai();
             }
         }
@@ -134,6 +150,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void Radio_CheckedChanged(object sender, EventArgs e)
         {
+            if (DateTime.Now >= _ketThucLuc) return;
             RadioButton rb = sender as RadioButton;
             if (rb != null && rb.Checked)
             {
@@ -176,137 +193,57 @@ namespace BLT_Quan_Ly_Hoc_Tap
         }
 
 
-        private void NopBai()
+        private void NopBai(bool dongForm = true)
         {
-            // Tránh nộp bài nhiều lần
-            if (_daNopBai)
-                return;
-
-            int tongSoCau = _cauHois.Count;
-
-            if (tongSoCau == 0)
-            {
-                MessageBox.Show(
-                    "Bài thi không có câu hỏi!",
-                    "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
-
-            int soCauDung = 0;
-
-            // Đếm số câu trả lời đúng
-            for (int i = 0; i < tongSoCau; i++)
-            {
-                CauHoi q = _cauHois[i];
-
-                if (_dapAnChon.ContainsKey(i) &&
-                    string.Equals(
-                        _dapAnChon[i],
-                        q.DapAnDung,
-                        StringComparison.OrdinalIgnoreCase))
-                {
-                    soCauDung++;
-                }
-            }
-
-            // Tính điểm trên thang 10
-            decimal diem = Math.Round(
-                ((decimal)soCauDung / tongSoCau) * 10,
-                2);
-
-            // Chặn nộp trùng trong phiên hiện tại
-            _daNopBai = true;
-
+            if (_daNopBai || _dangNopBai || _cauHois.Count == 0) return;
+            _dangNopBai = true;
+            _timer?.Stop();
+            KetQuaThi result;
             try
             {
-                // Lưu kết quả bài thi
-                KetQuaThi kq = new KetQuaThi
-                {
-                    HocSinhID = Session.NguoiDungID,
-                    DeThiID = _deThiID,
-                    SoCauDung = soCauDung,
-                    Diem = diem,
-                    ThoiGianNop = DateTime.Now,
-                    TrangThai = "Hoàn thành"
-                };
-
-                int kqID = _ketQuaDAL.LuuKetQua(kq);
-
-                // Lưu chi tiết từng câu trả lời
-                for (int i = 0; i < tongSoCau; i++)
-                {
-                    CauHoi q = _cauHois[i];
-
-                    string chon = _dapAnChon.ContainsKey(i)
-                        ? _dapAnChon[i]
-                        : "";
-
-                    bool laDung = string.Equals(
-                        chon,
-                        q.DapAnDung,
-                        StringComparison.OrdinalIgnoreCase);
-
-                    _ketQuaDAL.LuuChiTietBaiLam(
-                        kqID,
-                        q.CauHoiID,
-                        chon,
-                        laDung);
-                }
+                var answers = new Dictionary<int, string>();
+                for (int i = 0; i < _cauHois.Count; i++)
+                    if (_dapAnChon.ContainsKey(i)) answers[_cauHois[i].CauHoiID] = _dapAnChon[i];
+                result = _ketQuaDAL.NopBai(Session.TaiKhoanID, Session.NguoiDungID, _deThiID, answers);
+                _daNopBai = true;
             }
             catch (Exception ex)
             {
-                // Cho phép thử lại nếu lưu thất bại
-                // Chú ý: cần transaction để tránh lưu một phần
-                _daNopBai = false;
-
-                MessageBox.Show(
-                    "Lỗi khi lưu kết quả bài thi:\n" + ex.Message,
-                    "Lỗi",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
+                MessageBox.Show("Chưa lưu được bài thi. Bạn có thể bấm Nộp bài để thử lại.\n" + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Không cho sửa đáp án sau khi hết giờ, nhưng vẫn cho phép nộp lại.
+                bool conGio = DateTime.Now < _ketThucLuc;
+                radKiemTra_DapAnA.Enabled = radKiemTra_DapAnB.Enabled =
+                    radKiemTra_DapAnC.Enabled = radKiemTra_DapAnD.Enabled = conGio;
+                if (conGio) _timer?.Start();
                 return;
             }
+            finally { _dangNopBai = false; }
 
-            // Hiển thị Form kết quả thay cho MessageBox
-            using (FrmKetQuaBaiThi frm = new FrmKetQuaBaiThi(
-                soCauDung,
-                tongSoCau,
-                (double)diem))
+            using (var frm = new FrmKetQuaBaiThi(result.SoCauDung, _cauHois.Count, (double)result.Diem))
             {
                 frm.ShowDialog(this);
-
                 if (frm.YeuCauXemLai)
-                {
-                    // TODO: Tích hợp chức năng xem lại bài thi.
-                }
+                    using (var review = new Forms.Frm_XemLaiBaiThi(result.KetQuaID)) review.ShowDialog(this);
             }
-
-            // Đóng Form làm bài sau khi xem kết quả
-            this.Close();
+            if (dongForm) Close();
         }
-
 
         private void Frm_KiemTra_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!_daNopBai)
-            {
-                DialogResult result = MessageBox.Show(
-                    "Bạn đang trong quá trình làm bài thi. Nếu thoát bây giờ, hệ thống sẽ tự động thu bài và chấm điểm.\nBạn có muốn nộp bài không?",
-                    "Cảnh báo thoát phòng thi", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (_daNopBai || _timer == null) return;
+            if (_dangNopBai) { e.Cancel = true; return; }
+            if (MessageBox.Show("Thoát phòng thi sẽ nộp các đáp án hiện tại. Bạn có muốn nộp bài không?",
+                "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                NopBai(false);
+            // Nếu lưu thất bại, giữ phòng thi mở để người dùng có thể thử lại.
+            e.Cancel = !_daNopBai;
+        }
 
-                if (result == DialogResult.Yes)
-                {
-                    _timer.Stop();
-                    NopBai();
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-            }
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            _timer?.Dispose();
+            base.OnFormClosed(e);
         }
     }
 }

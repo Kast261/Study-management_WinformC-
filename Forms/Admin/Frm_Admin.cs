@@ -985,10 +985,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 GiaoVienID = gvID
             };
 
-            if (_lopDAL.SuaLop(lop))
+            if (_lopDAL.SuaThongTinLopCoBan(lop))
             {
                 MessageBox.Show("Cập nhật thông tin lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachLopHoc();
+            }
+            else
+            {
+                MessageBox.Show("Không thể cập nhật lớp. Sĩ số tối đa không được nhỏ hơn số học viên đang học.", "Thông báo");
             }
         }
 

@@ -150,6 +150,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
         public bool Xoa(int id)
         {
+            if (Convert.ToBoolean(DatabaseHelper.ExecuteScalar(@"SELECT EXISTS (SELECT 1 FROM DangKyLop WHERE HocSinhID=@id) OR EXISTS (SELECT 1 FROM KetQuaThi WHERE HocSinhID=@id) OR EXISTS (SELECT 1 FROM TaiKhoan tk JOIN HocSinh hs ON hs.HocSinhID=@id WHERE (LOWER(tk.VaiTro) IN ('hocsinh','hocvien') AND tk.NguoiDungID=@id) OR tk.TaiKhoanID=hs.TaiKhoanID)", new NpgsqlParameter("id", id))))
+                throw new InvalidOperationException("Không thể xóa hồ sơ đã liên kết tài khoản hoặc có dữ liệu học tập. Hãy khóa tài khoản để giữ lịch sử.");
             string sql = "DELETE FROM HocSinh WHERE HocSinhID = @id";
             return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) }) > 0;
         }

@@ -69,7 +69,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 // Sự kiện nút đăng ký / hủy lớp
                 if (foreverButton6 != null) foreverButton6.Click += btnDangKyLop_Click;
                 if (btnHV_DangKy != null) btnHV_DangKy.Click += btnDangKyLop_Click;
-                if (btnHV_HuyDangKi != null) btnHV_HuyDangKi.Click += btnHV_HuyDangKi_Click;
+                // Nút hủy đã được Designer đăng ký Click; không đăng ký lần thứ hai.
 
                 // Sự kiện lọc môn học và các nút Bài Thi
                 if (cboHV_LocMonHoc != null) cboHV_LocMonHoc.SelectedIndexChanged += cboHV_LocMonHoc_SelectedIndexChanged;

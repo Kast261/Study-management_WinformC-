@@ -102,138 +102,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
 
             try
             {
-                string monHocHienThi = string.IsNullOrWhiteSpace(tenMonHocLoc) ? "Tất cả" : tenMonHocLoc;
-                string tuNgayStr  = tuNgay.HasValue  ? tuNgay.Value.ToString("dd/MM/yyyy")  : "---";
-                string denNgayStr = denNgay.HasValue ? denNgay.Value.ToString("dd/MM/yyyy") : "---";
-                string dieuKienLoc = $"Điều kiện lọc:  Môn học: {monHocHienThi};  Từ {tuNgayStr} đến {denNgayStr}";
-
-                // Nhóm theo môn học
-                var groups = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<DataRow>>(StringComparer.OrdinalIgnoreCase);
-                foreach (DataRow row in dt.Rows)
-                {
-                    string monHoc = row["MonHoc"]?.ToString() ?? "(Chưa xác định)";
-                    if (!groups.ContainsKey(monHoc))
-                        groups[monHoc] = new System.Collections.Generic.List<DataRow>();
-                    groups[monHoc].Add(row);
-                }
-
-                // Tính điểm trung bình tổng
-                double tongDiem = 0;
-                int tongBai = 0;
-                foreach (DataRow row in dt.Rows)
-                {
-                    if (double.TryParse(row["Diem"]?.ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double d))
-                    {
-                        tongDiem += d;
-                        tongBai++;
-                    }
-                }
-                double diemTB = tongBai > 0 ? Math.Round(tongDiem / tongBai, 2) : 0;
-
-                StringBuilder sb = new StringBuilder();
-                sb.Append(GetBangDiemXmlHeader());
-                sb.AppendLine("  <Table>");
-
-                // Cột: STT(45) | ĐềThi(260) | MônHọc(120) | NộpLúc(150) | Điểm(80)
-                sb.AppendLine("   <Column ss:Width=\"45\"/>");
-                sb.AppendLine("   <Column ss:Width=\"260\"/>");
-                sb.AppendLine("   <Column ss:Width=\"120\"/>");
-                sb.AppendLine("   <Column ss:Width=\"150\"/>");
-                sb.AppendLine("   <Column ss:Width=\"80\"/>");
-
-                // Dòng 1: Tiêu đề báo cáo (merge 5 cột)
-                sb.AppendLine("   <Row ss:Height=\"48\">");
-                sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_Title\"><Data ss:Type=\"String\">BẢNG ĐIỂM HỌC SINH</Data></Cell>");
-                sb.AppendLine("   </Row>");
-
-                // Dòng 2: Họ tên học sinh
-                sb.AppendLine("   <Row ss:Height=\"22\">");
-                sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_SubTitle\"><Data ss:Type=\"String\">Học sinh: {EscapeXml(tenHocSinh)}</Data></Cell>");
-                sb.AppendLine("   </Row>");
-
-                // Dòng 3: Điều kiện lọc
-                sb.AppendLine("   <Row ss:Height=\"22\">");
-                sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_SubTitle\"><Data ss:Type=\"String\">{EscapeXml(dieuKienLoc)}</Data></Cell>");
-                sb.AppendLine("   </Row>");
-
-                // Dòng trống
-                sb.AppendLine("   <Row ss:Height=\"8\"/>");
-
-                // Dòng Header
-                sb.AppendLine("   <Row ss:Height=\"28\">");
-                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">STT</Data></Cell>");
-                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Đề thi</Data></Cell>");
-                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Môn học</Data></Cell>");
-                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Nộp lúc</Data></Cell>");
-                sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Điểm</Data></Cell>");
-                sb.AppendLine("   </Row>");
-
-                // Dữ liệu nhóm theo môn học
-                int stt = 1;
-                foreach (var kvp in groups)
-                {
-                    string monHoc = kvp.Key;
-                    var rows = kvp.Value;
-                    int soRecord = rows.Count;
-
-                    // Dòng nhóm môn học
-                    sb.AppendLine("   <Row ss:Height=\"24\">");
-                    sb.AppendLine($"    <Cell ss:MergeAcross=\"3\" ss:StyleID=\"BD_GroupHeader\"><Data ss:Type=\"String\">Môn học: {EscapeXml(monHoc)} ({soRecord} bản ghi)</Data></Cell>");
-                    sb.AppendLine("    <Cell ss:StyleID=\"BD_GroupHeaderRight\"><Data ss:Type=\"String\"></Data></Cell>");
-                    sb.AppendLine("   </Row>");
-
-                    // Dữ liệu từng bài trong nhóm
-                    foreach (DataRow row in rows)
-                    {
-                        string tenDeThi   = row["TenDeThi"]?.ToString() ?? "";
-                        string thoiGianNop = "";
-                        if (row["ThoiGianNop"] != DBNull.Value && DateTime.TryParse(row["ThoiGianNop"]?.ToString(), out DateTime dt2))
-                            thoiGianNop = dt2.ToString("dd/MM/yyyy HH:mm");
-                        double diem = 0;
-                        bool isDiem = double.TryParse(row["Diem"]?.ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out diem);
-
-                        sb.AppendLine("   <Row ss:Height=\"22\">");
-                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellCenter\"><Data ss:Type=\"Number\">{stt++}</Data></Cell>");
-                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellLeft\"><Data ss:Type=\"String\">{EscapeXml(tenDeThi)}</Data></Cell>");
-                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellCenter\"><Data ss:Type=\"String\">{EscapeXml(monHoc)}</Data></Cell>");
-                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellCenter\"><Data ss:Type=\"String\">{EscapeXml(thoiGianNop)}</Data></Cell>");
-                        if (isDiem)
-                            sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellRight\"><Data ss:Type=\"Number\">{diem.ToString(System.Globalization.CultureInfo.InvariantCulture)}</Data></Cell>");
-                        else
-                            sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellRight\"><Data ss:Type=\"String\">{EscapeXml(row["Diem"]?.ToString() ?? "")}</Data></Cell>");
-                        sb.AppendLine("   </Row>");
-                    }
-                }
-
-                // Dòng ĐIỂM TRUNG BÌNH
-                sb.AppendLine("   <Row ss:Height=\"28\">");
-                sb.AppendLine($"    <Cell ss:MergeAcross=\"3\" ss:StyleID=\"BD_DiemTB\"><Data ss:Type=\"String\">ĐIỂM TRUNG BÌNH ({tongBai} bài)</Data></Cell>");
-                sb.AppendLine($"    <Cell ss:StyleID=\"BD_DiemTBRight\"><Data ss:Type=\"Number\">{diemTB.ToString(System.Globalization.CultureInfo.InvariantCulture)}</Data></Cell>");
-                sb.AppendLine("   </Row>");
-
-                // Dòng trống
-                sb.AppendLine("   <Row ss:Height=\"16\"/>");
-
-                // Dòng chữ ký người lập biểu (căn phải)
-                sb.AppendLine("   <Row ss:Height=\"22\">");
-                sb.AppendLine("    <Cell ss:MergeAcross=\"2\"><Data ss:Type=\"String\"></Data></Cell>");
-                sb.AppendLine($"    <Cell ss:MergeAcross=\"1\" ss:StyleID=\"BD_ChuKy\"><Data ss:Type=\"String\">Người lập biểu</Data></Cell>");
-                sb.AppendLine("   </Row>");
-                sb.AppendLine("   <Row ss:Height=\"20\">");
-                sb.AppendLine("    <Cell ss:MergeAcross=\"2\"><Data ss:Type=\"String\"></Data></Cell>");
-                sb.AppendLine($"    <Cell ss:MergeAcross=\"1\" ss:StyleID=\"BD_ChuKyNote\"><Data ss:Type=\"String\">(Ký, ghi rõ họ tên)</Data></Cell>");
-                sb.AppendLine("   </Row>");
-
-                // Dòng trang
-                sb.AppendLine("   <Row ss:Height=\"22\">");
-                sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_Page\"><Data ss:Type=\"String\">Trang 1/1</Data></Cell>");
-                sb.AppendLine("   </Row>");
-
-                sb.AppendLine("  </Table>");
-                sb.AppendLine(" </Worksheet>");
-                sb.AppendLine("</Workbook>");
-
-                File.WriteAllText(sfd.FileName, sb.ToString(), new UTF8Encoding(true));
+                string report = TaoXmlBangDiem(dt, tenHocSinh, tenMonHocLoc, tuNgay, denNgay);
+                File.WriteAllText(sfd.FileName, report, new UTF8Encoding(true));
 
                 DialogResult dr = MessageBox.Show(
                     "Xuất báo cáo thành công!\nBạn có muốn mở file vừa xuất không?",
@@ -250,6 +120,144 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             {
                 MessageBox.Show("Lỗi khi xuất báo cáo: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // Tách phần tạo dữ liệu khỏi hộp thoại lưu để kiểm tra số thập phân và XML độc lập.
+        internal static string TaoXmlBangDiem(DataTable dt, string tenHocSinh,
+            string tenMonHocLoc, DateTime? tuNgay, DateTime? denNgay)
+        {
+            string monHocHienThi = string.IsNullOrWhiteSpace(tenMonHocLoc) ? "Tất cả" : tenMonHocLoc;
+            string tuNgayStr  = tuNgay.HasValue  ? tuNgay.Value.ToString("dd/MM/yyyy")  : "---";
+            string denNgayStr = denNgay.HasValue ? denNgay.Value.ToString("dd/MM/yyyy") : "---";
+            string dieuKienLoc = $"Điều kiện lọc:  Môn học: {monHocHienThi};  Từ {tuNgayStr} đến {denNgayStr}";
+
+            // Nhóm theo môn học
+            var groups = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<DataRow>>(StringComparer.OrdinalIgnoreCase);
+            foreach (DataRow row in dt.Rows)
+            {
+                string monHoc = row["MonHoc"]?.ToString() ?? "(Chưa xác định)";
+                if (!groups.ContainsKey(monHoc))
+                    groups[monHoc] = new System.Collections.Generic.List<DataRow>();
+                groups[monHoc].Add(row);
+            }
+
+            // Tính điểm trung bình tổng
+            double tongDiem = 0;
+            int tongBai = 0;
+            foreach (DataRow row in dt.Rows)
+            {
+                if (double.TryParse(Convert.ToString(row["Diem"], CultureInfo.InvariantCulture), NumberStyles.Float, CultureInfo.InvariantCulture, out double d))
+                {
+                    tongDiem += d;
+                    tongBai++;
+                }
+            }
+            double diemTB = tongBai > 0 ? Math.Round(tongDiem / tongBai, 2) : 0;
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(GetBangDiemXmlHeader());
+            sb.AppendLine("  <Table>");
+
+            // Cột: STT(45) | ĐềThi(260) | MônHọc(120) | NộpLúc(150) | Điểm(80)
+            sb.AppendLine("   <Column ss:Width=\"45\"/>");
+            sb.AppendLine("   <Column ss:Width=\"260\"/>");
+            sb.AppendLine("   <Column ss:Width=\"120\"/>");
+            sb.AppendLine("   <Column ss:Width=\"150\"/>");
+            sb.AppendLine("   <Column ss:Width=\"80\"/>");
+
+            // Dòng 1: Tiêu đề báo cáo (merge 5 cột)
+            sb.AppendLine("   <Row ss:Height=\"48\">");
+            sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_Title\"><Data ss:Type=\"String\">BẢNG ĐIỂM HỌC SINH</Data></Cell>");
+            sb.AppendLine("   </Row>");
+
+            // Dòng 2: Họ tên học sinh
+            sb.AppendLine("   <Row ss:Height=\"22\">");
+            sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_SubTitle\"><Data ss:Type=\"String\">Học sinh: {EscapeXml(tenHocSinh)}</Data></Cell>");
+            sb.AppendLine("   </Row>");
+
+            // Dòng 3: Điều kiện lọc
+            sb.AppendLine("   <Row ss:Height=\"22\">");
+            sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_SubTitle\"><Data ss:Type=\"String\">{EscapeXml(dieuKienLoc)}</Data></Cell>");
+            sb.AppendLine("   </Row>");
+
+            // Dòng trống
+            sb.AppendLine("   <Row ss:Height=\"8\"/>");
+
+            // Dòng Header
+            sb.AppendLine("   <Row ss:Height=\"28\">");
+            sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">STT</Data></Cell>");
+            sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Đề thi</Data></Cell>");
+            sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Môn học</Data></Cell>");
+            sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Nộp lúc</Data></Cell>");
+            sb.AppendLine("    <Cell ss:StyleID=\"BD_Header\"><Data ss:Type=\"String\">Điểm</Data></Cell>");
+            sb.AppendLine("   </Row>");
+
+            // Dữ liệu nhóm theo môn học
+            int stt = 1;
+            foreach (var kvp in groups)
+            {
+                string monHoc = kvp.Key;
+                var rows = kvp.Value;
+                int soRecord = rows.Count;
+
+                // Dòng nhóm môn học
+                sb.AppendLine("   <Row ss:Height=\"24\">");
+                sb.AppendLine($"    <Cell ss:MergeAcross=\"3\" ss:StyleID=\"BD_GroupHeader\"><Data ss:Type=\"String\">Môn học: {EscapeXml(monHoc)} ({soRecord} bản ghi)</Data></Cell>");
+                sb.AppendLine("    <Cell ss:StyleID=\"BD_GroupHeaderRight\"><Data ss:Type=\"String\"></Data></Cell>");
+                sb.AppendLine("   </Row>");
+
+                // Dữ liệu từng bài trong nhóm
+                foreach (DataRow row in rows)
+                {
+                    string tenDeThi   = row["TenDeThi"]?.ToString() ?? "";
+                    string thoiGianNop = "";
+                    if (row["ThoiGianNop"] != DBNull.Value && DateTime.TryParse(row["ThoiGianNop"]?.ToString(), out DateTime dt2))
+                        thoiGianNop = dt2.ToString("dd/MM/yyyy HH:mm");
+                    double diem = 0;
+                    bool isDiem = double.TryParse(Convert.ToString(row["Diem"], CultureInfo.InvariantCulture), NumberStyles.Float, CultureInfo.InvariantCulture, out diem);
+
+                    sb.AppendLine("   <Row ss:Height=\"22\">");
+                    sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellCenter\"><Data ss:Type=\"Number\">{stt++}</Data></Cell>");
+                    sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellLeft\"><Data ss:Type=\"String\">{EscapeXml(tenDeThi)}</Data></Cell>");
+                    sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellCenter\"><Data ss:Type=\"String\">{EscapeXml(monHoc)}</Data></Cell>");
+                    sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellCenter\"><Data ss:Type=\"String\">{EscapeXml(thoiGianNop)}</Data></Cell>");
+                    if (isDiem)
+                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellRight\"><Data ss:Type=\"Number\">{diem.ToString(System.Globalization.CultureInfo.InvariantCulture)}</Data></Cell>");
+                    else
+                        sb.AppendLine($"    <Cell ss:StyleID=\"BD_CellRight\"><Data ss:Type=\"String\">{EscapeXml(row["Diem"]?.ToString() ?? "")}</Data></Cell>");
+                    sb.AppendLine("   </Row>");
+                }
+            }
+
+            // Dòng ĐIỂM TRUNG BÌNH
+            sb.AppendLine("   <Row ss:Height=\"28\">");
+            sb.AppendLine($"    <Cell ss:MergeAcross=\"3\" ss:StyleID=\"BD_DiemTB\"><Data ss:Type=\"String\">ĐIỂM TRUNG BÌNH ({tongBai} bài)</Data></Cell>");
+            sb.AppendLine($"    <Cell ss:StyleID=\"BD_DiemTBRight\"><Data ss:Type=\"Number\">{diemTB.ToString(System.Globalization.CultureInfo.InvariantCulture)}</Data></Cell>");
+            sb.AppendLine("   </Row>");
+
+            // Dòng trống
+            sb.AppendLine("   <Row ss:Height=\"16\"/>");
+
+            // Dòng chữ ký người lập biểu (căn phải)
+            sb.AppendLine("   <Row ss:Height=\"22\">");
+            sb.AppendLine("    <Cell ss:MergeAcross=\"2\"><Data ss:Type=\"String\"></Data></Cell>");
+            sb.AppendLine($"    <Cell ss:MergeAcross=\"1\" ss:StyleID=\"BD_ChuKy\"><Data ss:Type=\"String\">Người lập biểu</Data></Cell>");
+            sb.AppendLine("   </Row>");
+            sb.AppendLine("   <Row ss:Height=\"20\">");
+            sb.AppendLine("    <Cell ss:MergeAcross=\"2\"><Data ss:Type=\"String\"></Data></Cell>");
+            sb.AppendLine($"    <Cell ss:MergeAcross=\"1\" ss:StyleID=\"BD_ChuKyNote\"><Data ss:Type=\"String\">(Ký, ghi rõ họ tên)</Data></Cell>");
+            sb.AppendLine("   </Row>");
+
+            // Dòng trang
+            sb.AppendLine("   <Row ss:Height=\"22\">");
+            sb.AppendLine($"    <Cell ss:MergeAcross=\"4\" ss:StyleID=\"BD_Page\"><Data ss:Type=\"String\">Trang 1/1</Data></Cell>");
+            sb.AppendLine("   </Row>");
+
+            sb.AppendLine("  </Table>");
+            sb.AppendLine(" </Worksheet>");
+            sb.AppendLine("</Workbook>");
+
+            return sb.ToString();
         }
 
         private static string GetBangDiemXmlHeader()

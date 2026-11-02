@@ -574,6 +574,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 MessageBox.Show("Cập nhật thông tin lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachLopQuanLy();
             }
+            else
+            {
+                MessageBox.Show("Không thể cập nhật lớp. Sĩ số tối đa không được nhỏ hơn số học viên đang học.", "Thông báo");
+            }
         }
 
         private void btnGV_DongDangKi_Click(object sender, EventArgs e)
@@ -759,38 +763,57 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnDuyet_ChapNhan_Click(object sender, EventArgs e)
         {
-            if (dgvDangKyChoDuyet.CurrentRow != null && dgvDangKyChoDuyet.CurrentRow.DataBoundItem is DataRowView drv)
+            try
             {
-                int dkID = Convert.ToInt32(drv["DangKyID"]);
-                int lopID = Convert.ToInt32(drv["LopHocID"]);
-                int hsID = Convert.ToInt32(drv["HocSinhID"]);
-
-                if (_lopDAL.DuyetDangKy(dkID, lopID, hsID))
+                if (dgvDangKyChoDuyet.CurrentRow != null && dgvDangKyChoDuyet.CurrentRow.DataBoundItem is DataRowView drv)
                 {
-                    MessageBox.Show("Đã duyệt học viên vào lớp thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    cboDuyet_ChonLop_SelectedIndexChanged(null, null);
-                    LoadDanhSachLopQuanLy();
+                    int dkID = Convert.ToInt32(drv["DangKyID"]);
+                    int lopID = Convert.ToInt32(drv["LopHocID"]);
+                    int hsID = Convert.ToInt32(drv["HocSinhID"]);
+
+                    if (_lopDAL.DuyetDangKy(dkID, lopID, hsID, Session.NguoiDungID))
+                    {
+                        MessageBox.Show("Đã duyệt học viên vào lớp thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        cboDuyet_ChonLop_SelectedIndexChanged(null, null);
+                        LoadDanhSachLopQuanLy();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không thể duyệt: lớp đã đủ sĩ số, đã đóng hoặc đơn đăng ký đã thay đổi.", "Thông báo");
+                        cboDuyet_ChonLop_SelectedIndexChanged(null, null);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Vui lòng chọn học viên cần duyệt từ danh sách!", "Thông báo");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Vui lòng chọn học viên cần duyệt từ danh sách!", "Thông báo");
+                MessageBox.Show(ex.Message, "Không thể thực hiện", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void btnDuyet_TuChoi_Click(object sender, EventArgs e)
         {
-            if (dgvDangKyChoDuyet.CurrentRow != null && dgvDangKyChoDuyet.CurrentRow.DataBoundItem is DataRowView drv)
+            try
             {
-                int dkID = Convert.ToInt32(drv["DangKyID"]);
-                if (MessageBox.Show("Từ chối đơn đăng ký này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (dgvDangKyChoDuyet.CurrentRow != null && dgvDangKyChoDuyet.CurrentRow.DataBoundItem is DataRowView drv)
                 {
-                    if (_lopDAL.TuChoiDangKy(dkID))
+                    int dkID = Convert.ToInt32(drv["DangKyID"]);
+                    if (MessageBox.Show("Từ chối đơn đăng ký này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        MessageBox.Show("Đã từ chối đơn đăng ký!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        cboDuyet_ChonLop_SelectedIndexChanged(null, null);
+                        if (_lopDAL.TuChoiDangKy(dkID, Session.NguoiDungID))
+                        {
+                            MessageBox.Show("Đã từ chối đơn đăng ký!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            cboDuyet_ChonLop_SelectedIndexChanged(null, null);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Không thể thực hiện", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         #endregion
@@ -1244,138 +1267,152 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnCH_Them_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtCH_NoiDung.Text))
+            try
             {
-                MessageBox.Show("Vui lòng nhập nội dung câu hỏi!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtCH_NoiDung.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtCH_DapAnA.Text) ||
-                string.IsNullOrWhiteSpace(txtCH_DapAnB.Text) ||
-                string.IsNullOrWhiteSpace(txtCH_DapAnC.Text) ||
-                string.IsNullOrWhiteSpace(txtCH_DapAnD.Text))
-            {
-                MessageBox.Show("Vui lòng nhập đầy đủ cả 4 phương án đáp án (A, B, C, D)!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            string tenDeNhap = txtGV_DeThi?.Text?.Trim();
-            int deID = 0;
-
-            // Nếu người dùng có nhập tên đề vào ô txtGV_DeThi
-            if (!string.IsNullOrEmpty(tenDeNhap))
-            {
-                // Kiểm tra xem đề thi này đã có trong danh sách chưa
-                if (cmbGV_ChonDeThi.DataSource is DataTable dtDe)
+                if (string.IsNullOrWhiteSpace(txtCH_NoiDung.Text))
                 {
-                    foreach (DataRow r in dtDe.Rows)
+                    MessageBox.Show("Vui lòng nhập nội dung câu hỏi!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCH_NoiDung.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtCH_DapAnA.Text) ||
+                    string.IsNullOrWhiteSpace(txtCH_DapAnB.Text) ||
+                    string.IsNullOrWhiteSpace(txtCH_DapAnC.Text) ||
+                    string.IsNullOrWhiteSpace(txtCH_DapAnD.Text))
+                {
+                    MessageBox.Show("Vui lòng nhập đầy đủ cả 4 phương án đáp án (A, B, C, D)!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string tenDeNhap = txtGV_DeThi?.Text?.Trim();
+                int deID = 0;
+
+                // Nếu người dùng có nhập tên đề vào ô txtGV_DeThi
+                if (!string.IsNullOrEmpty(tenDeNhap))
+                {
+                    // Kiểm tra xem đề thi này đã có trong danh sách chưa
+                    if (cmbGV_ChonDeThi.DataSource is DataTable dtDe)
                     {
-                        if (r["TenDeThi"]?.ToString()?.Trim().Equals(tenDeNhap, StringComparison.OrdinalIgnoreCase) == true)
+                        foreach (DataRow r in dtDe.Rows)
                         {
-                            deID = Convert.ToInt32(r["DeThiID"]);
-                            cmbGV_ChonDeThi.SelectedValue = deID;
-                            _selectedDeThiID = deID;
-                            break;
+                            if (r["TenDeThi"]?.ToString()?.Trim().Equals(tenDeNhap, StringComparison.OrdinalIgnoreCase) == true)
+                            {
+                                deID = Convert.ToInt32(r["DeThiID"]);
+                                cmbGV_ChonDeThi.SelectedValue = deID;
+                                _selectedDeThiID = deID;
+                                break;
+                            }
+                        }
+                    }
+
+                    // Nếu chưa có đề thi này, tự động tạo mới luôn
+                    if (deID <= 0)
+                    {
+                        string monHoc = cmbGV_MonHoc.SelectedItem?.ToString() ?? cmbGV_MonHoc.Text?.Trim();
+                        if (string.IsNullOrWhiteSpace(monHoc))
+                            monHoc = cboDe_MonHoc.SelectedItem?.ToString() ?? "Lập trình C# WinForms";
+
+                        DeThi deMoi = new DeThi
+                        {
+                            TenDeThi = tenDeNhap,
+                            MonHoc = monHoc,
+                            GiaoVienID = Session.NguoiDungID,
+                            SoCau = 0,
+                            ThoiGian = 45,
+                            TrangThai = "Chưa giao"
+                        };
+                        deID = _deThiDAL.TaoDeThiMoiLayID(deMoi);
+                        if (deID > 0)
+                        {
+                            LoadDeThiCombobox();
+                            try { cmbGV_ChonDeThi.SelectedValue = deID; _selectedDeThiID = deID; } catch { }
                         }
                     }
                 }
 
-                // Nếu chưa có đề thi này, tự động tạo mới luôn
+                // Nếu không gõ ô txtGV_DeThi thì lấy từ ComboBox
+                if (deID <= 0 && cmbGV_ChonDeThi.SelectedValue != null)
+                {
+                    int.TryParse(cmbGV_ChonDeThi.SelectedValue.ToString(), out deID);
+                }
+
                 if (deID <= 0)
                 {
-                    string monHoc = cmbGV_MonHoc.SelectedItem?.ToString() ?? cmbGV_MonHoc.Text?.Trim();
-                    if (string.IsNullOrWhiteSpace(monHoc))
-                        monHoc = cboDe_MonHoc.SelectedItem?.ToString() ?? "Lập trình C# WinForms";
+                    MessageBox.Show("Vui lòng nhập tên đề thi hoặc chọn đề thi cần thêm câu hỏi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-                    DeThi deMoi = new DeThi
-                    {
-                        TenDeThi = tenDeNhap,
-                        MonHoc = monHoc,
-                        GiaoVienID = Session.NguoiDungID,
-                        SoCau = 0,
-                        ThoiGian = 45,
-                        TrangThai = "Chưa giao"
-                    };
-                    deID = _deThiDAL.TaoDeThiMoiLayID(deMoi);
-                    if (deID > 0)
-                    {
-                        LoadDeThiCombobox();
-                        try { cmbGV_ChonDeThi.SelectedValue = deID; _selectedDeThiID = deID; } catch { }
-                    }
+                int soCauHienCo = _deThiDAL.DemSoCauHoiHienTai(deID);
+
+                CauHoi ch = new CauHoi
+                {
+                    DeThiID = deID,
+                    NoiDung = txtCH_NoiDung.Text.Trim(),
+                    DapAnA = txtCH_DapAnA.Text.Trim(),
+                    DapAnB = txtCH_DapAnB.Text.Trim(),
+                    DapAnC = txtCH_DapAnC.Text.Trim(),
+                    DapAnD = txtCH_DapAnD.Text.Trim(),
+                    DapAnDung = cboCH_DapAnDung.SelectedItem?.ToString() ?? "A",
+                    ThuTu = soCauHienCo + 1
+                };
+
+                if (_deThiDAL.ThemCauHoi(ch, Session.NguoiDungID))
+                {
+                    _deThiDAL.CapNhatSoCau(deID);
+                    MessageBox.Show($"Thêm câu hỏi thứ {ch.ThuTu} thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Đồng bộ cập nhật lại danh sách đề thi ở cả 2 tab
+                    LoadDeThiCombobox();
+                    try { cmbGV_ChonDeThi.SelectedValue = deID; } catch { }
+                    cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
+                    LamMoiFormCauHoi();
                 }
             }
-
-            // Nếu không gõ ô txtGV_DeThi thì lấy từ ComboBox
-            if (deID <= 0 && cmbGV_ChonDeThi.SelectedValue != null)
+            catch (Exception ex)
             {
-                int.TryParse(cmbGV_ChonDeThi.SelectedValue.ToString(), out deID);
-            }
-
-            if (deID <= 0)
-            {
-                MessageBox.Show("Vui lòng nhập tên đề thi hoặc chọn đề thi cần thêm câu hỏi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            int soCauHienCo = _deThiDAL.DemSoCauHoiHienTai(deID);
-
-            CauHoi ch = new CauHoi
-            {
-                DeThiID = deID,
-                NoiDung = txtCH_NoiDung.Text.Trim(),
-                DapAnA = txtCH_DapAnA.Text.Trim(),
-                DapAnB = txtCH_DapAnB.Text.Trim(),
-                DapAnC = txtCH_DapAnC.Text.Trim(),
-                DapAnD = txtCH_DapAnD.Text.Trim(),
-                DapAnDung = cboCH_DapAnDung.SelectedItem?.ToString() ?? "A",
-                ThuTu = soCauHienCo + 1
-            };
-
-            if (_deThiDAL.ThemCauHoi(ch))
-            {
-                _deThiDAL.CapNhatSoCau(deID);
-                MessageBox.Show($"Thêm câu hỏi thứ {ch.ThuTu} thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
-                // Đồng bộ cập nhật lại danh sách đề thi ở cả 2 tab
-                LoadDeThiCombobox();
-                try { cmbGV_ChonDeThi.SelectedValue = deID; } catch { }
-                cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
-                LamMoiFormCauHoi();
+                MessageBox.Show(ex.Message, "Không thể thực hiện", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void btnCH_Sua_Click(object sender, EventArgs e)
         {
-            if (_selectedCauHoiID <= 0)
+            try
             {
-                MessageBox.Show("Vui lòng chọn câu hỏi cần sửa!", "Thông báo");
-                return;
+                if (_selectedCauHoiID <= 0)
+                {
+                    MessageBox.Show("Vui lòng chọn câu hỏi cần sửa!", "Thông báo");
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtCH_NoiDung.Text))
+                {
+                    MessageBox.Show("Nội dung câu hỏi không được để trống!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCH_NoiDung.Focus();
+                    return;
+                }
+
+                CauHoi ch = new CauHoi
+                {
+                    CauHoiID = _selectedCauHoiID,
+                    NoiDung = txtCH_NoiDung.Text.Trim(),
+                    DapAnA = txtCH_DapAnA.Text.Trim(),
+                    DapAnB = txtCH_DapAnB.Text.Trim(),
+                    DapAnC = txtCH_DapAnC.Text.Trim(),
+                    DapAnD = txtCH_DapAnD.Text.Trim(),
+                    DapAnDung = cboCH_DapAnDung.SelectedItem?.ToString() ?? "A"
+                };
+
+                if (_deThiDAL.SuaCauHoi(ch, Session.NguoiDungID))
+                {
+                    MessageBox.Show("Cập nhật câu hỏi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
+                    LamMoiFormCauHoi();
+                }
             }
-
-            if (string.IsNullOrWhiteSpace(txtCH_NoiDung.Text))
+            catch (Exception ex)
             {
-                MessageBox.Show("Nội dung câu hỏi không được để trống!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtCH_NoiDung.Focus();
-                return;
-            }
-
-            CauHoi ch = new CauHoi
-            {
-                CauHoiID = _selectedCauHoiID,
-                NoiDung = txtCH_NoiDung.Text.Trim(),
-                DapAnA = txtCH_DapAnA.Text.Trim(),
-                DapAnB = txtCH_DapAnB.Text.Trim(),
-                DapAnC = txtCH_DapAnC.Text.Trim(),
-                DapAnD = txtCH_DapAnD.Text.Trim(),
-                DapAnDung = cboCH_DapAnDung.SelectedItem?.ToString() ?? "A"
-            };
-
-            if (_deThiDAL.SuaCauHoi(ch))
-            {
-                MessageBox.Show("Cập nhật câu hỏi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
-                LamMoiFormCauHoi();
+                MessageBox.Show(ex.Message, "Không thể thực hiện", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -1391,7 +1428,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 try
                 {
-                    if (_deThiDAL.XoaCauHoi(_selectedCauHoiID))
+                    if (_deThiDAL.XoaCauHoi(_selectedCauHoiID, Session.NguoiDungID))
                     {
                         if (cmbGV_ChonDeThi.SelectedValue != null && int.TryParse(cmbGV_ChonDeThi.SelectedValue.ToString(), out int deID))
                         {
@@ -1884,9 +1921,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     GioiTinh = cboHV_Profile_GioiTinh.SelectedItem?.ToString()
                 };
 
-                if (new GiaoVienDAL().Sua(gv))
+                if (new GiaoVienDAL().CapNhatHoSoCaNhan(Session.TaiKhoanID, gv))
                 {
                     MessageBox.Show("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Session.HoTen = gv.HoTen;
                     lblGV_LoiChao.Text = $"Xin Chào, {gv.HoTen}";
                 }
             }
@@ -1898,36 +1936,29 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnGV_DoiMatKhau_Click(object sender, EventArgs e)
         {
-            string cu = txtGV_MatKhauCu.Text.Trim();
-            string moi = txtGV_MatKhauMoi.Text.Trim();
-            string xacNhan = txtGV_XacNhanMatKhau.Text.Trim();
-
-            if (string.IsNullOrEmpty(cu) || string.IsNullOrEmpty(moi))
+            string cu = txtGV_MatKhauCu.Text;
+            string moi = txtGV_MatKhauMoi.Text;
+            if (!Validation.IsValidPasswordChange(cu, moi, txtGV_XacNhanMatKhau.Text, out string loi))
             {
-                MessageBox.Show("Vui lòng điền đầy đủ mật khẩu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(loi, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            if (moi != xacNhan)
+            try
             {
-                MessageBox.Show("Mật khẩu mới và xác nhận mật khẩu không khớp!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Kiểm tra mật khẩu cũ
-            var tk = _tkDAL.DangNhap(Session.TenDangNhap, cu);
-            if (tk == null)
-            {
-                MessageBox.Show("Mật khẩu hiện tại không chính xác!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (_tkDAL.DoiMatKhau(Session.TaiKhoanID, moi))
-            {
-                MessageBox.Show("Đổi mật khẩu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (!_tkDAL.DoiMatKhauGiaoVien(Session.TaiKhoanID, cu, moi))
+                {
+                    MessageBox.Show("Mật khẩu hiện tại không đúng hoặc tài khoản đã bị khóa.", "Không thể đổi mật khẩu");
+                    return;
+                }
+                _tkDAL.XoaGhiNho(Session.TenDangNhap);
                 txtGV_MatKhauCu.Clear();
                 txtGV_MatKhauMoi.Clear();
                 txtGV_XacNhanMatKhau.Clear();
+                MessageBox.Show("Đổi mật khẩu thành công!", "Thông báo");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể đổi mật khẩu: " + ex.Message, "Lỗi");
             }
         }
 

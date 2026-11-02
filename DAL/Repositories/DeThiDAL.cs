@@ -32,7 +32,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         FROM DeThi d
         JOIN LopHoc l ON d.LopHocID = l.LopHocID
         LEFT JOIN KetQuaThi kq ON d.DeThiID = kq.DeThiID AND kq.HocSinhID = @hsID
-        WHERE l.LopHocID IN (
+        WHERE d.TrangThai = 'Đang mở' AND l.LopHocID IN (
             SELECT LopHocID FROM HocSinh WHERE HocSinhID = @hsID AND LopHocID IS NOT NULL
             UNION
             SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND TrangThai = 'Đã duyệt'
@@ -89,12 +89,29 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             {
                 DeThiID = Convert.ToInt32(r["DeThiID"]),
                 TenDeThi = r["TenDeThi"].ToString(),
+                LopHocID = r["LopHocID"] == DBNull.Value ? 0 : Convert.ToInt32(r["LopHocID"]),
+                GiaoVienID = r["GiaoVienID"] == DBNull.Value ? 0 : Convert.ToInt32(r["GiaoVienID"]),
                 MonHoc = r["MonHoc"]?.ToString(),
                 SoCau = Convert.ToInt32(r["SoCau"]),
                 ThoiGian = Convert.ToInt32(r["ThoiGian"]),
                 HanNop = r["HanNop"] != DBNull.Value ? Convert.ToDateTime(r["HanNop"]) : (DateTime?)null,
                 TrangThai = r["TrangThai"]?.ToString()
             };
+        }
+
+        public bool CoTheBatDauThi(int hocSinhID, int deThiID)
+        {
+            return Convert.ToBoolean(DatabaseHelper.ExecuteScalar(@"
+                SELECT EXISTS (
+                    SELECT 1 FROM DeThi d JOIN HocSinh hs ON hs.HocSinhID=@hs
+                    WHERE d.DeThiID=@de AND d.TrangThai='Đang mở' AND d.ThoiGian>0
+                      AND (d.HanNop IS NULL OR d.HanNop>CURRENT_TIMESTAMP)
+                      AND (hs.LopHocID=d.LopHocID OR EXISTS (
+                          SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=hs.HocSinhID
+                            AND dk.LopHocID=d.LopHocID AND dk.TrangThai='Đã duyệt'))
+                      AND EXISTS (SELECT 1 FROM CauHoi c WHERE c.DeThiID=d.DeThiID)
+                      AND NOT EXISTS (SELECT 1 FROM KetQuaThi k WHERE k.HocSinhID=@hs AND k.DeThiID=d.DeThiID))",
+                new NpgsqlParameter("hs", hocSinhID), new NpgsqlParameter("de", deThiID)));
         }
 
         public List<CauHoi> LayDanhSachCauHoi(int deThiID)
@@ -165,22 +182,36 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         /// </summary>
         public bool GiaoDeThiChoLop(int deThiID, int lopHocID, int thoiGian, DateTime? hanNop, string monHoc = null)
         {
-            string sql = @"UPDATE DeThi
-                           SET LopHocID = @lopID,
-                               ThoiGian  = @tg,
-                               HanNop    = @han,
-                               SoCau     = (SELECT COUNT(*) FROM CauHoi WHERE DeThiID = @id),
-                               TrangThai = 'Đang mở',
-                               MonHoc    = COALESCE(NULLIF(@mon, ''), MonHoc)
-                           WHERE DeThiID = @id";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@lopID", lopHocID),
-                new NpgsqlParameter("@tg",    thoiGian),
-                new NpgsqlParameter("@han",   (object)hanNop ?? DBNull.Value),
-                new NpgsqlParameter("@mon",   (object)monHoc ?? DBNull.Value),
-                new NpgsqlParameter("@id",    deThiID)
-            };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            if (deThiID <= 0 || lopHocID <= 0 || thoiGian <= 0 || (hanNop.HasValue && hanNop.Value <= DateTime.Now)) return false;
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    using (var check = new NpgsqlCommand(@"
+                        SELECT d.DeThiID FROM DeThi d JOIN LopHoc l ON l.LopHocID=@lop AND l.GiaoVienID=d.GiaoVienID
+                        WHERE d.DeThiID=@id AND (COALESCE(d.LopHocID,0)=0 OR d.LopHocID=@lop)
+                        FOR UPDATE OF d", conn, transaction))
+                    {
+                        check.Parameters.AddWithValue("id", deThiID); check.Parameters.AddWithValue("lop", lopHocID);
+                        if (check.ExecuteScalar() == null) return false;
+                    }
+                    using (var update = new NpgsqlCommand(@"
+                        UPDATE DeThi SET LopHocID=@lop, ThoiGian=@tg, HanNop=@han,
+                            SoCau=(SELECT COUNT(*) FROM CauHoi WHERE DeThiID=@id), TrangThai='Đang mở',
+                            MonHoc=COALESCE(NULLIF(@mon,''),MonHoc)
+                        WHERE DeThiID=@id AND EXISTS (SELECT 1 FROM CauHoi WHERE DeThiID=@id)
+                          AND NOT EXISTS (SELECT 1 FROM KetQuaThi WHERE DeThiID=@id)", conn, transaction))
+                    {
+                        update.Parameters.AddWithValue("id", deThiID); update.Parameters.AddWithValue("lop", lopHocID);
+                        update.Parameters.AddWithValue("tg", thoiGian);
+                        update.Parameters.Add(new NpgsqlParameter("han", NpgsqlTypes.NpgsqlDbType.Timestamp) { Value=(object)hanNop ?? DBNull.Value });
+                        update.Parameters.AddWithValue("mon", (object)monHoc ?? DBNull.Value);
+                        if (update.ExecuteNonQuery() != 1) return false;
+                    }
+                    transaction.Commit(); return true;
+                }
+            }
         }
 
         /// <summary>
@@ -250,13 +281,21 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     return false;
                 }
 
-                // 1. Xóa các câu hỏi trong đề thi
-                string sqlXoaCauHoi = "DELETE FROM CauHoi WHERE DeThiID = @id";
-                DatabaseHelper.ExecuteNonQuery(sqlXoaCauHoi, new NpgsqlParameter("@id", deThiID));
-
-                // 2. Xóa đề thi
-                string sqlXoaDeThi = "DELETE FROM DeThi WHERE DeThiID = @id";
-                int rows = DatabaseHelper.ExecuteNonQuery(sqlXoaDeThi, new NpgsqlParameter("@id", deThiID));
+                int rows;
+                using (var conn = DatabaseHelper.GetConnection())
+                {
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        KhoaDeThiChuaGiao(conn, transaction, deThiID, 0);
+                        using (var cmd = new NpgsqlCommand("DELETE FROM CauHoi WHERE DeThiID=@id; DELETE FROM DeThi WHERE DeThiID=@id", conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("id", deThiID);
+                            rows = cmd.ExecuteNonQuery();
+                        }
+                        transaction.Commit();
+                    }
+                }
 
                 if (rows > 0)
                 {
@@ -284,51 +323,128 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter("@id", deThiID)) > 0;
         }
 
-        public bool ThemCauHoi(CauHoi ch)
+        private static void KhoaDeThiChuaGiao(NpgsqlConnection conn, NpgsqlTransaction transaction, int deThiID, int giaoVienID)
         {
-            string sql = @"INSERT INTO CauHoi (DeThiID, NoiDung, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, ThuTu)
-                           VALUES (@deID, @nd, @a, @b, @c, @d, @dung, @thutu)";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@deID", ch.DeThiID),
-                new NpgsqlParameter("@nd", ch.NoiDung),
-                new NpgsqlParameter("@a", ch.DapAnA),
-                new NpgsqlParameter("@b", ch.DapAnB),
-                new NpgsqlParameter("@c", ch.DapAnC),
-                new NpgsqlParameter("@d", ch.DapAnD),
-                new NpgsqlParameter("@dung", ch.DapAnDung),
-                new NpgsqlParameter("@thutu", ch.ThuTu)
-            };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
-        }
-
-        public bool XoaCauHoi(int cauHoiID)
-        {
-            string checkSql = "SELECT COUNT(*) FROM ChiTietBaiLam WHERE CauHoiID = @id";
-            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new NpgsqlParameter("@id", cauHoiID)));
-            if (count > 0)
+            using (var cmd = new NpgsqlCommand(@"
+                SELECT GiaoVienID, COALESCE(LopHocID,0), COALESCE(TrangThai,'Chưa giao')
+                FROM DeThi WHERE DeThiID=@id FOR UPDATE", conn, transaction))
             {
-                throw new Exception("Không thể xóa câu hỏi này vì đã có học sinh làm bài!");
+                cmd.Parameters.AddWithValue("id", deThiID);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (!reader.Read() || (giaoVienID > 0 && reader.GetInt32(0) != giaoVienID))
+                        throw new InvalidOperationException("Không tìm thấy đề thi thuộc giáo viên đang đăng nhập.");
+                    if (reader.GetInt32(1) > 0 || !string.Equals(reader.GetString(2), "Chưa giao", StringComparison.OrdinalIgnoreCase))
+                        throw new InvalidOperationException("Không thể thay đổi câu hỏi của đề thi đã giao. Hãy tạo đề mới.");
+                }
             }
-
-            string sql = "DELETE FROM CauHoi WHERE CauHoiID = @id";
-            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter("@id", cauHoiID)) > 0;
+            using (var cmd = new NpgsqlCommand("SELECT 1 FROM KetQuaThi WHERE DeThiID=@id LIMIT 1", conn, transaction))
+            {
+                cmd.Parameters.AddWithValue("id", deThiID);
+                if (cmd.ExecuteScalar() != null) throw new InvalidOperationException("Đề thi đã có bài làm, không thể thay đổi câu hỏi.");
+            }
         }
 
-        public bool SuaCauHoi(CauHoi ch)
+        private static void KiemTraNoiDungCauHoi(CauHoi ch)
         {
-            string sql = @"UPDATE CauHoi
-                           SET NoiDung = @nd, DapAnA = @a, DapAnB = @b, DapAnC = @c, DapAnD = @d, DapAnDung = @dung
-                           WHERE CauHoiID = @id";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@nd", ch.NoiDung),
-                new NpgsqlParameter("@a", ch.DapAnA),
-                new NpgsqlParameter("@b", ch.DapAnB),
-                new NpgsqlParameter("@c", ch.DapAnC),
-                new NpgsqlParameter("@d", ch.DapAnD),
-                new NpgsqlParameter("@dung", ch.DapAnDung),
-                new NpgsqlParameter("@id", ch.CauHoiID)
-            };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            if (ch == null || string.IsNullOrWhiteSpace(ch.NoiDung)
+                || string.IsNullOrWhiteSpace(ch.DapAnA) || string.IsNullOrWhiteSpace(ch.DapAnB)
+                || string.IsNullOrWhiteSpace(ch.DapAnC) || string.IsNullOrWhiteSpace(ch.DapAnD))
+                throw new ArgumentException("Vui lòng nhập nội dung và đầy đủ bốn phương án đáp án.");
+            ch.DapAnDung = (ch.DapAnDung ?? "").Trim().ToUpperInvariant();
+            if (ch.DapAnDung.Length != 1 || "ABCD".IndexOf(ch.DapAnDung, StringComparison.Ordinal) < 0)
+                throw new ArgumentException("Đáp án đúng phải là A, B, C hoặc D.");
+        }
+
+        private static void CapNhatSoCau(NpgsqlConnection conn, NpgsqlTransaction transaction, int deThiID)
+        {
+            using (var cmd = new NpgsqlCommand("UPDATE DeThi SET SoCau=(SELECT COUNT(*) FROM CauHoi WHERE DeThiID=@id) WHERE DeThiID=@id", conn, transaction))
+            {
+                cmd.Parameters.AddWithValue("id", deThiID); cmd.ExecuteNonQuery();
+            }
+        }
+
+        public bool ThemCauHoi(CauHoi ch, int giaoVienID = 0)
+        {
+            KiemTraNoiDungCauHoi(ch);
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    KhoaDeThiChuaGiao(conn, transaction, ch.DeThiID, giaoVienID);
+                    using (var cmd = new NpgsqlCommand(@"
+                        INSERT INTO CauHoi (DeThiID,NoiDung,DapAnA,DapAnB,DapAnC,DapAnD,DapAnDung,ThuTu)
+                        VALUES (@de,@nd,@a,@b,@c,@d,@dung,
+                            (SELECT GREATEST(COALESCE(MAX(ThuTu),0),0)+1 FROM CauHoi WHERE DeThiID=@de))
+                        RETURNING ThuTu", conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("de", ch.DeThiID); cmd.Parameters.AddWithValue("nd", ch.NoiDung.Trim());
+                        cmd.Parameters.AddWithValue("a", ch.DapAnA.Trim()); cmd.Parameters.AddWithValue("b", ch.DapAnB.Trim());
+                        cmd.Parameters.AddWithValue("c", ch.DapAnC.Trim()); cmd.Parameters.AddWithValue("d", ch.DapAnD.Trim());
+                        cmd.Parameters.AddWithValue("dung", ch.DapAnDung);
+                        ch.ThuTu = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                    CapNhatSoCau(conn, transaction, ch.DeThiID);
+                    transaction.Commit(); return true;
+                }
+            }
+        }
+
+        private static int LayDeCuaCauHoi(NpgsqlConnection conn, NpgsqlTransaction transaction, int cauHoiID)
+        {
+            using (var cmd = new NpgsqlCommand("SELECT DeThiID FROM CauHoi WHERE CauHoiID=@id", conn, transaction))
+            {
+                cmd.Parameters.AddWithValue("id", cauHoiID);
+                object result = cmd.ExecuteScalar();
+                if (result == null || result == DBNull.Value) throw new InvalidOperationException("Câu hỏi không còn tồn tại.");
+                return Convert.ToInt32(result);
+            }
+        }
+
+        public bool XoaCauHoi(int cauHoiID, int giaoVienID = 0)
+        {
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    int deID = LayDeCuaCauHoi(conn, transaction, cauHoiID);
+                    KhoaDeThiChuaGiao(conn, transaction, deID, giaoVienID);
+                    using (var cmd = new NpgsqlCommand("DELETE FROM CauHoi WHERE CauHoiID=@id", conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("id", cauHoiID);
+                        if (cmd.ExecuteNonQuery() != 1) return false;
+                    }
+                    CapNhatSoCau(conn, transaction, deID);
+                    transaction.Commit(); return true;
+                }
+            }
+        }
+
+        public bool SuaCauHoi(CauHoi ch, int giaoVienID = 0)
+        {
+            KiemTraNoiDungCauHoi(ch);
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    int deID = LayDeCuaCauHoi(conn, transaction, ch.CauHoiID);
+                    KhoaDeThiChuaGiao(conn, transaction, deID, giaoVienID);
+                    using (var cmd = new NpgsqlCommand(@"
+                        UPDATE CauHoi SET NoiDung=@nd,DapAnA=@a,DapAnB=@b,DapAnC=@c,DapAnD=@d,DapAnDung=@dung
+                        WHERE CauHoiID=@id", conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("id", ch.CauHoiID); cmd.Parameters.AddWithValue("nd", ch.NoiDung.Trim());
+                        cmd.Parameters.AddWithValue("a", ch.DapAnA.Trim()); cmd.Parameters.AddWithValue("b", ch.DapAnB.Trim());
+                        cmd.Parameters.AddWithValue("c", ch.DapAnC.Trim()); cmd.Parameters.AddWithValue("d", ch.DapAnD.Trim());
+                        cmd.Parameters.AddWithValue("dung", ch.DapAnDung);
+                        if (cmd.ExecuteNonQuery() != 1) return false;
+                    }
+                    transaction.Commit(); return true;
+                }
+            }
         }
 
         public DataTable LayKetQuaTheoDeThi(int maDeThi)

@@ -82,8 +82,28 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
         }
 
+        public bool CapNhatHoSoCaNhan(int taiKhoanID, GiaoVien gv)
+        {
+            // Màn hình cá nhân không nhập NgaySinh/ChuyenMon: giữ nguyên hai trường đó.
+            return DatabaseHelper.ExecuteNonQuery(@"
+                UPDATE GiaoVien gv SET HoTen=@ten, Email=@email, SoDienThoai=@sdt,
+                    DiaChi=@diachi, GioiTinh=@gioitinh
+                WHERE gv.GiaoVienID=@gv AND EXISTS (
+                    SELECT 1 FROM TaiKhoan tk WHERE tk.TaiKhoanID=@tk
+                      AND LOWER(tk.VaiTro)='giaovien' AND COALESCE(tk.TrangThaiKhoa,FALSE)=FALSE
+                      AND (tk.NguoiDungID=gv.GiaoVienID OR (COALESCE(tk.NguoiDungID,0)=0
+                           AND gv.TaiKhoanID=tk.TaiKhoanID)))",
+                new NpgsqlParameter("ten", gv.HoTen), new NpgsqlParameter("email", (object)gv.Email ?? DBNull.Value),
+                new NpgsqlParameter("sdt", (object)gv.SoDienThoai ?? DBNull.Value),
+                new NpgsqlParameter("diachi", (object)gv.DiaChi ?? DBNull.Value),
+                new NpgsqlParameter("gioitinh", (object)gv.GioiTinh ?? DBNull.Value),
+                new NpgsqlParameter("gv", gv.GiaoVienID), new NpgsqlParameter("tk", taiKhoanID)) == 1;
+        }
+
         public bool Xoa(int id)
         {
+            if (Convert.ToBoolean(DatabaseHelper.ExecuteScalar(@"SELECT EXISTS (SELECT 1 FROM LopHoc WHERE GiaoVienID=@id) OR EXISTS (SELECT 1 FROM DeThi WHERE GiaoVienID=@id) OR EXISTS (SELECT 1 FROM TaiKhoan tk JOIN GiaoVien gv ON gv.GiaoVienID=@id WHERE (LOWER(tk.VaiTro)='giaovien' AND tk.NguoiDungID=@id) OR tk.TaiKhoanID=gv.TaiKhoanID)", new NpgsqlParameter("id", id))))
+                throw new InvalidOperationException("Không thể xóa hồ sơ đã liên kết tài khoản hoặc có dữ liệu học tập. Hãy khóa tài khoản để giữ lịch sử.");
             string sql = "DELETE FROM GiaoVien WHERE GiaoVienID = @id";
             return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) }) > 0;
         }
