@@ -143,6 +143,24 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@hsID", hocSinhID) });
         }
 
+        public DataTable LayKetQuaTheoLopDangHoc(int hocSinhID, int lopHocID = 0)
+        {
+            // Kiểm tra lớp đang học ngay trong truy vấn, không tin riêng giá trị ComboBox.
+            return DatabaseHelper.ExecuteQuery(@"
+                SELECT k.KetQuaID, d.DeThiID, d.LopHocID, l.TenLop,
+                       d.TenDeThi, d.MonHoc, k.SoCauDung, k.Diem, k.ThoiGianNop
+                FROM KetQuaThi k
+                JOIN DeThi d ON d.DeThiID=k.DeThiID
+                JOIN LopHoc l ON l.LopHocID=d.LopHocID
+                WHERE k.HocSinhID=@hs AND (@lop=0 OR l.LopHocID=@lop)
+                  AND EXISTS (SELECT 1 FROM HocSinh hs WHERE hs.HocSinhID=@hs
+                      AND (hs.LopHocID=l.LopHocID OR EXISTS (
+                          SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=hs.HocSinhID
+                            AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')))
+                ORDER BY k.ThoiGianNop DESC, k.KetQuaID DESC",
+                new NpgsqlParameter("hs", hocSinhID), new NpgsqlParameter("lop", lopHocID));
+        }
+
         public DataTable LayChiTietBaiLamTheoKetQua(int ketQuaID)
         {
             string sql = @"SELECT ct.ChiTietID, c.ThuTu, c.NoiDung AS CauHoi, 

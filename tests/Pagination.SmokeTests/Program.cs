@@ -25,6 +25,7 @@ internal static class Program
             TypedModelList();
             ManualColumnsRemainBound();
             DateColumnsRemainBoundAcrossPages();
+            ResultColumnsOnHiddenTabRemainVisibleWhenFiltering();
             ScrolledPageIsReplaced();
             TableLayoutAndHiddenTab();
             GradeReportUsesInvariantDecimals();
@@ -249,6 +250,38 @@ internal static class Program
             Click(grid,"Trang sau");
             Check(grid.Rows.Count==1 && grid.Rows[0].Cells["Column11"].FormattedValue.ToString()=="04/03/2027", "Date binding and formatting must survive moving to the next page");
             Check(grid.Rows[0].Cells["Column12"].FormattedValue.ToString()=="", "Missing class dates must stay blank without inventing a default date");
+            form.Close();
+        }
+    }
+
+    private static void ResultColumnsOnHiddenTabRemainVisibleWhenFiltering()
+    {
+        using (var form = new Form { ClientSize=new Size(900,520) })
+        {
+            var tabs = new TabControl {Dock=DockStyle.Fill};
+            tabs.TabPages.Add(new TabPage("Home"));
+            var resultsTab = new TabPage("Results"); tabs.TabPages.Add(resultsTab);
+            var grid = new DataGridView {Dock=DockStyle.Fill,AutoGenerateColumns=false,ReadOnly=true};
+            grid.Columns.Add(new DataGridViewTextBoxColumn {Name="Column22",HeaderText="Đề thi",DataPropertyName="TenDeThi"});
+            grid.Columns.Add(new DataGridViewTextBoxColumn {Name="Column23",HeaderText="Môn học",DataPropertyName="MonHoc"});
+            grid.Columns.Add(new DataGridViewTextBoxColumn {Name="Column24",HeaderText="Nộp lúc",DataPropertyName="ThoiGianNop",DefaultCellStyle=new DataGridViewCellStyle {Format="dd/MM/yyyy HH:mm"}});
+            grid.Columns.Add(new DataGridViewTextBoxColumn {Name="Column25",HeaderText="Điểm",DataPropertyName="Diem",DefaultCellStyle=new DataGridViewCellStyle {Format="0.00"}});
+            resultsTab.Controls.Add(grid); form.Controls.Add(tabs);
+            DataGridViewPager.AttachAll(form);
+            var table = new DataTable();
+            table.Columns.Add("LopHocID",typeof(int)); table.Columns.Add("TenDeThi",typeof(string));
+            table.Columns.Add("MonHoc",typeof(string)); table.Columns.Add("ThoiGianNop",typeof(DateTime)); table.Columns.Add("Diem",typeof(decimal));
+            for (int i=1;i<=4;i++) table.Rows.Add(i<=2?1:2,"Đề "+i,"Toán",new DateTime(2027,3,4,9,30,0),7.5M);
+            grid.DataSource=table; form.Show(); tabs.SelectedTab=resultsTab; Application.DoEvents();
+            Check(grid.ColumnCount==4 && grid.ColumnHeadersVisible && grid.Rows.Count==4,"Hidden Results tab must show its four Designer columns and existing result rows");
+            Check(grid.Rows[0].Cells["Column22"].FormattedValue.ToString()=="Đề 1","Result names must bind to the actual Designer columns");
+            Check(grid.Rows[0].Cells["Column24"].FormattedValue.ToString()=="04/03/2027 09:30","Result submission time must display in day/month order");
+            table.DefaultView.RowFilter="LopHocID=2"; Application.DoEvents();
+            Check(grid.Rows.Count==2 && grid.Rows[0].Cells["Column22"].FormattedValue.ToString()=="Đề 3","Filtering results by class must replace the rows and reset paging");
+            table.DefaultView.RowFilter="LopHocID=999"; Application.DoEvents();
+            Check(grid.Rows.Count==0 && grid.ColumnCount==4,"A class with no results must keep the table headers visible");
+            table.DefaultView.RowFilter=""; Application.DoEvents();
+            Check(grid.Rows.Count==4 && grid.ColumnCount==4,"Clearing the class filter must restore results without losing columns");
             form.Close();
         }
     }
