@@ -1,23 +1,23 @@
 # Các bước code Dashboard trong form Admin
 
-Phần này nối dữ liệu vào bố cục đã push ở commit `9d9ecc3`. Không cần chạy lại script tạo database.
-Bản commit này còn thiếu tiêu đề và nút làm mới so với ảnh chụp; chúng được bổ sung
-vào `panel2` và `panel3`, giữ nguyên các ô trong `tableLayoutPanel13`.
+Phần này nối dữ liệu vào file Designer bạn cung cấp sau commit `20ab2ec`.
+Giữ nguyên tên control và bố cục trong file đó; không cần chạy lại script tạo database.
+Lỗi `CS0103` trước đây xảy ra vì code dùng tên cũ, còn Designer đã đổi tên control.
 
 ## 1. Xác định các control trong Designer
 
 Mở `Forms/Admin/Frm_Admin.cs` → **View Designer**. Chọn control và xem thuộc tính `(Name)`:
 
-| Chức năng | Tên control hiện tại | Tên trong commit thiết kế |
+| Chức năng | Tên control hiện tại | Ghi chú |
 | --- | --- | --- |
-| Tổng học viên | `lblTQ_HocVien` | `materialLabel1` |
-| Tổng giáo viên | `lblTQ_GiaoVien` | `materialLabel2` |
-| Tổng khóa học | `lblTQ_KhoaHoc` | `materialLabel3` |
-| Tổng lớp học | `lblTQ_LopHoc` | `materialLabel4` |
-| Biểu đồ | `chart1` | Giữ nguyên |
-| Danh sách lớp mới | `materialListView2` | Giữ nguyên |
-| Làm mới dữ liệu | `btnTQ_LamMoi` | Bổ sung trong `panel3` |
-| Xem tất cả lớp | `btnTQ_XemTatCaLopHoc` | `button1` |
+| Tổng học viên | `lblTC_HocVien` | `materialLabel1` |
+| Tổng giáo viên | `lblTC_GiaoVien` | `materialLabel2` |
+| Tổng khóa học | `lblTC_KhoaHoc` | `materialLabel3` |
+| Tổng lớp học | `lblTC_LopHoc` | `materialLabel4` |
+| Biểu đồ | `cAD_HocVien` | Tên cũ: `chart1` |
+| Danh sách lớp mới | `LvAD_LopHoc` | Tên cũ: `materialListView2` |
+| Làm mới dữ liệu | `btnTC_LamMoi` | Có trong Designer bạn gửi |
+| Xem tất cả lớp | `btnTC_XemTatCaLopHoc` | `button1` |
 
 Các control vẫn khai báo trong `.Designer.cs`, có thể chỉnh bằng kéo thả trong Visual Studio.
 Không đưa câu SQL hoặc truy cập database vào `InitializeComponent()`.
@@ -62,8 +62,8 @@ Việc truy vấn hiện chạy đồng bộ giống các màn hình khác trong
 
 ## 5. Xử lý nút bấm và quay về Dashboard
 
-- `btnTQ_LamMoi_Click()` gọi lại `LoadDashboard()`.
-- `btnTQ_XemTatCaLopHoc_Click()` chuyển `SelectedTab` sang `pageKhoaHocVaLop`, tải lại danh sách và focus `dgvLopHoc`.
+- `btnTC_LamMoi_Click()` gọi lại `LoadDashboard()`.
+- `btnTC_XemTatCaLopHoc_Click()` chuyển `SelectedTab` sang `pageKhoaHocVaLop`, tải lại danh sách và focus `dgvLopHoc`.
 - `materialTabControl1_SelectedIndexChanged()` tải lại Dashboard khi quay về trang này.
   Các lời gọi `LoadDashboard()` sau thao tác thêm/xóa hiện có vẫn được giữ.
 
@@ -93,3 +93,16 @@ Kiểm tra giao diện thực tế trên Windows:
 5. Thu nhỏ/phóng to form: bảng không che nút Xem tất cả; ba cột vẫn hiển thị.
 6. Dùng database thử nghiệm trống hoặc ngắt kết nối: trạng thái trống/thông báo lỗi đúng,
    nút làm mới được bật lại. Không thực hiện thao tác xóa dữ liệu để thử trên database thật.
+
+## Sửa lỗi tên control sau khi dùng Designer mới
+
+C# phân biệt hoa/thường: dùng đúng `LvAD_LopHoc` và `cAD_HocVien`.
+Code trong `Frm_Admin.cs` và khai báo trong `Frm_Admin.Designer.cs` phải cùng tên.
+Khi cập nhật từ GitHub, cập nhật cả hai file. Nếu Git báo thay đổi cục bộ,
+sao lưu hoặc commit phần thiết kế trước khi pull/merge để không mất bản đang sửa.
+Không khai báo thêm các biến control rời trong `Frm_Admin.cs` để che lỗi thiếu tên: chúng
+không phải các control được tạo trong `InitializeComponent()`.
+
+Các tên cũ `lblTQ_*`, `btnTQ_*`, `chart1`, `materialListView2` đã được thay trong
+code bằng `lblTC_*`, `btnTC_*`, `cAD_HocVien`, `LvAD_LopHoc` tương ứng.
+Hai sự kiện Click được đăng ký tại `KhoiTaoDashboard()`.

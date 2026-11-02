@@ -161,27 +161,27 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void KhoiTaoDashboard()
         {
             // Chỉ cấu hình hành vi; các control và bố cục vẫn nằm trong Designer.
-            btnTQ_LamMoi.Click += btnTQ_LamMoi_Click;
-            btnTQ_XemTatCaLopHoc.Click += btnTQ_XemTatCaLopHoc_Click;
-            materialListView2.Resize += (sender, e) => CanCotLopMoiNhat();
+            btnTC_LamMoi.Click += btnTC_LamMoi_Click;
+            btnTC_XemTatCaLopHoc.Click += btnTC_XemTatCaLopHoc_Click;
+            LvAD_LopHoc.Resize += (sender, e) => CanCotLopMoiNhat();
             CanCotLopMoiNhat();
 
-            chart1.Series.Clear();
-            chart1.Legends.Clear();
-            chart1.Titles.Clear();
-            chart1.Titles.Add("Học viên theo khóa học (tối đa 6 khóa học)");
-            chart1.Titles.Add(new Title("", Docking.Bottom) { Name = "TrangThaiDuLieu" });
+            cAD_HocVien.Series.Clear();
+            cAD_HocVien.Legends.Clear();
+            cAD_HocVien.Titles.Clear();
+            cAD_HocVien.Titles.Add("Học viên theo khóa học (tối đa 6 khóa học)");
+            cAD_HocVien.Titles.Add(new Title("", Docking.Bottom) { Name = "TrangThaiDuLieu" });
             var series = new Series("HocVien")
             {
                 ChartType = SeriesChartType.Column,
                 Color = Color.FromArgb(37, 99, 235),
                 IsValueShownAsLabel = true,
                 IsVisibleInLegend = false,
-                ChartArea = chart1.ChartAreas[0].Name,
+                ChartArea = cAD_HocVien.ChartAreas[0].Name,
                 ToolTip = "#VALX: #VALY học viên"
             };
-            chart1.Series.Add(series);
-            var area = chart1.ChartAreas[0];
+            cAD_HocVien.Series.Add(series);
+            var area = cAD_HocVien.ChartAreas[0];
             area.AxisX.Interval = 1;
             area.AxisX.MajorGrid.Enabled = false;
             area.AxisX.LabelStyle.IsEndLabelVisible = true;
@@ -194,7 +194,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void CanCotLopMoiNhat()
         {
-            int width = Math.Max(0, materialListView2.ClientSize.Width - 24);
+            int width = Math.Max(0, LvAD_LopHoc.ClientSize.Width - 24);
             columnHeader1.Width = width * 40 / 100;
             columnHeader2.Width = width * 40 / 100;
             columnHeader3.Width = width - columnHeader1.Width - columnHeader2.Width;
@@ -204,7 +204,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             if (_dangTaiDashboard) return;
             _dangTaiDashboard = true;
-            btnTQ_LamMoi.Enabled = false;
+            btnTC_LamMoi.Enabled = false;
             bool previousUseWaitCursor = UseWaitCursor;
             UseWaitCursor = true;
             try
@@ -216,10 +216,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 {
                     var vi = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
                     DataRow row = tongQuan.Rows[0];
-                    lblTQ_HocVien.Text = "HỌC VIÊN\n" + Convert.ToInt64(row["SoHocVien"]).ToString("N0", vi);
-                    lblTQ_GiaoVien.Text = "GIÁO VIÊN\n" + Convert.ToInt64(row["SoGiaoVien"]).ToString("N0", vi);
-                    lblTQ_KhoaHoc.Text = "KHÓA HỌC\n" + Convert.ToInt64(row["SoKhoaHoc"]).ToString("N0", vi);
-                    lblTQ_LopHoc.Text = "LỚP HỌC\n" + Convert.ToInt64(row["SoLopHoc"]).ToString("N0", vi);
+                    lblTC_HocVien.Text = "HỌC VIÊN\n" + Convert.ToInt64(row["SoHocVien"]).ToString("N0", vi);
+                    lblTC_GiaoVien.Text = "GIÁO VIÊN\n" + Convert.ToInt64(row["SoGiaoVien"]).ToString("N0", vi);
+                    lblTC_KhoaHoc.Text = "KHÓA HỌC\n" + Convert.ToInt64(row["SoKhoaHoc"]).ToString("N0", vi);
+                    lblTC_LopHoc.Text = "LỚP HỌC\n" + Convert.ToInt64(row["SoLopHoc"]).ToString("N0", vi);
                     HienThiBieuDoDashboard(theoKhoaHoc);
                     HienThiLopMoiNhat(lopMoiNhat);
                 }
@@ -232,14 +232,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             finally
             {
                 UseWaitCursor = previousUseWaitCursor;
-                btnTQ_LamMoi.Enabled = true;
+                btnTC_LamMoi.Enabled = true;
                 _dangTaiDashboard = false;
             }
         }
 
         private void HienThiBieuDoDashboard(DataTable data)
         {
-            Series series = chart1.Series["HocVien"];
+            Series series = cAD_HocVien.Series["HocVien"];
             series.Points.Clear();
             long maximum = 0;
             foreach (DataRow row in data.Rows)
@@ -248,42 +248,42 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 series.Points.AddXY(row["TenKhoaHoc"].ToString(), count);
                 maximum = Math.Max(maximum, count);
             }
-            chart1.ChartAreas[0].AxisY.Interval = Math.Max(1, Math.Ceiling(maximum / 5D));
-            chart1.Titles["TrangThaiDuLieu"].Text = data.Rows.Count == 0
+            cAD_HocVien.ChartAreas[0].AxisY.Interval = Math.Max(1, Math.Ceiling(maximum / 5D));
+            cAD_HocVien.Titles["TrangThaiDuLieu"].Text = data.Rows.Count == 0
                 ? "Chưa có khóa học."
                 : maximum == 0 ? "Chưa có học viên được xếp vào lớp của các khóa học." : "";
-            chart1.ResetAutoValues();
+            cAD_HocVien.ResetAutoValues();
         }
 
         private void HienThiLopMoiNhat(DataTable data)
         {
-            materialListView2.BeginUpdate();
+            LvAD_LopHoc.BeginUpdate();
             try
             {
-                materialListView2.Items.Clear();
+                LvAD_LopHoc.Items.Clear();
                 foreach (DataRow row in data.Rows)
                 {
                     var item = new ListViewItem(row["TenLop"].ToString());
                     item.SubItems.Add(row["TenGiaoVien"].ToString());
                     item.SubItems.Add(row["SoHocVien"] + "/" + row["SiSoToiDa"]);
                     item.Tag = Convert.ToInt32(row["LopHocID"]);
-                    materialListView2.Items.Add(item);
+                    LvAD_LopHoc.Items.Add(item);
                 }
                 label2.Text = data.Rows.Count == 0 ? "Chưa có lớp học trong hệ thống"
                     : "5 lớp được tạo gần đây (theo mã lớp giảm dần)";
             }
             finally
             {
-                materialListView2.EndUpdate();
+                LvAD_LopHoc.EndUpdate();
             }
         }
 
-        private void btnTQ_LamMoi_Click(object sender, EventArgs e)
+        private void btnTC_LamMoi_Click(object sender, EventArgs e)
         {
             LoadDashboard();
         }
 
-        private void btnTQ_XemTatCaLopHoc_Click(object sender, EventArgs e)
+        private void btnTC_XemTatCaLopHoc_Click(object sender, EventArgs e)
         {
             materialTabControl1.SelectedTab = pageKhoaHocVaLop;
             LoadDanhSachLopHoc();
