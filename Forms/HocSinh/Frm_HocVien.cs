@@ -27,6 +27,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         // Lưu trữ danh sách đề thi gốc để hỗ trợ việc lọc bằng ComboBox
         private DataTable _dtDeThi;
+        private DataTable _dtBaiThiDangMo;
         private bool _dangTaiLopLocKetQua;
 
         public HocVien()
@@ -35,6 +36,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // Gán cột Designer trước khi phân trang bind nguồn rỗng, tránh mất các cột.
             ConfigureDataGrids();
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
+            foreverButton1.Click += btnHV_LamBaiNgay_Click;
+            btnHV_VaoLopHoc.Click += btnHV_LamBaiNgay_Click;
+            dgvHV_DeThiSapToi.CellDoubleClick += dgvHV_DeThiSapToi_CellDoubleClick;
+            foreverButton1.Enabled = btnHV_VaoLopHoc.Enabled = false;
+            materialLabel2.Text = "Đang tải danh sách bài thi...";
+            materialLabel9.Text = "Lớp Đang Học";
             KhoiTaoLocKetQua();
             KhoiTaoHoSoCaNhan();
             var materialSkinManager = MaterialSkinManager.Instance;
@@ -168,14 +175,36 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 GiaoVien.DataPropertyName = "TenGiaoVien";
                 LichHoc.DataPropertyName = "LichHoc";
             }
+
+            // Bảng Bài Thi Đang Mở ở Trang chủ dùng đúng các cột Designer hiện có.
+            dgvHV_DeThiSapToi.AutoGenerateColumns = false;
+            dgvHV_DeThiSapToi.ReadOnly = true;
+            dgvHV_DeThiSapToi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvHV_DeThiSapToi.MultiSelect = false;
+            BT_DeThi.DataPropertyName = "TenDeThi";
+            BT_HanNop.DataPropertyName = "HanNop";
+            BT_HanNop.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+            BT_HanNop.DefaultCellStyle.NullValue = "Không giới hạn";
+            BT_SoCau.DataPropertyName = "SoCau";
         }
 
         private void LoadDanhSachDeThi()
         {
             try
             {
-                _dtDeThi = _deThiDAL.LayDeThiChoHocSinh(Session.NguoiDungID);
+                DataTable exams = _deThiDAL.LayDeThiChoHocSinh(Session.NguoiDungID);
+                DataTable openExams = _deThiDAL.LayBaiThiDangMoChoHocSinh(Session.NguoiDungID);
+                _selectedDeThiID = 0;
+                _dtDeThi = exams;
+                _dtBaiThiDangMo = openExams;
                 dgvHV_DanhSachDeThi.DataSource = _dtDeThi;
+                // Nguồn riêng để lọc môn học ở tab Bài Thi không làm mất bài trên Trang chủ.
+                dgvHV_DeThiSapToi.DataSource = _dtBaiThiDangMo;
+                bool coBaiThi = _dtBaiThiDangMo.Rows.Count > 0;
+                foreverButton1.Enabled = btnHV_VaoLopHoc.Enabled = coBaiThi;
+                materialLabel2.Text = coBaiThi
+                    ? $"Bạn có {_dtBaiThiDangMo.Rows.Count:N0} bài thi đang mở chưa làm."
+                    : "Bạn chưa có bài thi đang mở để làm.";
 
                 if (cboHV_LocMonHoc != null)
                 {
@@ -199,7 +228,31 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     cboHV_LocMonHoc.SelectedIndex = 0;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _selectedDeThiID = 0;
+                _dtDeThi = _dtBaiThiDangMo = null;
+                dgvHV_DanhSachDeThi.DataSource = null;
+                dgvHV_DeThiSapToi.DataSource = null;
+                foreverButton1.Enabled = btnHV_VaoLopHoc.Enabled = false;
+                materialLabel2.Text = "Không thể tải danh sách bài thi.";
+                MessageBox.Show("Không thể tải danh sách bài thi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnHV_LamBaiNgay_Click(object sender, EventArgs e)
+        {
+            if (_dtBaiThiDangMo == null || _dtBaiThiDangMo.Rows.Count == 0) return;
+            var selected = dgvHV_DeThiSapToi.CurrentRow?.DataBoundItem as DataRowView;
+            DataRow row = selected?.Row ?? _dtBaiThiDangMo.Rows[0];
+            BatDauThi(Convert.ToInt32(row["DeThiID"]));
+        }
+
+        private void dgvHV_DeThiSapToi_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var selected = dgvHV_DeThiSapToi.Rows[e.RowIndex].DataBoundItem as DataRowView;
+            if (selected != null) BatDauThi(Convert.ToInt32(selected["DeThiID"]));
         }
 
         private void cboHV_LocMonHoc_SelectedIndexChanged(object sender, EventArgs e)
@@ -270,17 +323,27 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void BatDauThi(int deThiID)
         {
-            if (_ketQuaDAL.KiemTraDaThi(Session.NguoiDungID, deThiID))
+            try
             {
-                MessageBox.Show("Bạn đã hoàn thành bài thi này rồi, không thể thi lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                if (!_deThiDAL.CoTheBatDauThi(Session.NguoiDungID, deThiID))
+                {
+                    MessageBox.Show("Bài thi không còn khả dụng. Bài có thể đã đóng, hết hạn, đã nộp hoặc bạn không còn thuộc lớp được giao.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDanhSachDeThi();
+                    return;
+                }
+
+                using (var frm = new Frm_KiemTra(deThiID))
+                {
+                    frm.ShowDialog(this);
+                }
+
+                LoadLichSuThi();
+                LoadDanhSachDeThi();
             }
-
-            Frm_KiemTra frm = new Frm_KiemTra(deThiID);
-            frm.ShowDialog();
-
-            LoadLichSuThi();
-            LoadDanhSachDeThi();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể mở bài thi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void KhoiTaoHoSoCaNhan()
@@ -771,6 +834,19 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void TabHocVien_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (tabHocVien.SelectedTab == pageHV_TrangChu)
+            {
+                LoadLopHoc();
+                LoadDanhSachDeThi();
+                return;
+            }
+
+            if (tabHocVien.SelectedTab == pageHV_BaiThi)
+            {
+                LoadDanhSachDeThi();
+                return;
+            }
+
             if (tabHocVien.SelectedTab == pageHV_KetQua)
             {
                 LoadLichSuThi();

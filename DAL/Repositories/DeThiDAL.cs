@@ -12,6 +12,17 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         // 1. Hàm mới thêm: Lấy danh sách đề thi thuộc các lớp học viên đã tham gia / đã duyệt
         public DataTable LayDeThiChoHocSinh(int hocSinhID)
         {
+            return LayDeThiChoHocSinh(hocSinhID, false);
+        }
+
+        // Trang chủ chỉ hiển thị những bài học viên còn có thể bắt đầu làm.
+        public DataTable LayBaiThiDangMoChoHocSinh(int hocSinhID)
+        {
+            return LayDeThiChoHocSinh(hocSinhID, true);
+        }
+
+        private DataTable LayDeThiChoHocSinh(int hocSinhID, bool chiBaiCoTheLam)
+        {
             string sql = @"
         SELECT 
             d.DeThiID AS ""DeThiID"", 
@@ -25,7 +36,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             l.TenLop AS ""TenLop"",
             CASE 
                 WHEN kq.KetQuaID IS NOT NULL THEN 'Đã làm'
-                WHEN d.HanNop IS NOT NULL AND d.HanNop < CURRENT_TIMESTAMP THEN 'Hết hạn'
+                WHEN d.HanNop IS NOT NULL AND d.HanNop <= CURRENT_TIMESTAMP THEN 'Hết hạn'
                 ELSE 'Chưa làm'
             END AS ""TrangThai"",
             kq.Diem AS ""Diem""
@@ -37,15 +48,23 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             UNION
             SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND TrangThai = 'Đã duyệt'
         )
+        AND (NOT @chiBaiCoTheLam OR (
+            kq.KetQuaID IS NULL AND d.ThoiGian > 0
+            AND (d.HanNop IS NULL OR d.HanNop > CURRENT_TIMESTAMP)
+            AND EXISTS (SELECT 1 FROM CauHoi c WHERE c.DeThiID = d.DeThiID)
+        ))
         ORDER BY 
             CASE 
                 WHEN kq.KetQuaID IS NOT NULL THEN 1 -- Đã làm xếp cuối
-                WHEN d.HanNop IS NOT NULL AND d.HanNop < CURRENT_TIMESTAMP THEN 2 -- Hết hạn xếp thứ 2 từ dưới lên
+                WHEN d.HanNop IS NOT NULL AND d.HanNop <= CURRENT_TIMESTAMP THEN 2 -- Hết hạn xếp thứ 2 từ dưới lên
                 ELSE 0 -- Chưa làm xếp lên đầu
             END ASC,
-            d.HanNop ASC";
+            d.HanNop ASC, d.DeThiID ASC";
 
-            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@hsID", hocSinhID) });
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] {
+                new NpgsqlParameter("@hsID", hocSinhID),
+                new NpgsqlParameter("@chiBaiCoTheLam", chiBaiCoTheLam)
+            });
         }
 
         public DataTable LayDeThiTheoLop(int lopID)
