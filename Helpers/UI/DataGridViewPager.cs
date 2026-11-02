@@ -37,7 +37,17 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
         private bool updating;
         private bool rebinding;
         private bool preserveSelection;
+        private bool preserveRequestedSelection;
         private int? pendingScrollRow;
+        private bool renderPending;
+        private bool clearSelectionPending;
+        private bool uiWorkQueued;
+        private bool processingUiWork;
+        private bool disposed;
+        private int handleVersion;
+        private int requestVersion;
+        private string pendingItemProperty;
+        private object pendingItemValue;
 
         private DataGridViewPager(DataGridView grid, Action<DataGridView, PageChangeReason> changed)
         {
@@ -83,6 +93,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             grid.DataSourceChanged += DataSourceChanged;
             grid.DataBindingComplete += DataBindingComplete;
             grid.VisibleChanged += GridVisibleChanged;
+            grid.SizeChanged += GridSizeChanged;
+            grid.HandleCreated += GridHandleCreated;
+            grid.HandleDestroyed += GridHandleDestroyed;
             grid.Disposed += GridDisposed;
             BindSource();
         }
@@ -162,42 +175,128 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
         private void DataSourceChanged(object sender, EventArgs e) { BindSource(); }
         private void BindSource()
         {
-            if (rebinding || ReferenceEquals(grid.DataSource, rows)) return;
+            if (disposed || rebinding || ReferenceEquals(grid.DataSource, rows)) return;
             rebinding = true;
             try
             {
-                object source = grid.DataSource;
-                grid.DataMember = string.Empty;
-                rows.SetSource(source);
-                grid.DataSource = rows;
+                // Chỉ cập nhật model ở đây. Không bind lại grid trong DataSourceChanged:
+                // WinForms có thể vẫn đang tự chia độ rộng các cột Fill của nguồn cũ.
+                rows.SetSource(grid.DataSource);
             }
             finally { rebinding = false; }
-            ClearSelection();
-            ScrollToRow(0);
+            QueueUiWork();
         }
 
         private void DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            if (!rebinding && !preserveSelection)
+            if (rebinding || disposed || preserveSelection || preserveRequestedSelection || pendingItemProperty != null) return;
+            clearSelectionPending = true;
+            QueueUiWork();
+        }
+
+        private void GridVisibleChanged(object sender, EventArgs e) { QueueUiWork(); }
+        private void GridSizeChanged(object sender, EventArgs e)
+        {
+            if (pendingScrollRow.HasValue || pendingItemProperty != null) QueueUiWork();
+        }
+        private void GridHandleCreated(object sender, EventArgs e) { QueueUiWork(); }
+        private void GridHandleDestroyed(object sender, EventArgs e)
+        {
+            handleVersion++;
+            uiWorkQueued = false;
+        }
+
+        private void QueueUiWork()
+        {
+            if (disposed || grid.IsDisposed || grid.Disposing || rebinding || processingUiWork) return;
+            if (!renderPending && !clearSelectionPending && !pendingScrollRow.HasValue && pendingItemProperty == null) return;
+            if (!grid.IsHandleCreated)
             {
-                ClearSelection();
-                if (pendingScrollRow.HasValue) ScrollToRow(pendingScrollRow.Value);
+                // Trước khi có HWND, chưa có vòng resize/paint. Chuẩn bị binding ban đầu
+                // nhưng để thao tác cuộn/chọn chờ HandleCreated và VisibleChanged.
+                if (renderPending) ProcessUiWork();
+                return;
+            }
+            if (uiWorkQueued) return;
+            uiWorkQueued = true;
+            int version = handleVersion;
+            try
+            {
+                grid.BeginInvoke(new Action(() =>
+                {
+                    if (disposed || grid.IsDisposed || version != handleVersion) return;
+                    uiWorkQueued = false;
+                    ProcessUiWork();
+                }));
+            }
+            catch (InvalidOperationException) when (disposed || grid.IsDisposed || !grid.IsHandleCreated)
+            {
+                // Handle vừa bị hủy: HandleCreated kế tiếp sẽ áp dụng yêu cầu còn lại.
+                uiWorkQueued = false;
             }
         }
 
-        private void GridVisibleChanged(object sender, EventArgs e)
+        private void ProcessUiWork()
         {
-            if (pendingScrollRow.HasValue) ScrollToRow(pendingScrollRow.Value);
+            if (disposed || grid.IsDisposed || grid.Disposing || processingUiWork) return;
+            processingUiWork = true;
+            int processedVersion = requestVersion;
+            try
+            {
+                if (renderPending)
+                {
+                    renderPending = false;
+                    ReplaceDisplayedPage();
+                    UpdateToolbar();
+                }
+                ApplyPendingSelectionAndScroll();
+            }
+            finally { processingUiWork = false; }
+            // Không lặp khi tab đang ẩn/không có chỗ hiển thị hàng. Các sự kiện
+            // VisibleChanged/SizeChanged/HandleCreated sẽ xử lý yêu cầu đó sau.
+            if (renderPending || requestVersion != processedVersion) QueueUiWork();
         }
 
-        private void ScrollToRow(int index)
+        private void ApplyPendingSelectionAndScroll()
         {
-            pendingScrollRow = index;
-            if (!grid.Visible || !grid.IsHandleCreated || grid.Rows.Count == 0) return;
-            int target = Math.Max(0, Math.Min(index, grid.Rows.Count - 1));
+            if (!grid.Visible || !grid.IsHandleCreated) return;
+            int version = requestVersion;
+            if (clearSelectionPending)
+            {
+                clearSelectionPending = false;
+                ClearSelection();
+                if (version != requestVersion) return;
+            }
+            if (pendingItemProperty != null)
+            {
+                foreach (DataGridViewRow row in grid.Rows)
+                {
+                    if (!Equals(rows.GetValue(row.DataBoundItem, pendingItemProperty), pendingItemValue)) continue;
+                    var column = grid.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Visible);
+                    if (column != null)
+                    {
+                        grid.ClearSelection();
+                        if (version != requestVersion) return;
+                        grid.CurrentCell = row.Cells[column.Index];
+                        if (version != requestVersion) return;
+                        row.Selected = true;
+                        if (version != requestVersion) return;
+                        pendingScrollRow = row.Index;
+                    }
+                    break;
+                }
+                pendingItemProperty = null;
+                pendingItemValue = null;
+            }
+            if (!pendingScrollRow.HasValue || grid.Rows.Count == 0) return;
+            // Một tab vừa hiện có thể chưa đủ chiều cao để WinForms hiển thị hàng.
+            int header = grid.ColumnHeadersVisible ? grid.ColumnHeadersHeight : 0;
+            if (grid.ClientSize.Height <= header + SystemInformation.HorizontalScrollBarHeight + 2) return;
+            int target = Math.Max(0, Math.Min(pendingScrollRow.Value, grid.Rows.Count - 1));
             while (target < grid.Rows.Count && (!grid.Rows[target].Visible || grid.Rows[target].Frozen)) target++;
-            if (target < grid.Rows.Count) grid.FirstDisplayedScrollingRowIndex = target;
-            grid.HorizontalScrollingOffset = 0;
+            if (target < grid.Rows.Count && grid.FirstDisplayedScrollingRowIndex != target)
+                grid.FirstDisplayedScrollingRowIndex = target;
+            if (grid.HorizontalScrollingOffset != 0) grid.HorizontalScrollingOffset = 0;
             pendingScrollRow = null;
         }
 
@@ -207,8 +306,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             rebinding = true;
             try
             {
-                // Recreate the grid's binding/currency manager for this slice.
-                // This also discards the previous page's cached rows and scroll position.
+                // Chạy ngoài DataBindingComplete/VisibleChanged để không lồng layout Fill.
+                grid.DataMember = string.Empty;
                 grid.DataSource = null;
                 grid.DataSource = rows;
                 IBindingList sorted = rows;
@@ -230,7 +329,22 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
 
         private void PageChanged(object sender, PageChangedEventArgs e)
         {
-            ReplaceDisplayedPage();
+            requestVersion++;
+            renderPending = true;
+            pendingScrollRow = 0;
+            if (!preserveSelection)
+            {
+                clearSelectionPending = true;
+                preserveRequestedSelection = false;
+                pendingItemProperty = null;
+                pendingItemValue = null;
+            }
+            QueueUiWork();
+            if (!preserveSelection) changed?.Invoke(grid, e.Reason);
+        }
+
+        private void UpdateToolbar()
+        {
             updating = true;
             try
             {
@@ -247,15 +361,10 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
                 next.Enabled = last.Enabled = rows.PageNumber < rows.PageCount;
             }
             finally { updating = false; }
-            ScrollToRow(0);
-            if (!preserveSelection)
-            {
-                if (!rebinding) ClearSelection();
-                changed?.Invoke(grid, e.Reason);
-            }
         }
 
-        // ComboBox selections may refer to records on later pages.
+        // ComboBox selections may refer to records on later pages. Returns whether the
+        // model contains the item; the actual selection/scroll runs on the next UI turn.
         public static bool ShowItem(DataGridView grid, string propertyName, object value)
         {
             if (grid == null) return false;
@@ -265,20 +374,13 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
                 try
                 {
                     if (!pager.rows.ShowItem(propertyName, value)) return false;
-                    foreach (DataGridViewRow row in grid.Rows)
-                    {
-                        if (!Equals(pager.rows.GetValue(row.DataBoundItem, propertyName), value)) continue;
-                        DataGridViewColumn column = grid.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Visible);
-                        if (column != null)
-                        {
-                            grid.ClearSelection();
-                            grid.CurrentCell = row.Cells[column.Index];
-                            row.Selected = true;
-                            pager.ScrollToRow(row.Index);
-                        }
-                        return true;
-                    }
-                    return false;
+                    pager.requestVersion++;
+                    pager.preserveRequestedSelection = true;
+                    pager.pendingItemProperty = propertyName;
+                    pager.pendingItemValue = value;
+                    pager.clearSelectionPending = false;
+                    pager.QueueUiWork();
+                    return true;
                 }
                 finally { pager.preserveSelection = false; }
             }
@@ -303,9 +405,16 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
         private void GridDisposed(object sender, EventArgs e) { Dispose(); }
         public void Dispose()
         {
+            if (disposed) return;
+            disposed = true;
+            handleVersion++;
+            uiWorkQueued = false;
             grid.DataSourceChanged -= DataSourceChanged;
             grid.DataBindingComplete -= DataBindingComplete;
             grid.VisibleChanged -= GridVisibleChanged;
+            grid.SizeChanged -= GridSizeChanged;
+            grid.HandleCreated -= GridHandleCreated;
+            grid.HandleDestroyed -= GridHandleDestroyed;
             grid.Disposed -= GridDisposed;
             rows.PageChanged -= PageChanged;
             rows.Dispose();

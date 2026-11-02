@@ -885,50 +885,45 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (_selectedDeThiID > 0 && dt != null)
                 {
                     DataGridViewPager.ShowItem(dgvDanhSachDeThi, "DeThiID", _selectedDeThiID);
-                    for (int i = 0; i < dgvDanhSachDeThi.Rows.Count; i++)
+                    // Đọc metadata từ DataTable gốc, không từ các hàng đang chờ bind.
+                    foreach (DataRow rowView in dt.Rows)
                     {
-                        if (dgvDanhSachDeThi.Rows[i].DataBoundItem is DataRowView rowView)
+                        string colName = rowView.Table.Columns.Contains("DeThiID") ? "DeThiID" : "dethiid";
+                        if (rowView.Table.Columns.Contains(colName) &&
+                            rowView[colName] != DBNull.Value &&
+                            Convert.ToInt32(rowView[colName]) == _selectedDeThiID)
                         {
-                            string colName = rowView.Row.Table.Columns.Contains("DeThiID") ? "DeThiID" : "dethiid";
-                            if (rowView.Row.Table.Columns.Contains(colName) &&
-                                rowView[colName] != DBNull.Value &&
-                                Convert.ToInt32(rowView[colName]) == _selectedDeThiID)
+                            txtDe_SoCau.Text = _deThiDAL.DemSoCauHoiHienTai(_selectedDeThiID).ToString();
+
+                            string monHoc = rowView.Table.Columns.Contains("MonHoc") ? rowView["MonHoc"]?.ToString() : "";
+                            if (!string.IsNullOrEmpty(monHoc))
                             {
-                                dgvDanhSachDeThi.ClearSelection();
-                                dgvDanhSachDeThi.Rows[i].Selected = true;
-                                dgvDanhSachDeThi.FirstDisplayedScrollingRowIndex = i;
-                                txtDe_SoCau.Text = _deThiDAL.DemSoCauHoiHienTai(_selectedDeThiID).ToString();
+                                _isSyncingMonHoc = true;
+                                if (cboDe_MonHoc.Items.Contains(monHoc)) cboDe_MonHoc.SelectedItem = monHoc;
+                                else cboDe_MonHoc.Text = monHoc;
 
-                                string monHoc = rowView.Row.Table.Columns.Contains("MonHoc") ? rowView["MonHoc"]?.ToString() : "";
-                                if (!string.IsNullOrEmpty(monHoc))
-                                {
-                                    _isSyncingMonHoc = true;
-                                    if (cboDe_MonHoc.Items.Contains(monHoc)) cboDe_MonHoc.SelectedItem = monHoc;
-                                    else cboDe_MonHoc.Text = monHoc;
+                                if (cmbGV_MonHoc.Items.Contains(monHoc)) cmbGV_MonHoc.SelectedItem = monHoc;
+                                else cmbGV_MonHoc.Text = monHoc;
+                                _isSyncingMonHoc = false;
 
-                                    if (cmbGV_MonHoc.Items.Contains(monHoc)) cmbGV_MonHoc.SelectedItem = monHoc;
-                                    else cmbGV_MonHoc.Text = monHoc;
-                                    _isSyncingMonHoc = false;
-
-                                    FilterLopTheoMonHoc(monHoc);
-                                }
-
-                                if (rowView.Row.Table.Columns.Contains("ThoiGian") && rowView["ThoiGian"] != DBNull.Value)
-                                    txtDe_ThoiGian.Text = rowView["ThoiGian"].ToString();
-
-                                if (rowView.Row.Table.Columns.Contains("TenDeThi") && txtGV_DeThi != null)
-                                    txtGV_DeThi.Text = rowView["TenDeThi"]?.ToString() ?? "";
-
-                                if (rowView.Row.Table.Columns.Contains("LopHocID") && rowView["LopHocID"] != DBNull.Value)
-                                {
-                                    int lopID = Convert.ToInt32(rowView["LopHocID"]);
-                                    if (lopID > 0)
-                                    {
-                                        try { cboDe_ChonLopHoc.SelectedValue = lopID; } catch { }
-                                    }
-                                }
-                                break;
+                                FilterLopTheoMonHoc(monHoc);
                             }
+
+                            if (rowView.Table.Columns.Contains("ThoiGian") && rowView["ThoiGian"] != DBNull.Value)
+                                txtDe_ThoiGian.Text = rowView["ThoiGian"].ToString();
+
+                            if (rowView.Table.Columns.Contains("TenDeThi") && txtGV_DeThi != null)
+                                txtGV_DeThi.Text = rowView["TenDeThi"]?.ToString() ?? "";
+
+                            if (rowView.Table.Columns.Contains("LopHocID") && rowView["LopHocID"] != DBNull.Value)
+                            {
+                                int lopID = Convert.ToInt32(rowView["LopHocID"]);
+                                if (lopID > 0)
+                                {
+                                    try { cboDe_ChonLopHoc.SelectedValue = lopID; } catch { }
+                                }
+                            }
+                            break;
                         }
                     }
                 }
@@ -1087,26 +1082,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void SyncSelectedRowInDgvDanhSachDeThi(int deID)
         {
-            try
-            {
-                DataGridViewPager.ShowItem(dgvDanhSachDeThi, "DeThiID", deID);
-                if (dgvDanhSachDeThi == null || dgvDanhSachDeThi.Rows.Count == 0) return;
-                for (int i = 0; i < dgvDanhSachDeThi.Rows.Count; i++)
-                {
-                    if (dgvDanhSachDeThi.Rows[i].DataBoundItem is DataRowView drv)
-                    {
-                        string colName = drv.Row.Table.Columns.Contains("DeThiID") ? "DeThiID" : "dethiid";
-                        if (drv.Row.Table.Columns.Contains(colName) && drv[colName] != DBNull.Value && Convert.ToInt32(drv[colName]) == deID)
-                        {
-                            dgvDanhSachDeThi.ClearSelection();
-                            dgvDanhSachDeThi.Rows[i].Selected = true;
-                            dgvDanhSachDeThi.FirstDisplayedScrollingRowIndex = i;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch { }
+            // Pager chọn/cuộn ở lượt UI kế tiếp; không cuộn trực tiếp trong sự kiện ComboBox.
+            DataGridViewPager.ShowItem(dgvDanhSachDeThi, "DeThiID", deID);
         }
 
         private void dgvDanhSachCauHoi_CellClick(object sender, DataGridViewCellEventArgs e)

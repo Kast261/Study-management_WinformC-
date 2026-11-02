@@ -21,6 +21,7 @@ internal static class Program
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
             Application.ThreadException += (s, e) => { Console.Error.WriteLine(e.Exception); Environment.Exit(1); };
             Console.WriteLine("Starting real DataGridView checks");
+            BindingAndFillResizeDoNotReenterSourceChanges();
             BoundTableAndExport();
             TypedModelList();
             ManualColumnsRemainBound();
@@ -74,6 +75,75 @@ internal static class Program
             }
         }
         finally { System.Globalization.CultureInfo.CurrentCulture = previous; }
+    }
+
+    private sealed class ObservedBindingGrid : DataGridView
+    {
+        private int sourceChangeDepth;
+        public int MaximumSourceChangeDepth;
+        protected override void OnDataSourceChanged(EventArgs e)
+        {
+            sourceChangeDepth++;
+            MaximumSourceChangeDepth=Math.Max(MaximumSourceChangeDepth,sourceChangeDepth);
+            try { base.OnDataSourceChanged(e); }
+            finally { sourceChangeDepth--; }
+        }
+        public void RecreateForTest() { RecreateHandle(); }
+    }
+
+    private static void BindingAndFillResizeDoNotReenterSourceChanges()
+    {
+        using (var form = new Form {ClientSize=new Size(850,450)})
+        {
+            var tabs = new TabControl {Dock=DockStyle.Fill};
+            tabs.TabPages.Add(new TabPage("Home"));
+            var registration = new TabPage("Registration");
+            var exams = new TabPage("Exams");
+            tabs.TabPages.Add(registration); tabs.TabPages.Add(exams);
+            var grids = new List<ObservedBindingGrid>();
+            foreach (var tab in new[] {registration,exams})
+            {
+                var grid = new ObservedBindingGrid {Dock=DockStyle.Fill,AutoGenerateColumns=false,AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.Fill};
+                grid.Columns.Add(new DataGridViewTextBoxColumn {Name="ID",DataPropertyName="ID",FillWeight=35});
+                grid.Columns.Add(new DataGridViewTextBoxColumn {Name="Name",DataPropertyName="Name",FillWeight=65});
+                tab.Controls.Add(grid); grids.Add(grid);
+            }
+            form.Controls.Add(tabs); DataGridViewPager.AttachAll(form); form.Show();
+            tabs.SelectedTab=registration; Application.DoEvents();
+            var first=grids[0]; first.MaximumSourceChangeDepth=0;
+            first.DataSource=Table(43);
+            Check(first.MaximumSourceChangeDepth==1,"Pager must not replace DataSource inside the original DataSourceChanged event");
+            Application.DoEvents();
+            Check(first.Rows.Count==20 && Page(first).Maximum==3,"Deferred binding must still render the first page and exact totals");
+            for (int i=0;i<40;i++)
+            {
+                int index=i%2; tabs.SelectedTab=index==0?registration:exams;
+                var grid=grids[index];
+                grid.DataSource=Table(31);
+                grid.DataSource=Table(41+i%5); // The latest request in the UI turn must win.
+                form.ClientSize=new Size(i%2==0?680:940,i%3==0?180:470);
+                Application.DoEvents();
+                if (grid.Rows.Count!=20 || grid.ColumnCount!=2 || grid.MaximumSourceChangeDepth>1)
+                    throw new InvalidOperationException("Rapid tab/Fill resize lost a page or reentered binding.");
+                grid.Sort(grid.Columns["ID"],ListSortDirection.Descending);
+                Application.DoEvents();
+                Click(grid,"Trang sau");
+                if (Convert.ToInt32(grid.Rows[0].Cells["ID"].Value)!=21+i%5)
+                    throw new InvalidOperationException("Rapid tab/Fill resize lost sort order or page boundaries.");
+            }
+            Check(grids.All(g=>g.MaximumSourceChangeDepth<=1),"Repeated registration/exam tab changes and Fill resizes must never nest source changes");
+            tabs.SelectedTab=registration;
+            first.DataSource=Table(43); Application.DoEvents();
+            Check(DataGridViewPager.ShowItem(first,"ID",42),"Deferred ComboBox navigation must find a row on a later page");
+            first.DataSource=Table(2); Application.DoEvents();
+            Check(first.Rows.Count==2 && first.CurrentRow==null,"A newer source must cancel a pending selection from the old source");
+            first.DataSource=Table(39); first.RecreateForTest(); Application.DoEvents();
+            Check(first.Rows.Count==20 && Page(first).Maximum==2,"Pending binding must survive control handle recreation");
+            first.DataSource=Table(55); form.Close(); // Leave queued work while the grid is disposed.
+            Check(first.IsDisposed && !DataGridViewPager.ShowItem(first,"ID",1),
+                "Closing a form must dispose and unregister pagination with pending UI work");
+        }
+        Application.DoEvents();
     }
 
     private static DataTable Table(int count)
@@ -132,6 +202,7 @@ internal static class Program
             Application.DoEvents();
             Check((int)grid.Rows[0].Cells["ID"].Value == 1, "Page number must support direct navigation");
             Footer(grid).Controls.OfType<ComboBox>().Single().SelectedItem = 10;
+            Application.DoEvents();
             Check(grid.Rows.Count == 10 && Page(grid).Maximum == 5, "Page size must update bound row count");
 
             grid.Sort(grid.Columns["ID"], ListSortDirection.Descending);
@@ -141,6 +212,7 @@ internal static class Program
             Check((int)grid.Rows[0].Cells["ID"].Value == 33 && grid.SortOrder == SortOrder.Descending,
                 "Replacing a page must preserve both sorted data and the grid sort direction");
             Check(DataGridViewPager.ShowItem(grid, "id", 5), "ComboBox selection on another page must be locatable");
+            Application.DoEvents();
             Check(grid.Rows.Cast<DataGridViewRow>().Any(r => (int)r.Cells["ID"].Value == 5), "Located row must be on the displayed page");
             Check((int)grid.CurrentRow.Cells["ID"].Value == 5, "CurrentRow must match the ComboBox selection, not the first row of its page");
 
@@ -164,10 +236,12 @@ internal static class Program
             finally { File.Delete(csv); File.Delete(xml); }
 
             grid.DataSource = Table(2);
+            Application.DoEvents();
             Check(grid.Rows.Count == 2 && Page(grid).Value == 1, "Replacing a result must reset paging");
             table.Rows.Add(44, "Old source");
             Check(grid.Rows.Count == 2, "Old source events must be detached");
             grid.DataSource = null;
+            Application.DoEvents();
             Check(grid.Rows.Count == 0 && Page(grid).Value == 0, "Clearing a grid must display page 0/0");
             Check(!Page(grid).Enabled, "Navigation must be disabled for empty results");
             Check(selectionResets > 1, "Domain selections must be invalidated when page contents change");
@@ -192,6 +266,7 @@ internal static class Program
             Click(grid, "Trang sau");
             Check(ReferenceEquals(grid.Rows[0].DataBoundItem, items[20]), "Model identity must survive page navigation");
             grid.Sort(grid.Columns["ID"], ListSortDirection.Descending);
+            Application.DoEvents();
             Check(((Question)grid.Rows[0].DataBoundItem).ID == 35, "Model list must sort across all pages");
             form.Close();
         }
