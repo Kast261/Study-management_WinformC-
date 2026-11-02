@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="all" />
+    <PackageReference Include="Npgsql" Version="6.0.11" />
+    <Compile Include="../../DAL/Repositories/DashboardDAL.cs" Link="Production/DashboardDAL.cs" />
+    <Compile Include="../../Helpers/Security/Passwords.cs" Link="Production/Passwords.cs" />
+    <Compile Include="../StudentProfile.Tests/TestDatabase.cs" Link="TestDatabase.cs" />
+  </ItemGroup>
+</Project>

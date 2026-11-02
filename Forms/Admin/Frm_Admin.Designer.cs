@@ -40,14 +40,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lblTQ_TieuDe = new System.Windows.Forms.Label();
+            this.lblTQ_MoTa = new System.Windows.Forms.Label();
+            this.btnTQ_LamMoi = new System.Windows.Forms.Button();
             this.materialCard4 = new ReaLTaiizor.Controls.MaterialCard();
-            this.materialLabel4 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTQ_LopHoc = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialCard3 = new ReaLTaiizor.Controls.MaterialCard();
-            this.materialLabel2 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTQ_GiaoVien = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialCard2 = new ReaLTaiizor.Controls.MaterialCard();
-            this.materialLabel3 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTQ_KhoaHoc = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialCard1 = new ReaLTaiizor.Controls.MaterialCard();
-            this.materialLabel1 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTQ_HocVien = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageGiaoVien = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.materialCard7 = new ReaLTaiizor.Controls.MaterialCard();
@@ -172,7 +175,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnTQ_XemTatCaLopHoc = new System.Windows.Forms.Button();
             this.materialTabControl1.SuspendLayout();
             this.pageDashboard.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
@@ -272,7 +275,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.btnTQ_XemTatCaLopHoc);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.materialListView2);
@@ -292,7 +295,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.columnHeader2,
             this.columnHeader3});
             this.materialListView2.Depth = 0;
-            this.materialListView2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.materialListView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.materialListView2.FullRowSelect = true;
             this.materialListView2.GridLines = true;
             this.materialListView2.HideSelection = false;
@@ -302,7 +305,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialListView2.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.materialListView2.Name = "materialListView2";
             this.materialListView2.OwnerDraw = true;
-            this.materialListView2.Size = new System.Drawing.Size(746, 369);
+            this.materialListView2.Size = new System.Drawing.Size(746, 310);
             this.materialListView2.TabIndex = 5;
             this.materialListView2.UseCompatibleStateImageBehavior = false;
             this.materialListView2.View = System.Windows.Forms.View.Details;
@@ -336,6 +339,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.lblTQ_TieuDe);
+            this.panel2.Controls.Add(this.lblTQ_MoTa);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
@@ -345,7 +350,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // materialCard4
             // 
             this.materialCard4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard4.Controls.Add(this.materialLabel4);
+            this.materialCard4.Controls.Add(this.lblTQ_LopHoc);
             this.materialCard4.Depth = 0;
             this.materialCard4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialCard4.Location = new System.Drawing.Point(390, 17);
@@ -356,22 +361,22 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialCard4.Size = new System.Drawing.Size(244, 100);
             this.materialCard4.TabIndex = 3;
             // 
-            // materialLabel4
+            // lblTQ_LopHoc
             // 
-            this.materialLabel4.AutoSize = true;
-            this.materialLabel4.Depth = 0;
-            this.materialLabel4.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel4.Location = new System.Drawing.Point(32, 21);
-            this.materialLabel4.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel4.Name = "materialLabel4";
-            this.materialLabel4.Size = new System.Drawing.Size(74, 24);
-            this.materialLabel4.TabIndex = 0;
-            this.materialLabel4.Text = "Lớp Học";
+            this.lblTQ_LopHoc.AutoSize = true;
+            this.lblTQ_LopHoc.Depth = 0;
+            this.lblTQ_LopHoc.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTQ_LopHoc.Location = new System.Drawing.Point(32, 21);
+            this.lblTQ_LopHoc.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTQ_LopHoc.Name = "lblTQ_LopHoc";
+            this.lblTQ_LopHoc.Size = new System.Drawing.Size(74, 24);
+            this.lblTQ_LopHoc.TabIndex = 0;
+            this.lblTQ_LopHoc.Text = "Lớp Học";
             // 
             // materialCard3
             // 
             this.materialCard3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard3.Controls.Add(this.materialLabel2);
+            this.materialCard3.Controls.Add(this.lblTQ_GiaoVien);
             this.materialCard3.Depth = 0;
             this.materialCard3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialCard3.Location = new System.Drawing.Point(390, 17);
@@ -382,22 +387,22 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialCard3.Size = new System.Drawing.Size(244, 100);
             this.materialCard3.TabIndex = 2;
             // 
-            // materialLabel2
+            // lblTQ_GiaoVien
             // 
-            this.materialLabel2.AutoSize = true;
-            this.materialLabel2.Depth = 0;
-            this.materialLabel2.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel2.Location = new System.Drawing.Point(121, 17);
-            this.materialLabel2.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel2.Name = "materialLabel2";
-            this.materialLabel2.Size = new System.Drawing.Size(84, 24);
-            this.materialLabel2.TabIndex = 0;
-            this.materialLabel2.Text = "Giáo viên";
+            this.lblTQ_GiaoVien.AutoSize = true;
+            this.lblTQ_GiaoVien.Depth = 0;
+            this.lblTQ_GiaoVien.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTQ_GiaoVien.Location = new System.Drawing.Point(121, 17);
+            this.lblTQ_GiaoVien.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTQ_GiaoVien.Name = "lblTQ_GiaoVien";
+            this.lblTQ_GiaoVien.Size = new System.Drawing.Size(84, 24);
+            this.lblTQ_GiaoVien.TabIndex = 0;
+            this.lblTQ_GiaoVien.Text = "Giáo viên";
             // 
             // materialCard2
             // 
             this.materialCard2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard2.Controls.Add(this.materialLabel3);
+            this.materialCard2.Controls.Add(this.lblTQ_KhoaHoc);
             this.materialCard2.Depth = 0;
             this.materialCard2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialCard2.Location = new System.Drawing.Point(17, 17);
@@ -408,22 +413,22 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialCard2.Size = new System.Drawing.Size(244, 100);
             this.materialCard2.TabIndex = 1;
             // 
-            // materialLabel3
+            // lblTQ_KhoaHoc
             // 
-            this.materialLabel3.AutoSize = true;
-            this.materialLabel3.Depth = 0;
-            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel3.Location = new System.Drawing.Point(102, 21);
-            this.materialLabel3.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel3.Name = "materialLabel3";
-            this.materialLabel3.Size = new System.Drawing.Size(87, 24);
-            this.materialLabel3.TabIndex = 0;
-            this.materialLabel3.Text = "Khóa Học";
+            this.lblTQ_KhoaHoc.AutoSize = true;
+            this.lblTQ_KhoaHoc.Depth = 0;
+            this.lblTQ_KhoaHoc.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTQ_KhoaHoc.Location = new System.Drawing.Point(102, 21);
+            this.lblTQ_KhoaHoc.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTQ_KhoaHoc.Name = "lblTQ_KhoaHoc";
+            this.lblTQ_KhoaHoc.Size = new System.Drawing.Size(87, 24);
+            this.lblTQ_KhoaHoc.TabIndex = 0;
+            this.lblTQ_KhoaHoc.Text = "Khóa Học";
             // 
             // materialCard1
             // 
             this.materialCard1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard1.Controls.Add(this.materialLabel1);
+            this.materialCard1.Controls.Add(this.lblTQ_HocVien);
             this.materialCard1.Depth = 0;
             this.materialCard1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialCard1.Location = new System.Drawing.Point(17, 17);
@@ -434,17 +439,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialCard1.Size = new System.Drawing.Size(244, 100);
             this.materialCard1.TabIndex = 0;
             // 
-            // materialLabel1
+            // lblTQ_HocVien
             // 
-            this.materialLabel1.AutoSize = true;
-            this.materialLabel1.Depth = 0;
-            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel1.Location = new System.Drawing.Point(103, 21);
-            this.materialLabel1.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel1.Name = "materialLabel1";
-            this.materialLabel1.Size = new System.Drawing.Size(81, 24);
-            this.materialLabel1.TabIndex = 0;
-            this.materialLabel1.Text = "Học Viên";
+            this.lblTQ_HocVien.AutoSize = true;
+            this.lblTQ_HocVien.Depth = 0;
+            this.lblTQ_HocVien.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTQ_HocVien.Location = new System.Drawing.Point(103, 21);
+            this.lblTQ_HocVien.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTQ_HocVien.Name = "lblTQ_HocVien";
+            this.lblTQ_HocVien.Size = new System.Drawing.Size(81, 24);
+            this.lblTQ_HocVien.TabIndex = 0;
+            this.lblTQ_HocVien.Text = "Học Viên";
             // 
             // pageGiaoVien
             // 
@@ -2574,6 +2579,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btnTQ_LamMoi);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(755, 3);
             this.panel3.Name = "panel3";
@@ -2635,16 +2641,42 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.label2.TabIndex = 7;
             this.label2.Text = "5 Lớp Học Được Tạo Gần Đây";
             // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(606, 371);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(140, 45);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
+            // btnTQ_XemTatCaLopHoc
+            //
+            this.btnTQ_XemTatCaLopHoc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTQ_XemTatCaLopHoc.Location = new System.Drawing.Point(556, 371);
+            this.btnTQ_XemTatCaLopHoc.Name = "btnTQ_XemTatCaLopHoc";
+            this.btnTQ_XemTatCaLopHoc.Size = new System.Drawing.Size(190, 45);
+            this.btnTQ_XemTatCaLopHoc.TabIndex = 8;
+            this.btnTQ_XemTatCaLopHoc.Text = "Xem tất cả lớp học";
+            this.btnTQ_XemTatCaLopHoc.UseVisualStyleBackColor = true;
+            //
+            //
+            // lblTQ_TieuDe
+            //
+            this.lblTQ_TieuDe.AutoSize = true;
+            this.lblTQ_TieuDe.Font = new System.Drawing.Font("Segoe UI", 20F);
+            this.lblTQ_TieuDe.Location = new System.Drawing.Point(12, 8);
+            this.lblTQ_TieuDe.Name = "lblTQ_TieuDe";
+            this.lblTQ_TieuDe.Text = "Tổng quan học tập";
+            //
+            // lblTQ_MoTa
+            //
+            this.lblTQ_MoTa.AutoSize = true;
+            this.lblTQ_MoTa.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblTQ_MoTa.Location = new System.Drawing.Point(14, 54);
+            this.lblTQ_MoTa.Name = "lblTQ_MoTa";
+            this.lblTQ_MoTa.Text = "Theo dõi học viên, đội ngũ và lớp học";
+            //
+            // btnTQ_LamMoi
+            //
+            this.btnTQ_LamMoi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTQ_LamMoi.Location = new System.Drawing.Point(523, 10);
+            this.btnTQ_LamMoi.Name = "btnTQ_LamMoi";
+            this.btnTQ_LamMoi.Size = new System.Drawing.Size(220, 60);
+            this.btnTQ_LamMoi.TabIndex = 0;
+            this.btnTQ_LamMoi.Text = "Làm mới dữ liệu";
+            this.btnTQ_LamMoi.UseVisualStyleBackColor = true;
             // Frm_Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -2849,13 +2881,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private ReaLTaiizor.Controls.MaterialCard materialCard4;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel4;
+        private ReaLTaiizor.Controls.MaterialLabel lblTQ_LopHoc;
         private ReaLTaiizor.Controls.MaterialCard materialCard3;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel2;
+        private ReaLTaiizor.Controls.MaterialLabel lblTQ_GiaoVien;
         private ReaLTaiizor.Controls.MaterialCard materialCard2;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel3;
+        private ReaLTaiizor.Controls.MaterialLabel lblTQ_KhoaHoc;
         private ReaLTaiizor.Controls.MaterialCard materialCard1;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel1;
+        private ReaLTaiizor.Controls.MaterialLabel lblTQ_HocVien;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
@@ -2865,6 +2897,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnTQ_XemTatCaLopHoc;
+        private System.Windows.Forms.Label lblTQ_TieuDe;
+        private System.Windows.Forms.Label lblTQ_MoTa;
+        private System.Windows.Forms.Button btnTQ_LamMoi;
     }
 }
