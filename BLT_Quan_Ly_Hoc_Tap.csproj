@@ -133,6 +133,7 @@
     <Compile Include="BLL\Services\LopHocService.cs" />
     <Compile Include="BLL\Services\TaiKhoanService.cs" />
     <Compile Include="ColorScheme.cs" />
+    <Compile Include="DAL\Repositories\DashboardDAL.cs" />
     <Compile Include="DAL\Repositories\DeThiDAL.cs" />
     <Compile Include="DAL\Repositories\GiaoVienDAL.cs" />
     <Compile Include="DAL\Repositories\HocSinhDAL.cs" />

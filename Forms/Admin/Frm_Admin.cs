@@ -25,6 +25,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private readonly KhoaHocDAL _khDAL = new KhoaHocDAL();
         private readonly LopHocDAL _lopDAL = new LopHocDAL();
         private readonly TaiKhoanDAL _tkDAL = new TaiKhoanDAL();
+        private readonly DashboardDAL _dashboardDAL = new DashboardDAL();
+        private bool _dangTaiDashboard;
         
 
         private int _selectedGiaoVienID = 0;
@@ -36,6 +38,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             this.DoubleBuffered = true;
             InitializeComponent();
+            KhoiTaoDashboard();
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
             this.DrawerTabControl = materialTabControl1;
 
@@ -155,54 +158,137 @@ namespace BLT_Quan_Ly_Hoc_Tap
         #endregion
 
         #region Dashboard & Thống kê
+        private void KhoiTaoDashboard()
+        {
+            // Chỉ cấu hình hành vi; các control và bố cục vẫn nằm trong Designer.
+            btnTQ_LamMoi.Click += btnTQ_LamMoi_Click;
+            btnTQ_XemTatCaLopHoc.Click += btnTQ_XemTatCaLopHoc_Click;
+            materialListView2.Resize += (sender, e) => CanCotLopMoiNhat();
+            CanCotLopMoiNhat();
+
+            chart1.Series.Clear();
+            chart1.Legends.Clear();
+            chart1.Titles.Clear();
+            chart1.Titles.Add("Học viên theo khóa học (tối đa 6 khóa học)");
+            chart1.Titles.Add(new Title("", Docking.Bottom) { Name = "TrangThaiDuLieu" });
+            var series = new Series("HocVien")
+            {
+                ChartType = SeriesChartType.Column,
+                Color = Color.FromArgb(37, 99, 235),
+                IsValueShownAsLabel = true,
+                IsVisibleInLegend = false,
+                ChartArea = chart1.ChartAreas[0].Name,
+                ToolTip = "#VALX: #VALY học viên"
+            };
+            chart1.Series.Add(series);
+            var area = chart1.ChartAreas[0];
+            area.AxisX.Interval = 1;
+            area.AxisX.MajorGrid.Enabled = false;
+            area.AxisX.LabelStyle.IsEndLabelVisible = true;
+            area.AxisY.Minimum = 0;
+            area.AxisY.Interval = 1;
+            area.AxisY.LabelStyle.Format = "0";
+            area.AxisY.Title = "Số học viên";
+            area.AxisY.MajorGrid.LineColor = Color.FromArgb(230, 234, 240);
+        }
+
+        private void CanCotLopMoiNhat()
+        {
+            int width = Math.Max(0, materialListView2.ClientSize.Width - 24);
+            columnHeader1.Width = width * 40 / 100;
+            columnHeader2.Width = width * 40 / 100;
+            columnHeader3.Width = width - columnHeader1.Width - columnHeader2.Width;
+        }
+
         private void LoadDashboard()
         {
+            if (_dangTaiDashboard) return;
+            _dangTaiDashboard = true;
+            btnTQ_LamMoi.Enabled = false;
+            bool previousUseWaitCursor = UseWaitCursor;
+            UseWaitCursor = true;
             try
             {
-                int soHV = Convert.ToInt32(
-            DatabaseHelper.ExecuteScalar(
-                "SELECT COUNT(*) FROM HocSinh"));
-
-                int soGV = Convert.ToInt32(
-                    DatabaseHelper.ExecuteScalar(
-                        "SELECT COUNT(*) FROM GiaoVien"));
-
-                int soKH = Convert.ToInt32(
-                    DatabaseHelper.ExecuteScalar(
-                        "SELECT COUNT(*) FROM KhoaHoc"));
-
-                int soLop = Convert.ToInt32(
-                    DatabaseHelper.ExecuteScalar(
-                        "SELECT COUNT(*) FROM LopHoc"));
-
-
-                materialLabel1.Text = $"HỌC VIÊN\n{soHV:N0}";
-                materialLabel2.Text = $"GIÁO VIÊN\n{soGV:N0}";
-                materialLabel3.Text = $"KHÓA HỌC\n{soKH:N0}";
-                materialLabel4.Text = $"LỚP HỌC\n{soLop:N0}";
-
-
-
+                // Đọc đủ dữ liệu trước khi thay giao diện để tránh cập nhật dở dang khi lỗi SQL.
+                using (DataTable tongQuan = _dashboardDAL.LayTongQuan())
+                using (DataTable theoKhoaHoc = _dashboardDAL.LayHocVienTheoKhoaHoc())
+                using (DataTable lopMoiNhat = _dashboardDAL.LayLopMoiNhat())
+                {
+                    var vi = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+                    DataRow row = tongQuan.Rows[0];
+                    lblTQ_HocVien.Text = "HỌC VIÊN\n" + Convert.ToInt64(row["SoHocVien"]).ToString("N0", vi);
+                    lblTQ_GiaoVien.Text = "GIÁO VIÊN\n" + Convert.ToInt64(row["SoGiaoVien"]).ToString("N0", vi);
+                    lblTQ_KhoaHoc.Text = "KHÓA HỌC\n" + Convert.ToInt64(row["SoKhoaHoc"]).ToString("N0", vi);
+                    lblTQ_LopHoc.Text = "LỚP HỌC\n" + Convert.ToInt64(row["SoLopHoc"]).ToString("N0", vi);
+                    HienThiBieuDoDashboard(theoKhoaHoc);
+                    HienThiLopMoiNhat(lopMoiNhat);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-           "Không thể tải Dashboard:\n" + ex.Message,
-           "Lỗi",
-           MessageBoxButtons.OK,
-           MessageBoxIcon.Error);
+                MessageBox.Show("Không thể tải Dashboard:\n" + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
-
+                UseWaitCursor = previousUseWaitCursor;
+                btnTQ_LamMoi.Enabled = true;
+                _dangTaiDashboard = false;
             }
         }
 
-        
+        private void HienThiBieuDoDashboard(DataTable data)
+        {
+            Series series = chart1.Series["HocVien"];
+            series.Points.Clear();
+            long maximum = 0;
+            foreach (DataRow row in data.Rows)
+            {
+                long count = Convert.ToInt64(row["SoHocVien"]);
+                series.Points.AddXY(row["TenKhoaHoc"].ToString(), count);
+                maximum = Math.Max(maximum, count);
+            }
+            chart1.ChartAreas[0].AxisY.Interval = Math.Max(1, Math.Ceiling(maximum / 5D));
+            chart1.Titles["TrangThaiDuLieu"].Text = data.Rows.Count == 0
+                ? "Chưa có khóa học."
+                : maximum == 0 ? "Chưa có học viên được xếp vào lớp của các khóa học." : "";
+            chart1.ResetAutoValues();
+        }
 
-       
+        private void HienThiLopMoiNhat(DataTable data)
+        {
+            materialListView2.BeginUpdate();
+            try
+            {
+                materialListView2.Items.Clear();
+                foreach (DataRow row in data.Rows)
+                {
+                    var item = new ListViewItem(row["TenLop"].ToString());
+                    item.SubItems.Add(row["TenGiaoVien"].ToString());
+                    item.SubItems.Add(row["SoHocVien"] + "/" + row["SiSoToiDa"]);
+                    item.Tag = Convert.ToInt32(row["LopHocID"]);
+                    materialListView2.Items.Add(item);
+                }
+                label2.Text = data.Rows.Count == 0 ? "Chưa có lớp học trong hệ thống"
+                    : "5 lớp được tạo gần đây (theo mã lớp giảm dần)";
+            }
+            finally
+            {
+                materialListView2.EndUpdate();
+            }
+        }
 
+        private void btnTQ_LamMoi_Click(object sender, EventArgs e)
+        {
+            LoadDashboard();
+        }
 
+        private void btnTQ_XemTatCaLopHoc_Click(object sender, EventArgs e)
+        {
+            materialTabControl1.SelectedTab = pageKhoaHocVaLop;
+            LoadDanhSachLopHoc();
+            dgvLopHoc.Focus();
+        }
         #endregion
 
         #region Quản lý Giáo Viên
@@ -1188,6 +1274,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void materialTabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (materialTabControl1.SelectedTab == pageDashboard && Visible)
+                LoadDashboard();
+
             if (materialTabControl1.SelectedTab != null &&
                 (materialTabControl1.SelectedTab == pageDangXuat || materialTabControl1.SelectedTab.Text.Contains("Đăng Xuất")))
             {
