@@ -44,6 +44,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
             return _ketQuaDAL.LayLichSuTheoHocSinh(hocSinhID);
         }
 
+        public DataTable LayKetQuaTheoLopDangHoc(int hocSinhID, int lopHocID = 0)
+        {
+            return _ketQuaDAL.LayKetQuaTheoLopDangHoc(hocSinhID, lopHocID);
+        }
+
         public DataTable LayChiTietBaiLamTheoKetQua(int ketQuaID)
         {
             return _ketQuaDAL.LayChiTietBaiLamTheoKetQua(ketQuaID);

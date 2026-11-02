@@ -288,6 +288,60 @@ namespace ApplicationLogic.Tests
             Assert.Equal(edited.NgayKetThuc, Convert.ToDateTime(refreshed.Rows[0]["NgayKetThuc"]));
         }
 
+        [Fact]
+        public void ResultsFilterIncludesOnlyOwnResultsFromDirectOrApprovedClasses()
+        {
+            using var db = new LogicDatabase();
+            DatabaseHelper.ExecuteNonQuery(@"
+                INSERT INTO LopHoc (LopHocID,TenLop) VALUES (3,'Chờ duyệt'),(4,'Từ chối');
+                INSERT INTO DangKyLop (LopHocID,HocSinhID,TrangThai)
+                    VALUES (2,11,'Đã duyệt'),(2,11,'Đã duyệt'),(3,11,'Chờ duyệt'),(4,11,'Từ chối');
+                INSERT INTO DeThi (DeThiID,TenDeThi,LopHocID) VALUES (2,'Đề lớp 2',2),(3,'Đề lớp 3',3),(4,'Đề lớp 4',4);
+                INSERT INTO KetQuaThi (HocSinhID,DeThiID,Diem,ThoiGianNop)
+                    VALUES (11,1,5,CURRENT_TIMESTAMP),(11,2,8,CURRENT_TIMESTAMP),
+                           (22,1,9,CURRENT_TIMESTAMP),(11,3,7,CURRENT_TIMESTAMP),(11,4,6,CURRENT_TIMESTAMP);");
+            var dal = new KetQuaDAL();
+            using var all = dal.LayKetQuaTheoLopDangHoc(11);
+            Assert.Equal(2,all.Rows.Count);
+            Assert.Equal(new[] {2,1},all.Rows.Cast<System.Data.DataRow>().Select(r=>Convert.ToInt32(r["LopHocID"])));
+            using var onlySecond = dal.LayKetQuaTheoLopDangHoc(11,2);
+            Assert.Single(onlySecond.Rows);
+            Assert.Equal(8M,Convert.ToDecimal(onlySecond.Rows[0]["Diem"]));
+            Assert.Empty(dal.LayKetQuaTheoLopDangHoc(11,3).Rows);
+            Assert.Empty(dal.LayKetQuaTheoLopDangHoc(11,4).Rows);
+            Assert.Empty(dal.LayKetQuaTheoLopDangHoc(11,999).Rows);
+            Assert.Empty(dal.LayKetQuaTheoLopDangHoc(33).Rows);
+        }
+
+        [Fact]
+        public void ClassFilterOptionsIncludeClassesWithoutSubmittedResults()
+        {
+            using var db = new LogicDatabase();
+            DatabaseHelper.ExecuteNonQuery("INSERT INTO DangKyLop (LopHocID,HocSinhID,TrangThai) VALUES (2,11,'Đã duyệt')");
+            using var classes = new LopHocDAL().LayTheoHocSinh(11);
+            Assert.Equal(2,classes.Rows.Count);
+            using var empty = new KetQuaDAL().LayKetQuaTheoLopDangHoc(11,2);
+            Assert.Empty(empty.Rows);
+            foreach (string column in new[] {"KetQuaID","TenDeThi","MonHoc","ThoiGianNop","Diem"})
+                Assert.True(empty.Columns.Contains(column));
+        }
+
+        [Fact]
+        public void ResultsFilterRefreshesAfterSubmissionAndMembershipChange()
+        {
+            using var db = new LogicDatabase();
+            var dal = new KetQuaDAL();
+            Assert.Empty(dal.LayKetQuaTheoLopDangHoc(11,1).Rows);
+            var saved = dal.NopBai(1,11,1,new Dictionary<int,string>{{1,"A"},{2,"B"}});
+            using var results = dal.LayKetQuaTheoLopDangHoc(11,1);
+            Assert.Single(results.Rows);
+            Assert.Equal(saved.KetQuaID,Convert.ToInt32(results.Rows[0]["KetQuaID"]));
+            Assert.Equal(10M,Convert.ToDecimal(results.Rows[0]["Diem"]));
+            DatabaseHelper.ExecuteNonQuery("UPDATE HocSinh SET LopHocID=NULL WHERE HocSinhID=11");
+            Assert.Empty(dal.LayKetQuaTheoLopDangHoc(11,1).Rows);
+            Assert.Single(dal.LayLichSuTheoHocSinh(11).Rows); // Lịch sử gốc không bị xóa bởi bộ lọc.
+        }
+
         private static CauHoi Question() => new CauHoi {DeThiID=1,CauHoiID=1,NoiDung="Sửa",DapAnA="A",DapAnB="B",DapAnC="C",DapAnD="D",DapAnDung="A"};
 
         [Fact]

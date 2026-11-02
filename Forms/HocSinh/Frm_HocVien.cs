@@ -27,11 +27,15 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         // Lưu trữ danh sách đề thi gốc để hỗ trợ việc lọc bằng ComboBox
         private DataTable _dtDeThi;
+        private bool _dangTaiLopLocKetQua;
 
         public HocVien()
         {
             InitializeComponent();
+            // Gán cột Designer trước khi phân trang bind nguồn rỗng, tránh mất các cột.
+            ConfigureDataGrids();
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
+            KhoiTaoLocKetQua();
             KhoiTaoHoSoCaNhan();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
@@ -52,7 +56,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (!LoadThongTinHocVien()) return;
             try
             {
-                ConfigureDataGrids();
                 LoadLopHoc();
                 LoadDanhSachDeThi();
                 LoadLichSuThi();
@@ -146,10 +149,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 dgvHV_LichSuThi.AutoGenerateColumns = false;
                 dgvHV_LichSuThi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                if (dgvHV_LichSuThi.Columns.Contains("Column22")) dgvHV_LichSuThi.Columns["Column22"].DataPropertyName = "TenDeThi";
-                if (dgvHV_LichSuThi.Columns.Contains("Column23")) dgvHV_LichSuThi.Columns["Column23"].DataPropertyName = "MonHoc";
-                if (dgvHV_LichSuThi.Columns.Contains("Column24")) dgvHV_LichSuThi.Columns["Column24"].DataPropertyName = "ThoiGianNop";
-                if (dgvHV_LichSuThi.Columns.Contains("Column25")) dgvHV_LichSuThi.Columns["Column25"].DataPropertyName = "Diem";
+                Column22.DataPropertyName = "TenDeThi";
+                Column23.DataPropertyName = "MonHoc";
+                Column24.DataPropertyName = "ThoiGianNop";
+                Column25.DataPropertyName = "Diem";
+                Column24.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                Column25.DefaultCellStyle.Format = "0.00";
+                dgvHV_LichSuThi.ColumnHeadersVisible = true;
+                dgvHV_LichSuThi.ReadOnly = true;
             }
 
             // Bảng Lớp Đang Học ở Trang chủ
@@ -591,14 +598,78 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
+        private void KhoiTaoLocKetQua()
+        {
+            cmbBaiThi_DaLam.Hint = "Lọc kết quả theo lớp đang học";
+            cmbBaiThi_DaLam.SelectedIndexChanged += cmbBaiThi_DaLam_SelectedIndexChanged;
+            materialLabel15.AutoSize = false;
+            materialLabel15.Dock = DockStyle.Bottom;
+            materialLabel15.Height = 28;
+            materialLabel15.Text = "Chọn lớp đang học để xem kết quả bài thi đã nộp.";
+            btnHV_XemLaiBaiThi.Enabled = false;
+        }
+
         private void LoadLichSuThi()
+        {
+            int selectedClass = cmbBaiThi_DaLam.SelectedValue is int value ? value : 0;
+            _dangTaiLopLocKetQua = true;
+            try
+            {
+                using (DataTable classes = _lopDAL.LayTheoHocSinh(Session.NguoiDungID))
+                {
+                    DataTable options = classes.DefaultView.ToTable(true, "LopHocID", "TenLop");
+                    DataRow all = options.NewRow();
+                    all["LopHocID"] = 0;
+                    all["TenLop"] = "Tất cả lớp đang học";
+                    options.Rows.InsertAt(all, 0);
+                    bool exists = false;
+                    foreach (DataRow row in options.Rows)
+                        if (Convert.ToInt32(row["LopHocID"]) == selectedClass) exists = true;
+                    cmbBaiThi_DaLam.DataSource = null;
+                    cmbBaiThi_DaLam.DisplayMember = "TenLop";
+                    cmbBaiThi_DaLam.ValueMember = "LopHocID";
+                    cmbBaiThi_DaLam.DataSource = options;
+                    cmbBaiThi_DaLam.SelectedValue = exists ? selectedClass : 0;
+                    cmbBaiThi_DaLam.Enabled = options.Rows.Count > 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                dgvHV_LichSuThi.DataSource = null;
+                btnHV_XemLaiBaiThi.Enabled = false;
+                materialLabel15.Text = "Không tải được danh sách lớp đang học.";
+                MessageBox.Show("Không tải được lớp để lọc kết quả: " + ex.Message, "Lỗi");
+                return;
+            }
+            finally { _dangTaiLopLocKetQua = false; }
+            HienThiKetQuaTheoLop();
+        }
+
+        private void cmbBaiThi_DaLam_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_dangTaiLopLocKetQua || !(cmbBaiThi_DaLam.SelectedValue is int)) return;
+            HienThiKetQuaTheoLop();
+        }
+
+        private void HienThiKetQuaTheoLop()
         {
             try
             {
-                DataTable dtKQ = _ketQuaDAL.LayLichSuTheoHocSinh(Session.NguoiDungID);
-                if (dgvHV_LichSuThi != null) dgvHV_LichSuThi.DataSource = dtKQ;
+                int lopID = cmbBaiThi_DaLam.SelectedValue is int value ? value : 0;
+                DataTable results = _ketQuaDAL.LayKetQuaTheoLopDangHoc(Session.NguoiDungID, lopID);
+                dgvHV_LichSuThi.DataSource = results;
+                btnHV_XemLaiBaiThi.Enabled = results.Rows.Count > 0;
+                materialLabel15.Text = !cmbBaiThi_DaLam.Enabled ? "Bạn chưa có lớp đang học."
+                    : results.Rows.Count == 0 ? "Chưa có bài thi đã nộp trong lớp đang chọn."
+                    : $"{results.Rows.Count:N0} kết quả · {cmbBaiThi_DaLam.Text}";
             }
-            catch { }
+            catch (Exception ex)
+            {
+                dgvHV_LichSuThi.DataSource = null;
+                btnHV_XemLaiBaiThi.Enabled = false;
+                materialLabel15.Text = "Không tải được kết quả. Hãy mở lại tab để thử lại.";
+                MessageBox.Show("Không tải được kết quả bài thi: " + ex.Message, "Lỗi");
+            }
         }
 
         private void btnHV_XemLaiBaiThi_Click(object sender, EventArgs e)
@@ -700,6 +771,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void TabHocVien_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (tabHocVien.SelectedTab == pageHV_KetQua)
+            {
+                LoadLichSuThi();
+                return;
+            }
+
             if (tabHocVien.SelectedTab == pageHV_LopHoc)
             {
                 LoadTabLopHocCuaToi();
