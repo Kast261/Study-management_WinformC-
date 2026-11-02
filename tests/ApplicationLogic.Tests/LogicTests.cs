@@ -258,6 +258,36 @@ namespace ApplicationLogic.Tests
             Assert.Equal(0,new TaiKhoanDAL().DangNhap("student2","Oldpass1").NguoiDungID);
         }
 
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void StudentClassListReturnsDatesSavedByTeacherAndRefreshesThem(bool approvedRegistration)
+        {
+            using var db = new LogicDatabase();
+            if (approvedRegistration)
+                DatabaseHelper.ExecuteNonQuery("INSERT INTO DangKyLop (LopHocID,HocSinhID,TrangThai) VALUES (1,11,'Đã duyệt')");
+            var dal = new LopHocDAL();
+            var edited = new LopHoc
+            {
+                LopHocID=1, TenLop="Lớp đã cập nhật", GiaoVienID=101, KhoaHocID=1,
+                SiSoToiDa=30, LichHoc="Thứ 7",
+                NgayBatDau=new DateTime(2027,3,4), NgayKetThuc=new DateTime(2027,6,15)
+            };
+            Assert.True(dal.SuaLop(edited));
+            using var current = dal.LayLopHocVienDangHocVaChoDuyet(11);
+            Assert.Single(current.Rows);
+            Assert.Equal(edited.NgayBatDau, Convert.ToDateTime(current.Rows[0]["NgayBatDau"]));
+            Assert.Equal(edited.NgayKetThuc, Convert.ToDateTime(current.Rows[0]["NgayKetThuc"]));
+            Assert.Equal(approvedRegistration ? "Đã duyệt" : "Đang học", current.Rows[0]["TrangThaiDangKy"]);
+
+            edited.NgayBatDau=new DateTime(2027,4,5);
+            edited.NgayKetThuc=new DateTime(2027,7,16);
+            Assert.True(dal.SuaLop(edited));
+            using var refreshed = dal.LayLopHocVienDangHocVaChoDuyet(11);
+            Assert.Equal(edited.NgayBatDau, Convert.ToDateTime(refreshed.Rows[0]["NgayBatDau"]));
+            Assert.Equal(edited.NgayKetThuc, Convert.ToDateTime(refreshed.Rows[0]["NgayKetThuc"]));
+        }
+
         private static CauHoi Question() => new CauHoi {DeThiID=1,CauHoiID=1,NoiDung="Sửa",DapAnA="A",DapAnB="B",DapAnC="C",DapAnD="D",DapAnDung="A"};
 
         [Fact]

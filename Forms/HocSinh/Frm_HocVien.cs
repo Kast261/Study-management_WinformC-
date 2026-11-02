@@ -98,8 +98,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (dtHV_LopDangHoc.Columns.Contains("Column17")) dtHV_LopDangHoc.Columns["Column17"].DataPropertyName = "TenKhoaHoc";
                 if (dtHV_LopDangHoc.Columns.Contains("Column18")) dtHV_LopDangHoc.Columns["Column18"].DataPropertyName = "TenGiaoVien";
 
-                if (dtHV_LopDangHoc.Columns.Contains("colNgayBatDau")) dtHV_LopDangHoc.Columns["colNgayBatDau"].DataPropertyName = "NgayBatDau";
-                if (dtHV_LopDangHoc.Columns.Contains("colNgayKetThuc")) dtHV_LopDangHoc.Columns["colNgayKetThuc"].DataPropertyName = "NgayKetThuc";
+                // Tên cột thực tế trong Designer là Column11/Column12.
+                Column11.DataPropertyName = "NgayBatDau";
+                Column12.DataPropertyName = "NgayKetThuc";
+                Column11.DefaultCellStyle.Format = "dd/MM/yyyy";
+                Column12.DefaultCellStyle.Format = "dd/MM/yyyy";
+                Column11.DefaultCellStyle.NullValue = "";
+                Column12.DefaultCellStyle.NullValue = "";
 
                 if (dtHV_LopDangHoc.Columns.Contains("Column21")) dtHV_LopDangHoc.Columns["Column21"].DataPropertyName = "TrangThaiDangKy";
             }
