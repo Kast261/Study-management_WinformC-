@@ -32,20 +32,20 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.labelEdit2 = new ReaLTaiizor.Controls.LabelEdit();
             this.labelEdit1 = new ReaLTaiizor.Controls.LabelEdit();
+            this.bigLabel2 = new ReaLTaiizor.Controls.BigLabel();
+            this.bigLabel4 = new ReaLTaiizor.Controls.BigLabel();
+            this.bigLabel3 = new ReaLTaiizor.Controls.BigLabel();
             this.bigLabel1 = new ReaLTaiizor.Controls.BigLabel();
             this.btn_DangNhap = new ReaLTaiizor.Controls.MaterialButton();
             this.check_GhiNho = new ReaLTaiizor.Controls.MaterialCheckBox();
             this.txt_MatKhau = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.txt_TaiKhoan = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.bigLabel2 = new ReaLTaiizor.Controls.BigLabel();
-            this.bigLabel3 = new ReaLTaiizor.Controls.BigLabel();
-            this.bigLabel4 = new ReaLTaiizor.Controls.BigLabel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lblBrand = new ReaLTaiizor.Controls.BigLabel();
-            this.lbl_Headline = new ReaLTaiizor.Controls.HeaderLabel();
-            this.headerLabel1 = new ReaLTaiizor.Controls.HeaderLabel();
             this.picBooks = new System.Windows.Forms.PictureBox();
+            this.headerLabel1 = new ReaLTaiizor.Controls.HeaderLabel();
+            this.lbl_Headline = new ReaLTaiizor.Controls.HeaderLabel();
+            this.lblBrand = new ReaLTaiizor.Controls.BigLabel();
             this.materialCard1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -111,6 +111,43 @@
             this.labelEdit1.Size = new System.Drawing.Size(310, 18);
             this.labelEdit1.TabIndex = 6;
             this.labelEdit1.Text = "Quản Lý Trung Tâm Học Tập Và Trắc Nghiệm";
+            // 
+            // bigLabel2
+            // 
+            this.bigLabel2.AutoSize = true;
+            this.bigLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.bigLabel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bigLabel2.Font = new System.Drawing.Font("Segoe UI", 25F);
+            this.bigLabel2.ForeColor = System.Drawing.Color.SlateBlue;
+            this.bigLabel2.Location = new System.Drawing.Point(17, 17);
+            this.bigLabel2.Name = "bigLabel2";
+            this.bigLabel2.Size = new System.Drawing.Size(440, 57);
+            this.bigLabel2.TabIndex = 5;
+            this.bigLabel2.Text = "CHÀO MỪNG TRỞ LẠI";
+            // 
+            // bigLabel4
+            // 
+            this.bigLabel4.AutoSize = true;
+            this.bigLabel4.BackColor = System.Drawing.Color.Transparent;
+            this.bigLabel4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bigLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.bigLabel4.Location = new System.Drawing.Point(137, 273);
+            this.bigLabel4.Name = "bigLabel4";
+            this.bigLabel4.Size = new System.Drawing.Size(102, 28);
+            this.bigLabel4.TabIndex = 5;
+            this.bigLabel4.Text = "Mật khẩu";
+            // 
+            // bigLabel3
+            // 
+            this.bigLabel3.AutoSize = true;
+            this.bigLabel3.BackColor = System.Drawing.Color.Transparent;
+            this.bigLabel3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bigLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.bigLabel3.Location = new System.Drawing.Point(134, 162);
+            this.bigLabel3.Name = "bigLabel3";
+            this.bigLabel3.Size = new System.Drawing.Size(105, 28);
+            this.bigLabel3.TabIndex = 5;
+            this.bigLabel3.Text = "Tài Khoản";
             // 
             // bigLabel1
             // 
@@ -227,43 +264,6 @@
             this.txt_TaiKhoan.TrailingIcon = null;
             this.txt_TaiKhoan.UseSystemPasswordChar = false;
             // 
-            // bigLabel2
-            // 
-            this.bigLabel2.AutoSize = true;
-            this.bigLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.bigLabel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bigLabel2.Font = new System.Drawing.Font("Segoe UI", 25F);
-            this.bigLabel2.ForeColor = System.Drawing.Color.SlateBlue;
-            this.bigLabel2.Location = new System.Drawing.Point(17, 17);
-            this.bigLabel2.Name = "bigLabel2";
-            this.bigLabel2.Size = new System.Drawing.Size(440, 57);
-            this.bigLabel2.TabIndex = 5;
-            this.bigLabel2.Text = "CHÀO MỪNG TRỞ LẠI";
-            // 
-            // bigLabel3
-            // 
-            this.bigLabel3.AutoSize = true;
-            this.bigLabel3.BackColor = System.Drawing.Color.Transparent;
-            this.bigLabel3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bigLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.bigLabel3.Location = new System.Drawing.Point(134, 162);
-            this.bigLabel3.Name = "bigLabel3";
-            this.bigLabel3.Size = new System.Drawing.Size(105, 28);
-            this.bigLabel3.TabIndex = 5;
-            this.bigLabel3.Text = "Tài Khoản";
-            // 
-            // bigLabel4
-            // 
-            this.bigLabel4.AutoSize = true;
-            this.bigLabel4.BackColor = System.Drawing.Color.Transparent;
-            this.bigLabel4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bigLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.bigLabel4.Location = new System.Drawing.Point(137, 273);
-            this.bigLabel4.Name = "bigLabel4";
-            this.bigLabel4.Size = new System.Drawing.Size(102, 28);
-            this.bigLabel4.TabIndex = 5;
-            this.bigLabel4.Text = "Mật khẩu";
-            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.panel1);
@@ -287,29 +287,14 @@
             this.panel1.Size = new System.Drawing.Size(506, 561);
             this.panel1.TabIndex = 1;
             // 
-            // lblBrand
+            // picBooks
             // 
-            this.lblBrand.AutoSize = true;
-            this.lblBrand.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.lblBrand.Font = new System.Drawing.Font("Segoe UI", 16.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBrand.ForeColor = System.Drawing.Color.White;
-            this.lblBrand.Location = new System.Drawing.Point(94, 43);
-            this.lblBrand.Name = "lblBrand";
-            this.lblBrand.Size = new System.Drawing.Size(277, 40);
-            this.lblBrand.TabIndex = 0;
-            this.lblBrand.Text = "LEARNING CENTRE";
-            this.lblBrand.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_Headline
-            // 
-            this.lbl_Headline.BackColor = System.Drawing.Color.Transparent;
-            this.lbl_Headline.Font = new System.Drawing.Font("Segoe UI", 27F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Headline.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.lbl_Headline.Location = new System.Drawing.Point(3, 105);
-            this.lbl_Headline.Name = "lbl_Headline";
-            this.lbl_Headline.Size = new System.Drawing.Size(482, 143);
-            this.lbl_Headline.TabIndex = 1;
-            this.lbl_Headline.Text = "Học tập tốt hơn.    Quản lý dễ dàng hơn.";
+            this.picBooks.Image = global::BLT_Quan_Ly_Hoc_Tap.Properties.Resources.Screenshot_2026_11_05_093003;
+            this.picBooks.Location = new System.Drawing.Point(3, 327);
+            this.picBooks.Name = "picBooks";
+            this.picBooks.Size = new System.Drawing.Size(500, 231);
+            this.picBooks.TabIndex = 3;
+            this.picBooks.TabStop = false;
             // 
             // headerLabel1
             // 
@@ -322,14 +307,29 @@
             this.headerLabel1.TabIndex = 2;
             this.headerLabel1.Text = "Hệ thống quản lý trung tâm, học tập và trắc nghiệm";
             // 
-            // picBooks
+            // lbl_Headline
             // 
-            this.picBooks.Image = global::BLT_Quan_Ly_Hoc_Tap.Properties.Resources.Screenshot_2026_11_05_093003;
-            this.picBooks.Location = new System.Drawing.Point(3, 327);
-            this.picBooks.Name = "picBooks";
-            this.picBooks.Size = new System.Drawing.Size(500, 231);
-            this.picBooks.TabIndex = 3;
-            this.picBooks.TabStop = false;
+            this.lbl_Headline.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_Headline.Font = new System.Drawing.Font("Segoe UI", 27F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Headline.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lbl_Headline.Location = new System.Drawing.Point(3, 105);
+            this.lbl_Headline.Name = "lbl_Headline";
+            this.lbl_Headline.Size = new System.Drawing.Size(482, 143);
+            this.lbl_Headline.TabIndex = 1;
+            this.lbl_Headline.Text = "Học tập tốt hơn.    Quản lý dễ dàng hơn.";
+            // 
+            // lblBrand
+            // 
+            this.lblBrand.AutoSize = true;
+            this.lblBrand.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.lblBrand.Font = new System.Drawing.Font("Segoe UI", 16.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBrand.ForeColor = System.Drawing.Color.White;
+            this.lblBrand.Location = new System.Drawing.Point(94, 43);
+            this.lblBrand.Name = "lblBrand";
+            this.lblBrand.Size = new System.Drawing.Size(268, 38);
+            this.lblBrand.TabIndex = 0;
+            this.lblBrand.Text = "LEARNING CENTRE";
+            this.lblBrand.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frm_DangNhap
             // 

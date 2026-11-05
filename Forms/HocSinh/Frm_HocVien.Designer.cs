@@ -28,6 +28,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabHocVien = new ReaLTaiizor.Controls.MaterialTabControl();
             this.pageHV_TrangChu = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -52,88 +53,160 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel2 = new ReaLTaiizor.Controls.MaterialLabel();
             this.lblHV_LoiChao = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageHV_LopHoc = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.materialCard1 = new ReaLTaiizor.Controls.MaterialCard();
-            this.dtHV_LopDangHoc = new System.Windows.Forms.DataGridView();
-            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pnlHV_LopDangHoc_Buttons = new System.Windows.Forms.Panel();
-            this.foreverButton6 = new ReaLTaiizor.Controls.ForeverButton();
-            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.dtHV_LopHoc = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnHV_DangKy = new System.Windows.Forms.Button();
-            this.btnHV_HuyDangKi = new System.Windows.Forms.Button();
             this.materialLabel11 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialLabel10 = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageHV_BaiThi = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.materialCard8 = new ReaLTaiizor.Controls.MaterialCard();
-            this.dgvHV_DanhSachDeThi = new System.Windows.Forms.DataGridView();
-            this.DeThi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pnlHV_BaiThi_Buttons = new System.Windows.Forms.Panel();
-            this.btnHV_BatDauLamBai = new ReaLTaiizor.Controls.ForeverButton();
-            this.btnHV_LamMoiDeThi = new ReaLTaiizor.Controls.MaterialButton();
-            this.cboHV_LocMonHoc = new ReaLTaiizor.Controls.MaterialComboBox();
             this.materialLabel13 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialLabel12 = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageHV_KetQua = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.cmbBaiThi_DaLam = new ReaLTaiizor.Controls.MaterialComboBox();
-            this.dgvHV_LichSuThi = new System.Windows.Forms.DataGridView();
-            this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnHV_XemLaiBaiThi = new ReaLTaiizor.Controls.ForeverButton();
             this.materialLabel15 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialLabel14 = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageHV_ThongTin = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.materialCard11 = new ReaLTaiizor.Controls.MaterialCard();
-            this.txtHV_Profile_HTNTNS = new System.Windows.Forms.Label();
-            this.txtHV_Profile_HienThiTen = new System.Windows.Forms.Label();
-            this.materialLabel23 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialLabel22 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialLabel21 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialCard12 = new ReaLTaiizor.Controls.MaterialCard();
-            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.txtHV_Profile_HoTen = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.btnHV_LuuProfile = new ReaLTaiizor.Controls.ForeverButton();
-            this.txtHV_Profile_NgaySinh = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.txtHV_Profile_DiaChi = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.cboHV_Profile_GioiTinh = new ReaLTaiizor.Controls.MaterialComboBox();
-            this.txtHV_Profile_SDT = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.txtHV_Profile_Email = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.materialLabel25 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialCard13 = new ReaLTaiizor.Controls.MaterialCard();
-            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.txtHV_MatKhauCu = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.btnHV_DoiMatKhau = new ReaLTaiizor.Controls.ForeverButton();
-            this.txtHV_MatKhauMoi = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.txtHV_XacNhanMatKhau = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
-            this.materialLabel20 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel24 = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageHV_DangXuat = new System.Windows.Forms.TabPage();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.materialLabel1 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel3 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.materialLabel4 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel5 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvLopDangKi = new System.Windows.Forms.DataGridView();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnHV_DangKi = new ReaLTaiizor.Controls.ForeverButton();
+            this.btnHV_HuyDK = new ReaLTaiizor.Controls.ForeverButton();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.lblHV_DangChon = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.materialLabel6 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel7 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.dgvLopThamGia = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.maGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HoTen = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.materialLabel10 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel12 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.materialLabel16 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialComboBox1 = new ReaLTaiizor.Controls.MaterialComboBox();
+            this.lblHV_TongBaiThi = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.materialLabel17 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel18 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.dgvHVDeThi = new System.Windows.Forms.DataGridView();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel12 = new System.Windows.Forms.Panel();
+            this.lblHVDT_ChonDT = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblHVDT_ThongDT = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel13 = new System.Windows.Forms.Panel();
+            this.btnHVDT_LamBai = new ReaLTaiizor.Controls.ForeverButton();
+            this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel15 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel16 = new System.Windows.Forms.Panel();
+            this.cmbKQHV_BaiThi = new ReaLTaiizor.Controls.MaterialComboBox();
+            this.materialLabel20 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel17 = new System.Windows.Forms.Panel();
+            this.lblHVKQ_TongBaiThi = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel18 = new System.Windows.Forms.Panel();
+            this.dgvHVKetQua = new System.Windows.Forms.DataGridView();
+            this.materialLabel22 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel23 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel19 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel20 = new System.Windows.Forms.Panel();
+            this.lblHVKQ_TTDT = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblHVKQ_ChonDT = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel21 = new System.Windows.Forms.Panel();
+            this.lblKQHV_Diem = new ReaLTaiizor.Controls.MaterialLabel();
+            this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel14 = new System.Windows.Forms.Panel();
+            this.materialLabel14 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel19 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.btnHVKQ_XuatFile = new ReaLTaiizor.Controls.ForeverButton();
+            this.btnHVKQ_BaoCao = new ReaLTaiizor.Controls.ForeverButton();
+            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel52 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel30 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel54 = new System.Windows.Forms.Panel();
+            this.txtTTHV_HovaTen = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
+            this.materialLabel57 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel55 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel31 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel56 = new System.Windows.Forms.Panel();
+            this.cmbTTHV_GioiTinh = new ReaLTaiizor.Controls.MaterialComboBox();
+            this.materialLabel58 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel57 = new System.Windows.Forms.Panel();
+            this.txtTTHV_SDT = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
+            this.materialLabel59 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel58 = new System.Windows.Forms.Panel();
+            this.txtTTHV_Email = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
+            this.materialLabel60 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel59 = new System.Windows.Forms.Panel();
+            this.txtTTHV_DiaChi = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
+            this.materialLabel61 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel60 = new System.Windows.Forms.Panel();
+            this.btnTTHV_LuuThayDoi = new ReaLTaiizor.Controls.ForeverButton();
+            this.materialLabel56 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel55 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel53 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel32 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel61 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel33 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel62 = new System.Windows.Forms.Panel();
+            this.txtTTHV_MatKhauHienTai = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
+            this.materialLabel64 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel63 = new System.Windows.Forms.Panel();
+            this.txtTTHV_MKMoi = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
+            this.materialLabel65 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel64 = new System.Windows.Forms.Panel();
+            this.txtTTHV_XacNhanMK = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
+            this.materialLabel66 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel65 = new System.Windows.Forms.Panel();
+            this.btnTTHV_DoiMK = new ReaLTaiizor.Controls.ForeverButton();
+            this.materialLabel63 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel62 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel50 = new System.Windows.Forms.Panel();
+            this.materialLabel48 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel47 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel51 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel29 = new System.Windows.Forms.TableLayoutPanel();
+            this.materialLabel54 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblGVTT_HovaTen = new ReaLTaiizor.Controls.MaterialLabel();
             this.tabHocVien.SuspendLayout();
             this.pageHV_TrangChu.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -145,28 +218,71 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialCard15.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pageHV_LopHoc.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.materialCard1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopDangHoc)).BeginInit();
-            this.pnlHV_LopDangHoc_Buttons.SuspendLayout();
-            this.tableLayoutPanel9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopHoc)).BeginInit();
-            this.tableLayoutPanel10.SuspendLayout();
             this.pageHV_BaiThi.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            this.materialCard8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvHV_DanhSachDeThi)).BeginInit();
-            this.pnlHV_BaiThi_Buttons.SuspendLayout();
             this.pageHV_KetQua.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvHV_LichSuThi)).BeginInit();
             this.pageHV_ThongTin.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
-            this.materialCard11.SuspendLayout();
-            this.materialCard12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLopDangKi)).BeginInit();
             this.tableLayoutPanel7.SuspendLayout();
-            this.materialCard13.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLopThamGia)).BeginInit();
+            this.tableLayoutPanel9.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.tableLayoutPanel10.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel9.SuspendLayout();
+            this.panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHVDeThi)).BeginInit();
+            this.panel11.SuspendLayout();
+            this.tableLayoutPanel11.SuspendLayout();
+            this.panel12.SuspendLayout();
+            this.panel13.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel12.SuspendLayout();
+            this.panel15.SuspendLayout();
+            this.tableLayoutPanel13.SuspendLayout();
+            this.panel16.SuspendLayout();
+            this.panel17.SuspendLayout();
+            this.panel18.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHVKetQua)).BeginInit();
+            this.panel19.SuspendLayout();
+            this.tableLayoutPanel14.SuspendLayout();
+            this.panel20.SuspendLayout();
+            this.panel21.SuspendLayout();
+            this.tableLayoutPanel15.SuspendLayout();
+            this.tableLayoutPanel16.SuspendLayout();
+            this.panel14.SuspendLayout();
+            this.tableLayoutPanel17.SuspendLayout();
+            this.tableLayoutPanel18.SuspendLayout();
+            this.panel52.SuspendLayout();
+            this.tableLayoutPanel30.SuspendLayout();
+            this.panel54.SuspendLayout();
+            this.panel55.SuspendLayout();
+            this.tableLayoutPanel31.SuspendLayout();
+            this.panel56.SuspendLayout();
+            this.panel57.SuspendLayout();
+            this.panel58.SuspendLayout();
+            this.panel59.SuspendLayout();
+            this.panel60.SuspendLayout();
+            this.panel53.SuspendLayout();
+            this.tableLayoutPanel32.SuspendLayout();
+            this.panel61.SuspendLayout();
+            this.tableLayoutPanel33.SuspendLayout();
+            this.panel62.SuspendLayout();
+            this.panel63.SuspendLayout();
+            this.panel64.SuspendLayout();
+            this.panel65.SuspendLayout();
+            this.tableLayoutPanel19.SuspendLayout();
+            this.panel50.SuspendLayout();
+            this.panel51.SuspendLayout();
+            this.tableLayoutPanel29.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabHocVien
@@ -462,7 +578,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageHV_LopHoc.AutoScroll = true;
             this.pageHV_LopHoc.Controls.Add(this.tableLayoutPanel3);
             this.pageHV_LopHoc.Controls.Add(this.materialLabel11);
-            this.pageHV_LopHoc.Controls.Add(this.materialLabel10);
             this.pageHV_LopHoc.Location = new System.Drawing.Point(4, 25);
             this.pageHV_LopHoc.Name = "pageHV_LopHoc";
             this.pageHV_LopHoc.Padding = new System.Windows.Forms.Padding(3);
@@ -470,224 +585,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageHV_LopHoc.TabIndex = 1;
             this.pageHV_LopHoc.Text = "Lớp Học Của Tôi";
             this.pageHV_LopHoc.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.materialCard1, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel9, 0, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 43);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 43.62519F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 56.37481F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1578, 1041);
-            this.tableLayoutPanel3.TabIndex = 4;
-            // 
-            // materialCard1
-            // 
-            this.materialCard1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard1.Controls.Add(this.dtHV_LopDangHoc);
-            this.materialCard1.Controls.Add(this.pnlHV_LopDangHoc_Buttons);
-            this.materialCard1.Depth = 0;
-            this.materialCard1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.materialCard1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard1.Location = new System.Drawing.Point(17, 471);
-            this.materialCard1.Margin = new System.Windows.Forms.Padding(17);
-            this.materialCard1.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialCard1.Name = "materialCard1";
-            this.materialCard1.Padding = new System.Windows.Forms.Padding(17);
-            this.materialCard1.Size = new System.Drawing.Size(1544, 553);
-            this.materialCard1.TabIndex = 5;
-            // 
-            // dtHV_LopDangHoc
-            // 
-            this.dtHV_LopDangHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dtHV_LopDangHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtHV_LopDangHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column16,
-            this.Column10,
-            this.Column17,
-            this.Column18,
-            this.Column11,
-            this.Column12,
-            this.Column21});
-            this.dtHV_LopDangHoc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dtHV_LopDangHoc.Location = new System.Drawing.Point(17, 17);
-            this.dtHV_LopDangHoc.Name = "dtHV_LopDangHoc";
-            this.dtHV_LopDangHoc.RowHeadersWidth = 51;
-            this.dtHV_LopDangHoc.RowTemplate.Height = 24;
-            this.dtHV_LopDangHoc.Size = new System.Drawing.Size(1510, 464);
-            this.dtHV_LopDangHoc.TabIndex = 6;
-            // 
-            // Column16
-            // 
-            this.Column16.HeaderText = "Lớp";
-            this.Column16.MinimumWidth = 6;
-            this.Column16.Name = "Column16";
-            // 
-            // Column10
-            // 
-            this.Column10.HeaderText = "Lịch Học";
-            this.Column10.MinimumWidth = 6;
-            this.Column10.Name = "Column10";
-            // 
-            // Column17
-            // 
-            this.Column17.HeaderText = "Khóa Học";
-            this.Column17.MinimumWidth = 6;
-            this.Column17.Name = "Column17";
-            // 
-            // Column18
-            // 
-            this.Column18.HeaderText = "Giáo Viên";
-            this.Column18.MinimumWidth = 6;
-            this.Column18.Name = "Column18";
-            // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "Ngày Bắt Đầu";
-            this.Column11.MinimumWidth = 6;
-            this.Column11.Name = "Column11";
-            // 
-            // Column12
-            // 
-            this.Column12.HeaderText = "Ngày Kết Thúc";
-            this.Column12.MinimumWidth = 6;
-            this.Column12.Name = "Column12";
-            // 
-            // Column21
-            // 
-            this.Column21.HeaderText = "Trạng Thái";
-            this.Column21.MinimumWidth = 6;
-            this.Column21.Name = "Column21";
-            // 
-            // pnlHV_LopDangHoc_Buttons
-            // 
-            this.pnlHV_LopDangHoc_Buttons.Controls.Add(this.foreverButton6);
-            this.pnlHV_LopDangHoc_Buttons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlHV_LopDangHoc_Buttons.Location = new System.Drawing.Point(17, 481);
-            this.pnlHV_LopDangHoc_Buttons.Name = "pnlHV_LopDangHoc_Buttons";
-            this.pnlHV_LopDangHoc_Buttons.Size = new System.Drawing.Size(1510, 55);
-            this.pnlHV_LopDangHoc_Buttons.TabIndex = 7;
-            // 
-            // foreverButton6
-            // 
-            this.foreverButton6.BackColor = System.Drawing.Color.Transparent;
-            this.foreverButton6.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
-            this.foreverButton6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.foreverButton6.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.foreverButton6.Location = new System.Drawing.Point(0, 7);
-            this.foreverButton6.Name = "foreverButton6";
-            this.foreverButton6.Rounded = false;
-            this.foreverButton6.Size = new System.Drawing.Size(154, 40);
-            this.foreverButton6.TabIndex = 5;
-            this.foreverButton6.Text = "Đăng Kí Lớp";
-            this.foreverButton6.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
-            // 
-            // tableLayoutPanel9
-            // 
-            this.tableLayoutPanel9.ColumnCount = 1;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Controls.Add(this.dtHV_LopHoc, 0, 0);
-            this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel10, 0, 1);
-            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 2;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.83036F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.16964F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(1572, 448);
-            this.tableLayoutPanel9.TabIndex = 6;
-            // 
-            // dtHV_LopHoc
-            // 
-            this.dtHV_LopHoc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtHV_LopHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dtHV_LopHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtHV_LopHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4,
-            this.dataGridViewTextBoxColumn5});
-            this.dtHV_LopHoc.Location = new System.Drawing.Point(3, 3);
-            this.dtHV_LopHoc.Name = "dtHV_LopHoc";
-            this.dtHV_LopHoc.RowHeadersWidth = 51;
-            this.dtHV_LopHoc.RowTemplate.Height = 24;
-            this.dtHV_LopHoc.Size = new System.Drawing.Size(1566, 383);
-            this.dtHV_LopHoc.TabIndex = 7;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Lớp";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Khóa Học";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Giáo Viên";
-            this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "Sĩ Số";
-            this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "Trạng Thái";
-            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            // 
-            // tableLayoutPanel10
-            // 
-            this.tableLayoutPanel10.ColumnCount = 2;
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.Controls.Add(this.btnHV_DangKy, 0, 0);
-            this.tableLayoutPanel10.Controls.Add(this.btnHV_HuyDangKi, 1, 0);
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 392);
-            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
-            this.tableLayoutPanel10.RowCount = 1;
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(387, 53);
-            this.tableLayoutPanel10.TabIndex = 0;
-            // 
-            // btnHV_DangKy
-            // 
-            this.btnHV_DangKy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnHV_DangKy.Location = new System.Drawing.Point(3, 3);
-            this.btnHV_DangKy.Name = "btnHV_DangKy";
-            this.btnHV_DangKy.Size = new System.Drawing.Size(187, 47);
-            this.btnHV_DangKy.TabIndex = 0;
-            this.btnHV_DangKy.Text = "Đăng Kí";
-            this.btnHV_DangKy.UseVisualStyleBackColor = true;
-            // 
-            // btnHV_HuyDangKi
-            // 
-            this.btnHV_HuyDangKi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnHV_HuyDangKi.Location = new System.Drawing.Point(196, 3);
-            this.btnHV_HuyDangKi.Name = "btnHV_HuyDangKi";
-            this.btnHV_HuyDangKi.Size = new System.Drawing.Size(188, 47);
-            this.btnHV_HuyDangKi.TabIndex = 1;
-            this.btnHV_HuyDangKi.Text = "Hủy Đăng Ký";
-            this.btnHV_HuyDangKi.UseVisualStyleBackColor = true;
-            this.btnHV_HuyDangKi.Click += new System.EventHandler(this.btnHV_HuyDangKi_Click);
             // 
             // materialLabel11
             // 
@@ -702,27 +599,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel11.TabIndex = 1;
             this.materialLabel11.Text = "Tên Tài Khoản";
             // 
-            // materialLabel10
-            // 
-            this.materialLabel10.AutoSize = true;
-            this.materialLabel10.Depth = 0;
-            this.materialLabel10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.materialLabel10.Font = new System.Drawing.Font("Roboto", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel10.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H5;
-            this.materialLabel10.Location = new System.Drawing.Point(3, 3);
-            this.materialLabel10.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel10.Name = "materialLabel10";
-            this.materialLabel10.Size = new System.Drawing.Size(221, 37);
-            this.materialLabel10.TabIndex = 0;
-            this.materialLabel10.Text = "Lớp Học Của Tôi";
-            // 
             // pageHV_BaiThi
             // 
             this.pageHV_BaiThi.AutoScroll = true;
             this.pageHV_BaiThi.Controls.Add(this.tableLayoutPanel4);
-            this.pageHV_BaiThi.Controls.Add(this.cboHV_LocMonHoc);
             this.pageHV_BaiThi.Controls.Add(this.materialLabel13);
-            this.pageHV_BaiThi.Controls.Add(this.materialLabel12);
             this.pageHV_BaiThi.Location = new System.Drawing.Point(4, 25);
             this.pageHV_BaiThi.Name = "pageHV_BaiThi";
             this.pageHV_BaiThi.Padding = new System.Windows.Forms.Padding(3);
@@ -735,169 +616,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.materialCard8, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel9, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 100);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1578, 885);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1578, 982);
             this.tableLayoutPanel4.TabIndex = 4;
-            // 
-            // materialCard8
-            // 
-            this.materialCard8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.materialCard8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard8.Controls.Add(this.dgvHV_DanhSachDeThi);
-            this.materialCard8.Controls.Add(this.pnlHV_BaiThi_Buttons);
-            this.materialCard8.Depth = 0;
-            this.materialCard8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard8.Location = new System.Drawing.Point(17, 17);
-            this.materialCard8.Margin = new System.Windows.Forms.Padding(17);
-            this.materialCard8.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialCard8.Name = "materialCard8";
-            this.materialCard8.Padding = new System.Windows.Forms.Padding(17);
-            this.materialCard8.Size = new System.Drawing.Size(1544, 851);
-            this.materialCard8.TabIndex = 2;
-            // 
-            // dgvHV_DanhSachDeThi
-            // 
-            this.dgvHV_DanhSachDeThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvHV_DanhSachDeThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.DeThi,
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4,
-            this.Column5,
-            this.Column6});
-            this.dgvHV_DanhSachDeThi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvHV_DanhSachDeThi.Location = new System.Drawing.Point(17, 17);
-            this.dgvHV_DanhSachDeThi.Name = "dgvHV_DanhSachDeThi";
-            this.dgvHV_DanhSachDeThi.RowHeadersWidth = 51;
-            this.dgvHV_DanhSachDeThi.RowTemplate.Height = 24;
-            this.dgvHV_DanhSachDeThi.Size = new System.Drawing.Size(1510, 762);
-            this.dgvHV_DanhSachDeThi.TabIndex = 3;
-            // 
-            // DeThi
-            // 
-            this.DeThi.HeaderText = "Đề Thi";
-            this.DeThi.MinimumWidth = 6;
-            this.DeThi.Name = "DeThi";
-            this.DeThi.Width = 125;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Môn";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 125;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Số Câu";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 125;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Thời Gian";
-            this.Column3.MinimumWidth = 6;
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 125;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Hạn Nộp";
-            this.Column4.MinimumWidth = 6;
-            this.Column4.Name = "Column4";
-            this.Column4.Width = 125;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Trạng Thái";
-            this.Column5.MinimumWidth = 6;
-            this.Column5.Name = "Column5";
-            this.Column5.Width = 125;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "Điểm";
-            this.Column6.MinimumWidth = 6;
-            this.Column6.Name = "Column6";
-            this.Column6.Width = 125;
-            // 
-            // pnlHV_BaiThi_Buttons
-            // 
-            this.pnlHV_BaiThi_Buttons.Controls.Add(this.btnHV_BatDauLamBai);
-            this.pnlHV_BaiThi_Buttons.Controls.Add(this.btnHV_LamMoiDeThi);
-            this.pnlHV_BaiThi_Buttons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlHV_BaiThi_Buttons.Location = new System.Drawing.Point(17, 779);
-            this.pnlHV_BaiThi_Buttons.Name = "pnlHV_BaiThi_Buttons";
-            this.pnlHV_BaiThi_Buttons.Size = new System.Drawing.Size(1510, 55);
-            this.pnlHV_BaiThi_Buttons.TabIndex = 4;
-            // 
-            // btnHV_BatDauLamBai
-            // 
-            this.btnHV_BatDauLamBai.BackColor = System.Drawing.Color.Transparent;
-            this.btnHV_BatDauLamBai.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
-            this.btnHV_BatDauLamBai.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHV_BatDauLamBai.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnHV_BatDauLamBai.Location = new System.Drawing.Point(0, 5);
-            this.btnHV_BatDauLamBai.Name = "btnHV_BatDauLamBai";
-            this.btnHV_BatDauLamBai.Rounded = false;
-            this.btnHV_BatDauLamBai.Size = new System.Drawing.Size(158, 45);
-            this.btnHV_BatDauLamBai.TabIndex = 2;
-            this.btnHV_BatDauLamBai.Text = "Làm Bài";
-            this.btnHV_BatDauLamBai.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
-            // 
-            // btnHV_LamMoiDeThi
-            // 
-            this.btnHV_LamMoiDeThi.AutoSize = false;
-            this.btnHV_LamMoiDeThi.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnHV_LamMoiDeThi.Density = ReaLTaiizor.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnHV_LamMoiDeThi.Depth = 0;
-            this.btnHV_LamMoiDeThi.HighEmphasis = true;
-            this.btnHV_LamMoiDeThi.Icon = null;
-            this.btnHV_LamMoiDeThi.IconType = ReaLTaiizor.Controls.MaterialButton.MaterialIconType.Rebase;
-            this.btnHV_LamMoiDeThi.Location = new System.Drawing.Point(175, 5);
-            this.btnHV_LamMoiDeThi.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnHV_LamMoiDeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.btnHV_LamMoiDeThi.Name = "btnHV_LamMoiDeThi";
-            this.btnHV_LamMoiDeThi.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnHV_LamMoiDeThi.Size = new System.Drawing.Size(193, 45);
-            this.btnHV_LamMoiDeThi.TabIndex = 1;
-            this.btnHV_LamMoiDeThi.Text = "Xem Lại";
-            this.btnHV_LamMoiDeThi.Type = ReaLTaiizor.Controls.MaterialButton.MaterialButtonType.Outlined;
-            this.btnHV_LamMoiDeThi.UseAccentColor = false;
-            this.btnHV_LamMoiDeThi.UseVisualStyleBackColor = true;
-            // 
-            // cboHV_LocMonHoc
-            // 
-            this.cboHV_LocMonHoc.AutoResize = false;
-            this.cboHV_LocMonHoc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cboHV_LocMonHoc.Depth = 0;
-            this.cboHV_LocMonHoc.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cboHV_LocMonHoc.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cboHV_LocMonHoc.DropDownHeight = 218;
-            this.cboHV_LocMonHoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboHV_LocMonHoc.DropDownWidth = 121;
-            this.cboHV_LocMonHoc.Font = new System.Drawing.Font("Microsoft Sans Serif", 17.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cboHV_LocMonHoc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cboHV_LocMonHoc.FormattingEnabled = true;
-            this.cboHV_LocMonHoc.Hint = "Môn Học";
-            this.cboHV_LocMonHoc.IntegralHeight = false;
-            this.cboHV_LocMonHoc.ItemHeight = 54;
-            this.cboHV_LocMonHoc.Location = new System.Drawing.Point(3, 40);
-            this.cboHV_LocMonHoc.MaxDropDownItems = 4;
-            this.cboHV_LocMonHoc.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.cboHV_LocMonHoc.Name = "cboHV_LocMonHoc";
-            this.cboHV_LocMonHoc.Size = new System.Drawing.Size(1578, 60);
-            this.cboHV_LocMonHoc.StartIndex = 0;
-            this.cboHV_LocMonHoc.TabIndex = 3;
             // 
             // materialLabel13
             // 
@@ -912,25 +638,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel13.TabIndex = 1;
             this.materialLabel13.Text = "Account";
             // 
-            // materialLabel12
-            // 
-            this.materialLabel12.AutoSize = true;
-            this.materialLabel12.Depth = 0;
-            this.materialLabel12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.materialLabel12.Font = new System.Drawing.Font("Roboto", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel12.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H5;
-            this.materialLabel12.Location = new System.Drawing.Point(3, 3);
-            this.materialLabel12.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel12.Name = "materialLabel12";
-            this.materialLabel12.Size = new System.Drawing.Size(92, 37);
-            this.materialLabel12.TabIndex = 0;
-            this.materialLabel12.Text = "Bài Thi";
-            // 
             // pageHV_KetQua
             // 
             this.pageHV_KetQua.Controls.Add(this.tableLayoutPanel5);
             this.pageHV_KetQua.Controls.Add(this.materialLabel15);
-            this.pageHV_KetQua.Controls.Add(this.materialLabel14);
             this.pageHV_KetQua.Location = new System.Drawing.Point(4, 25);
             this.pageHV_KetQua.Name = "pageHV_KetQua";
             this.pageHV_KetQua.Padding = new System.Windows.Forms.Padding(3);
@@ -938,102 +649,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageHV_KetQua.TabIndex = 3;
             this.pageHV_KetQua.Text = "Kết Quả";
             this.pageHV_KetQua.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.cmbBaiThi_DaLam, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.dgvHV_LichSuThi, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.btnHV_XemLaiBaiThi, 0, 2);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 40);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 3;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1578, 945);
-            this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // cmbBaiThi_DaLam
-            // 
-            this.cmbBaiThi_DaLam.AutoResize = false;
-            this.cmbBaiThi_DaLam.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmbBaiThi_DaLam.Depth = 0;
-            this.cmbBaiThi_DaLam.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbBaiThi_DaLam.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbBaiThi_DaLam.DropDownHeight = 218;
-            this.cmbBaiThi_DaLam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBaiThi_DaLam.DropDownWidth = 121;
-            this.cmbBaiThi_DaLam.Font = new System.Drawing.Font("Microsoft Sans Serif", 17.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cmbBaiThi_DaLam.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cmbBaiThi_DaLam.FormattingEnabled = true;
-            this.cmbBaiThi_DaLam.Hint = "Xem Kết Quả bài thi";
-            this.cmbBaiThi_DaLam.IntegralHeight = false;
-            this.cmbBaiThi_DaLam.ItemHeight = 54;
-            this.cmbBaiThi_DaLam.Location = new System.Drawing.Point(3, 3);
-            this.cmbBaiThi_DaLam.MaxDropDownItems = 4;
-            this.cmbBaiThi_DaLam.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.cmbBaiThi_DaLam.Name = "cmbBaiThi_DaLam";
-            this.cmbBaiThi_DaLam.Size = new System.Drawing.Size(1572, 60);
-            this.cmbBaiThi_DaLam.StartIndex = 0;
-            this.cmbBaiThi_DaLam.TabIndex = 0;
-            // 
-            // dgvHV_LichSuThi
-            // 
-            this.dgvHV_LichSuThi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvHV_LichSuThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvHV_LichSuThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column22,
-            this.Column23,
-            this.Column24,
-            this.Column25});
-            this.dgvHV_LichSuThi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvHV_LichSuThi.Location = new System.Drawing.Point(3, 97);
-            this.dgvHV_LichSuThi.Name = "dgvHV_LichSuThi";
-            this.dgvHV_LichSuThi.RowHeadersWidth = 51;
-            this.dgvHV_LichSuThi.RowTemplate.Height = 24;
-            this.dgvHV_LichSuThi.Size = new System.Drawing.Size(1572, 750);
-            this.dgvHV_LichSuThi.TabIndex = 1;
-            // 
-            // Column22
-            // 
-            this.Column22.HeaderText = "Đề Thi";
-            this.Column22.MinimumWidth = 6;
-            this.Column22.Name = "Column22";
-            // 
-            // Column23
-            // 
-            this.Column23.HeaderText = "Môn Học";
-            this.Column23.MinimumWidth = 6;
-            this.Column23.Name = "Column23";
-            // 
-            // Column24
-            // 
-            this.Column24.HeaderText = "Nộp Lúc";
-            this.Column24.MinimumWidth = 6;
-            this.Column24.Name = "Column24";
-            // 
-            // Column25
-            // 
-            this.Column25.HeaderText = "Điểm";
-            this.Column25.MinimumWidth = 6;
-            this.Column25.Name = "Column25";
-            // 
-            // btnHV_XemLaiBaiThi
-            // 
-            this.btnHV_XemLaiBaiThi.BackColor = System.Drawing.Color.Transparent;
-            this.btnHV_XemLaiBaiThi.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
-            this.btnHV_XemLaiBaiThi.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHV_XemLaiBaiThi.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnHV_XemLaiBaiThi.Location = new System.Drawing.Point(3, 853);
-            this.btnHV_XemLaiBaiThi.Name = "btnHV_XemLaiBaiThi";
-            this.btnHV_XemLaiBaiThi.Rounded = false;
-            this.btnHV_XemLaiBaiThi.Size = new System.Drawing.Size(234, 62);
-            this.btnHV_XemLaiBaiThi.TabIndex = 2;
-            this.btnHV_XemLaiBaiThi.Text = "Xem Câu Trả Lời Chi Tiết";
-            this.btnHV_XemLaiBaiThi.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             // 
             // materialLabel15
             // 
@@ -1048,24 +663,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel15.TabIndex = 0;
             this.materialLabel15.Text = "materialLabel14";
             // 
-            // materialLabel14
-            // 
-            this.materialLabel14.AutoSize = true;
-            this.materialLabel14.Depth = 0;
-            this.materialLabel14.Dock = System.Windows.Forms.DockStyle.Top;
-            this.materialLabel14.Font = new System.Drawing.Font("Roboto", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel14.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H5;
-            this.materialLabel14.Location = new System.Drawing.Point(3, 3);
-            this.materialLabel14.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel14.Name = "materialLabel14";
-            this.materialLabel14.Size = new System.Drawing.Size(103, 37);
-            this.materialLabel14.TabIndex = 0;
-            this.materialLabel14.Text = "Kết quả";
-            // 
             // pageHV_ThongTin
             // 
-            this.pageHV_ThongTin.Controls.Add(this.tableLayoutPanel6);
-            this.pageHV_ThongTin.Controls.Add(this.materialLabel20);
+            this.pageHV_ThongTin.Controls.Add(this.tableLayoutPanel17);
             this.pageHV_ThongTin.Controls.Add(this.materialLabel24);
             this.pageHV_ThongTin.Location = new System.Drawing.Point(4, 25);
             this.pageHV_ThongTin.Name = "pageHV_ThongTin";
@@ -1074,498 +674,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageHV_ThongTin.TabIndex = 4;
             this.pageHV_ThongTin.Text = "Thông Tin Cá Nhân";
             this.pageHV_ThongTin.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.47059F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 73.52941F));
-            this.tableLayoutPanel6.Controls.Add(this.materialCard11, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.materialCard12, 1, 0);
-            this.tableLayoutPanel6.Controls.Add(this.materialCard13, 1, 1);
-            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(1578, 982);
-            this.tableLayoutPanel6.TabIndex = 5;
-            // 
-            // materialCard11
-            // 
-            this.materialCard11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard11.Controls.Add(this.txtHV_Profile_HTNTNS);
-            this.materialCard11.Controls.Add(this.txtHV_Profile_HienThiTen);
-            this.materialCard11.Controls.Add(this.materialLabel23);
-            this.materialCard11.Controls.Add(this.materialLabel22);
-            this.materialCard11.Controls.Add(this.materialLabel21);
-            this.materialCard11.Depth = 0;
-            this.materialCard11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard11.Location = new System.Drawing.Point(17, 17);
-            this.materialCard11.Margin = new System.Windows.Forms.Padding(17);
-            this.materialCard11.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialCard11.Name = "materialCard11";
-            this.materialCard11.Padding = new System.Windows.Forms.Padding(17);
-            this.materialCard11.Size = new System.Drawing.Size(383, 440);
-            this.materialCard11.TabIndex = 0;
-            // 
-            // txtHV_Profile_HTNTNS
-            // 
-            this.txtHV_Profile_HTNTNS.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtHV_Profile_HTNTNS.Location = new System.Drawing.Point(28, 344);
-            this.txtHV_Profile_HTNTNS.Name = "txtHV_Profile_HTNTNS";
-            this.txtHV_Profile_HTNTNS.Size = new System.Drawing.Size(312, 30);
-            this.txtHV_Profile_HTNTNS.TabIndex = 1;
-            // 
-            // txtHV_Profile_HienThiTen
-            // 
-            this.txtHV_Profile_HienThiTen.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtHV_Profile_HienThiTen.Location = new System.Drawing.Point(28, 288);
-            this.txtHV_Profile_HienThiTen.Name = "txtHV_Profile_HienThiTen";
-            this.txtHV_Profile_HienThiTen.Size = new System.Drawing.Size(312, 30);
-            this.txtHV_Profile_HienThiTen.TabIndex = 1;
-            // 
-            // materialLabel23
-            // 
-            this.materialLabel23.AutoSize = true;
-            this.materialLabel23.Depth = 0;
-            this.materialLabel23.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel23.Location = new System.Drawing.Point(69, 193);
-            this.materialLabel23.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel23.Name = "materialLabel23";
-            this.materialLabel23.Size = new System.Drawing.Size(1, 0);
-            this.materialLabel23.TabIndex = 0;
-            // 
-            // materialLabel22
-            // 
-            this.materialLabel22.AutoSize = true;
-            this.materialLabel22.Depth = 0;
-            this.materialLabel22.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel22.Location = new System.Drawing.Point(69, 164);
-            this.materialLabel22.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel22.Name = "materialLabel22";
-            this.materialLabel22.Size = new System.Drawing.Size(1, 0);
-            this.materialLabel22.TabIndex = 0;
-            // 
-            // materialLabel21
-            // 
-            this.materialLabel21.AutoSize = true;
-            this.materialLabel21.Depth = 0;
-            this.materialLabel21.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel21.Location = new System.Drawing.Point(69, 128);
-            this.materialLabel21.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel21.Name = "materialLabel21";
-            this.materialLabel21.Size = new System.Drawing.Size(1, 0);
-            this.materialLabel21.TabIndex = 0;
-            // 
-            // materialCard12
-            // 
-            this.materialCard12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard12.Controls.Add(this.tableLayoutPanel7);
-            this.materialCard12.Controls.Add(this.materialLabel25);
-            this.materialCard12.Depth = 0;
-            this.materialCard12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.materialCard12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard12.Location = new System.Drawing.Point(434, 17);
-            this.materialCard12.Margin = new System.Windows.Forms.Padding(17);
-            this.materialCard12.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialCard12.Name = "materialCard12";
-            this.materialCard12.Padding = new System.Windows.Forms.Padding(17);
-            this.materialCard12.Size = new System.Drawing.Size(1127, 457);
-            this.materialCard12.TabIndex = 2;
-            // 
-            // tableLayoutPanel7
-            // 
-            this.tableLayoutPanel7.ColumnCount = 2;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Controls.Add(this.txtHV_Profile_HoTen, 0, 0);
-            this.tableLayoutPanel7.Controls.Add(this.btnHV_LuuProfile, 0, 3);
-            this.tableLayoutPanel7.Controls.Add(this.txtHV_Profile_NgaySinh, 1, 0);
-            this.tableLayoutPanel7.Controls.Add(this.txtHV_Profile_DiaChi, 1, 2);
-            this.tableLayoutPanel7.Controls.Add(this.cboHV_Profile_GioiTinh, 0, 1);
-            this.tableLayoutPanel7.Controls.Add(this.txtHV_Profile_SDT, 0, 2);
-            this.tableLayoutPanel7.Controls.Add(this.txtHV_Profile_Email, 1, 1);
-            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(17, 17);
-            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 4;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(1093, 423);
-            this.tableLayoutPanel7.TabIndex = 5;
-            // 
-            // txtHV_Profile_HoTen
-            // 
-            this.txtHV_Profile_HoTen.AnimateReadOnly = false;
-            this.txtHV_Profile_HoTen.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtHV_Profile_HoTen.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtHV_Profile_HoTen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtHV_Profile_HoTen.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtHV_Profile_HoTen.Depth = 0;
-            this.txtHV_Profile_HoTen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHV_Profile_HoTen.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtHV_Profile_HoTen.HideSelection = true;
-            this.txtHV_Profile_HoTen.Hint = "Họ Tên";
-            this.txtHV_Profile_HoTen.LeadingIcon = null;
-            this.txtHV_Profile_HoTen.Location = new System.Drawing.Point(3, 3);
-            this.txtHV_Profile_HoTen.MaxLength = 32767;
-            this.txtHV_Profile_HoTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.txtHV_Profile_HoTen.Name = "txtHV_Profile_HoTen";
-            this.txtHV_Profile_HoTen.PasswordChar = '\0';
-            this.txtHV_Profile_HoTen.PrefixSuffixText = null;
-            this.txtHV_Profile_HoTen.ReadOnly = false;
-            this.txtHV_Profile_HoTen.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtHV_Profile_HoTen.SelectedText = "";
-            this.txtHV_Profile_HoTen.SelectionLength = 0;
-            this.txtHV_Profile_HoTen.SelectionStart = 0;
-            this.txtHV_Profile_HoTen.ShortcutsEnabled = true;
-            this.txtHV_Profile_HoTen.Size = new System.Drawing.Size(540, 60);
-            this.txtHV_Profile_HoTen.TabIndex = 1;
-            this.txtHV_Profile_HoTen.TabStop = false;
-            this.txtHV_Profile_HoTen.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtHV_Profile_HoTen.TrailingIcon = null;
-            this.txtHV_Profile_HoTen.UseSystemPasswordChar = false;
-            // 
-            // btnHV_LuuProfile
-            // 
-            this.btnHV_LuuProfile.BackColor = System.Drawing.Color.Transparent;
-            this.btnHV_LuuProfile.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
-            this.btnHV_LuuProfile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHV_LuuProfile.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnHV_LuuProfile.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnHV_LuuProfile.Location = new System.Drawing.Point(3, 375);
-            this.btnHV_LuuProfile.Name = "btnHV_LuuProfile";
-            this.btnHV_LuuProfile.Rounded = false;
-            this.btnHV_LuuProfile.Size = new System.Drawing.Size(540, 45);
-            this.btnHV_LuuProfile.TabIndex = 4;
-            this.btnHV_LuuProfile.Text = "Lưu Thay Đổi";
-            this.btnHV_LuuProfile.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
-            this.btnHV_LuuProfile.Click += new System.EventHandler(this.BtnHV_LuuProfile_Click);
-            // 
-            // txtHV_Profile_NgaySinh
-            // 
-            this.txtHV_Profile_NgaySinh.AnimateReadOnly = false;
-            this.txtHV_Profile_NgaySinh.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtHV_Profile_NgaySinh.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtHV_Profile_NgaySinh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtHV_Profile_NgaySinh.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtHV_Profile_NgaySinh.Depth = 0;
-            this.txtHV_Profile_NgaySinh.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHV_Profile_NgaySinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtHV_Profile_NgaySinh.HideSelection = true;
-            this.txtHV_Profile_NgaySinh.Hint = "Ngày sinh (dd/MM/yyyy)";
-            this.txtHV_Profile_NgaySinh.LeadingIcon = null;
-            this.txtHV_Profile_NgaySinh.Location = new System.Drawing.Point(549, 3);
-            this.txtHV_Profile_NgaySinh.MaxLength = 32767;
-            this.txtHV_Profile_NgaySinh.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.txtHV_Profile_NgaySinh.Name = "txtHV_Profile_NgaySinh";
-            this.txtHV_Profile_NgaySinh.PasswordChar = '\0';
-            this.txtHV_Profile_NgaySinh.PrefixSuffixText = null;
-            this.txtHV_Profile_NgaySinh.ReadOnly = false;
-            this.txtHV_Profile_NgaySinh.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtHV_Profile_NgaySinh.SelectedText = "";
-            this.txtHV_Profile_NgaySinh.SelectionLength = 0;
-            this.txtHV_Profile_NgaySinh.SelectionStart = 0;
-            this.txtHV_Profile_NgaySinh.ShortcutsEnabled = true;
-            this.txtHV_Profile_NgaySinh.Size = new System.Drawing.Size(541, 60);
-            this.txtHV_Profile_NgaySinh.TabIndex = 1;
-            this.txtHV_Profile_NgaySinh.TabStop = false;
-            this.txtHV_Profile_NgaySinh.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtHV_Profile_NgaySinh.TrailingIcon = null;
-            this.txtHV_Profile_NgaySinh.UseSystemPasswordChar = false;
-            // 
-            // txtHV_Profile_DiaChi
-            // 
-            this.txtHV_Profile_DiaChi.AnimateReadOnly = false;
-            this.txtHV_Profile_DiaChi.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtHV_Profile_DiaChi.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtHV_Profile_DiaChi.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtHV_Profile_DiaChi.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtHV_Profile_DiaChi.Depth = 0;
-            this.txtHV_Profile_DiaChi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHV_Profile_DiaChi.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtHV_Profile_DiaChi.HideSelection = true;
-            this.txtHV_Profile_DiaChi.Hint = "Địa Chỉ";
-            this.txtHV_Profile_DiaChi.LeadingIcon = null;
-            this.txtHV_Profile_DiaChi.Location = new System.Drawing.Point(549, 213);
-            this.txtHV_Profile_DiaChi.MaxLength = 32767;
-            this.txtHV_Profile_DiaChi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.txtHV_Profile_DiaChi.Name = "txtHV_Profile_DiaChi";
-            this.txtHV_Profile_DiaChi.PasswordChar = '\0';
-            this.txtHV_Profile_DiaChi.PrefixSuffixText = null;
-            this.txtHV_Profile_DiaChi.ReadOnly = false;
-            this.txtHV_Profile_DiaChi.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtHV_Profile_DiaChi.SelectedText = "";
-            this.txtHV_Profile_DiaChi.SelectionLength = 0;
-            this.txtHV_Profile_DiaChi.SelectionStart = 0;
-            this.txtHV_Profile_DiaChi.ShortcutsEnabled = true;
-            this.txtHV_Profile_DiaChi.Size = new System.Drawing.Size(541, 60);
-            this.txtHV_Profile_DiaChi.TabIndex = 1;
-            this.txtHV_Profile_DiaChi.TabStop = false;
-            this.txtHV_Profile_DiaChi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtHV_Profile_DiaChi.TrailingIcon = null;
-            this.txtHV_Profile_DiaChi.UseSystemPasswordChar = false;
-            // 
-            // cboHV_Profile_GioiTinh
-            // 
-            this.cboHV_Profile_GioiTinh.AutoResize = false;
-            this.cboHV_Profile_GioiTinh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cboHV_Profile_GioiTinh.Depth = 0;
-            this.cboHV_Profile_GioiTinh.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cboHV_Profile_GioiTinh.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cboHV_Profile_GioiTinh.DropDownHeight = 218;
-            this.cboHV_Profile_GioiTinh.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboHV_Profile_GioiTinh.DropDownWidth = 121;
-            this.cboHV_Profile_GioiTinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 17.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cboHV_Profile_GioiTinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cboHV_Profile_GioiTinh.FormattingEnabled = true;
-            this.cboHV_Profile_GioiTinh.Hint = "Giới Tính";
-            this.cboHV_Profile_GioiTinh.IntegralHeight = false;
-            this.cboHV_Profile_GioiTinh.ItemHeight = 54;
-            this.cboHV_Profile_GioiTinh.Location = new System.Drawing.Point(3, 108);
-            this.cboHV_Profile_GioiTinh.MaxDropDownItems = 4;
-            this.cboHV_Profile_GioiTinh.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.cboHV_Profile_GioiTinh.Name = "cboHV_Profile_GioiTinh";
-            this.cboHV_Profile_GioiTinh.Size = new System.Drawing.Size(540, 60);
-            this.cboHV_Profile_GioiTinh.StartIndex = 0;
-            this.cboHV_Profile_GioiTinh.TabIndex = 2;
-            // 
-            // txtHV_Profile_SDT
-            // 
-            this.txtHV_Profile_SDT.AnimateReadOnly = false;
-            this.txtHV_Profile_SDT.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtHV_Profile_SDT.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtHV_Profile_SDT.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtHV_Profile_SDT.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtHV_Profile_SDT.Depth = 0;
-            this.txtHV_Profile_SDT.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHV_Profile_SDT.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtHV_Profile_SDT.HideSelection = true;
-            this.txtHV_Profile_SDT.Hint = "Điện Thoại";
-            this.txtHV_Profile_SDT.LeadingIcon = null;
-            this.txtHV_Profile_SDT.Location = new System.Drawing.Point(3, 213);
-            this.txtHV_Profile_SDT.MaxLength = 32767;
-            this.txtHV_Profile_SDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.txtHV_Profile_SDT.Name = "txtHV_Profile_SDT";
-            this.txtHV_Profile_SDT.PasswordChar = '\0';
-            this.txtHV_Profile_SDT.PrefixSuffixText = null;
-            this.txtHV_Profile_SDT.ReadOnly = false;
-            this.txtHV_Profile_SDT.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtHV_Profile_SDT.SelectedText = "";
-            this.txtHV_Profile_SDT.SelectionLength = 0;
-            this.txtHV_Profile_SDT.SelectionStart = 0;
-            this.txtHV_Profile_SDT.ShortcutsEnabled = true;
-            this.txtHV_Profile_SDT.Size = new System.Drawing.Size(540, 60);
-            this.txtHV_Profile_SDT.TabIndex = 1;
-            this.txtHV_Profile_SDT.TabStop = false;
-            this.txtHV_Profile_SDT.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtHV_Profile_SDT.TrailingIcon = null;
-            this.txtHV_Profile_SDT.UseSystemPasswordChar = false;
-            // 
-            // txtHV_Profile_Email
-            // 
-            this.txtHV_Profile_Email.AnimateReadOnly = false;
-            this.txtHV_Profile_Email.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtHV_Profile_Email.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtHV_Profile_Email.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtHV_Profile_Email.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtHV_Profile_Email.Depth = 0;
-            this.txtHV_Profile_Email.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHV_Profile_Email.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtHV_Profile_Email.HideSelection = true;
-            this.txtHV_Profile_Email.Hint = "Email";
-            this.txtHV_Profile_Email.LeadingIcon = null;
-            this.txtHV_Profile_Email.Location = new System.Drawing.Point(549, 108);
-            this.txtHV_Profile_Email.MaxLength = 32767;
-            this.txtHV_Profile_Email.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.txtHV_Profile_Email.Name = "txtHV_Profile_Email";
-            this.txtHV_Profile_Email.PasswordChar = '\0';
-            this.txtHV_Profile_Email.PrefixSuffixText = null;
-            this.txtHV_Profile_Email.ReadOnly = false;
-            this.txtHV_Profile_Email.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtHV_Profile_Email.SelectedText = "";
-            this.txtHV_Profile_Email.SelectionLength = 0;
-            this.txtHV_Profile_Email.SelectionStart = 0;
-            this.txtHV_Profile_Email.ShortcutsEnabled = true;
-            this.txtHV_Profile_Email.Size = new System.Drawing.Size(541, 60);
-            this.txtHV_Profile_Email.TabIndex = 1;
-            this.txtHV_Profile_Email.TabStop = false;
-            this.txtHV_Profile_Email.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtHV_Profile_Email.TrailingIcon = null;
-            this.txtHV_Profile_Email.UseSystemPasswordChar = false;
-            // 
-            // materialLabel25
-            // 
-            this.materialLabel25.AutoSize = true;
-            this.materialLabel25.Depth = 0;
-            this.materialLabel25.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel25.Location = new System.Drawing.Point(20, 17);
-            this.materialLabel25.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel25.Name = "materialLabel25";
-            this.materialLabel25.Size = new System.Drawing.Size(134, 24);
-            this.materialLabel25.TabIndex = 0;
-            this.materialLabel25.Text = "Cập nhật hồ sơ";
-            // 
-            // materialCard13
-            // 
-            this.materialCard13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard13.Controls.Add(this.tableLayoutPanel8);
-            this.materialCard13.Depth = 0;
-            this.materialCard13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard13.Location = new System.Drawing.Point(434, 508);
-            this.materialCard13.Margin = new System.Windows.Forms.Padding(17);
-            this.materialCard13.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialCard13.Name = "materialCard13";
-            this.materialCard13.Padding = new System.Windows.Forms.Padding(17);
-            this.materialCard13.Size = new System.Drawing.Size(806, 234);
-            this.materialCard13.TabIndex = 3;
-            // 
-            // tableLayoutPanel8
-            // 
-            this.tableLayoutPanel8.ColumnCount = 2;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Controls.Add(this.txtHV_MatKhauCu, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.btnHV_DoiMatKhau, 0, 1);
-            this.tableLayoutPanel8.Controls.Add(this.txtHV_MatKhauMoi, 1, 0);
-            this.tableLayoutPanel8.Controls.Add(this.txtHV_XacNhanMatKhau, 1, 1);
-            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(17, 17);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 2;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(772, 200);
-            this.tableLayoutPanel8.TabIndex = 6;
-            // 
-            // txtHV_MatKhauCu
-            // 
-            this.txtHV_MatKhauCu.AnimateReadOnly = false;
-            this.txtHV_MatKhauCu.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtHV_MatKhauCu.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtHV_MatKhauCu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtHV_MatKhauCu.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtHV_MatKhauCu.Depth = 0;
-            this.txtHV_MatKhauCu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHV_MatKhauCu.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtHV_MatKhauCu.HideSelection = true;
-            this.txtHV_MatKhauCu.Hint = "Mật Khẩu Hiện Tại";
-            this.txtHV_MatKhauCu.LeadingIcon = null;
-            this.txtHV_MatKhauCu.Location = new System.Drawing.Point(3, 3);
-            this.txtHV_MatKhauCu.MaxLength = 32767;
-            this.txtHV_MatKhauCu.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.txtHV_MatKhauCu.Name = "txtHV_MatKhauCu";
-            this.txtHV_MatKhauCu.PasswordChar = '●';
-            this.txtHV_MatKhauCu.PrefixSuffixText = null;
-            this.txtHV_MatKhauCu.ReadOnly = false;
-            this.txtHV_MatKhauCu.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtHV_MatKhauCu.SelectedText = "";
-            this.txtHV_MatKhauCu.SelectionLength = 0;
-            this.txtHV_MatKhauCu.SelectionStart = 0;
-            this.txtHV_MatKhauCu.ShortcutsEnabled = true;
-            this.txtHV_MatKhauCu.Size = new System.Drawing.Size(380, 60);
-            this.txtHV_MatKhauCu.TabIndex = 1;
-            this.txtHV_MatKhauCu.TabStop = false;
-            this.txtHV_MatKhauCu.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtHV_MatKhauCu.TrailingIcon = null;
-            this.txtHV_MatKhauCu.UseSystemPasswordChar = true;
-            // 
-            // btnHV_DoiMatKhau
-            // 
-            this.btnHV_DoiMatKhau.BackColor = System.Drawing.Color.Transparent;
-            this.btnHV_DoiMatKhau.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
-            this.btnHV_DoiMatKhau.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHV_DoiMatKhau.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnHV_DoiMatKhau.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnHV_DoiMatKhau.Location = new System.Drawing.Point(3, 152);
-            this.btnHV_DoiMatKhau.Name = "btnHV_DoiMatKhau";
-            this.btnHV_DoiMatKhau.Rounded = false;
-            this.btnHV_DoiMatKhau.Size = new System.Drawing.Size(380, 45);
-            this.btnHV_DoiMatKhau.TabIndex = 5;
-            this.btnHV_DoiMatKhau.Text = "Đổi Mật Khẩu";
-            this.btnHV_DoiMatKhau.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
-            this.btnHV_DoiMatKhau.Click += new System.EventHandler(this.BtnHV_DoiMatKhau_Click);
-            // 
-            // txtHV_MatKhauMoi
-            // 
-            this.txtHV_MatKhauMoi.AnimateReadOnly = false;
-            this.txtHV_MatKhauMoi.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtHV_MatKhauMoi.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtHV_MatKhauMoi.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtHV_MatKhauMoi.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtHV_MatKhauMoi.Depth = 0;
-            this.txtHV_MatKhauMoi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHV_MatKhauMoi.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtHV_MatKhauMoi.HideSelection = true;
-            this.txtHV_MatKhauMoi.Hint = "Mật Khẩu Mới";
-            this.txtHV_MatKhauMoi.LeadingIcon = null;
-            this.txtHV_MatKhauMoi.Location = new System.Drawing.Point(389, 3);
-            this.txtHV_MatKhauMoi.MaxLength = 32767;
-            this.txtHV_MatKhauMoi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.txtHV_MatKhauMoi.Name = "txtHV_MatKhauMoi";
-            this.txtHV_MatKhauMoi.PasswordChar = '●';
-            this.txtHV_MatKhauMoi.PrefixSuffixText = null;
-            this.txtHV_MatKhauMoi.ReadOnly = false;
-            this.txtHV_MatKhauMoi.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtHV_MatKhauMoi.SelectedText = "";
-            this.txtHV_MatKhauMoi.SelectionLength = 0;
-            this.txtHV_MatKhauMoi.SelectionStart = 0;
-            this.txtHV_MatKhauMoi.ShortcutsEnabled = true;
-            this.txtHV_MatKhauMoi.Size = new System.Drawing.Size(380, 60);
-            this.txtHV_MatKhauMoi.TabIndex = 1;
-            this.txtHV_MatKhauMoi.TabStop = false;
-            this.txtHV_MatKhauMoi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtHV_MatKhauMoi.TrailingIcon = null;
-            this.txtHV_MatKhauMoi.UseSystemPasswordChar = true;
-            // 
-            // txtHV_XacNhanMatKhau
-            // 
-            this.txtHV_XacNhanMatKhau.AnimateReadOnly = false;
-            this.txtHV_XacNhanMatKhau.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtHV_XacNhanMatKhau.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtHV_XacNhanMatKhau.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtHV_XacNhanMatKhau.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtHV_XacNhanMatKhau.Depth = 0;
-            this.txtHV_XacNhanMatKhau.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHV_XacNhanMatKhau.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtHV_XacNhanMatKhau.HideSelection = true;
-            this.txtHV_XacNhanMatKhau.Hint = "Xác Nhận Mật Khẩu Mới";
-            this.txtHV_XacNhanMatKhau.LeadingIcon = null;
-            this.txtHV_XacNhanMatKhau.Location = new System.Drawing.Point(389, 103);
-            this.txtHV_XacNhanMatKhau.MaxLength = 32767;
-            this.txtHV_XacNhanMatKhau.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.txtHV_XacNhanMatKhau.Name = "txtHV_XacNhanMatKhau";
-            this.txtHV_XacNhanMatKhau.PasswordChar = '●';
-            this.txtHV_XacNhanMatKhau.PrefixSuffixText = null;
-            this.txtHV_XacNhanMatKhau.ReadOnly = false;
-            this.txtHV_XacNhanMatKhau.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtHV_XacNhanMatKhau.SelectedText = "";
-            this.txtHV_XacNhanMatKhau.SelectionLength = 0;
-            this.txtHV_XacNhanMatKhau.SelectionStart = 0;
-            this.txtHV_XacNhanMatKhau.ShortcutsEnabled = true;
-            this.txtHV_XacNhanMatKhau.Size = new System.Drawing.Size(380, 60);
-            this.txtHV_XacNhanMatKhau.TabIndex = 1;
-            this.txtHV_XacNhanMatKhau.TabStop = false;
-            this.txtHV_XacNhanMatKhau.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtHV_XacNhanMatKhau.TrailingIcon = null;
-            this.txtHV_XacNhanMatKhau.UseSystemPasswordChar = true;
-            // 
-            // materialLabel20
-            // 
-            this.materialLabel20.AutoSize = true;
-            this.materialLabel20.Depth = 0;
-            this.materialLabel20.Font = new System.Drawing.Font("Roboto", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel20.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H5;
-            this.materialLabel20.Location = new System.Drawing.Point(6, 3);
-            this.materialLabel20.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel20.Name = "materialLabel20";
-            this.materialLabel20.Size = new System.Drawing.Size(241, 37);
-            this.materialLabel20.TabIndex = 4;
-            this.materialLabel20.Text = "Thông tin cá nhân";
             // 
             // materialLabel24
             // 
@@ -1610,6 +718,1921 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column9.Name = "Column9";
             this.Column9.Width = 125;
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.panel2, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.panel3, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.panel5, 0, 2);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.331975F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 43.78819F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 48.778F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1578, 982);
+            this.tableLayoutPanel3.TabIndex = 2;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.materialLabel3);
+            this.panel2.Controls.Add(this.materialLabel1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(3, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1572, 66);
+            this.panel2.TabIndex = 0;
+            // 
+            // materialLabel1
+            // 
+            this.materialLabel1.AutoSize = true;
+            this.materialLabel1.Depth = 0;
+            this.materialLabel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel1.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel1.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel1.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel1.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel1.Name = "materialLabel1";
+            this.materialLabel1.Size = new System.Drawing.Size(171, 30);
+            this.materialLabel1.TabIndex = 0;
+            this.materialLabel1.Text = "Lớp học của tôi";
+            // 
+            // materialLabel3
+            // 
+            this.materialLabel3.AutoSize = true;
+            this.materialLabel3.Depth = 0;
+            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel3.Location = new System.Drawing.Point(3, 30);
+            this.materialLabel3.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel3.Name = "materialLabel3";
+            this.materialLabel3.Size = new System.Drawing.Size(358, 24);
+            this.materialLabel3.TabIndex = 1;
+            this.materialLabel3.Text = "Đăng ký lớp và theo dõi các lớp tham gia";
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.tableLayoutPanel6);
+            this.panel3.Controls.Add(this.materialLabel5);
+            this.panel3.Controls.Add(this.materialLabel4);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(3, 75);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1572, 424);
+            this.panel3.TabIndex = 1;
+            // 
+            // materialLabel4
+            // 
+            this.materialLabel4.AutoSize = true;
+            this.materialLabel4.Depth = 0;
+            this.materialLabel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel4.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel4.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel4.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel4.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel4.Name = "materialLabel4";
+            this.materialLabel4.Size = new System.Drawing.Size(211, 30);
+            this.materialLabel4.TabIndex = 0;
+            this.materialLabel4.Text = "Lớp có thể đăng ký";
+            // 
+            // materialLabel5
+            // 
+            this.materialLabel5.AutoSize = true;
+            this.materialLabel5.Depth = 0;
+            this.materialLabel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel5.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel5.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel5.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel5.Name = "materialLabel5";
+            this.materialLabel5.Size = new System.Drawing.Size(293, 24);
+            this.materialLabel5.TabIndex = 1;
+            this.materialLabel5.Text = "Chọn Lớp để gửi yêu cầu đăng ký";
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 1;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Controls.Add(this.dgvLopDangKi, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel7, 0, 1);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 54);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 2;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.45946F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.54054F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1572, 370);
+            this.tableLayoutPanel6.TabIndex = 2;
+            // 
+            // dgvLopDangKi
+            // 
+            this.dgvLopDangKi.AllowUserToAddRows = false;
+            this.dgvLopDangKi.AllowUserToDeleteRows = false;
+            this.dgvLopDangKi.AllowUserToResizeColumns = false;
+            this.dgvLopDangKi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvLopDangKi.BackgroundColor = System.Drawing.Color.White;
+            this.dgvLopDangKi.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvLopDangKi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvLopDangKi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvLopDangKi.ColumnHeadersHeight = 44;
+            this.dgvLopDangKi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvLopDangKi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.maGV,
+            this.Column10,
+            this.HoTen,
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3});
+            this.dgvLopDangKi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLopDangKi.EnableHeadersVisualStyles = false;
+            this.dgvLopDangKi.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
+            this.dgvLopDangKi.Location = new System.Drawing.Point(3, 3);
+            this.dgvLopDangKi.MultiSelect = false;
+            this.dgvLopDangKi.Name = "dgvLopDangKi";
+            this.dgvLopDangKi.ReadOnly = true;
+            this.dgvLopDangKi.RowHeadersVisible = false;
+            this.dgvLopDangKi.RowHeadersWidth = 51;
+            this.dgvLopDangKi.RowTemplate.Height = 24;
+            this.dgvLopDangKi.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvLopDangKi.Size = new System.Drawing.Size(1566, 288);
+            this.dgvLopDangKi.TabIndex = 6;
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67.24138F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32.75862F));
+            this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel8, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.panel4, 0, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 297);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1566, 70);
+            this.tableLayoutPanel7.TabIndex = 7;
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.ColumnCount = 2;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.Controls.Add(this.btnHV_DangKi, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.btnHV_HuyDK, 1, 0);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(1056, 3);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 1;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(507, 64);
+            this.tableLayoutPanel8.TabIndex = 0;
+            // 
+            // btnHV_DangKi
+            // 
+            this.btnHV_DangKi.BackColor = System.Drawing.Color.Transparent;
+            this.btnHV_DangKi.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
+            this.btnHV_DangKi.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHV_DangKi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHV_DangKi.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnHV_DangKi.Location = new System.Drawing.Point(3, 3);
+            this.btnHV_DangKi.Name = "btnHV_DangKi";
+            this.btnHV_DangKi.Rounded = false;
+            this.btnHV_DangKi.Size = new System.Drawing.Size(247, 58);
+            this.btnHV_DangKi.TabIndex = 0;
+            this.btnHV_DangKi.Text = "Đăng Ký";
+            this.btnHV_DangKi.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            // 
+            // btnHV_HuyDK
+            // 
+            this.btnHV_HuyDK.BackColor = System.Drawing.Color.Transparent;
+            this.btnHV_HuyDK.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.btnHV_HuyDK.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHV_HuyDK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHV_HuyDK.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnHV_HuyDK.Location = new System.Drawing.Point(256, 3);
+            this.btnHV_HuyDK.Name = "btnHV_HuyDK";
+            this.btnHV_HuyDK.Rounded = false;
+            this.btnHV_HuyDK.Size = new System.Drawing.Size(248, 58);
+            this.btnHV_HuyDK.TabIndex = 1;
+            this.btnHV_HuyDK.Text = "Hủy Đăng Ký";
+            this.btnHV_HuyDK.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.lblHV_DangChon);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(3, 3);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1047, 64);
+            this.panel4.TabIndex = 1;
+            // 
+            // lblHV_DangChon
+            // 
+            this.lblHV_DangChon.AutoSize = true;
+            this.lblHV_DangChon.Depth = 0;
+            this.lblHV_DangChon.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblHV_DangChon.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblHV_DangChon.Location = new System.Drawing.Point(3, 20);
+            this.lblHV_DangChon.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblHV_DangChon.Name = "lblHV_DangChon";
+            this.lblHV_DangChon.Size = new System.Drawing.Size(134, 30);
+            this.lblHV_DangChon.TabIndex = 0;
+            this.lblHV_DangChon.Text = "Đang chọn: ";
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.dgvLopThamGia);
+            this.panel5.Controls.Add(this.materialLabel7);
+            this.panel5.Controls.Add(this.materialLabel6);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(3, 505);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1572, 474);
+            this.panel5.TabIndex = 2;
+            // 
+            // materialLabel6
+            // 
+            this.materialLabel6.AutoSize = true;
+            this.materialLabel6.Depth = 0;
+            this.materialLabel6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel6.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel6.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel6.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel6.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel6.Name = "materialLabel6";
+            this.materialLabel6.Size = new System.Drawing.Size(222, 30);
+            this.materialLabel6.TabIndex = 0;
+            this.materialLabel6.Text = "Lớp Đang Tham Gia";
+            // 
+            // materialLabel7
+            // 
+            this.materialLabel7.AutoSize = true;
+            this.materialLabel7.Depth = 0;
+            this.materialLabel7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel7.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel7.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel7.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel7.Name = "materialLabel7";
+            this.materialLabel7.Size = new System.Drawing.Size(275, 24);
+            this.materialLabel7.TabIndex = 1;
+            this.materialLabel7.Text = "Các Lớp đã được duyệt đăng kí";
+            // 
+            // dgvLopThamGia
+            // 
+            this.dgvLopThamGia.AllowUserToAddRows = false;
+            this.dgvLopThamGia.AllowUserToDeleteRows = false;
+            this.dgvLopThamGia.AllowUserToResizeColumns = false;
+            this.dgvLopThamGia.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvLopThamGia.BackgroundColor = System.Drawing.Color.White;
+            this.dgvLopThamGia.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvLopThamGia.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvLopThamGia.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvLopThamGia.ColumnHeadersHeight = 44;
+            this.dgvLopThamGia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvLopThamGia.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn6,
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn8,
+            this.dataGridViewTextBoxColumn9,
+            this.dataGridViewTextBoxColumn10,
+            this.dataGridViewTextBoxColumn11,
+            this.dataGridViewTextBoxColumn12});
+            this.dgvLopThamGia.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLopThamGia.EnableHeadersVisualStyles = false;
+            this.dgvLopThamGia.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
+            this.dgvLopThamGia.Location = new System.Drawing.Point(0, 54);
+            this.dgvLopThamGia.MultiSelect = false;
+            this.dgvLopThamGia.Name = "dgvLopThamGia";
+            this.dgvLopThamGia.ReadOnly = true;
+            this.dgvLopThamGia.RowHeadersVisible = false;
+            this.dgvLopThamGia.RowHeadersWidth = 51;
+            this.dgvLopThamGia.RowTemplate.Height = 24;
+            this.dgvLopThamGia.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvLopThamGia.Size = new System.Drawing.Size(1572, 420);
+            this.dgvLopThamGia.TabIndex = 6;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.HeaderText = "Lớp Học";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.HeaderText = "Lịch Học";
+            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "Khóa Học";
+            this.dataGridViewTextBoxColumn8.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.HeaderText = "Giáo Viên";
+            this.dataGridViewTextBoxColumn9.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            this.dataGridViewTextBoxColumn10.HeaderText = "Ngày Bắt Đầu";
+            this.dataGridViewTextBoxColumn10.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            this.dataGridViewTextBoxColumn10.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.HeaderText = "Ngày Kết Thúc";
+            this.dataGridViewTextBoxColumn11.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            this.dataGridViewTextBoxColumn11.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            this.dataGridViewTextBoxColumn12.HeaderText = "Trạng Thái";
+            this.dataGridViewTextBoxColumn12.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            this.dataGridViewTextBoxColumn12.ReadOnly = true;
+            // 
+            // maGV
+            // 
+            this.maGV.HeaderText = "Lớp Học";
+            this.maGV.MinimumWidth = 6;
+            this.maGV.Name = "maGV";
+            this.maGV.ReadOnly = true;
+            // 
+            // Column10
+            // 
+            this.Column10.HeaderText = "Lịch Học";
+            this.Column10.MinimumWidth = 6;
+            this.Column10.Name = "Column10";
+            this.Column10.ReadOnly = true;
+            // 
+            // HoTen
+            // 
+            this.HoTen.HeaderText = "Khóa Học";
+            this.HoTen.MinimumWidth = 6;
+            this.HoTen.Name = "HoTen";
+            this.HoTen.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Giáo Viên";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Sĩ Số";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Trạng Thái";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // tableLayoutPanel9
+            // 
+            this.tableLayoutPanel9.ColumnCount = 1;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Controls.Add(this.panel6, 0, 0);
+            this.tableLayoutPanel9.Controls.Add(this.panel7, 0, 1);
+            this.tableLayoutPanel9.Controls.Add(this.panel10, 0, 2);
+            this.tableLayoutPanel9.Controls.Add(this.panel11, 0, 3);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 4;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.686932F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.29746F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69.64826F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.36734F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1572, 976);
+            this.tableLayoutPanel9.TabIndex = 0;
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.materialLabel12);
+            this.panel6.Controls.Add(this.materialLabel10);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel6.Location = new System.Drawing.Point(3, 3);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(1566, 69);
+            this.panel6.TabIndex = 0;
+            // 
+            // materialLabel10
+            // 
+            this.materialLabel10.AutoSize = true;
+            this.materialLabel10.Depth = 0;
+            this.materialLabel10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel10.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel10.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel10.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel10.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel10.Name = "materialLabel10";
+            this.materialLabel10.Size = new System.Drawing.Size(78, 30);
+            this.materialLabel10.TabIndex = 0;
+            this.materialLabel10.Text = "Bài Thi";
+            // 
+            // materialLabel12
+            // 
+            this.materialLabel12.AutoSize = true;
+            this.materialLabel12.Depth = 0;
+            this.materialLabel12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel12.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel12.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel12.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel12.Name = "materialLabel12";
+            this.materialLabel12.Size = new System.Drawing.Size(233, 24);
+            this.materialLabel12.TabIndex = 1;
+            this.materialLabel12.Text = "Theo dõi thông tin bài làm";
+            // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.tableLayoutPanel10);
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel7.Location = new System.Drawing.Point(3, 78);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(1566, 104);
+            this.panel7.TabIndex = 1;
+            // 
+            // tableLayoutPanel10
+            // 
+            this.tableLayoutPanel10.ColumnCount = 2;
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 82.69476F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.30524F));
+            this.tableLayoutPanel10.Controls.Add(this.panel8, 0, 0);
+            this.tableLayoutPanel10.Controls.Add(this.panel9, 1, 0);
+            this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
+            this.tableLayoutPanel10.RowCount = 1;
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(1566, 104);
+            this.tableLayoutPanel10.TabIndex = 0;
+            // 
+            // panel8
+            // 
+            this.panel8.Controls.Add(this.materialComboBox1);
+            this.panel8.Controls.Add(this.materialLabel16);
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel8.Location = new System.Drawing.Point(3, 3);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(1289, 98);
+            this.panel8.TabIndex = 0;
+            // 
+            // panel9
+            // 
+            this.panel9.Controls.Add(this.lblHV_TongBaiThi);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel9.Location = new System.Drawing.Point(1298, 3);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(265, 98);
+            this.panel9.TabIndex = 1;
+            // 
+            // materialLabel16
+            // 
+            this.materialLabel16.AutoSize = true;
+            this.materialLabel16.Depth = 0;
+            this.materialLabel16.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel16.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel16.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel16.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel16.Name = "materialLabel16";
+            this.materialLabel16.Size = new System.Drawing.Size(160, 24);
+            this.materialLabel16.TabIndex = 0;
+            this.materialLabel16.Text = "Lọc theo môn học";
+            // 
+            // materialComboBox1
+            // 
+            this.materialComboBox1.AutoResize = false;
+            this.materialComboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialComboBox1.Depth = 0;
+            this.materialComboBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.materialComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.materialComboBox1.DropDownHeight = 218;
+            this.materialComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.materialComboBox1.DropDownWidth = 121;
+            this.materialComboBox1.Font = new System.Drawing.Font("Roboto Medium", 17.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialComboBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialComboBox1.FormattingEnabled = true;
+            this.materialComboBox1.IntegralHeight = false;
+            this.materialComboBox1.ItemHeight = 54;
+            this.materialComboBox1.Location = new System.Drawing.Point(0, 24);
+            this.materialComboBox1.MaxDropDownItems = 4;
+            this.materialComboBox1.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.materialComboBox1.Name = "materialComboBox1";
+            this.materialComboBox1.Size = new System.Drawing.Size(1289, 60);
+            this.materialComboBox1.StartIndex = 0;
+            this.materialComboBox1.TabIndex = 1;
+            // 
+            // lblHV_TongBaiThi
+            // 
+            this.lblHV_TongBaiThi.AutoSize = true;
+            this.lblHV_TongBaiThi.Depth = 0;
+            this.lblHV_TongBaiThi.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblHV_TongBaiThi.Location = new System.Drawing.Point(84, 24);
+            this.lblHV_TongBaiThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblHV_TongBaiThi.Name = "lblHV_TongBaiThi";
+            this.lblHV_TongBaiThi.Size = new System.Drawing.Size(106, 24);
+            this.lblHV_TongBaiThi.TabIndex = 0;
+            this.lblHV_TongBaiThi.Text = "Tổng bài thi";
+            // 
+            // panel10
+            // 
+            this.panel10.Controls.Add(this.dgvHVDeThi);
+            this.panel10.Controls.Add(this.materialLabel18);
+            this.panel10.Controls.Add(this.materialLabel17);
+            this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel10.Location = new System.Drawing.Point(3, 188);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(1566, 673);
+            this.panel10.TabIndex = 2;
+            // 
+            // materialLabel17
+            // 
+            this.materialLabel17.AutoSize = true;
+            this.materialLabel17.Depth = 0;
+            this.materialLabel17.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel17.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel17.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel17.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel17.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel17.Name = "materialLabel17";
+            this.materialLabel17.Size = new System.Drawing.Size(193, 30);
+            this.materialLabel17.TabIndex = 0;
+            this.materialLabel17.Text = "Danh sách bài thi";
+            // 
+            // materialLabel18
+            // 
+            this.materialLabel18.AutoSize = true;
+            this.materialLabel18.Depth = 0;
+            this.materialLabel18.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel18.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel18.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel18.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel18.Name = "materialLabel18";
+            this.materialLabel18.Size = new System.Drawing.Size(373, 24);
+            this.materialLabel18.TabIndex = 1;
+            this.materialLabel18.Text = "Chọn một bài thi để xem thông và làm bài";
+            // 
+            // dgvHVDeThi
+            // 
+            this.dgvHVDeThi.AllowUserToAddRows = false;
+            this.dgvHVDeThi.AllowUserToDeleteRows = false;
+            this.dgvHVDeThi.AllowUserToResizeColumns = false;
+            this.dgvHVDeThi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvHVDeThi.BackgroundColor = System.Drawing.Color.White;
+            this.dgvHVDeThi.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvHVDeThi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvHVDeThi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvHVDeThi.ColumnHeadersHeight = 44;
+            this.dgvHVDeThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvHVDeThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5,
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.dataGridViewTextBoxColumn13});
+            this.dgvHVDeThi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvHVDeThi.EnableHeadersVisualStyles = false;
+            this.dgvHVDeThi.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
+            this.dgvHVDeThi.Location = new System.Drawing.Point(0, 54);
+            this.dgvHVDeThi.MultiSelect = false;
+            this.dgvHVDeThi.Name = "dgvHVDeThi";
+            this.dgvHVDeThi.ReadOnly = true;
+            this.dgvHVDeThi.RowHeadersVisible = false;
+            this.dgvHVDeThi.RowHeadersWidth = 51;
+            this.dgvHVDeThi.RowTemplate.Height = 24;
+            this.dgvHVDeThi.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvHVDeThi.Size = new System.Drawing.Size(1566, 619);
+            this.dgvHVDeThi.TabIndex = 6;
+            // 
+            // panel11
+            // 
+            this.panel11.Controls.Add(this.tableLayoutPanel11);
+            this.panel11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel11.Location = new System.Drawing.Point(3, 867);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(1566, 106);
+            this.panel11.TabIndex = 3;
+            // 
+            // tableLayoutPanel11
+            // 
+            this.tableLayoutPanel11.ColumnCount = 2;
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 82.50319F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.49681F));
+            this.tableLayoutPanel11.Controls.Add(this.panel12, 0, 0);
+            this.tableLayoutPanel11.Controls.Add(this.panel13, 1, 0);
+            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
+            this.tableLayoutPanel11.RowCount = 1;
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(1566, 106);
+            this.tableLayoutPanel11.TabIndex = 0;
+            // 
+            // panel12
+            // 
+            this.panel12.Controls.Add(this.lblHVDT_ThongDT);
+            this.panel12.Controls.Add(this.lblHVDT_ChonDT);
+            this.panel12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel12.Location = new System.Drawing.Point(3, 3);
+            this.panel12.Name = "panel12";
+            this.panel12.Size = new System.Drawing.Size(1285, 100);
+            this.panel12.TabIndex = 0;
+            // 
+            // lblHVDT_ChonDT
+            // 
+            this.lblHVDT_ChonDT.AutoSize = true;
+            this.lblHVDT_ChonDT.Depth = 0;
+            this.lblHVDT_ChonDT.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblHVDT_ChonDT.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblHVDT_ChonDT.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblHVDT_ChonDT.Location = new System.Drawing.Point(0, 0);
+            this.lblHVDT_ChonDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblHVDT_ChonDT.Name = "lblHVDT_ChonDT";
+            this.lblHVDT_ChonDT.Size = new System.Drawing.Size(134, 30);
+            this.lblHVDT_ChonDT.TabIndex = 0;
+            this.lblHVDT_ChonDT.Text = "Đang chọn: ";
+            // 
+            // lblHVDT_ThongDT
+            // 
+            this.lblHVDT_ThongDT.AutoSize = true;
+            this.lblHVDT_ThongDT.Depth = 0;
+            this.lblHVDT_ThongDT.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblHVDT_ThongDT.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblHVDT_ThongDT.Location = new System.Drawing.Point(0, 30);
+            this.lblHVDT_ThongDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblHVDT_ThongDT.Name = "lblHVDT_ThongDT";
+            this.lblHVDT_ThongDT.Size = new System.Drawing.Size(141, 24);
+            this.lblHVDT_ThongDT.TabIndex = 1;
+            this.lblHVDT_ThongDT.Text = "Thông tin đề thi";
+            // 
+            // panel13
+            // 
+            this.panel13.Controls.Add(this.btnHVDT_LamBai);
+            this.panel13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel13.Location = new System.Drawing.Point(1294, 3);
+            this.panel13.Name = "panel13";
+            this.panel13.Size = new System.Drawing.Size(269, 100);
+            this.panel13.TabIndex = 1;
+            // 
+            // btnHVDT_LamBai
+            // 
+            this.btnHVDT_LamBai.BackColor = System.Drawing.Color.Transparent;
+            this.btnHVDT_LamBai.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
+            this.btnHVDT_LamBai.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHVDT_LamBai.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHVDT_LamBai.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnHVDT_LamBai.Location = new System.Drawing.Point(0, 0);
+            this.btnHVDT_LamBai.Name = "btnHVDT_LamBai";
+            this.btnHVDT_LamBai.Rounded = true;
+            this.btnHVDT_LamBai.Size = new System.Drawing.Size(269, 100);
+            this.btnHVDT_LamBai.TabIndex = 0;
+            this.btnHVDT_LamBai.Text = "Làm Bài";
+            this.btnHVDT_LamBai.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            // 
+            // dataGridViewTextBoxColumn13
+            // 
+            this.dataGridViewTextBoxColumn13.HeaderText = "Điểm";
+            this.dataGridViewTextBoxColumn13.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
+            this.dataGridViewTextBoxColumn13.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Trạng thái";
+            this.Column4.MinimumWidth = 6;
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Hạn nộp";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Thời gian";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Số câu";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "Môn Học";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = "Đề Thi";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel12, 0, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1578, 982);
+            this.tableLayoutPanel5.TabIndex = 5;
+            // 
+            // tableLayoutPanel12
+            // 
+            this.tableLayoutPanel12.ColumnCount = 1;
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel12.Controls.Add(this.tableLayoutPanel15, 0, 0);
+            this.tableLayoutPanel12.Controls.Add(this.panel15, 0, 1);
+            this.tableLayoutPanel12.Controls.Add(this.panel18, 0, 2);
+            this.tableLayoutPanel12.Controls.Add(this.panel19, 0, 3);
+            this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel12.Name = "tableLayoutPanel12";
+            this.tableLayoutPanel12.RowCount = 4;
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.686932F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.29746F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69.64826F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.36734F));
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(1572, 976);
+            this.tableLayoutPanel12.TabIndex = 0;
+            // 
+            // panel15
+            // 
+            this.panel15.Controls.Add(this.tableLayoutPanel13);
+            this.panel15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel15.Location = new System.Drawing.Point(3, 78);
+            this.panel15.Name = "panel15";
+            this.panel15.Size = new System.Drawing.Size(1566, 104);
+            this.panel15.TabIndex = 1;
+            // 
+            // tableLayoutPanel13
+            // 
+            this.tableLayoutPanel13.ColumnCount = 2;
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 82.69476F));
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.30524F));
+            this.tableLayoutPanel13.Controls.Add(this.panel16, 0, 0);
+            this.tableLayoutPanel13.Controls.Add(this.panel17, 1, 0);
+            this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel13.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel13.Name = "tableLayoutPanel13";
+            this.tableLayoutPanel13.RowCount = 1;
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(1566, 104);
+            this.tableLayoutPanel13.TabIndex = 0;
+            // 
+            // panel16
+            // 
+            this.panel16.Controls.Add(this.cmbKQHV_BaiThi);
+            this.panel16.Controls.Add(this.materialLabel20);
+            this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel16.Location = new System.Drawing.Point(3, 3);
+            this.panel16.Name = "panel16";
+            this.panel16.Size = new System.Drawing.Size(1289, 98);
+            this.panel16.TabIndex = 0;
+            // 
+            // cmbKQHV_BaiThi
+            // 
+            this.cmbKQHV_BaiThi.AutoResize = false;
+            this.cmbKQHV_BaiThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbKQHV_BaiThi.Depth = 0;
+            this.cmbKQHV_BaiThi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbKQHV_BaiThi.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbKQHV_BaiThi.DropDownHeight = 218;
+            this.cmbKQHV_BaiThi.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbKQHV_BaiThi.DropDownWidth = 121;
+            this.cmbKQHV_BaiThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 17.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbKQHV_BaiThi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbKQHV_BaiThi.FormattingEnabled = true;
+            this.cmbKQHV_BaiThi.IntegralHeight = false;
+            this.cmbKQHV_BaiThi.ItemHeight = 54;
+            this.cmbKQHV_BaiThi.Location = new System.Drawing.Point(0, 24);
+            this.cmbKQHV_BaiThi.MaxDropDownItems = 4;
+            this.cmbKQHV_BaiThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.cmbKQHV_BaiThi.Name = "cmbKQHV_BaiThi";
+            this.cmbKQHV_BaiThi.Size = new System.Drawing.Size(1289, 60);
+            this.cmbKQHV_BaiThi.StartIndex = 0;
+            this.cmbKQHV_BaiThi.TabIndex = 1;
+            // 
+            // materialLabel20
+            // 
+            this.materialLabel20.AutoSize = true;
+            this.materialLabel20.Depth = 0;
+            this.materialLabel20.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel20.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel20.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel20.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel20.Name = "materialLabel20";
+            this.materialLabel20.Size = new System.Drawing.Size(149, 24);
+            this.materialLabel20.TabIndex = 0;
+            this.materialLabel20.Text = "Lọc Theo Bài Thi";
+            // 
+            // panel17
+            // 
+            this.panel17.Controls.Add(this.lblHVKQ_TongBaiThi);
+            this.panel17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel17.Location = new System.Drawing.Point(1298, 3);
+            this.panel17.Name = "panel17";
+            this.panel17.Size = new System.Drawing.Size(265, 98);
+            this.panel17.TabIndex = 1;
+            // 
+            // lblHVKQ_TongBaiThi
+            // 
+            this.lblHVKQ_TongBaiThi.AutoSize = true;
+            this.lblHVKQ_TongBaiThi.Depth = 0;
+            this.lblHVKQ_TongBaiThi.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblHVKQ_TongBaiThi.Location = new System.Drawing.Point(84, 24);
+            this.lblHVKQ_TongBaiThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblHVKQ_TongBaiThi.Name = "lblHVKQ_TongBaiThi";
+            this.lblHVKQ_TongBaiThi.Size = new System.Drawing.Size(106, 24);
+            this.lblHVKQ_TongBaiThi.TabIndex = 0;
+            this.lblHVKQ_TongBaiThi.Text = "Tổng bài thi";
+            // 
+            // panel18
+            // 
+            this.panel18.Controls.Add(this.dgvHVKetQua);
+            this.panel18.Controls.Add(this.materialLabel22);
+            this.panel18.Controls.Add(this.materialLabel23);
+            this.panel18.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel18.Location = new System.Drawing.Point(3, 188);
+            this.panel18.Name = "panel18";
+            this.panel18.Size = new System.Drawing.Size(1566, 673);
+            this.panel18.TabIndex = 2;
+            // 
+            // dgvHVKetQua
+            // 
+            this.dgvHVKetQua.AllowUserToAddRows = false;
+            this.dgvHVKetQua.AllowUserToDeleteRows = false;
+            this.dgvHVKetQua.AllowUserToResizeColumns = false;
+            this.dgvHVKetQua.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvHVKetQua.BackgroundColor = System.Drawing.Color.White;
+            this.dgvHVKetQua.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvHVKetQua.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvHVKetQua.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvHVKetQua.ColumnHeadersHeight = 44;
+            this.dgvHVKetQua.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvHVKetQua.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn14,
+            this.dataGridViewTextBoxColumn15,
+            this.dataGridViewTextBoxColumn16,
+            this.dataGridViewTextBoxColumn17});
+            this.dgvHVKetQua.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvHVKetQua.EnableHeadersVisualStyles = false;
+            this.dgvHVKetQua.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
+            this.dgvHVKetQua.Location = new System.Drawing.Point(0, 54);
+            this.dgvHVKetQua.MultiSelect = false;
+            this.dgvHVKetQua.Name = "dgvHVKetQua";
+            this.dgvHVKetQua.ReadOnly = true;
+            this.dgvHVKetQua.RowHeadersVisible = false;
+            this.dgvHVKetQua.RowHeadersWidth = 51;
+            this.dgvHVKetQua.RowTemplate.Height = 24;
+            this.dgvHVKetQua.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvHVKetQua.Size = new System.Drawing.Size(1566, 619);
+            this.dgvHVKetQua.TabIndex = 6;
+            // 
+            // materialLabel22
+            // 
+            this.materialLabel22.AutoSize = true;
+            this.materialLabel22.Depth = 0;
+            this.materialLabel22.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel22.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel22.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel22.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel22.Name = "materialLabel22";
+            this.materialLabel22.Size = new System.Drawing.Size(373, 24);
+            this.materialLabel22.TabIndex = 1;
+            this.materialLabel22.Text = "Chọn một bài thi để xem thông và làm bài";
+            // 
+            // materialLabel23
+            // 
+            this.materialLabel23.AutoSize = true;
+            this.materialLabel23.Depth = 0;
+            this.materialLabel23.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel23.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel23.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel23.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel23.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel23.Name = "materialLabel23";
+            this.materialLabel23.Size = new System.Drawing.Size(193, 30);
+            this.materialLabel23.TabIndex = 0;
+            this.materialLabel23.Text = "Danh sách bài thi";
+            // 
+            // panel19
+            // 
+            this.panel19.Controls.Add(this.tableLayoutPanel14);
+            this.panel19.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel19.Location = new System.Drawing.Point(3, 867);
+            this.panel19.Name = "panel19";
+            this.panel19.Size = new System.Drawing.Size(1566, 106);
+            this.panel19.TabIndex = 3;
+            // 
+            // tableLayoutPanel14
+            // 
+            this.tableLayoutPanel14.ColumnCount = 2;
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 82.50319F));
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.49681F));
+            this.tableLayoutPanel14.Controls.Add(this.panel20, 0, 0);
+            this.tableLayoutPanel14.Controls.Add(this.panel21, 1, 0);
+            this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel14.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel14.Name = "tableLayoutPanel14";
+            this.tableLayoutPanel14.RowCount = 1;
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(1566, 106);
+            this.tableLayoutPanel14.TabIndex = 0;
+            // 
+            // panel20
+            // 
+            this.panel20.Controls.Add(this.lblHVKQ_TTDT);
+            this.panel20.Controls.Add(this.lblHVKQ_ChonDT);
+            this.panel20.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel20.Location = new System.Drawing.Point(3, 3);
+            this.panel20.Name = "panel20";
+            this.panel20.Size = new System.Drawing.Size(1285, 100);
+            this.panel20.TabIndex = 0;
+            // 
+            // lblHVKQ_TTDT
+            // 
+            this.lblHVKQ_TTDT.AutoSize = true;
+            this.lblHVKQ_TTDT.Depth = 0;
+            this.lblHVKQ_TTDT.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblHVKQ_TTDT.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblHVKQ_TTDT.Location = new System.Drawing.Point(0, 30);
+            this.lblHVKQ_TTDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblHVKQ_TTDT.Name = "lblHVKQ_TTDT";
+            this.lblHVKQ_TTDT.Size = new System.Drawing.Size(141, 24);
+            this.lblHVKQ_TTDT.TabIndex = 1;
+            this.lblHVKQ_TTDT.Text = "Thông tin đề thi";
+            // 
+            // lblHVKQ_ChonDT
+            // 
+            this.lblHVKQ_ChonDT.AutoSize = true;
+            this.lblHVKQ_ChonDT.Depth = 0;
+            this.lblHVKQ_ChonDT.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblHVKQ_ChonDT.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblHVKQ_ChonDT.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblHVKQ_ChonDT.Location = new System.Drawing.Point(0, 0);
+            this.lblHVKQ_ChonDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblHVKQ_ChonDT.Name = "lblHVKQ_ChonDT";
+            this.lblHVKQ_ChonDT.Size = new System.Drawing.Size(134, 30);
+            this.lblHVKQ_ChonDT.TabIndex = 0;
+            this.lblHVKQ_ChonDT.Text = "Đang chọn: ";
+            // 
+            // panel21
+            // 
+            this.panel21.Controls.Add(this.lblKQHV_Diem);
+            this.panel21.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel21.Location = new System.Drawing.Point(1294, 3);
+            this.panel21.Name = "panel21";
+            this.panel21.Size = new System.Drawing.Size(269, 100);
+            this.panel21.TabIndex = 1;
+            // 
+            // lblKQHV_Diem
+            // 
+            this.lblKQHV_Diem.AutoSize = true;
+            this.lblKQHV_Diem.Depth = 0;
+            this.lblKQHV_Diem.Font = new System.Drawing.Font("Roboto", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblKQHV_Diem.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H5;
+            this.lblKQHV_Diem.Location = new System.Drawing.Point(85, 30);
+            this.lblKQHV_Diem.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblKQHV_Diem.Name = "lblKQHV_Diem";
+            this.lblKQHV_Diem.Size = new System.Drawing.Size(64, 37);
+            this.lblKQHV_Diem.TabIndex = 0;
+            this.lblKQHV_Diem.Text = "9/10";
+            // 
+            // tableLayoutPanel15
+            // 
+            this.tableLayoutPanel15.ColumnCount = 2;
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.32695F));
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.67305F));
+            this.tableLayoutPanel15.Controls.Add(this.tableLayoutPanel16, 1, 0);
+            this.tableLayoutPanel15.Controls.Add(this.panel14, 0, 0);
+            this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel15.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel15.Name = "tableLayoutPanel15";
+            this.tableLayoutPanel15.RowCount = 1;
+            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(1566, 69);
+            this.tableLayoutPanel15.TabIndex = 0;
+            // 
+            // tableLayoutPanel16
+            // 
+            this.tableLayoutPanel16.ColumnCount = 2;
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel16.Controls.Add(this.btnHVKQ_XuatFile, 0, 0);
+            this.tableLayoutPanel16.Controls.Add(this.btnHVKQ_BaoCao, 1, 0);
+            this.tableLayoutPanel16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel16.Location = new System.Drawing.Point(1073, 3);
+            this.tableLayoutPanel16.Name = "tableLayoutPanel16";
+            this.tableLayoutPanel16.RowCount = 1;
+            this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(490, 63);
+            this.tableLayoutPanel16.TabIndex = 0;
+            // 
+            // panel14
+            // 
+            this.panel14.Controls.Add(this.materialLabel19);
+            this.panel14.Controls.Add(this.materialLabel14);
+            this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel14.Location = new System.Drawing.Point(3, 3);
+            this.panel14.Name = "panel14";
+            this.panel14.Size = new System.Drawing.Size(1064, 63);
+            this.panel14.TabIndex = 1;
+            // 
+            // materialLabel14
+            // 
+            this.materialLabel14.AutoSize = true;
+            this.materialLabel14.Depth = 0;
+            this.materialLabel14.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel14.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel14.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel14.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel14.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel14.Name = "materialLabel14";
+            this.materialLabel14.Size = new System.Drawing.Size(172, 30);
+            this.materialLabel14.TabIndex = 0;
+            this.materialLabel14.Text = "Kết Quả Bài Thi";
+            // 
+            // materialLabel19
+            // 
+            this.materialLabel19.AutoSize = true;
+            this.materialLabel19.Depth = 0;
+            this.materialLabel19.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel19.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel19.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel19.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel19.Name = "materialLabel19";
+            this.materialLabel19.Size = new System.Drawing.Size(314, 24);
+            this.materialLabel19.TabIndex = 1;
+            this.materialLabel19.Text = "Theo dõi điểm số và lịch sử nộp bài";
+            // 
+            // btnHVKQ_XuatFile
+            // 
+            this.btnHVKQ_XuatFile.BackColor = System.Drawing.Color.Transparent;
+            this.btnHVKQ_XuatFile.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(168)))), ((int)(((byte)(109)))));
+            this.btnHVKQ_XuatFile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHVKQ_XuatFile.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHVKQ_XuatFile.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnHVKQ_XuatFile.Location = new System.Drawing.Point(3, 3);
+            this.btnHVKQ_XuatFile.Name = "btnHVKQ_XuatFile";
+            this.btnHVKQ_XuatFile.Rounded = false;
+            this.btnHVKQ_XuatFile.Size = new System.Drawing.Size(239, 57);
+            this.btnHVKQ_XuatFile.TabIndex = 0;
+            this.btnHVKQ_XuatFile.Text = "Xuất File Excel";
+            this.btnHVKQ_XuatFile.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            // 
+            // btnHVKQ_BaoCao
+            // 
+            this.btnHVKQ_BaoCao.BackColor = System.Drawing.Color.Transparent;
+            this.btnHVKQ_BaoCao.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
+            this.btnHVKQ_BaoCao.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHVKQ_BaoCao.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHVKQ_BaoCao.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnHVKQ_BaoCao.Location = new System.Drawing.Point(248, 3);
+            this.btnHVKQ_BaoCao.Name = "btnHVKQ_BaoCao";
+            this.btnHVKQ_BaoCao.Rounded = false;
+            this.btnHVKQ_BaoCao.Size = new System.Drawing.Size(239, 57);
+            this.btnHVKQ_BaoCao.TabIndex = 1;
+            this.btnHVKQ_BaoCao.Text = "Báo Cáo ";
+            this.btnHVKQ_BaoCao.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            // 
+            // dataGridViewTextBoxColumn14
+            // 
+            this.dataGridViewTextBoxColumn14.HeaderText = "Đề Thi";
+            this.dataGridViewTextBoxColumn14.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            this.dataGridViewTextBoxColumn14.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn15
+            // 
+            this.dataGridViewTextBoxColumn15.HeaderText = "Môn Học";
+            this.dataGridViewTextBoxColumn15.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
+            this.dataGridViewTextBoxColumn15.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn16
+            // 
+            dataGridViewCellStyle1.Format = "dd/MM/yyyy HH:mm";
+            this.dataGridViewTextBoxColumn16.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridViewTextBoxColumn16.HeaderText = "Nộp Lúc";
+            this.dataGridViewTextBoxColumn16.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
+            this.dataGridViewTextBoxColumn16.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn17
+            // 
+            this.dataGridViewTextBoxColumn17.HeaderText = "Điểm";
+            this.dataGridViewTextBoxColumn17.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
+            this.dataGridViewTextBoxColumn17.ReadOnly = true;
+            // 
+            // tableLayoutPanel17
+            // 
+            this.tableLayoutPanel17.ColumnCount = 2;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.Controls.Add(this.tableLayoutPanel18, 1, 0);
+            this.tableLayoutPanel17.Controls.Add(this.tableLayoutPanel19, 0, 0);
+            this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
+            this.tableLayoutPanel17.RowCount = 1;
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(1578, 982);
+            this.tableLayoutPanel17.TabIndex = 2;
+            // 
+            // tableLayoutPanel18
+            // 
+            this.tableLayoutPanel18.ColumnCount = 1;
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel18.Controls.Add(this.panel52, 0, 0);
+            this.tableLayoutPanel18.Controls.Add(this.panel53, 0, 1);
+            this.tableLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(792, 3);
+            this.tableLayoutPanel18.Name = "tableLayoutPanel18";
+            this.tableLayoutPanel18.RowCount = 2;
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 48.40425F));
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 51.59575F));
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(783, 976);
+            this.tableLayoutPanel18.TabIndex = 0;
+            // 
+            // panel52
+            // 
+            this.panel52.Controls.Add(this.tableLayoutPanel30);
+            this.panel52.Controls.Add(this.materialLabel56);
+            this.panel52.Controls.Add(this.materialLabel55);
+            this.panel52.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel52.Location = new System.Drawing.Point(3, 3);
+            this.panel52.Name = "panel52";
+            this.panel52.Size = new System.Drawing.Size(777, 466);
+            this.panel52.TabIndex = 0;
+            // 
+            // tableLayoutPanel30
+            // 
+            this.tableLayoutPanel30.ColumnCount = 1;
+            this.tableLayoutPanel30.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel30.Controls.Add(this.panel54, 0, 0);
+            this.tableLayoutPanel30.Controls.Add(this.panel55, 0, 1);
+            this.tableLayoutPanel30.Controls.Add(this.panel60, 0, 2);
+            this.tableLayoutPanel30.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel30.Location = new System.Drawing.Point(0, 30);
+            this.tableLayoutPanel30.Name = "tableLayoutPanel30";
+            this.tableLayoutPanel30.RowCount = 3;
+            this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27.05882F));
+            this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 56.76471F));
+            this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.17647F));
+            this.tableLayoutPanel30.Size = new System.Drawing.Size(777, 436);
+            this.tableLayoutPanel30.TabIndex = 2;
+            // 
+            // panel54
+            // 
+            this.panel54.Controls.Add(this.txtTTHV_HovaTen);
+            this.panel54.Controls.Add(this.materialLabel57);
+            this.panel54.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel54.Location = new System.Drawing.Point(3, 3);
+            this.panel54.Name = "panel54";
+            this.panel54.Size = new System.Drawing.Size(771, 111);
+            this.panel54.TabIndex = 0;
+            // 
+            // txtTTHV_HovaTen
+            // 
+            this.txtTTHV_HovaTen.AnimateReadOnly = false;
+            this.txtTTHV_HovaTen.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtTTHV_HovaTen.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtTTHV_HovaTen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtTTHV_HovaTen.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtTTHV_HovaTen.Depth = 0;
+            this.txtTTHV_HovaTen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTTHV_HovaTen.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtTTHV_HovaTen.HideSelection = true;
+            this.txtTTHV_HovaTen.LeadingIcon = null;
+            this.txtTTHV_HovaTen.Location = new System.Drawing.Point(0, 30);
+            this.txtTTHV_HovaTen.MaxLength = 32767;
+            this.txtTTHV_HovaTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.txtTTHV_HovaTen.Name = "txtTTHV_HovaTen";
+            this.txtTTHV_HovaTen.PasswordChar = '\0';
+            this.txtTTHV_HovaTen.PrefixSuffixText = null;
+            this.txtTTHV_HovaTen.ReadOnly = false;
+            this.txtTTHV_HovaTen.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTTHV_HovaTen.SelectedText = "";
+            this.txtTTHV_HovaTen.SelectionLength = 0;
+            this.txtTTHV_HovaTen.SelectionStart = 0;
+            this.txtTTHV_HovaTen.ShortcutsEnabled = true;
+            this.txtTTHV_HovaTen.Size = new System.Drawing.Size(771, 60);
+            this.txtTTHV_HovaTen.TabIndex = 1;
+            this.txtTTHV_HovaTen.TabStop = false;
+            this.txtTTHV_HovaTen.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtTTHV_HovaTen.TrailingIcon = null;
+            this.txtTTHV_HovaTen.UseSystemPasswordChar = false;
+            // 
+            // materialLabel57
+            // 
+            this.materialLabel57.AutoSize = true;
+            this.materialLabel57.Depth = 0;
+            this.materialLabel57.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel57.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel57.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel57.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel57.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel57.Name = "materialLabel57";
+            this.materialLabel57.Size = new System.Drawing.Size(106, 30);
+            this.materialLabel57.TabIndex = 0;
+            this.materialLabel57.Text = "Họ và tên";
+            // 
+            // panel55
+            // 
+            this.panel55.Controls.Add(this.tableLayoutPanel31);
+            this.panel55.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel55.Location = new System.Drawing.Point(3, 120);
+            this.panel55.Name = "panel55";
+            this.panel55.Size = new System.Drawing.Size(771, 241);
+            this.panel55.TabIndex = 1;
+            // 
+            // tableLayoutPanel31
+            // 
+            this.tableLayoutPanel31.ColumnCount = 2;
+            this.tableLayoutPanel31.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel31.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel31.Controls.Add(this.panel56, 0, 0);
+            this.tableLayoutPanel31.Controls.Add(this.panel57, 1, 0);
+            this.tableLayoutPanel31.Controls.Add(this.panel58, 0, 1);
+            this.tableLayoutPanel31.Controls.Add(this.panel59, 1, 1);
+            this.tableLayoutPanel31.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel31.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel31.Name = "tableLayoutPanel31";
+            this.tableLayoutPanel31.RowCount = 2;
+            this.tableLayoutPanel31.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel31.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel31.Size = new System.Drawing.Size(771, 241);
+            this.tableLayoutPanel31.TabIndex = 0;
+            // 
+            // panel56
+            // 
+            this.panel56.Controls.Add(this.cmbTTHV_GioiTinh);
+            this.panel56.Controls.Add(this.materialLabel58);
+            this.panel56.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel56.Location = new System.Drawing.Point(3, 3);
+            this.panel56.Name = "panel56";
+            this.panel56.Size = new System.Drawing.Size(379, 114);
+            this.panel56.TabIndex = 0;
+            // 
+            // cmbTTHV_GioiTinh
+            // 
+            this.cmbTTHV_GioiTinh.AutoResize = false;
+            this.cmbTTHV_GioiTinh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbTTHV_GioiTinh.Depth = 0;
+            this.cmbTTHV_GioiTinh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbTTHV_GioiTinh.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbTTHV_GioiTinh.DropDownHeight = 218;
+            this.cmbTTHV_GioiTinh.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTTHV_GioiTinh.DropDownWidth = 121;
+            this.cmbTTHV_GioiTinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 17.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbTTHV_GioiTinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbTTHV_GioiTinh.FormattingEnabled = true;
+            this.cmbTTHV_GioiTinh.IntegralHeight = false;
+            this.cmbTTHV_GioiTinh.ItemHeight = 54;
+            this.cmbTTHV_GioiTinh.Location = new System.Drawing.Point(0, 24);
+            this.cmbTTHV_GioiTinh.MaxDropDownItems = 4;
+            this.cmbTTHV_GioiTinh.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.cmbTTHV_GioiTinh.Name = "cmbTTHV_GioiTinh";
+            this.cmbTTHV_GioiTinh.Size = new System.Drawing.Size(379, 60);
+            this.cmbTTHV_GioiTinh.StartIndex = 0;
+            this.cmbTTHV_GioiTinh.TabIndex = 1;
+            // 
+            // materialLabel58
+            // 
+            this.materialLabel58.AutoSize = true;
+            this.materialLabel58.Depth = 0;
+            this.materialLabel58.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel58.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel58.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel58.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel58.Name = "materialLabel58";
+            this.materialLabel58.Size = new System.Drawing.Size(80, 24);
+            this.materialLabel58.TabIndex = 0;
+            this.materialLabel58.Text = "Giới Tính";
+            // 
+            // panel57
+            // 
+            this.panel57.Controls.Add(this.txtTTHV_SDT);
+            this.panel57.Controls.Add(this.materialLabel59);
+            this.panel57.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel57.Location = new System.Drawing.Point(388, 3);
+            this.panel57.Name = "panel57";
+            this.panel57.Size = new System.Drawing.Size(380, 114);
+            this.panel57.TabIndex = 1;
+            // 
+            // txtTTHV_SDT
+            // 
+            this.txtTTHV_SDT.AnimateReadOnly = false;
+            this.txtTTHV_SDT.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtTTHV_SDT.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtTTHV_SDT.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtTTHV_SDT.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtTTHV_SDT.Depth = 0;
+            this.txtTTHV_SDT.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTTHV_SDT.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtTTHV_SDT.HideSelection = true;
+            this.txtTTHV_SDT.LeadingIcon = null;
+            this.txtTTHV_SDT.Location = new System.Drawing.Point(0, 24);
+            this.txtTTHV_SDT.MaxLength = 32767;
+            this.txtTTHV_SDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.txtTTHV_SDT.Name = "txtTTHV_SDT";
+            this.txtTTHV_SDT.PasswordChar = '\0';
+            this.txtTTHV_SDT.PrefixSuffixText = null;
+            this.txtTTHV_SDT.ReadOnly = false;
+            this.txtTTHV_SDT.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTTHV_SDT.SelectedText = "";
+            this.txtTTHV_SDT.SelectionLength = 0;
+            this.txtTTHV_SDT.SelectionStart = 0;
+            this.txtTTHV_SDT.ShortcutsEnabled = true;
+            this.txtTTHV_SDT.Size = new System.Drawing.Size(380, 60);
+            this.txtTTHV_SDT.TabIndex = 1;
+            this.txtTTHV_SDT.TabStop = false;
+            this.txtTTHV_SDT.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtTTHV_SDT.TrailingIcon = null;
+            this.txtTTHV_SDT.UseSystemPasswordChar = false;
+            // 
+            // materialLabel59
+            // 
+            this.materialLabel59.AutoSize = true;
+            this.materialLabel59.Depth = 0;
+            this.materialLabel59.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel59.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel59.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel59.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel59.Name = "materialLabel59";
+            this.materialLabel59.Size = new System.Drawing.Size(96, 24);
+            this.materialLabel59.TabIndex = 0;
+            this.materialLabel59.Text = "Điện Thoại";
+            // 
+            // panel58
+            // 
+            this.panel58.Controls.Add(this.txtTTHV_Email);
+            this.panel58.Controls.Add(this.materialLabel60);
+            this.panel58.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel58.Location = new System.Drawing.Point(3, 123);
+            this.panel58.Name = "panel58";
+            this.panel58.Size = new System.Drawing.Size(379, 115);
+            this.panel58.TabIndex = 2;
+            // 
+            // txtTTHV_Email
+            // 
+            this.txtTTHV_Email.AnimateReadOnly = false;
+            this.txtTTHV_Email.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtTTHV_Email.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtTTHV_Email.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtTTHV_Email.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtTTHV_Email.Depth = 0;
+            this.txtTTHV_Email.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTTHV_Email.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtTTHV_Email.HideSelection = true;
+            this.txtTTHV_Email.LeadingIcon = null;
+            this.txtTTHV_Email.Location = new System.Drawing.Point(0, 24);
+            this.txtTTHV_Email.MaxLength = 32767;
+            this.txtTTHV_Email.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.txtTTHV_Email.Name = "txtTTHV_Email";
+            this.txtTTHV_Email.PasswordChar = '\0';
+            this.txtTTHV_Email.PrefixSuffixText = null;
+            this.txtTTHV_Email.ReadOnly = false;
+            this.txtTTHV_Email.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTTHV_Email.SelectedText = "";
+            this.txtTTHV_Email.SelectionLength = 0;
+            this.txtTTHV_Email.SelectionStart = 0;
+            this.txtTTHV_Email.ShortcutsEnabled = true;
+            this.txtTTHV_Email.Size = new System.Drawing.Size(379, 60);
+            this.txtTTHV_Email.TabIndex = 1;
+            this.txtTTHV_Email.TabStop = false;
+            this.txtTTHV_Email.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtTTHV_Email.TrailingIcon = null;
+            this.txtTTHV_Email.UseSystemPasswordChar = false;
+            // 
+            // materialLabel60
+            // 
+            this.materialLabel60.AutoSize = true;
+            this.materialLabel60.Depth = 0;
+            this.materialLabel60.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel60.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel60.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel60.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel60.Name = "materialLabel60";
+            this.materialLabel60.Size = new System.Drawing.Size(51, 24);
+            this.materialLabel60.TabIndex = 0;
+            this.materialLabel60.Text = "email";
+            // 
+            // panel59
+            // 
+            this.panel59.Controls.Add(this.txtTTHV_DiaChi);
+            this.panel59.Controls.Add(this.materialLabel61);
+            this.panel59.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel59.Location = new System.Drawing.Point(388, 123);
+            this.panel59.Name = "panel59";
+            this.panel59.Size = new System.Drawing.Size(380, 115);
+            this.panel59.TabIndex = 3;
+            // 
+            // txtTTHV_DiaChi
+            // 
+            this.txtTTHV_DiaChi.AnimateReadOnly = false;
+            this.txtTTHV_DiaChi.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtTTHV_DiaChi.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtTTHV_DiaChi.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtTTHV_DiaChi.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtTTHV_DiaChi.Depth = 0;
+            this.txtTTHV_DiaChi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTTHV_DiaChi.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtTTHV_DiaChi.HideSelection = true;
+            this.txtTTHV_DiaChi.LeadingIcon = null;
+            this.txtTTHV_DiaChi.Location = new System.Drawing.Point(0, 24);
+            this.txtTTHV_DiaChi.MaxLength = 32767;
+            this.txtTTHV_DiaChi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.txtTTHV_DiaChi.Name = "txtTTHV_DiaChi";
+            this.txtTTHV_DiaChi.PasswordChar = '\0';
+            this.txtTTHV_DiaChi.PrefixSuffixText = null;
+            this.txtTTHV_DiaChi.ReadOnly = false;
+            this.txtTTHV_DiaChi.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTTHV_DiaChi.SelectedText = "";
+            this.txtTTHV_DiaChi.SelectionLength = 0;
+            this.txtTTHV_DiaChi.SelectionStart = 0;
+            this.txtTTHV_DiaChi.ShortcutsEnabled = true;
+            this.txtTTHV_DiaChi.Size = new System.Drawing.Size(380, 60);
+            this.txtTTHV_DiaChi.TabIndex = 1;
+            this.txtTTHV_DiaChi.TabStop = false;
+            this.txtTTHV_DiaChi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtTTHV_DiaChi.TrailingIcon = null;
+            this.txtTTHV_DiaChi.UseSystemPasswordChar = false;
+            // 
+            // materialLabel61
+            // 
+            this.materialLabel61.AutoSize = true;
+            this.materialLabel61.Depth = 0;
+            this.materialLabel61.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel61.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel61.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel61.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel61.Name = "materialLabel61";
+            this.materialLabel61.Size = new System.Drawing.Size(64, 24);
+            this.materialLabel61.TabIndex = 0;
+            this.materialLabel61.Text = "Địa Chỉ";
+            // 
+            // panel60
+            // 
+            this.panel60.Controls.Add(this.btnTTHV_LuuThayDoi);
+            this.panel60.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel60.Location = new System.Drawing.Point(3, 367);
+            this.panel60.Name = "panel60";
+            this.panel60.Size = new System.Drawing.Size(771, 66);
+            this.panel60.TabIndex = 2;
+            // 
+            // btnTTHV_LuuThayDoi
+            // 
+            this.btnTTHV_LuuThayDoi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTTHV_LuuThayDoi.BackColor = System.Drawing.Color.Transparent;
+            this.btnTTHV_LuuThayDoi.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
+            this.btnTTHV_LuuThayDoi.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTTHV_LuuThayDoi.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnTTHV_LuuThayDoi.Location = new System.Drawing.Point(481, 3);
+            this.btnTTHV_LuuThayDoi.Name = "btnTTHV_LuuThayDoi";
+            this.btnTTHV_LuuThayDoi.Rounded = true;
+            this.btnTTHV_LuuThayDoi.Size = new System.Drawing.Size(278, 52);
+            this.btnTTHV_LuuThayDoi.TabIndex = 0;
+            this.btnTTHV_LuuThayDoi.Text = "Lưu Thay Đổi";
+            this.btnTTHV_LuuThayDoi.TextColor = System.Drawing.Color.White;
+            // 
+            // materialLabel56
+            // 
+            this.materialLabel56.AutoSize = true;
+            this.materialLabel56.Depth = 0;
+            this.materialLabel56.Font = new System.Drawing.Font("Roboto", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel56.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.Subtitle1;
+            this.materialLabel56.Location = new System.Drawing.Point(3, 32);
+            this.materialLabel56.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel56.Name = "materialLabel56";
+            this.materialLabel56.Size = new System.Drawing.Size(333, 24);
+            this.materialLabel56.TabIndex = 1;
+            this.materialLabel56.Text = "Thông tin liên hệ dùng trong hệ thống";
+            // 
+            // materialLabel55
+            // 
+            this.materialLabel55.AutoSize = true;
+            this.materialLabel55.Depth = 0;
+            this.materialLabel55.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel55.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel55.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel55.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel55.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel55.Name = "materialLabel55";
+            this.materialLabel55.Size = new System.Drawing.Size(201, 30);
+            this.materialLabel55.TabIndex = 0;
+            this.materialLabel55.Text = "Thông tin cá nhân";
+            // 
+            // panel53
+            // 
+            this.panel53.Controls.Add(this.tableLayoutPanel32);
+            this.panel53.Controls.Add(this.materialLabel63);
+            this.panel53.Controls.Add(this.materialLabel62);
+            this.panel53.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel53.Location = new System.Drawing.Point(3, 475);
+            this.panel53.Name = "panel53";
+            this.panel53.Size = new System.Drawing.Size(777, 498);
+            this.panel53.TabIndex = 1;
+            // 
+            // tableLayoutPanel32
+            // 
+            this.tableLayoutPanel32.ColumnCount = 1;
+            this.tableLayoutPanel32.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel32.Controls.Add(this.panel61, 0, 0);
+            this.tableLayoutPanel32.Controls.Add(this.panel65, 0, 1);
+            this.tableLayoutPanel32.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel32.Location = new System.Drawing.Point(0, 54);
+            this.tableLayoutPanel32.Name = "tableLayoutPanel32";
+            this.tableLayoutPanel32.RowCount = 2;
+            this.tableLayoutPanel32.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.57317F));
+            this.tableLayoutPanel32.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.42683F));
+            this.tableLayoutPanel32.Size = new System.Drawing.Size(777, 444);
+            this.tableLayoutPanel32.TabIndex = 2;
+            // 
+            // panel61
+            // 
+            this.panel61.Controls.Add(this.tableLayoutPanel33);
+            this.panel61.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel61.Location = new System.Drawing.Point(3, 3);
+            this.panel61.Name = "panel61";
+            this.panel61.Size = new System.Drawing.Size(771, 347);
+            this.panel61.TabIndex = 0;
+            // 
+            // tableLayoutPanel33
+            // 
+            this.tableLayoutPanel33.ColumnCount = 3;
+            this.tableLayoutPanel33.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.24361F));
+            this.tableLayoutPanel33.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.24361F));
+            this.tableLayoutPanel33.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel33.Controls.Add(this.panel62, 0, 0);
+            this.tableLayoutPanel33.Controls.Add(this.panel63, 1, 0);
+            this.tableLayoutPanel33.Controls.Add(this.panel64, 2, 0);
+            this.tableLayoutPanel33.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel33.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel33.Name = "tableLayoutPanel33";
+            this.tableLayoutPanel33.RowCount = 1;
+            this.tableLayoutPanel33.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel33.Size = new System.Drawing.Size(771, 347);
+            this.tableLayoutPanel33.TabIndex = 0;
+            // 
+            // panel62
+            // 
+            this.panel62.Controls.Add(this.txtTTHV_MatKhauHienTai);
+            this.panel62.Controls.Add(this.materialLabel64);
+            this.panel62.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel62.Location = new System.Drawing.Point(3, 3);
+            this.panel62.Name = "panel62";
+            this.panel62.Size = new System.Drawing.Size(250, 341);
+            this.panel62.TabIndex = 0;
+            // 
+            // txtTTHV_MatKhauHienTai
+            // 
+            this.txtTTHV_MatKhauHienTai.AnimateReadOnly = false;
+            this.txtTTHV_MatKhauHienTai.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtTTHV_MatKhauHienTai.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtTTHV_MatKhauHienTai.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtTTHV_MatKhauHienTai.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtTTHV_MatKhauHienTai.Depth = 0;
+            this.txtTTHV_MatKhauHienTai.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTTHV_MatKhauHienTai.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtTTHV_MatKhauHienTai.HideSelection = true;
+            this.txtTTHV_MatKhauHienTai.LeadingIcon = null;
+            this.txtTTHV_MatKhauHienTai.Location = new System.Drawing.Point(0, 24);
+            this.txtTTHV_MatKhauHienTai.MaxLength = 32767;
+            this.txtTTHV_MatKhauHienTai.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.txtTTHV_MatKhauHienTai.Name = "txtTTHV_MatKhauHienTai";
+            this.txtTTHV_MatKhauHienTai.PasswordChar = '\0';
+            this.txtTTHV_MatKhauHienTai.PrefixSuffixText = null;
+            this.txtTTHV_MatKhauHienTai.ReadOnly = false;
+            this.txtTTHV_MatKhauHienTai.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTTHV_MatKhauHienTai.SelectedText = "";
+            this.txtTTHV_MatKhauHienTai.SelectionLength = 0;
+            this.txtTTHV_MatKhauHienTai.SelectionStart = 0;
+            this.txtTTHV_MatKhauHienTai.ShortcutsEnabled = true;
+            this.txtTTHV_MatKhauHienTai.Size = new System.Drawing.Size(250, 60);
+            this.txtTTHV_MatKhauHienTai.TabIndex = 1;
+            this.txtTTHV_MatKhauHienTai.TabStop = false;
+            this.txtTTHV_MatKhauHienTai.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtTTHV_MatKhauHienTai.TrailingIcon = null;
+            this.txtTTHV_MatKhauHienTai.UseSystemPasswordChar = false;
+            // 
+            // materialLabel64
+            // 
+            this.materialLabel64.AutoSize = true;
+            this.materialLabel64.Depth = 0;
+            this.materialLabel64.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel64.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel64.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel64.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel64.Name = "materialLabel64";
+            this.materialLabel64.Size = new System.Drawing.Size(158, 24);
+            this.materialLabel64.TabIndex = 0;
+            this.materialLabel64.Text = "Mật Khẩu hiện tại";
+            // 
+            // panel63
+            // 
+            this.panel63.Controls.Add(this.txtTTHV_MKMoi);
+            this.panel63.Controls.Add(this.materialLabel65);
+            this.panel63.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel63.Location = new System.Drawing.Point(259, 3);
+            this.panel63.Name = "panel63";
+            this.panel63.Size = new System.Drawing.Size(250, 341);
+            this.panel63.TabIndex = 1;
+            // 
+            // txtTTHV_MKMoi
+            // 
+            this.txtTTHV_MKMoi.AnimateReadOnly = false;
+            this.txtTTHV_MKMoi.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtTTHV_MKMoi.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtTTHV_MKMoi.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtTTHV_MKMoi.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtTTHV_MKMoi.Depth = 0;
+            this.txtTTHV_MKMoi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTTHV_MKMoi.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtTTHV_MKMoi.HideSelection = true;
+            this.txtTTHV_MKMoi.LeadingIcon = null;
+            this.txtTTHV_MKMoi.Location = new System.Drawing.Point(0, 24);
+            this.txtTTHV_MKMoi.MaxLength = 32767;
+            this.txtTTHV_MKMoi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.txtTTHV_MKMoi.Name = "txtTTHV_MKMoi";
+            this.txtTTHV_MKMoi.PasswordChar = '\0';
+            this.txtTTHV_MKMoi.PrefixSuffixText = null;
+            this.txtTTHV_MKMoi.ReadOnly = false;
+            this.txtTTHV_MKMoi.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTTHV_MKMoi.SelectedText = "";
+            this.txtTTHV_MKMoi.SelectionLength = 0;
+            this.txtTTHV_MKMoi.SelectionStart = 0;
+            this.txtTTHV_MKMoi.ShortcutsEnabled = true;
+            this.txtTTHV_MKMoi.Size = new System.Drawing.Size(250, 60);
+            this.txtTTHV_MKMoi.TabIndex = 1;
+            this.txtTTHV_MKMoi.TabStop = false;
+            this.txtTTHV_MKMoi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtTTHV_MKMoi.TrailingIcon = null;
+            this.txtTTHV_MKMoi.UseSystemPasswordChar = false;
+            // 
+            // materialLabel65
+            // 
+            this.materialLabel65.AutoSize = true;
+            this.materialLabel65.Depth = 0;
+            this.materialLabel65.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel65.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel65.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel65.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel65.Name = "materialLabel65";
+            this.materialLabel65.Size = new System.Drawing.Size(123, 24);
+            this.materialLabel65.TabIndex = 0;
+            this.materialLabel65.Text = "Mật khẩu mới";
+            // 
+            // panel64
+            // 
+            this.panel64.Controls.Add(this.txtTTHV_XacNhanMK);
+            this.panel64.Controls.Add(this.materialLabel66);
+            this.panel64.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel64.Location = new System.Drawing.Point(515, 3);
+            this.panel64.Name = "panel64";
+            this.panel64.Size = new System.Drawing.Size(253, 341);
+            this.panel64.TabIndex = 2;
+            // 
+            // txtTTHV_XacNhanMK
+            // 
+            this.txtTTHV_XacNhanMK.AnimateReadOnly = false;
+            this.txtTTHV_XacNhanMK.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtTTHV_XacNhanMK.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtTTHV_XacNhanMK.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtTTHV_XacNhanMK.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtTTHV_XacNhanMK.Depth = 0;
+            this.txtTTHV_XacNhanMK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTTHV_XacNhanMK.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtTTHV_XacNhanMK.HideSelection = true;
+            this.txtTTHV_XacNhanMK.LeadingIcon = null;
+            this.txtTTHV_XacNhanMK.Location = new System.Drawing.Point(0, 24);
+            this.txtTTHV_XacNhanMK.MaxLength = 32767;
+            this.txtTTHV_XacNhanMK.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.txtTTHV_XacNhanMK.Name = "txtTTHV_XacNhanMK";
+            this.txtTTHV_XacNhanMK.PasswordChar = '\0';
+            this.txtTTHV_XacNhanMK.PrefixSuffixText = null;
+            this.txtTTHV_XacNhanMK.ReadOnly = false;
+            this.txtTTHV_XacNhanMK.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTTHV_XacNhanMK.SelectedText = "";
+            this.txtTTHV_XacNhanMK.SelectionLength = 0;
+            this.txtTTHV_XacNhanMK.SelectionStart = 0;
+            this.txtTTHV_XacNhanMK.ShortcutsEnabled = true;
+            this.txtTTHV_XacNhanMK.Size = new System.Drawing.Size(253, 60);
+            this.txtTTHV_XacNhanMK.TabIndex = 1;
+            this.txtTTHV_XacNhanMK.TabStop = false;
+            this.txtTTHV_XacNhanMK.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtTTHV_XacNhanMK.TrailingIcon = null;
+            this.txtTTHV_XacNhanMK.UseSystemPasswordChar = false;
+            // 
+            // materialLabel66
+            // 
+            this.materialLabel66.AutoSize = true;
+            this.materialLabel66.Depth = 0;
+            this.materialLabel66.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel66.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel66.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel66.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel66.Name = "materialLabel66";
+            this.materialLabel66.Size = new System.Drawing.Size(214, 24);
+            this.materialLabel66.TabIndex = 0;
+            this.materialLabel66.Text = "Xác Nhận Mật khẩu mới";
+            // 
+            // panel65
+            // 
+            this.panel65.Controls.Add(this.btnTTHV_DoiMK);
+            this.panel65.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel65.Location = new System.Drawing.Point(3, 356);
+            this.panel65.Name = "panel65";
+            this.panel65.Size = new System.Drawing.Size(771, 85);
+            this.panel65.TabIndex = 1;
+            // 
+            // btnTTHV_DoiMK
+            // 
+            this.btnTTHV_DoiMK.BackColor = System.Drawing.Color.Transparent;
+            this.btnTTHV_DoiMK.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(240)))), ((int)(((byte)(255)))));
+            this.btnTTHV_DoiMK.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTTHV_DoiMK.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnTTHV_DoiMK.Location = new System.Drawing.Point(512, 3);
+            this.btnTTHV_DoiMK.Name = "btnTTHV_DoiMK";
+            this.btnTTHV_DoiMK.Rounded = true;
+            this.btnTTHV_DoiMK.Size = new System.Drawing.Size(228, 51);
+            this.btnTTHV_DoiMK.TabIndex = 0;
+            this.btnTTHV_DoiMK.Text = "Đổi Mật Khẩu";
+            this.btnTTHV_DoiMK.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
+            // 
+            // materialLabel63
+            // 
+            this.materialLabel63.AutoSize = true;
+            this.materialLabel63.Depth = 0;
+            this.materialLabel63.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel63.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel63.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel63.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel63.Name = "materialLabel63";
+            this.materialLabel63.Size = new System.Drawing.Size(392, 24);
+            this.materialLabel63.TabIndex = 1;
+            this.materialLabel63.Text = "Nhập mật khẩu hiện tại để xác nhận thay đổ";
+            // 
+            // materialLabel62
+            // 
+            this.materialLabel62.AutoSize = true;
+            this.materialLabel62.Depth = 0;
+            this.materialLabel62.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel62.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel62.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel62.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel62.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel62.Name = "materialLabel62";
+            this.materialLabel62.Size = new System.Drawing.Size(149, 30);
+            this.materialLabel62.TabIndex = 0;
+            this.materialLabel62.Text = "Đổi mật khẩu";
+            // 
+            // tableLayoutPanel19
+            // 
+            this.tableLayoutPanel19.ColumnCount = 1;
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel19.Controls.Add(this.panel50, 0, 0);
+            this.tableLayoutPanel19.Controls.Add(this.panel51, 0, 1);
+            this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel19.Name = "tableLayoutPanel19";
+            this.tableLayoutPanel19.RowCount = 2;
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.574468F));
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.42553F));
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(783, 976);
+            this.tableLayoutPanel19.TabIndex = 1;
+            // 
+            // panel50
+            // 
+            this.panel50.Controls.Add(this.materialLabel48);
+            this.panel50.Controls.Add(this.materialLabel47);
+            this.panel50.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel50.Location = new System.Drawing.Point(3, 3);
+            this.panel50.Name = "panel50";
+            this.panel50.Size = new System.Drawing.Size(777, 87);
+            this.panel50.TabIndex = 0;
+            // 
+            // materialLabel48
+            // 
+            this.materialLabel48.AutoSize = true;
+            this.materialLabel48.Depth = 0;
+            this.materialLabel48.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel48.Font = new System.Drawing.Font("Roboto", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel48.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.Subtitle1;
+            this.materialLabel48.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel48.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel48.Name = "materialLabel48";
+            this.materialLabel48.Size = new System.Drawing.Size(326, 24);
+            this.materialLabel48.TabIndex = 1;
+            this.materialLabel48.Text = "Cập nhật hồ sơ và bảo mật tài khoản";
+            // 
+            // materialLabel47
+            // 
+            this.materialLabel47.AutoSize = true;
+            this.materialLabel47.Depth = 0;
+            this.materialLabel47.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel47.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel47.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel47.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel47.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel47.Name = "materialLabel47";
+            this.materialLabel47.Size = new System.Drawing.Size(201, 30);
+            this.materialLabel47.TabIndex = 0;
+            this.materialLabel47.Text = "Thông tin cá nhân";
+            // 
+            // panel51
+            // 
+            this.panel51.Controls.Add(this.tableLayoutPanel29);
+            this.panel51.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel51.Location = new System.Drawing.Point(3, 96);
+            this.panel51.Name = "panel51";
+            this.panel51.Size = new System.Drawing.Size(777, 877);
+            this.panel51.TabIndex = 1;
+            // 
+            // tableLayoutPanel29
+            // 
+            this.tableLayoutPanel29.ColumnCount = 1;
+            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel29.Controls.Add(this.materialLabel54, 0, 0);
+            this.tableLayoutPanel29.Controls.Add(this.lblGVTT_HovaTen, 0, 1);
+            this.tableLayoutPanel29.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel29.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel29.Name = "tableLayoutPanel29";
+            this.tableLayoutPanel29.RowCount = 7;
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.59259F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.66667F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.62963F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutPanel29.Size = new System.Drawing.Size(777, 877);
+            this.tableLayoutPanel29.TabIndex = 0;
+            // 
+            // materialLabel54
+            // 
+            this.materialLabel54.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.materialLabel54.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(240)))), ((int)(((byte)(255)))));
+            this.materialLabel54.Depth = 0;
+            this.materialLabel54.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel54.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel54.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
+            this.materialLabel54.Location = new System.Drawing.Point(260, 24);
+            this.materialLabel54.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel54.Name = "materialLabel54";
+            this.materialLabel54.Size = new System.Drawing.Size(257, 133);
+            this.materialLabel54.TabIndex = 2;
+            this.materialLabel54.Text = "TT";
+            this.materialLabel54.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblGVTT_HovaTen
+            // 
+            this.lblGVTT_HovaTen.Depth = 0;
+            this.lblGVTT_HovaTen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblGVTT_HovaTen.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblGVTT_HovaTen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblGVTT_HovaTen.Location = new System.Drawing.Point(3, 181);
+            this.lblGVTT_HovaTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblGVTT_HovaTen.Name = "lblGVTT_HovaTen";
+            this.lblGVTT_HovaTen.Size = new System.Drawing.Size(771, 128);
+            this.lblGVTT_HovaTen.TabIndex = 1;
+            this.lblGVTT_HovaTen.Text = "Lương Trung Thành";
+            this.lblGVTT_HovaTen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // HocVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1635,33 +2658,100 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel1.PerformLayout();
             this.pageHV_LopHoc.ResumeLayout(false);
             this.pageHV_LopHoc.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.materialCard1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopDangHoc)).EndInit();
-            this.pnlHV_LopDangHoc_Buttons.ResumeLayout(false);
-            this.tableLayoutPanel9.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dtHV_LopHoc)).EndInit();
-            this.tableLayoutPanel10.ResumeLayout(false);
             this.pageHV_BaiThi.ResumeLayout(false);
             this.pageHV_BaiThi.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
-            this.materialCard8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvHV_DanhSachDeThi)).EndInit();
-            this.pnlHV_BaiThi_Buttons.ResumeLayout(false);
             this.pageHV_KetQua.ResumeLayout(false);
             this.pageHV_KetQua.PerformLayout();
-            this.tableLayoutPanel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvHV_LichSuThi)).EndInit();
             this.pageHV_ThongTin.ResumeLayout(false);
             this.pageHV_ThongTin.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
-            this.materialCard11.ResumeLayout(false);
-            this.materialCard11.PerformLayout();
-            this.materialCard12.ResumeLayout(false);
-            this.materialCard12.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLopDangKi)).EndInit();
             this.tableLayoutPanel7.ResumeLayout(false);
-            this.materialCard13.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLopThamGia)).EndInit();
+            this.tableLayoutPanel9.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.tableLayoutPanel10.ResumeLayout(false);
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
+            this.panel10.ResumeLayout(false);
+            this.panel10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHVDeThi)).EndInit();
+            this.panel11.ResumeLayout(false);
+            this.tableLayoutPanel11.ResumeLayout(false);
+            this.panel12.ResumeLayout(false);
+            this.panel12.PerformLayout();
+            this.panel13.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel12.ResumeLayout(false);
+            this.panel15.ResumeLayout(false);
+            this.tableLayoutPanel13.ResumeLayout(false);
+            this.panel16.ResumeLayout(false);
+            this.panel16.PerformLayout();
+            this.panel17.ResumeLayout(false);
+            this.panel17.PerformLayout();
+            this.panel18.ResumeLayout(false);
+            this.panel18.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHVKetQua)).EndInit();
+            this.panel19.ResumeLayout(false);
+            this.tableLayoutPanel14.ResumeLayout(false);
+            this.panel20.ResumeLayout(false);
+            this.panel20.PerformLayout();
+            this.panel21.ResumeLayout(false);
+            this.panel21.PerformLayout();
+            this.tableLayoutPanel15.ResumeLayout(false);
+            this.tableLayoutPanel16.ResumeLayout(false);
+            this.panel14.ResumeLayout(false);
+            this.panel14.PerformLayout();
+            this.tableLayoutPanel17.ResumeLayout(false);
+            this.tableLayoutPanel18.ResumeLayout(false);
+            this.panel52.ResumeLayout(false);
+            this.panel52.PerformLayout();
+            this.tableLayoutPanel30.ResumeLayout(false);
+            this.panel54.ResumeLayout(false);
+            this.panel54.PerformLayout();
+            this.panel55.ResumeLayout(false);
+            this.tableLayoutPanel31.ResumeLayout(false);
+            this.panel56.ResumeLayout(false);
+            this.panel56.PerformLayout();
+            this.panel57.ResumeLayout(false);
+            this.panel57.PerformLayout();
+            this.panel58.ResumeLayout(false);
+            this.panel58.PerformLayout();
+            this.panel59.ResumeLayout(false);
+            this.panel59.PerformLayout();
+            this.panel60.ResumeLayout(false);
+            this.panel53.ResumeLayout(false);
+            this.panel53.PerformLayout();
+            this.tableLayoutPanel32.ResumeLayout(false);
+            this.panel61.ResumeLayout(false);
+            this.tableLayoutPanel33.ResumeLayout(false);
+            this.panel62.ResumeLayout(false);
+            this.panel62.PerformLayout();
+            this.panel63.ResumeLayout(false);
+            this.panel63.PerformLayout();
+            this.panel64.ResumeLayout(false);
+            this.panel64.PerformLayout();
+            this.panel65.ResumeLayout(false);
+            this.tableLayoutPanel19.ResumeLayout(false);
+            this.panel50.ResumeLayout(false);
+            this.panel50.PerformLayout();
+            this.panel51.ResumeLayout(false);
+            this.tableLayoutPanel29.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1680,56 +2770,18 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private ReaLTaiizor.Controls.MaterialLabel lblHV_LoiChao;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel8;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel11;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel10;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel9;
-        private ReaLTaiizor.Controls.MaterialComboBox cboHV_LocMonHoc;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel13;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel12;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel15;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel14;
-        private ReaLTaiizor.Controls.MaterialCard materialCard13;
-        private ReaLTaiizor.Controls.MaterialCard materialCard12;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel25;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel24;
-        private ReaLTaiizor.Controls.MaterialCard materialCard11;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel23;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel22;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel21;
-        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_XacNhanMatKhau;
-        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_MatKhauMoi;
-        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_MatKhauCu;
-        private ReaLTaiizor.Controls.MaterialComboBox cboHV_Profile_GioiTinh;
-        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_Profile_DiaChi;
-        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_Profile_Email;
-        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_Profile_NgaySinh;
-        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_Profile_SDT;
-        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtHV_Profile_HoTen;
         private ReaLTaiizor.Controls.ForeverButton foreverButton1;
-        private ReaLTaiizor.Controls.ForeverButton btnHV_DoiMatKhau;
-        private ReaLTaiizor.Controls.ForeverButton btnHV_LuuProfile;
-        private ReaLTaiizor.Controls.MaterialLabel materialLabel20;
         private ReaLTaiizor.Controls.MaterialCard materialCard15;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private ReaLTaiizor.Controls.MaterialCard materialCard1;
-        private ReaLTaiizor.Controls.ForeverButton foreverButton6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private ReaLTaiizor.Controls.MaterialCard materialCard8;
-        private ReaLTaiizor.Controls.ForeverButton btnHV_BatDauLamBai;
-        private ReaLTaiizor.Controls.MaterialButton btnHV_LamMoiDeThi;
-        private System.Windows.Forms.DataGridView dgvHV_DanhSachDeThi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeThi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
-        private System.Windows.Forms.DataGridView dtHV_LopDangHoc;
         private System.Windows.Forms.DataGridView dgvHV_DeThiSapToi;
         private ReaLTaiizor.Controls.MaterialCard materialCard2;
         private ReaLTaiizor.Controls.ForeverButton btnHV_VaoLopHoc;
@@ -1738,41 +2790,151 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.DataGridViewTextBoxColumn Lop;
         private System.Windows.Forms.DataGridViewTextBoxColumn GiaoVien;
         private System.Windows.Forms.DataGridViewTextBoxColumn LichHoc;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
-        private ReaLTaiizor.Controls.MaterialComboBox cmbBaiThi_DaLam;
-        private System.Windows.Forms.DataGridView dgvHV_LichSuThi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column22;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column23;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column24;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column25;
-        private ReaLTaiizor.Controls.ForeverButton btnHV_XemLaiBaiThi;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
-        private System.Windows.Forms.DataGridView dtHV_LopHoc;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
-        private System.Windows.Forms.Button btnHV_DangKy;
-        private System.Windows.Forms.Button btnHV_HuyDangKi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn BT_DeThi;
         private System.Windows.Forms.DataGridViewTextBoxColumn BT_HanNop;
         private System.Windows.Forms.DataGridViewTextBoxColumn BT_SoCau;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
         private System.Windows.Forms.Panel pnlHV_HomeDeThi_Buttons;
-        private System.Windows.Forms.Panel pnlHV_LopDangHoc_Buttons;
-        private System.Windows.Forms.Panel pnlHV_BaiThi_Buttons;
-        private System.Windows.Forms.Label txtHV_Profile_HTNTNS;
-        private System.Windows.Forms.Label txtHV_Profile_HienThiTen;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Panel panel2;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel3;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel1;
+        private System.Windows.Forms.Panel panel3;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel5;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel4;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+        private System.Windows.Forms.DataGridView dgvLopDangKi;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
+        private ReaLTaiizor.Controls.ForeverButton btnHV_DangKi;
+        private ReaLTaiizor.Controls.ForeverButton btnHV_HuyDK;
+        private System.Windows.Forms.Panel panel4;
+        private ReaLTaiizor.Controls.MaterialLabel lblHV_DangChon;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.DataGridView dgvLopThamGia;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel7;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn maGV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HoTen;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.Panel panel6;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel10;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel12;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Panel panel9;
+        private ReaLTaiizor.Controls.MaterialComboBox materialComboBox1;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel16;
+        private ReaLTaiizor.Controls.MaterialLabel lblHV_TongBaiThi;
+        private System.Windows.Forms.Panel panel10;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel18;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel17;
+        private System.Windows.Forms.DataGridView dgvHVDeThi;
+        private System.Windows.Forms.Panel panel11;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
+        private System.Windows.Forms.Panel panel12;
+        private ReaLTaiizor.Controls.MaterialLabel lblHVDT_ThongDT;
+        private ReaLTaiizor.Controls.MaterialLabel lblHVDT_ChonDT;
+        private System.Windows.Forms.Panel panel13;
+        private ReaLTaiizor.Controls.ForeverButton btnHVDT_LamBai;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn13;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
+        private System.Windows.Forms.Panel panel15;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
+        private System.Windows.Forms.Panel panel16;
+        private ReaLTaiizor.Controls.MaterialComboBox cmbKQHV_BaiThi;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel20;
+        private System.Windows.Forms.Panel panel17;
+        private ReaLTaiizor.Controls.MaterialLabel lblHVKQ_TongBaiThi;
+        private System.Windows.Forms.Panel panel18;
+        private System.Windows.Forms.DataGridView dgvHVKetQua;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel22;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel23;
+        private System.Windows.Forms.Panel panel19;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
+        private System.Windows.Forms.Panel panel20;
+        private ReaLTaiizor.Controls.MaterialLabel lblHVKQ_TTDT;
+        private ReaLTaiizor.Controls.MaterialLabel lblHVKQ_ChonDT;
+        private System.Windows.Forms.Panel panel21;
+        private ReaLTaiizor.Controls.MaterialLabel lblKQHV_Diem;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
+        private ReaLTaiizor.Controls.ForeverButton btnHVKQ_XuatFile;
+        private ReaLTaiizor.Controls.ForeverButton btnHVKQ_BaoCao;
+        private System.Windows.Forms.Panel panel14;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel19;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel17;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel18;
+        private System.Windows.Forms.Panel panel52;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel30;
+        private System.Windows.Forms.Panel panel54;
+        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtTTHV_HovaTen;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel57;
+        private System.Windows.Forms.Panel panel55;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel31;
+        private System.Windows.Forms.Panel panel56;
+        private ReaLTaiizor.Controls.MaterialComboBox cmbTTHV_GioiTinh;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel58;
+        private System.Windows.Forms.Panel panel57;
+        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtTTHV_SDT;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel59;
+        private System.Windows.Forms.Panel panel58;
+        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtTTHV_Email;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel60;
+        private System.Windows.Forms.Panel panel59;
+        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtTTHV_DiaChi;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel61;
+        private System.Windows.Forms.Panel panel60;
+        private ReaLTaiizor.Controls.ForeverButton btnTTHV_LuuThayDoi;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel56;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel55;
+        private System.Windows.Forms.Panel panel53;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel32;
+        private System.Windows.Forms.Panel panel61;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel33;
+        private System.Windows.Forms.Panel panel62;
+        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtTTHV_MatKhauHienTai;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel64;
+        private System.Windows.Forms.Panel panel63;
+        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtTTHV_MKMoi;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel65;
+        private System.Windows.Forms.Panel panel64;
+        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtTTHV_XacNhanMK;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel66;
+        private System.Windows.Forms.Panel panel65;
+        private ReaLTaiizor.Controls.ForeverButton btnTTHV_DoiMK;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel63;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel62;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel19;
+        private System.Windows.Forms.Panel panel50;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel48;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel47;
+        private System.Windows.Forms.Panel panel51;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel29;
+        private ReaLTaiizor.Controls.MaterialLabel materialLabel54;
+        private ReaLTaiizor.Controls.MaterialLabel lblGVTT_HovaTen;
     }
 }

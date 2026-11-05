@@ -28,9 +28,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.materialTabControl1 = new ReaLTaiizor.Controls.MaterialTabControl();
             this.pageDashboard = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
@@ -490,17 +490,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // cAD_HocVien
             // 
-            chartArea2.Name = "ChartArea1";
-            this.cAD_HocVien.ChartAreas.Add(chartArea2);
+            chartArea3.Name = "ChartArea1";
+            this.cAD_HocVien.ChartAreas.Add(chartArea3);
             this.cAD_HocVien.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.cAD_HocVien.Legends.Add(legend2);
+            legend3.Name = "Legend1";
+            this.cAD_HocVien.Legends.Add(legend3);
             this.cAD_HocVien.Location = new System.Drawing.Point(3, 312);
             this.cAD_HocVien.Name = "cAD_HocVien";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.cAD_HocVien.Series.Add(series2);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.cAD_HocVien.Series.Add(series3);
             this.cAD_HocVien.Size = new System.Drawing.Size(801, 509);
             this.cAD_HocVien.TabIndex = 6;
             this.cAD_HocVien.Text = "chart1";
@@ -2166,7 +2166,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // dgvLopHoc
             // 
+            this.dgvLopHoc.AllowUserToResizeRows = false;
             this.dgvLopHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvLopHoc.BackgroundColor = System.Drawing.Color.White;
+            this.dgvLopHoc.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvLopHoc.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvLopHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLopHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column8,
@@ -2174,10 +2178,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column14,
             this.Column15});
             this.dgvLopHoc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLopHoc.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
             this.dgvLopHoc.Location = new System.Drawing.Point(3, 319);
             this.dgvLopHoc.Name = "dgvLopHoc";
+            this.dgvLopHoc.ReadOnly = true;
+            this.dgvLopHoc.RowHeadersVisible = false;
             this.dgvLopHoc.RowHeadersWidth = 51;
             this.dgvLopHoc.RowTemplate.Height = 24;
+            this.dgvLopHoc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvLopHoc.Size = new System.Drawing.Size(727, 319);
             this.dgvLopHoc.TabIndex = 4;
             // 
@@ -2186,24 +2194,28 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column8.HeaderText = "Tên Lớp";
             this.Column8.MinimumWidth = 6;
             this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
             // 
             // Column13
             // 
             this.Column13.HeaderText = "Sĩ Số";
             this.Column13.MinimumWidth = 6;
             this.Column13.Name = "Column13";
+            this.Column13.ReadOnly = true;
             // 
             // Column14
             // 
             this.Column14.HeaderText = "Khóa Học";
             this.Column14.MinimumWidth = 6;
             this.Column14.Name = "Column14";
+            this.Column14.ReadOnly = true;
             // 
             // Column15
             // 
             this.Column15.HeaderText = "Giáo Viên";
             this.Column15.MinimumWidth = 6;
             this.Column15.Name = "Column15";
+            this.Column15.ReadOnly = true;
             // 
             // materialLabel13
             // 
@@ -2349,17 +2361,26 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // dgvKhoaHoc
             // 
+            this.dgvKhoaHoc.AllowUserToAddRows = false;
             this.dgvKhoaHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvKhoaHoc.BackgroundColor = System.Drawing.Color.White;
+            this.dgvKhoaHoc.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvKhoaHoc.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvKhoaHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvKhoaHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column6,
             this.Column7});
             this.dgvKhoaHoc.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dgvKhoaHoc.Location = new System.Drawing.Point(3, 275);
+            this.dgvKhoaHoc.EnableHeadersVisualStyles = false;
+            this.dgvKhoaHoc.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
+            this.dgvKhoaHoc.Location = new System.Drawing.Point(3, 206);
             this.dgvKhoaHoc.Name = "dgvKhoaHoc";
+            this.dgvKhoaHoc.ReadOnly = true;
+            this.dgvKhoaHoc.RowHeadersVisible = false;
             this.dgvKhoaHoc.RowHeadersWidth = 51;
             this.dgvKhoaHoc.RowTemplate.Height = 24;
-            this.dgvKhoaHoc.Size = new System.Drawing.Size(727, 363);
+            this.dgvKhoaHoc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvKhoaHoc.Size = new System.Drawing.Size(727, 432);
             this.dgvKhoaHoc.TabIndex = 5;
             // 
             // Column6
@@ -2367,12 +2388,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column6.HeaderText = "Khóa Học";
             this.Column6.MinimumWidth = 6;
             this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
             // 
             // Column7
             // 
             this.Column7.HeaderText = "Mô Tả";
             this.Column7.MinimumWidth = 6;
             this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
             // 
             // tableLayoutPanel15
             // 
@@ -2835,7 +2858,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // dgvTaiKhoan
             // 
+            this.dgvTaiKhoan.AllowUserToAddRows = false;
             this.dgvTaiKhoan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTaiKhoan.BackgroundColor = System.Drawing.Color.White;
+            this.dgvTaiKhoan.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvTaiKhoan.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvTaiKhoan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTaiKhoan.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column9,
@@ -2843,10 +2870,15 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column11,
             this.Column12});
             this.dgvTaiKhoan.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTaiKhoan.EnableHeadersVisualStyles = false;
+            this.dgvTaiKhoan.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
             this.dgvTaiKhoan.Location = new System.Drawing.Point(3, 3);
             this.dgvTaiKhoan.Name = "dgvTaiKhoan";
+            this.dgvTaiKhoan.ReadOnly = true;
+            this.dgvTaiKhoan.RowHeadersVisible = false;
             this.dgvTaiKhoan.RowHeadersWidth = 51;
             this.dgvTaiKhoan.RowTemplate.Height = 24;
+            this.dgvTaiKhoan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTaiKhoan.Size = new System.Drawing.Size(895, 636);
             this.dgvTaiKhoan.TabIndex = 4;
             // 
@@ -2855,24 +2887,28 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column9.HeaderText = "Tài Khoản";
             this.Column9.MinimumWidth = 6;
             this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
             // 
             // Column10
             // 
             this.Column10.HeaderText = "Người Dùng";
             this.Column10.MinimumWidth = 6;
             this.Column10.Name = "Column10";
+            this.Column10.ReadOnly = true;
             // 
             // Column11
             // 
             this.Column11.HeaderText = "Vai Trò";
             this.Column11.MinimumWidth = 6;
             this.Column11.Name = "Column11";
+            this.Column11.ReadOnly = true;
             // 
             // Column12
             // 
             this.Column12.HeaderText = "Trạng Thái";
             this.Column12.MinimumWidth = 6;
             this.Column12.Name = "Column12";
+            this.Column12.ReadOnly = true;
             // 
             // materialLabel9
             // 

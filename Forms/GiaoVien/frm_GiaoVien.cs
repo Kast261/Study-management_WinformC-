@@ -364,13 +364,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 LoadDanhSachLopQuanLy();
                 cboDuyet_ChonLop_SelectedIndexChanged(null, null);
             }
-            else if (tabText.Contains("Ngân Hàng") || tabText.Contains("Câu Hỏi") || materialTabControl1.SelectedTab == pageGV_NganHangCauHoi)
+            else if (tabText.Contains("Ngân Hàng") || tabText.Contains("Câu Hỏi") || materialTabControl1.SelectedTab == pageGV_QuanLyDeThi)
             {
                 LoadMonHocGiaoVien();
                 LoadDeThiCombobox();
                 cmbGV_ChonDeThi_SelectedIndexChanged(null, null);
             }
-            else if (tabText.Contains("Bài Thi") || tabText.Contains("Đề Thi") || materialTabControl1.SelectedTab == pageGV_QuanLyDeThi)
+            else if (tabText.Contains("Bài Thi") || tabText.Contains("Đề Thi") || materialTabControl1.SelectedTab == pageGV_NganHangCauHoi)
             {
                 LoadMonHocGiaoVien();
                 LoadDanhSachLopQuanLy();
@@ -486,7 +486,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (row.DataBoundItem is DataRowView drv)
                 {
                     _selectedLopHocID = Convert.ToInt32(drv["LopHocID"]);
-                    txtGV_TenLop.Text = drv["TenLop"]?.ToString();
+                    txtLH_TenLop.Text = drv["TenLop"]?.ToString();
                     txtGV_LichHoc.Text = drv["LichHoc"]?.ToString();
 
                     if (drv["NgayBatDau"] != DBNull.Value)
@@ -528,10 +528,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnGV_TaoLop_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtGV_TenLop.Text))
+            if (string.IsNullOrWhiteSpace(txtLH_TenLop.Text))
             {
                 MessageBox.Show("Vui lòng nhập tên lớp học!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtGV_TenLop.Focus();
+                txtLH_TenLop.Focus();
                 return;
             }
 
@@ -553,7 +553,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             LopHoc lop = new LopHoc
             {
-                TenLop = txtGV_TenLop.Text.Trim(),
+                TenLop = txtLH_TenLop.Text.Trim(),
                 KhoaHocID = khID,
                 GiaoVienID = Session.NguoiDungID,
                 LichHoc = txtGV_LichHoc.Text.Trim(),
@@ -579,10 +579,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtGV_TenLop.Text))
+            if (string.IsNullOrWhiteSpace(txtLH_TenLop.Text))
             {
                 MessageBox.Show("Tên lớp không được để trống!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtGV_TenLop.Focus();
+                txtLH_TenLop.Focus();
                 return;
             }
 
@@ -605,7 +605,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LopHoc lop = new LopHoc
             {
                 LopHocID = _selectedLopHocID,
-                TenLop = txtGV_TenLop.Text.Trim(),
+                TenLop = txtLH_TenLop.Text.Trim(),
                 KhoaHocID = khID,
                 GiaoVienID = Session.NguoiDungID,
                 LichHoc = txtGV_LichHoc.Text.Trim(),
@@ -1631,9 +1631,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     try { cmbGV_ChonDeThi.SelectedValue = deID; } catch { }
 
                     // Chuyển sang Tab Câu Hỏi để giáo viên xem/soạn câu hỏi cho đề này
-                    if (pageGV_NganHangCauHoi != null && materialTabControl1 != null)
+                    if (pageGV_QuanLyDeThi != null && materialTabControl1 != null)
                     {
-                        materialTabControl1.SelectedTab = pageGV_NganHangCauHoi;
+                        materialTabControl1.SelectedTab = pageGV_QuanLyDeThi;
                     }
                 }
             }
