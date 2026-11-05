@@ -17,14 +17,23 @@ namespace BLT_Quan_Ly_Hoc_Tap
 {
     public partial class frm_DangNhap : ReaLTaiizor.Forms.MaterialForm
     {
+        #region Dữ liệu & Trạng thái
+
         
         private readonly TaiKhoanDAL _taiKhoanDAL = new TaiKhoanDAL();
+
+        #endregion
+
+        #region 1. Khởi tạo & Sự kiện form
+
         public frm_DangNhap()
         {
             InitializeComponent();
             this.AcceptButton = btn_DangNhap;
             txt_TaiKhoan.TextChanged += Txt_TaiKhoan_TextChanged;
         }
+
+        private bool IsDesignTime => DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime;
 
         private void Frm_DangNhap_Load(object sender, EventArgs e)
         {
@@ -40,8 +49,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             TaiThongTinGhiNho();
         }
 
-        private bool IsDesignTime => DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime;
-
         protected override void OnVisibleChanged(EventArgs e)
         {
             base.OnVisibleChanged(e);
@@ -51,24 +58,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void TaiThongTinGhiNho()
-        {
-            var (tenDangNhap, matKhau) = _taiKhoanDAL.DocGhiNho();
-            if (!string.IsNullOrEmpty(tenDangNhap))
-            {
-                txt_TaiKhoan.Text = tenDangNhap;
-                check_GhiNho.Checked = true;
-                if (!string.IsNullOrEmpty(matKhau))
-                {
-                    txt_MatKhau.Text = matKhau;
-                    txt_MatKhau.UseSystemPasswordChar = true;
-                }
-                else
-                {
-                    txt_MatKhau.Focus();
-                }
-            }
-        }
+        #endregion
+
+        #region 2. Xác Thực & Đăng Nhập
 
         private void Btn_DangNhap_Click(object sender, EventArgs e)
         {
@@ -197,6 +189,29 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
+        #endregion
+
+        #region 3. Ghi Nhớ Tài Khoản & Mật Khẩu
+
+        private void TaiThongTinGhiNho()
+        {
+            var (tenDangNhap, matKhau) = _taiKhoanDAL.DocGhiNho();
+            if (!string.IsNullOrEmpty(tenDangNhap))
+            {
+                txt_TaiKhoan.Text = tenDangNhap;
+                check_GhiNho.Checked = true;
+                if (!string.IsNullOrEmpty(matKhau))
+                {
+                    txt_MatKhau.Text = matKhau;
+                    txt_MatKhau.UseSystemPasswordChar = true;
+                }
+                else
+                {
+                    txt_MatKhau.Focus();
+                }
+            }
+        }
+
         private void Check_GhiNho_CheckedChanged(object sender, EventArgs e)
         {
             if (check_GhiNho.Checked)
@@ -240,10 +255,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void MaterialCard1_Paint(object sender, PaintEventArgs e)
-        {
+        #endregion
 
-        }
+        #region 4. Hiển Thị Mật Khẩu & Giao Diện
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -255,5 +269,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
             txt_MatKhau.UseSystemPasswordChar = true;
             checkBox1.Checked = false;
         }
+
+        private void MaterialCard1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        #endregion
+
     }
 }

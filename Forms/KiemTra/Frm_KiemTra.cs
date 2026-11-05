@@ -11,6 +11,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 {
     public partial class Frm_KiemTra : ReaLTaiizor.Forms.MaterialForm
     {
+        #region Dữ liệu & Trạng thái
+
         private readonly int _deThiID;
         private readonly DeThiDAL _deThiDAL = new DeThiDAL();
         private readonly KetQuaDAL _ketQuaDAL = new KetQuaDAL();
@@ -23,6 +25,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private bool _daNopBai = false;
         private bool _dangNopBai;
         private DateTime _ketThucLuc;
+
+        #endregion
+
+        #region 1. Khởi tạo, Nạp Dữ Liệu & Đăng Ký Sự Kiện
 
         public Frm_KiemTra(int deThiID)
         {
@@ -88,16 +94,25 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void DangKySuKienRadio()
         {
-            _thoiGianConLai = Math.Max(0, (int)Math.Ceiling((_ketThucLuc - DateTime.Now).TotalSeconds));
-            lblKiemTra_SoCauHoi.Text = $"Thời gian: {_thoiGianConLai / 60:D2}:{_thoiGianConLai % 60:D2}";
-            if (_thoiGianConLai == 0 && !_dangNopBai)
-            {
-                _timer.Stop();
-                NopBai();
-            }
+            radKiemTra_DapAnA.CheckedChanged += Radio_CheckedChanged;
+            radKiemTra_DapAnB.CheckedChanged += Radio_CheckedChanged;
+            radKiemTra_DapAnC.CheckedChanged += Radio_CheckedChanged;
+            radKiemTra_DapAnD.CheckedChanged += Radio_CheckedChanged;
         }
+
+        private void HuyDangKySuKienRadio()
+        {
+            radKiemTra_DapAnA.CheckedChanged -= Radio_CheckedChanged;
+            radKiemTra_DapAnB.CheckedChanged -= Radio_CheckedChanged;
+            radKiemTra_DapAnC.CheckedChanged -= Radio_CheckedChanged;
+            radKiemTra_DapAnD.CheckedChanged -= Radio_CheckedChanged;
+        }
+
+        #endregion
+
+        #region 2. Hiển Thị Câu Hỏi & Điều Hướng
 
         private void HienThiCauHoi(int index)
         {
@@ -132,21 +147,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             DangKySuKienRadio();
         }
 
-        private void HuyDangKySuKienRadio()
+        private void ChuyenCau(int newIndex)
         {
-            radKiemTra_DapAnA.CheckedChanged -= Radio_CheckedChanged;
-            radKiemTra_DapAnB.CheckedChanged -= Radio_CheckedChanged;
-            radKiemTra_DapAnC.CheckedChanged -= Radio_CheckedChanged;
-            radKiemTra_DapAnD.CheckedChanged -= Radio_CheckedChanged;
+            if (newIndex >= 0 && newIndex < _cauHois.Count)
+            {
+                HienThiCauHoi(newIndex);
+            }
         }
 
-        private void DangKySuKienRadio()
-        {
-            radKiemTra_DapAnA.CheckedChanged += Radio_CheckedChanged;
-            radKiemTra_DapAnB.CheckedChanged += Radio_CheckedChanged;
-            radKiemTra_DapAnC.CheckedChanged += Radio_CheckedChanged;
-            radKiemTra_DapAnD.CheckedChanged += Radio_CheckedChanged;
-        }
+        #endregion
+
+        #region 3. Chọn Đáp Án & Tiến Độ Làm Bài
 
         private void Radio_CheckedChanged(object sender, EventArgs e)
         {
@@ -172,13 +183,24 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void ChuyenCau(int newIndex)
+        #endregion
+
+        #region 4. Đồng Hồ Đếm Ngược
+
+        private void Timer_Tick(object sender, EventArgs e)
         {
-            if (newIndex >= 0 && newIndex < _cauHois.Count)
+            _thoiGianConLai = Math.Max(0, (int)Math.Ceiling((_ketThucLuc - DateTime.Now).TotalSeconds));
+            lblKiemTra_SoCauHoi.Text = $"Thời gian: {_thoiGianConLai / 60:D2}:{_thoiGianConLai % 60:D2}";
+            if (_thoiGianConLai == 0 && !_dangNopBai)
             {
-                HienThiCauHoi(newIndex);
+                _timer.Stop();
+                NopBai();
             }
         }
+
+        #endregion
+
+        #region 5. Xác Nhận & Nộp Bài
 
         private void XacNhanNopBai()
         {
@@ -191,7 +213,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             // Nếu chọn No thì hộp thoại đóng lại, thí sinh tiếp tục làm bài bình thường
         }
-
 
         private void NopBai(bool dongForm = true)
         {
@@ -229,6 +250,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (dongForm) Close();
         }
 
+        #endregion
+
+        #region 6. Đóng Form & Giải Phóng Tài Nguyên
+
         private void Frm_KiemTra_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (_daNopBai || _timer == null) return;
@@ -245,5 +270,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             _timer?.Dispose();
             base.OnFormClosed(e);
         }
+
+        #endregion
+
     }
 }
