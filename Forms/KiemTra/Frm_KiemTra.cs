@@ -33,7 +33,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         public Frm_KiemTra(int deThiID)
         {
             InitializeComponent();
-            FormClosing += Frm_KiemTra_FormClosing;
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
@@ -71,17 +70,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 _timer = new Timer { Interval = 1000 };
                 _timer.Tick += Timer_Tick;
                 _timer.Start();
-
-                // Đăng ký sự kiện các nút điều hướng theo đúng tên button của bạn
-                btnKiemTra_CauTruoc.Click += (s, ev) => ChuyenCau(_currentIndex - 1);
-                btnKiemTra_CauSau.Click += (s, ev) => ChuyenCau(_currentIndex + 1);
-                btnKiemTra_NopBai.Click += (s, ev) => XacNhanNopBai();
-
-                // Đăng ký sự kiện chọn đáp án
-                radKiemTra_DapAnA.CheckedChanged += Radio_CheckedChanged;
-                radKiemTra_DapAnB.CheckedChanged += Radio_CheckedChanged;
-                radKiemTra_DapAnC.CheckedChanged += Radio_CheckedChanged;
-                radKiemTra_DapAnD.CheckedChanged += Radio_CheckedChanged;
 
                 HienThiCauHoi(_currentIndex);
                 CapNhatTienDoProgressBar();
@@ -147,6 +135,16 @@ namespace BLT_Quan_Ly_Hoc_Tap
             DangKySuKienRadio();
         }
 
+        private void btnKiemTra_CauTruoc_Click(object sender, EventArgs e)
+        {
+            ChuyenCau(_currentIndex - 1);
+        }
+
+        private void btnKiemTra_CauSau_Click(object sender, EventArgs e)
+        {
+            ChuyenCau(_currentIndex + 1);
+        }
+
         private void ChuyenCau(int newIndex)
         {
             if (newIndex >= 0 && newIndex < _cauHois.Count)
@@ -201,6 +199,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
         #endregion
 
         #region 5. Xác Nhận & Nộp Bài
+
+        private void btnKiemTra_NopBai_Click(object sender, EventArgs e)
+        {
+            XacNhanNopBai();
+        }
 
         private void XacNhanNopBai()
         {

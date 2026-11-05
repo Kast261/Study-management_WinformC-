@@ -29,7 +29,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private readonly TaiKhoanDAL _tkDAL = new TaiKhoanDAL();
         private readonly DashboardDAL _dashboardDAL = new DashboardDAL();
         private bool _dangTaiDashboard;
-        
 
         private int _selectedGiaoVienID = 0;
         private int _selectedHocVienID = 0;
@@ -46,21 +45,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             this.DoubleBuffered = true;
             InitializeComponent();
-            CauHinhHoSo();
             KhoiTaoDashboard();
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
             this.DrawerTabControl = materialTabControl1;
-
-            this.FormClosed += Frm_Admin_FormClosed;
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            InitDropdownOptions();
-            SetupEventHandlers();
-            SetupTaiKhoanEvents();
-
-         
             LoadDashboard();
             LoadDanhSachGiaoVien();
             LoadDanhSachHocVien();
@@ -74,54 +65,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LamMoiFormKH();
             LamMoiFormLop();
             LamMoiFormTK();
-        }
-
-        private void CauHinhHoSo()
-        {
-            dgvGiaoVien.AutoGenerateColumns = false;
-            maGV.DataPropertyName = "GiaoVienID";
-            HoTen.DataPropertyName = "HoTen";
-            Column1.DataPropertyName = "ChuyenMon";
-            Column2.DataPropertyName = "SoDienThoai";
-            Column3.DataPropertyName = "Email";
-            Column4.DataPropertyName = "SoLop";
-
-            dgvHocVien.AutoGenerateColumns = false;
-            dataGridViewTextBoxColumn1.DataPropertyName = "HocSinhID";
-            dataGridViewTextBoxColumn2.DataPropertyName = "HoTen";
-            dataGridViewTextBoxColumn3.DataPropertyName = "NgaySinh";
-            dataGridViewTextBoxColumn3.DefaultCellStyle.Format = "dd/MM/yyyy";
-            dataGridViewTextBoxColumn4.DataPropertyName = "SoDienThoai";
-            dataGridViewTextBoxColumn5.DataPropertyName = "Email";
-            // Nguồn dữ liệu hiện có trả về lớp chính của học viên.
-            dataGridViewTextBoxColumn6.HeaderText = "Lớp học";
-            dataGridViewTextBoxColumn6.DataPropertyName = "TenLop";
-
-            DatePickerInput.Configure(txtGV_NgaySinh);
-            DatePickerInput.Configure(txtHV_NgaySinh);
-            txtGV_TimKiem.Text = "";
-            txtHV_TimKiem.Text = "";
-        }
-
-        private void InitDropdownOptions()
-        {
-            // Giới tính Giáo Viên
-            txtGV_GioiTinh.Items.Clear();
-            txtGV_GioiTinh.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
-            txtGV_GioiTinh.SelectedIndex = 0;
-
-            // Giới tính Học Viên
-            cboHV_GioiTinh.Items.Clear();
-            cboHV_GioiTinh.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
-            cboHV_GioiTinh.SelectedIndex = 0;
-
-            // Vai trò Tài Khoản
-            if (cmbTK_VaiTro != null)
-            {
-                cmbTK_VaiTro.Items.Clear();
-                cmbTK_VaiTro.Items.AddRange(new object[] { "Admin", "GiaoVien", "HocSinh" });
-                cmbTK_VaiTro.SelectedIndex = 2; // Mặc định HocSinh
-            }
         }
 
         private void LoadDropdownData()
@@ -143,54 +86,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi tải danh mục khóa học / giáo viên: " + ex.Message, "Thông báo");
-            }
-        }
-
-        private void SetupEventHandlers()
-        {
-            // --- Giáo Viên ---
-            btnGV_Them.Click += btnGV_Them_Click;
-            btnGV_Sua.Click += btnGV_Sua_Click;
-            btnGV_Xoa.Click += btnGV_Xoa_Click;
-            btnGV_LamMoi.Click += btnGV_LamMoi_Click;
-            btnGV_TaiLai.Click += btnGV_LamMoi_Click;
-            txtGV_TimKiem.TextChanged += txtGV_TimKiem_TextChanged;
-            dgvGiaoVien.CellClick += dgvGiaoVien_CellClick;
-
-            // --- Học Viên ---
-            btnHV_Them.Click += btnHV_Them_Click;
-            btnHV_Sua.Click += btnHV_Sua_Click;
-            btnHV_Xoa.Click += btnHV_Xoa_Click;
-            btnHV_LamMoi.Click += btnHV_LamMoi_Click;
-            foreverButton2.Click += btnHV_LamMoi_Click;
-            txtHV_TimKiem.TextChanged += txtHV_TimKiem_TextChanged;
-            dgvHocVien.CellClick += dgvHocVien_CellClick;
-
-            // --- Khóa Học ---
-            btnKH_Them.Click += btnKH_Them_Click;
-            btnKH_Sua.Click += btnKH_Sua_Click;
-            btnKH_Xoa.Click += btnKH_Xoa_Click;
-            dgvKhoaHoc.CellClick += dgvKhoaHoc_CellClick;
-
-            // --- Lớp Học ---
-            btnLop_Them.Click += btnLop_Them_Click;
-            btnLop_Sua.Click += btnLop_Sua_Click;
-            btnLop_Xoa.Click += btnLop_Xoa_Click;
-            dgvLopHoc.CellClick += dgvLopHoc_CellClick;
-        }
-
-        private void SetupTaiKhoanEvents()
-        {
-            if (btnTK_TaoTaiKhoan != null)   btnTK_TaoTaiKhoan.Click   += btnTK_TaoTaiKhoan_Click;
-            if (btnTK_KhoaMoKhoa != null)    btnTK_KhoaMoKhoa.Click    += btnTK_KhoaMoKhoa_Click;
-            if (btnTK_DatLaiMatKhau != null) btnTK_DatLaiMatKhau.Click  += btnTK_DatLaiMatKhau_Click;
-            if (dgvTaiKhoan != null)          dgvTaiKhoan.CellClick     += dgvTaiKhoan_CellClick;
-            if (cmbTK_VaiTro != null)         cmbTK_VaiTro.SelectedIndexChanged += cmbTK_VaiTro_Changed;
-            if (foreverButton1 != null)       foreverButton1.Click      += btnTimTaiKhoan_Click;
-            if (txt_TimTaiKhoan != null)
-            {
-                txt_TimTaiKhoan.KeyDown     += txt_TimTaiKhoan_KeyDown;
-                txt_TimTaiKhoan.TextChanged += txt_TimTaiKhoan_TextChanged;
             }
         }
 
@@ -223,9 +118,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void KhoiTaoDashboard()
         {
             // Chỉ cấu hình hành vi; các control và bố cục vẫn nằm trong Designer.
-            btnTC_LamMoi.Click += btnTC_LamMoi_Click;
-            btnTC_XemTatCaLopHoc.Click += btnTC_XemTatCaLopHoc_Click;
-            LvAD_LopHoc.Resize += (sender, e) => CanCotLopMoiNhat();
+
             CanCotLopMoiNhat();
 
             cAD_HocVien.Series.Clear();
@@ -252,6 +145,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             area.AxisY.LabelStyle.Format = "0";
             area.AxisY.Title = "Số học viên";
             area.AxisY.MajorGrid.LineColor = Color.FromArgb(230, 234, 240);
+        }
+
+        private void LvAD_LopHoc_Resize(object sender, EventArgs e)
+        {
+            CanCotLopMoiNhat();
         }
 
         private void CanCotLopMoiNhat()
@@ -360,9 +258,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                dgvGiaoVien.AutoGenerateColumns = false;
-                dgvGiaoVien.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
                 var danhSach = _gvDAL.LayTatCa();
                 dgvGiaoVien.DataSource = danhSach;
                 hlbl_SoLuong.Text = $"Số lượng giáo viên: {danhSach.Rows.Count:N0}";
@@ -582,9 +477,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                dgvHocVien.AutoGenerateColumns = false;
-                dgvHocVien.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
                 var danhSach = _hsDAL.LayTatCa();
                 dgvHocVien.DataSource = danhSach;
                 headerLabel14.Text = $"Số lượng học viên: {danhSach.Rows.Count:N0}";
@@ -794,10 +686,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                dgvKhoaHoc.AutoGenerateColumns = false;
-                Column6.DataPropertyName = "TenKhoaHoc";
-                Column7.DataPropertyName = "MoTa";
-
                 dgvKhoaHoc.DataSource = _khDAL.LayTatCa();
             }
             catch (Exception ex)
@@ -920,12 +808,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                dgvLopHoc.AutoGenerateColumns = false;
-                Column8.DataPropertyName = "TenLop";
-                Column13.DataPropertyName = "SiSo";
-                Column14.DataPropertyName = "TenKhoaHoc";
-                Column15.DataPropertyName = "TenGiaoVien";
-
                 dgvLopHoc.DataSource = _lopDAL.LayTatCa();
             }
             catch (Exception ex)
@@ -1092,12 +974,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 if (dgvTaiKhoan == null) return;
-                dgvTaiKhoan.AutoGenerateColumns = false;
-                dgvTaiKhoan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                Column9.DataPropertyName  = "TenDangNhap";
-                Column10.DataPropertyName = "TenNguoiDung";
-                Column11.DataPropertyName = "VaiTro";
-                Column12.DataPropertyName = "TrangThaiHienThi";
+
                 dgvTaiKhoan.DataSource = _tkDAL.LayTatCaCoTenNguoiDung();
             }
             catch (Exception ex)

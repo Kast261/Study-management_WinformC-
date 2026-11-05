@@ -30,7 +30,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private DataTable _khoaHoc;
         private DataTable _lopHoc;
         private DataTable _ketQua;
-        private bool _isEventHandlersSetup = false;
 
         #endregion
 
@@ -40,13 +39,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             this.DoubleBuffered = true;
             InitializeComponent();
-            CauHinhLuoi();
-            CauHinhNhapLieu();
-            CauHinhKetQuaThiGanDay();
+            lblGVTT_HovaTen.Text = Session.HoTen ?? Session.TenDangNhap ?? "";
+
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
             this.DrawerTabControl = materialTabControl1;
-            this.FormClosed += Frm_GiaoVien_FormClosed;
-            SetupEventHandlers();
         }
 
         private void GiaoVien_Load(object sender, EventArgs e)
@@ -58,7 +54,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 _daTaiTrangChu = true;
 
                 InitDropdowns();
-               
 
                 // Load dữ liệu ban đầu cho các tab
                 LoadLopHocCuaToi();
@@ -73,92 +68,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void CauHinhLuoi()
-        {
-            dgvGV_LopCuaToi.AutoGenerateColumns = false;
-            dataGridViewTextBoxColumn7.DataPropertyName = "TenLop";
-            dataGridViewTextBoxColumn8.DataPropertyName = "SiSo";
-            dataGridViewTextBoxColumn9.DataPropertyName = "LichHoc";
-            dgvLopHoc.AutoGenerateColumns = false;
-            maGV.DataPropertyName = "TenLop";
-            HoTen.DataPropertyName = "TenKhoaHoc";
-            Column1.DataPropertyName = "SiSo";
-            Column2.DataPropertyName = "TrangThai";
-            Column3.DataPropertyName = "NgayBatDau";
-            Column4.DataPropertyName = "NgayKetThuc";
-            Column8.DataPropertyName = "LichHoc";
-            Column3.DefaultCellStyle.Format = Column4.DefaultCellStyle.Format = "dd/MM/yyyy";
-            Column3.DefaultCellStyle.NullValue = Column4.DefaultCellStyle.NullValue = "";
-            dgvDSYeuCau.AutoGenerateColumns = false;
-            dataGridViewTextBoxColumn13.DataPropertyName = "HoTen";
-            dataGridViewTextBoxColumn14.DataPropertyName = "Email";
-            dataGridViewTextBoxColumn15.DataPropertyName = "SoDienThoai";
-            dataGridViewTextBoxColumn16.DataPropertyName = "TenLop";
-            dataGridViewTextBoxColumn17.DataPropertyName = "SiSo";
-            dataGridViewTextBoxColumn18.DataPropertyName = "NgayDangKy";
-            dataGridViewTextBoxColumn18.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
-            dgvGVDeThi.AutoGenerateColumns = false;
-            dataGridViewTextBoxColumn19.DataPropertyName = "TenDeThi";
-            dataGridViewTextBoxColumn20.DataPropertyName = "MonHoc";
-            dataGridViewTextBoxColumn21.DataPropertyName = "ThoiGian";
-            dataGridViewTextBoxColumn22.DataPropertyName = "TenLop";
-            dataGridViewTextBoxColumn32.DataPropertyName = "SoCau";
-            dgvKetQua.AutoGenerateColumns = false;
-            dataGridViewTextBoxColumn25.DataPropertyName = "HoTen";
-            dataGridViewTextBoxColumn26.DataPropertyName = "TenDeThi";
-            dataGridViewTextBoxColumn27.DataPropertyName = "SoCauDung";
-            dataGridViewTextBoxColumn28.DataPropertyName = "Diem";
-            dataGridViewTextBoxColumn29.DataPropertyName = "ThoiGianNop";
-            dataGridViewTextBoxColumn28.DefaultCellStyle.Format = "0.00";
-            dataGridViewTextBoxColumn29.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
-            CauHinhLuoiCauHoi();
-            foreach (DataGridView grid in new[] { dgvLopHoc, dgvCauHoi, dgvGVDeThi, dgvDSYeuCau, dgvKetQua })
-            {
-                grid.ReadOnly = true;
-                grid.MultiSelect = false;
-                grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            }
-        }
-
-        private void CauHinhNhapLieu()
-        {
-            txtLH_TenLop.Clear();
-            txtLH_KhoaHoc.Clear();
-            txtLH_TimKiem.Text = "";
-            txtLH_SoDangKi.ReadOnly = true;
-            txtDT_SoCauHoi.ReadOnly = true;
-            nUDLH_SiSo.Minimum = 1;
-            nUDLH_SiSo.Maximum = 500;
-            nUDLH_SiSo.Value = 40;
-            DatePickerInput.Configure(dateLH_NgayBatDau);
-            DatePickerInput.Configure(dateLH_NgayKetThuc);
-            txtCH_TenDeThi.Hint = "Tên đề mới / chọn đề có sẵn ở tab Đề Thi";
-            txtCH_TenDeThi.Clear();
-            txtCH_NhapCauHoi.Clear();
-            foreach (var input in new[] { txtTTGV_MatKhauHienTai, txtTTGV_MKMoi, txtTTGV_XacNhanMK })
-                input.UseSystemPasswordChar = true;
-            lblGVTT_HovaTen.Text = Session.HoTen ?? Session.TenDangNhap ?? "";
-            materialLabel54.Text = "GV";
-            txtLH_SoDangKi.Text = "0";
-            lblDK_ChonHS.Text = "Đang chọn: chưa chọn học viên";
-            lblDK_SoChoDuyet.Text = "Số yêu cầu chờ duyệt: 0";
-            lblCH_TongCauHoi.Text = "Số câu hỏi: 0";
-            lblDT_SoDeThi.Text = "Số đề thi: 0";
-            lblKQ_SoBaiNop.Text = "Số bài nộp: 0";
-        }
-
         private void InitDropdowns()
         {
-            // Dropdown đáp án đúng của câu hỏi
-            cmb_DapAn.Items.Clear();
-            cmb_DapAn.Items.AddRange(new object[] { "A", "B", "C", "D" });
-            cmb_DapAn.SelectedIndex = 0;
-
-            // Giới tính profile
-            cmbTTGV_GioiTinh.Items.Clear();
-            cmbTTGV_GioiTinh.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
-            cmbTTGV_GioiTinh.SelectedIndex = 0;
-
             // Khóa học cho form Lớp
             _khoaHoc = _khDAL.LayTatCa();
             var tenKhoaHoc = new AutoCompleteStringCollection();
@@ -229,62 +140,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void SetupEventHandlers()
-        {
-            if (_isEventHandlersSetup) return;
-            _isEventHandlersSetup = true;
-
-            // Tab Lớp học
-            btnLH_Them.Click += btnLH_Them_Click;
-            btnLH_CapNhap.Click += btnLH_CapNhap_Click;
-            btnLH_DongDK.Click += btnLH_DongDK_Click;
-            btnLH_TaiLai.Click += btnLH_TaiLai_Click;
-            txtLH_TimKiem.TextChanged += txtLH_TimKiem_TextChanged;
-            dgvDSYeuCau.SelectionChanged += dgvDSYeuCau_SelectionChanged;
-            dgvKetQua.SelectionChanged += dgvKetQua_SelectionChanged;
-            txtKQ_TenHocVien.TextChanged += (sender, e) => HienThiKetQua();
-            dgvLopHoc.CellClick += dgvLopHoc_CellClick;
-
-            // Tab Duyệt đăng ký
-            cboDK_LocTheoLop.SelectedIndexChanged += cboDK_LocTheoLop_SelectedIndexChanged;
-            btnDK_Duyet.Click += btnDK_Duyet_Click;
-            btnDK_TuChoi.Click += btnDK_TuChoi_Click;
-
-            // Tab Câu hỏi
-            cmbDT_DeThi.SelectedIndexChanged += cmbDT_DeThi_SelectedIndexChanged;
-            cmbCH_MonHoc.SelectedIndexChanged += cmbCH_MonHoc_SelectedIndexChanged;
-            btnCH_ThemCH.Click += btnCH_ThemCH_Click;
-            btnCH_CapNhap.Click += btnCH_CapNhap_Click;
-            btnCH_XoaCH.Click += btnCH_XoaCH_Click;
-            btnCH_Excel.Click += BtnCH_Excel_Click;
-            if (components == null) components = new System.ComponentModel.Container();
-            var excelMenu = new ContextMenuStrip(components);
-            excelMenu.Items.Add("Lưu file Excel mẫu...", null, LuuFileExcelMau_Click);
-            btnCH_Excel.ContextMenuStrip = excelMenu;
-            var excelTip = new ToolTip(components);
-            excelTip.SetToolTip(btnCH_Excel, "Nhập câu hỏi từ .xlsx hoặc .xls. Nhấp chuột phải để lưu file Excel mẫu.");
-            dgvCauHoi.CellClick += dgvCauHoi_CellClick;
-
-            // Tab Câu hỏi – Tạo đề thi mới
-            btnCH_TaoDe.Click += btnCH_TaoDe_Click;
-
-            // Tab Đề thi – Giao đề thi đã tạo cho lớp & Xóa đề thi
-            cmbDT_MonHoc.SelectedIndexChanged += cmbDT_MonHoc_SelectedIndexChanged;
-            btnDT_GiaoBaiThi.Click        += btnDT_GiaoBaiThi_Click;
-            btnDT_XoaDeThi.Click        += btnDT_XoaDeThi_Click;
-            dgvGVDeThi.CellClick  += dgvGVDeThi_CellClick;
-            dgvGVDeThi.CellDoubleClick += dgvGVDeThi_CellDoubleClick;
-
-            // Tab Kết quả thi
-            cmbKQ_DeThi.SelectedIndexChanged += cmbKQ_DeThi_SelectedIndexChanged;
-            btnKQ_XuatExcel.Click += btnKQ_XuatExcel_Click;
-            btnKQ_XuatBaoCao.Click   += btnKQ_XuatBaoCao_Click;
-
-            // Tab Thông tin cá nhân & Mật khẩu
-            btnTTGV_LuuThayDoi.Click += btnTTGV_LuuThayDoi_Click;
-            btnTTGV_DoiMK.Click += btnTTGV_DoiMK_Click;
-        }
-
         private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
         {
             if (grid == dgvLopHoc)
@@ -311,20 +166,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         #endregion
 
         #region 2. Tab Trang Chủ & Quản Lý Lớp Học
-
-        private void CauHinhKetQuaThiGanDay()
-        {
-            // Cấu hình trước khi AttachAll bind nguồn rỗng để giữ nguyên cột Designer.
-            dgvGV_LichDay.AutoGenerateColumns = false;
-            dgvGV_LichDay.ReadOnly = true;
-            dgvGV_LichDay.AllowUserToDeleteRows = false;
-            dataGridViewTextBoxColumn10.DataPropertyName = "TenDeThi";
-            dataGridViewTextBoxColumn11.DataPropertyName = "DaNop";
-            dataGridViewTextBoxColumn11.DefaultCellStyle.Format = "N0";
-            dataGridViewTextBoxColumn12.DataPropertyName = "DiemTrungBinh";
-            dataGridViewTextBoxColumn12.DefaultCellStyle.Format = "0.00";
-            dataGridViewTextBoxColumn12.DefaultCellStyle.NullValue = "—";
-        }
 
         private void LoadKetQuaThiGanDay()
         {
@@ -684,15 +525,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         #endregion
 
         #region 4. Tab Ngân Hàng Câu Hỏi
-
-        private void CauHinhLuoiCauHoi()
-        {
-            dgvCauHoi.AutoGenerateColumns = false;
-            dataGridViewTextBoxColumn23.DataPropertyName = "DeThiID";
-            dataGridViewTextBoxColumn24.DataPropertyName = "NoiDung";
-            dataGridViewTextBoxColumn30.DataPropertyName = "DapAnDung";
-            dataGridViewTextBoxColumn31.DataPropertyName = "ThuTu";
-        }
 
         private void cmbCH_MonHoc_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1615,6 +1447,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 _ketQua = _deThiDAL.LayKetQuaTheoDeThi(deID);
             else
                 _ketQua = null;
+            HienThiKetQua();
+        }
+
+        private void txtKQ_TenHocVien_TextChanged(object sender, EventArgs e)
+        {
             HienThiKetQua();
         }
 

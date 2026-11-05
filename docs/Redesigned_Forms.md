@@ -24,6 +24,19 @@ vào `txtCH_TenDeThi` rồi bấm **Tạo Đề Thi**. `txtLH_KhoaHoc` nhận t�
 Không thay đổi schema database, quy tắc phân quyền, chấm bài, transaction hay dữ
 liệu hiện có. Kiểm thử tích hợp dùng PostgreSQL tạm, không đọc kết nối App.config.
 
+## Quản lý control trong Designer
+
+Cấu hình cột (`DataPropertyName`, định dạng ngày/điểm, chế độ chỉ đọc) và các sự
+kiện cố định nằm trong `.Designer.cs`. Có thể chỉnh bằng **Properties → Events**
+(biểu tượng tia sét) hoặc **Edit Columns** trong Visual Studio. Các hàm
+`SetupEventHandlers`, `SetupTaiKhoanEvents`, `ConfigureDataGrids` và cấu hình
+lưới lặp trong code xử lý đã được bỏ. Hai nút lưu hồ sơ/đổi mật khẩu học viên
+được nối với hàm xử lý sẵn có. Bảng xem lại bài làm cũng nằm trong Designer.
+
+File xử lý giữ phần tải `DataSource`, lọc, phân trang và nghiệp vụ. Timer phòng
+thi và thao tác tạm ngắt/nối lại sự kiện radio khi đổi câu hỏi vẫn cần thực hiện
+khi chạy. Form kết quả bài thi vẫn có phần giao diện tạo bằng code từ trước.
+
 ## Kiểm tra trên Windows
 
 Khôi phục NuGet, sau đó Rebuild project bằng Visual Studio/.NET Framework 4.8.
