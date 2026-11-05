@@ -19,7 +19,6 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms
 
         private readonly int _ketQuaID;
         private readonly KetQuaDAL _ketQuaDAL = new KetQuaDAL();
-        private DataGridView dgvChiTiet;
 
         #endregion
 
@@ -29,34 +28,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms
         {
             _ketQuaID = ketQuaID;
             InitializeComponent();
-            InitCustomControls();
             DataGridViewPager.AttachAll(this);
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             LoadChiTiet();
-        }
-
-        private void InitCustomControls()
-        {
-            this.dgvChiTiet = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvChiTiet)).BeginInit();
-            this.SuspendLayout();
-
-            this.dgvChiTiet.Dock = DockStyle.Fill;
-            this.dgvChiTiet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvChiTiet.ReadOnly = true;
-            this.dgvChiTiet.RowHeadersVisible = false;
-            this.dgvChiTiet.AllowUserToAddRows = false;
-            this.dgvChiTiet.RowPrePaint += DgvChiTiet_RowPrePaint;
-
-            this.ClientSize = new System.Drawing.Size(950, 600);
-            this.Controls.Add(this.dgvChiTiet);
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.Text = "CHI TIẾT BÀI LÀM - KẾT QUẢ THI";
-
-            ((System.ComponentModel.ISupportInitialize)(this.dgvChiTiet)).EndInit();
-            this.ResumeLayout(false);
         }
 
         private void Frm_XemLaiBaiThi_Load(object sender, EventArgs e)

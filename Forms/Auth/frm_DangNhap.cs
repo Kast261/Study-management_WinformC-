@@ -19,7 +19,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
     {
         #region Dữ liệu & Trạng thái
 
-        
         private readonly TaiKhoanDAL _taiKhoanDAL = new TaiKhoanDAL();
 
         #endregion
@@ -30,7 +29,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             InitializeComponent();
             this.AcceptButton = btn_DangNhap;
-            txt_TaiKhoan.TextChanged += Txt_TaiKhoan_TextChanged;
         }
 
         private bool IsDesignTime => DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime;
@@ -272,7 +270,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void MaterialCard1_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         #endregion

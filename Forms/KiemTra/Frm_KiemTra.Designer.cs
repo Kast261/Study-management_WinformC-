@@ -112,6 +112,7 @@
             this.btnKiemTra_CauTruoc.TabIndex = 0;
             this.btnKiemTra_CauTruoc.Text = "Câu Trước";
             this.btnKiemTra_CauTruoc.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.btnKiemTra_CauTruoc.Click += new System.EventHandler(this.btnKiemTra_CauTruoc_Click);
             // 
             // btnKiemTra_NopBai
             // 
@@ -127,6 +128,7 @@
             this.btnKiemTra_NopBai.TabIndex = 0;
             this.btnKiemTra_NopBai.Text = "Nộp Bài";
             this.btnKiemTra_NopBai.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.btnKiemTra_NopBai.Click += new System.EventHandler(this.btnKiemTra_NopBai_Click);
             // 
             // btnKiemTra_CauSau
             // 
@@ -142,6 +144,7 @@
             this.btnKiemTra_CauSau.TabIndex = 0;
             this.btnKiemTra_CauSau.Text = "Câu Sau";
             this.btnKiemTra_CauSau.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.btnKiemTra_CauSau.Click += new System.EventHandler(this.btnKiemTra_CauSau_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -195,6 +198,7 @@
             this.radKiemTra_DapAnA.Text = "A.Java";
             this.radKiemTra_DapAnA.UseAccentColor = false;
             this.radKiemTra_DapAnA.UseVisualStyleBackColor = true;
+            this.radKiemTra_DapAnA.CheckedChanged += new System.EventHandler(this.Radio_CheckedChanged);
             // 
             // radKiemTra_DapAnB
             // 
@@ -213,6 +217,7 @@
             this.radKiemTra_DapAnB.Text = "B..Net";
             this.radKiemTra_DapAnB.UseAccentColor = false;
             this.radKiemTra_DapAnB.UseVisualStyleBackColor = true;
+            this.radKiemTra_DapAnB.CheckedChanged += new System.EventHandler(this.Radio_CheckedChanged);
             // 
             // radKiemTra_DapAnC
             // 
@@ -231,6 +236,7 @@
             this.radKiemTra_DapAnC.Text = "C.Node.js";
             this.radKiemTra_DapAnC.UseAccentColor = false;
             this.radKiemTra_DapAnC.UseVisualStyleBackColor = true;
+            this.radKiemTra_DapAnC.CheckedChanged += new System.EventHandler(this.Radio_CheckedChanged);
             // 
             // radKiemTra_DapAnD
             // 
@@ -249,6 +255,7 @@
             this.radKiemTra_DapAnD.Text = "D.Flutter";
             this.radKiemTra_DapAnD.UseAccentColor = false;
             this.radKiemTra_DapAnD.UseVisualStyleBackColor = true;
+            this.radKiemTra_DapAnD.CheckedChanged += new System.EventHandler(this.Radio_CheckedChanged);
             // 
             // proKT_TienDo
             // 
@@ -284,6 +291,7 @@
             this.Name = "Frm_KiemTra";
             this.Text = "KiemTra";
             this.Load += new System.EventHandler(this.KiemTra_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_KiemTra_FormClosing);
             this.materialCard1.ResumeLayout(false);
             this.materialCard1.PerformLayout();
             this.materialCard2.ResumeLayout(false);

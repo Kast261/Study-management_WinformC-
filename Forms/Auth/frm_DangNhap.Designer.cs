@@ -263,6 +263,7 @@
             this.txt_TaiKhoan.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txt_TaiKhoan.TrailingIcon = null;
             this.txt_TaiKhoan.UseSystemPasswordChar = false;
+            this.txt_TaiKhoan.TextChanged += new System.EventHandler(this.Txt_TaiKhoan_TextChanged);
             // 
             // panel2
             // 
