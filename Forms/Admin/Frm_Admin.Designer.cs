@@ -28,9 +28,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.materialTabControl1 = new ReaLTaiizor.Controls.MaterialTabControl();
             this.pageDashboard = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
@@ -490,17 +490,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // cAD_HocVien
             // 
-            chartArea3.Name = "ChartArea1";
-            this.cAD_HocVien.ChartAreas.Add(chartArea3);
+            chartArea2.Name = "ChartArea1";
+            this.cAD_HocVien.ChartAreas.Add(chartArea2);
             this.cAD_HocVien.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Name = "Legend1";
-            this.cAD_HocVien.Legends.Add(legend3);
+            legend2.Name = "Legend1";
+            this.cAD_HocVien.Legends.Add(legend2);
             this.cAD_HocVien.Location = new System.Drawing.Point(3, 312);
             this.cAD_HocVien.Name = "cAD_HocVien";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.cAD_HocVien.Series.Add(series3);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.cAD_HocVien.Series.Add(series2);
             this.cAD_HocVien.Size = new System.Drawing.Size(801, 509);
             this.cAD_HocVien.TabIndex = 6;
             this.cAD_HocVien.Text = "chart1";
