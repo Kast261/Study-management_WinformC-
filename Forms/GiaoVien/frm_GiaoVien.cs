@@ -23,8 +23,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private readonly TaiKhoanDAL _tkDAL = new TaiKhoanDAL();
         private int _selectedLopHocID = 0;
         private int _selectedCauHoiID = 0;
-        private int _selectedDeThiID   = 0;  // ID đề thi đang chọn trên tab Đề Thi
-        private bool _isSyncingMonHoc = false; // Cờ chống lặp vô tận khi đồng bộ môn học giữa 2 tab
+        private int _selectedDeThiID   = 0;  
+        private bool _isSyncingMonHoc = false;
         private bool _dangNhapExcel;
         private bool _daTaiTrangChu;
         private DataTable _khoaHoc;
