@@ -246,17 +246,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void InitDropdowns()
         {
-            // Dropdown đáp án đúng của câu hỏi
+            
             cmb_DapAn.Items.Clear();
             cmb_DapAn.Items.AddRange(new object[] { "A", "B", "C", "D" });
             cmb_DapAn.SelectedIndex = 0;
 
-            // Giới tính profile
+            
             cmbTTGV_GioiTinh.Items.Clear();
             cmbTTGV_GioiTinh.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
             cmbTTGV_GioiTinh.SelectedIndex = 0;
 
-            // Khóa học cho form Lớp
+            
             _khoaHoc = _khDAL.LayTatCa();
             var tenKhoaHoc = new AutoCompleteStringCollection();
             foreach (DataRow row in _khoaHoc.Rows) tenKhoaHoc.Add(row["TenKhoaHoc"].ToString());
@@ -264,14 +264,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             txtLH_KhoaHoc.AutoCompleteSource = AutoCompleteSource.CustomSource;
             txtLH_KhoaHoc.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
 
-            // Nạp môn học (khóa học) mà giáo viên đang dạy cho cả Tab Câu hỏi (cmbCH_MonHoc) và Tab Bài thi (cmbDT_MonHoc)
+            
             LoadMonHocGiaoVien();
         }
 
-        /// <summary>
-        /// Nạp danh sách các môn học / khóa học mà giáo viên hiện tại đang dạy
-        /// vào cả cmbCH_MonHoc (Tab Câu hỏi) và cmbDT_MonHoc (Tab Bài thi)
-        /// </summary>
+       
         private void LoadMonHocGiaoVien()
         {
             try
@@ -326,9 +323,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        /// <summary>
-        /// Lọc danh sách lớp học ở cmbDT_GiaoChoLop theo môn học đang chọn
-        /// </summary>
+        >
         private void FilterLopTheoMonHoc(string tenMonHoc)
         {
             try
