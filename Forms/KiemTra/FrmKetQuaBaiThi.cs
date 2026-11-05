@@ -13,19 +13,22 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms.KiemTra
 {
     public partial class FrmKetQuaBaiThi : Form
     {
+        #region Dữ liệu & Trạng thái
+
         private int _soCauDung;
         private int _tongSoCau;
         private double _diem;
         public bool YeuCauXemLai { get; private set; }
+
+        #endregion
+
+        #region 1. Khởi tạo & Sự kiện form
+
         public FrmKetQuaBaiThi()
         {
             InitializeComponent();
         }
 
-        private void FrmKetQuaBaiThi_Load(object sender, EventArgs e)
-        {
-
-        }
         public FrmKetQuaBaiThi(
             int soCauDung,
             int tongSoCau,
@@ -37,94 +40,16 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms.KiemTra
 
             TaoGiaoDien();
         }
-        private Label TaoLabel(
-            string noiDung,
-            int x, int y, int width, int height,
-            float fontSize, Color mau,
-            bool inDam = false)
+
+        private void FrmKetQuaBaiThi_Load(object sender, EventArgs e)
         {
-            Label lbl = new Label();
 
-            lbl.Text = noiDung;
-            lbl.Location = new Point(x, y);
-            lbl.Size = new Size(width, height);
-
-            lbl.Font = new Font(
-                "Segoe UI", fontSize,
-                inDam ? FontStyle.Bold : FontStyle.Regular);
-
-            lbl.ForeColor = mau;
-            lbl.BackColor = Color.Transparent;
-            lbl.TextAlign = ContentAlignment.MiddleCenter;
-
-            return lbl;
         }
-        private void BoGoc(Control control, int radius)
-        {
-            if (control.Width <= 0 || control.Height <= 0)
-                return;
 
-            int diameter = radius * 2;
-            int width = control.Width;
-            int height = control.Height;
+        #endregion
 
-            using (GraphicsPath path = new GraphicsPath())
-            {
-                path.AddArc(
-                    0, 0, diameter, diameter, 180, 90);
+        #region 2. Hiển Thị Kết Quả Bài Thi
 
-                path.AddArc(
-                    width - diameter, 0,
-                    diameter, diameter, 270, 90);
-
-                path.AddArc(
-                    width - diameter,
-                    height - diameter,
-                    diameter, diameter, 0, 90);
-
-                path.AddArc(
-                    0, height - diameter,
-                    diameter, diameter, 90, 90);
-
-                path.CloseFigure();
-
-                Region oldRegion = control.Region;
-                control.Region = new Region(path);
-
-                if (oldRegion != null)
-                    oldRegion.Dispose();
-            }
-        }
-        private Button TaoNut(
-            string text,
-            int x, int y,
-            Color mauNen,
-            Color mauChu)
-        {
-            Button btn = new Button();
-
-            btn.Text = text;
-            btn.Location = new Point(x, y);
-            btn.Size = new Size(170, 44);
-            btn.BackColor = mauNen;
-            btn.ForeColor = mauChu;
-            btn.Font = new Font(
-                "Segoe UI", 10F, FontStyle.Bold);
-
-            btn.FlatStyle = FlatStyle.Flat;
-            btn.FlatAppearance.BorderSize = 0;
-            btn.UseVisualStyleBackColor = false;
-            btn.Cursor = Cursors.Hand;
-
-            BoGoc(btn, 10);
-
-            btn.Resize += (s, e) =>
-            {
-                BoGoc(btn, 10);
-            };
-
-            return btn;
-        }
         private void TaoGiaoDien()
         {
             SuspendLayout();
@@ -302,5 +227,103 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms.KiemTra
 
             ResumeLayout(false);
         }
+
+        #endregion
+
+        #region 3. Tiện Ích Tạo Giao Diện
+
+        private Label TaoLabel(
+            string noiDung,
+            int x, int y, int width, int height,
+            float fontSize, Color mau,
+            bool inDam = false)
+        {
+            Label lbl = new Label();
+
+            lbl.Text = noiDung;
+            lbl.Location = new Point(x, y);
+            lbl.Size = new Size(width, height);
+
+            lbl.Font = new Font(
+                "Segoe UI", fontSize,
+                inDam ? FontStyle.Bold : FontStyle.Regular);
+
+            lbl.ForeColor = mau;
+            lbl.BackColor = Color.Transparent;
+            lbl.TextAlign = ContentAlignment.MiddleCenter;
+
+            return lbl;
+        }
+
+        private Button TaoNut(
+            string text,
+            int x, int y,
+            Color mauNen,
+            Color mauChu)
+        {
+            Button btn = new Button();
+
+            btn.Text = text;
+            btn.Location = new Point(x, y);
+            btn.Size = new Size(170, 44);
+            btn.BackColor = mauNen;
+            btn.ForeColor = mauChu;
+            btn.Font = new Font(
+                "Segoe UI", 10F, FontStyle.Bold);
+
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.UseVisualStyleBackColor = false;
+            btn.Cursor = Cursors.Hand;
+
+            BoGoc(btn, 10);
+
+            btn.Resize += (s, e) =>
+            {
+                BoGoc(btn, 10);
+            };
+
+            return btn;
+        }
+
+        private void BoGoc(Control control, int radius)
+        {
+            if (control.Width <= 0 || control.Height <= 0)
+                return;
+
+            int diameter = radius * 2;
+            int width = control.Width;
+            int height = control.Height;
+
+            using (GraphicsPath path = new GraphicsPath())
+            {
+                path.AddArc(
+                    0, 0, diameter, diameter, 180, 90);
+
+                path.AddArc(
+                    width - diameter, 0,
+                    diameter, diameter, 270, 90);
+
+                path.AddArc(
+                    width - diameter,
+                    height - diameter,
+                    diameter, diameter, 0, 90);
+
+                path.AddArc(
+                    0, height - diameter,
+                    diameter, diameter, 90, 90);
+
+                path.CloseFigure();
+
+                Region oldRegion = control.Region;
+                control.Region = new Region(path);
+
+                if (oldRegion != null)
+                    oldRegion.Dispose();
+            }
+        }
+
+        #endregion
+
     }
 }

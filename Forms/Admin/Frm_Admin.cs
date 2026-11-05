@@ -20,6 +20,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 {
     public partial class Frm_Admin : ReaLTaiizor.Forms.MaterialForm
     {
+        #region Dữ liệu & Trạng thái
+
         private readonly GiaoVienDAL _gvDAL = new GiaoVienDAL();
         private readonly HocSinhDAL _hsDAL = new HocSinhDAL();
         private readonly KhoaHocDAL _khDAL = new KhoaHocDAL();
@@ -33,6 +35,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private int _selectedHocVienID = 0;
         private int _selectedKhoaHocID = 0;
         private int _selectedLopHocID = 0;
+        private int _selectedTaiKhoanID = 0;
+        private bool _selectedTrangThaiKhoa = false;
+
+        #endregion
+
+        #region 1. Khởi tạo & Đăng ký sự kiện
 
         public Frm_Admin()
         {
@@ -44,28 +52,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.DrawerTabControl = materialTabControl1;
 
             this.FormClosed += Frm_Admin_FormClosed;
-        }
-
-        private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
-        {
-            if (grid == dgvGiaoVien)
-            {
-                _selectedGiaoVienID = 0;
-                headerLabel4.Text = "Đang chọn: chưa chọn giáo viên";
-            }
-            if (grid == dgvHocVien)
-            {
-                _selectedHocVienID = 0;
-                headerLabel15.Text = "Đang chọn: chưa chọn học viên";
-            }
-            if (grid == dgvKhoaHoc) _selectedKhoaHocID = 0;
-            if (grid == dgvLopHoc) _selectedLopHocID = 0;
-            if (grid == dgvTaiKhoan)
-            {
-                _selectedTaiKhoanID = 0;
-                _selectedTrangThaiKhoa = false;
-                UpdateNutKhoaMoKhoa();
-            }
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -90,7 +76,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LamMoiFormTK();
         }
 
-        #region Khởi tạo & Đăng ký sự kiện
         private void CauHinhHoSo()
         {
             dgvGiaoVien.AutoGenerateColumns = false;
@@ -139,6 +124,28 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
+        private void LoadDropdownData()
+        {
+            try
+            {
+                // Load danh sách khóa học vào ComboBox Lớp Học
+                DataTable dtKH = _khDAL.LayTatCa();
+                cboLop_KhoaHoc.DataSource = dtKH;
+                cboLop_KhoaHoc.DisplayMember = "TenKhoaHoc";
+                cboLop_KhoaHoc.ValueMember = "KhoaHocID";
+
+                // Load danh sách giáo viên vào ComboBox Lớp Học (materialComboBox2)
+                DataTable dtGV = _gvDAL.LayTatCa();
+                materialComboBox2.DataSource = dtGV;
+                materialComboBox2.DisplayMember = "HoTen";
+                materialComboBox2.ValueMember = "GiaoVienID";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải danh mục khóa học / giáo viên: " + ex.Message, "Thông báo");
+            }
+        }
+
         private void SetupEventHandlers()
         {
             // --- Giáo Viên ---
@@ -172,30 +179,47 @@ namespace BLT_Quan_Ly_Hoc_Tap
             dgvLopHoc.CellClick += dgvLopHoc_CellClick;
         }
 
-        private void LoadDropdownData()
+        private void SetupTaiKhoanEvents()
         {
-            try
+            if (btnTK_TaoTaiKhoan != null)   btnTK_TaoTaiKhoan.Click   += btnTK_TaoTaiKhoan_Click;
+            if (btnTK_KhoaMoKhoa != null)    btnTK_KhoaMoKhoa.Click    += btnTK_KhoaMoKhoa_Click;
+            if (btnTK_DatLaiMatKhau != null) btnTK_DatLaiMatKhau.Click  += btnTK_DatLaiMatKhau_Click;
+            if (dgvTaiKhoan != null)          dgvTaiKhoan.CellClick     += dgvTaiKhoan_CellClick;
+            if (cmbTK_VaiTro != null)         cmbTK_VaiTro.SelectedIndexChanged += cmbTK_VaiTro_Changed;
+            if (foreverButton1 != null)       foreverButton1.Click      += btnTimTaiKhoan_Click;
+            if (txt_TimTaiKhoan != null)
             {
-                // Load danh sách khóa học vào ComboBox Lớp Học
-                DataTable dtKH = _khDAL.LayTatCa();
-                cboLop_KhoaHoc.DataSource = dtKH;
-                cboLop_KhoaHoc.DisplayMember = "TenKhoaHoc";
-                cboLop_KhoaHoc.ValueMember = "KhoaHocID";
-
-                // Load danh sách giáo viên vào ComboBox Lớp Học (materialComboBox2)
-                DataTable dtGV = _gvDAL.LayTatCa();
-                materialComboBox2.DataSource = dtGV;
-                materialComboBox2.DisplayMember = "HoTen";
-                materialComboBox2.ValueMember = "GiaoVienID";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi tải danh mục khóa học / giáo viên: " + ex.Message, "Thông báo");
+                txt_TimTaiKhoan.KeyDown     += txt_TimTaiKhoan_KeyDown;
+                txt_TimTaiKhoan.TextChanged += txt_TimTaiKhoan_TextChanged;
             }
         }
+
+        private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
+        {
+            if (grid == dgvGiaoVien)
+            {
+                _selectedGiaoVienID = 0;
+                headerLabel4.Text = "Đang chọn: chưa chọn giáo viên";
+            }
+            if (grid == dgvHocVien)
+            {
+                _selectedHocVienID = 0;
+                headerLabel15.Text = "Đang chọn: chưa chọn học viên";
+            }
+            if (grid == dgvKhoaHoc) _selectedKhoaHocID = 0;
+            if (grid == dgvLopHoc) _selectedLopHocID = 0;
+            if (grid == dgvTaiKhoan)
+            {
+                _selectedTaiKhoanID = 0;
+                _selectedTrangThaiKhoa = false;
+                UpdateNutKhoaMoKhoa();
+            }
+        }
+
         #endregion
 
-        #region Dashboard & Thống kê
+        #region 2. Tab Trang Chủ & Thống Kê
+
         private void KhoiTaoDashboard()
         {
             // Chỉ cấu hình hành vi; các control và bố cục vẫn nằm trong Designer.
@@ -327,9 +351,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LoadDanhSachLopHoc();
             dgvLopHoc.Focus();
         }
+
         #endregion
 
-        #region Quản lý Giáo Viên
+        #region 3. Tab Quản Lý Giáo Viên
+
         private void LoadDanhSachGiaoVien()
         {
             try
@@ -383,6 +409,21 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     if (!string.IsNullOrEmpty(gt) && txtGV_GioiTinh.Items.Contains(gt))
                         txtGV_GioiTinh.SelectedItem = gt;
                 }
+            }
+        }
+
+        private void txtGV_TimKiem_TextChanged(object sender, EventArgs e)
+        {
+            string kw = txtGV_TimKiem.Text.Trim();
+            if (string.IsNullOrEmpty(kw) || kw == "Tên cần tìm")
+            {
+                LoadDanhSachGiaoVien();
+            }
+            else
+            {
+                var danhSach = _gvDAL.TimKiem(kw);
+                dgvGiaoVien.DataSource = danhSach;
+                hlbl_SoLuong.Text = $"Số lượng giáo viên: {danhSach.Rows.Count:N0}";
             }
         }
 
@@ -494,6 +535,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
+        private void btnGV_Sua_Click_1(object sender, EventArgs e)
+        {
+            btnGV_Sua_Click(sender, e);
+        }
+
         private void btnGV_Xoa_Click(object sender, EventArgs e)
         {
             if (_selectedGiaoVienID <= 0)
@@ -528,23 +574,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LoadDanhSachGiaoVien();
         }
 
-        private void txtGV_TimKiem_TextChanged(object sender, EventArgs e)
-        {
-            string kw = txtGV_TimKiem.Text.Trim();
-            if (string.IsNullOrEmpty(kw) || kw == "Tên cần tìm")
-            {
-                LoadDanhSachGiaoVien();
-            }
-            else
-            {
-                var danhSach = _gvDAL.TimKiem(kw);
-                dgvGiaoVien.DataSource = danhSach;
-                hlbl_SoLuong.Text = $"Số lượng giáo viên: {danhSach.Rows.Count:N0}";
-            }
-        }
         #endregion
 
-        #region Quản lý Học Viên
+        #region 4. Tab Quản Lý Học Viên
+
         private void LoadDanhSachHocVien()
         {
             try
@@ -596,6 +629,21 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     if (!string.IsNullOrEmpty(gt) && cboHV_GioiTinh.Items.Contains(gt))
                         cboHV_GioiTinh.SelectedItem = gt;
                 }
+            }
+        }
+
+        private void txtHV_TimKiem_TextChanged(object sender, EventArgs e)
+        {
+            string kw = txtHV_TimKiem.Text.Trim();
+            if (string.IsNullOrEmpty(kw) || kw == "Tên cần tìm")
+            {
+                LoadDanhSachHocVien();
+            }
+            else
+            {
+                var danhSach = _hsDAL.TimKiem(kw);
+                dgvHocVien.DataSource = danhSach;
+                headerLabel14.Text = $"Số lượng học viên: {danhSach.Rows.Count:N0}";
             }
         }
 
@@ -738,23 +786,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LoadDanhSachHocVien();
         }
 
-        private void txtHV_TimKiem_TextChanged(object sender, EventArgs e)
-        {
-            string kw = txtHV_TimKiem.Text.Trim();
-            if (string.IsNullOrEmpty(kw) || kw == "Tên cần tìm")
-            {
-                LoadDanhSachHocVien();
-            }
-            else
-            {
-                var danhSach = _hsDAL.TimKiem(kw);
-                dgvHocVien.DataSource = danhSach;
-                headerLabel14.Text = $"Số lượng học viên: {danhSach.Rows.Count:N0}";
-            }
-        }
         #endregion
 
-        #region Quản lý Khóa Học
+        #region 5. Tab Quản Lý Khóa Học
+
         private void LoadDanhSachKhoaHoc()
         {
             try
@@ -876,9 +911,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
             }
         }
+
         #endregion
 
-        #region Quản lý Lớp Học
+        #region 6. Tab Quản Lý Lớp Học
+
         private void LoadDanhSachLopHoc()
         {
             try
@@ -1045,11 +1082,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
             }
         }
+
         #endregion
 
-        #region Quản lý Tài Khoản
-        private int _selectedTaiKhoanID = 0;
-        private bool _selectedTrangThaiKhoa = false;
+        #region 7. Tab Quản Lý Tài Khoản
 
         private void LoadDanhSachTaiKhoan()
         {
@@ -1090,73 +1126,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 btnTK_KhoaMoKhoa.Text = "Khóa Tài Khoản";
         }
 
-        private void SetupTaiKhoanEvents()
-        {
-            if (btnTK_TaoTaiKhoan != null)   btnTK_TaoTaiKhoan.Click   += btnTK_TaoTaiKhoan_Click;
-            if (btnTK_KhoaMoKhoa != null)    btnTK_KhoaMoKhoa.Click    += btnTK_KhoaMoKhoa_Click;
-            if (btnTK_DatLaiMatKhau != null) btnTK_DatLaiMatKhau.Click  += btnTK_DatLaiMatKhau_Click;
-            if (dgvTaiKhoan != null)          dgvTaiKhoan.CellClick     += dgvTaiKhoan_CellClick;
-            if (cmbTK_VaiTro != null)         cmbTK_VaiTro.SelectedIndexChanged += cmbTK_VaiTro_Changed;
-            if (foreverButton1 != null)       foreverButton1.Click      += btnTimTaiKhoan_Click;
-            if (txt_TimTaiKhoan != null)
-            {
-                txt_TimTaiKhoan.KeyDown     += txt_TimTaiKhoan_KeyDown;
-                txt_TimTaiKhoan.TextChanged += txt_TimTaiKhoan_TextChanged;
-            }
-        }
-
-        private void btnTimTaiKhoan_Click(object sender, EventArgs e)
-        {
-            ThucHienTimKiemTaiKhoan();
-        }
-
-        private void txt_TimTaiKhoan_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-                ThucHienTimKiemTaiKhoan();
-            }
-        }
-
-        private void txt_TimTaiKhoan_TextChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txt_TimTaiKhoan.Text))
-            {
-                LoadDanhSachTaiKhoan();
-            }
-        }
-
-        private void ThucHienTimKiemTaiKhoan()
-        {
-            try
-            {
-                string kw = txt_TimTaiKhoan?.Text?.Trim() ?? "";
-                if (string.IsNullOrEmpty(kw) || kw == "materialTextBoxEdit1" || kw == "Tên cần tìm")
-                {
-                    LoadDanhSachTaiKhoan();
-                    return;
-                }
-
-                DataTable dt = _tkDAL.TimKiemTheoTenSinhVien(kw);
-                dgvTaiKhoan.DataSource = dt;
-
-                if (dt == null || dt.Rows.Count == 0)
-                {
-                    MessageBox.Show("Không tìm thấy tài khoản của sinh viên có tên: " + kw, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi tìm kiếm tài khoản: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void cmbTK_VaiTro_Changed(object sender, EventArgs e)
-        {
-            LoadDropdownGanCho();
-        }
-
         private void LoadDropdownGanCho()
         {
             if (cmbTK_GanCho == null || cmbTK_VaiTro == null) return;
@@ -1188,6 +1157,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             catch { }
         }
 
+        private void cmbTK_VaiTro_Changed(object sender, EventArgs e)
+        {
+            LoadDropdownGanCho();
+        }
+
         private void dgvTaiKhoan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.RowIndex < dgvTaiKhoan.Rows.Count)
@@ -1199,6 +1173,53 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     _selectedTrangThaiKhoa = drv["TrangThaiKhoa"] != DBNull.Value && Convert.ToBoolean(drv["TrangThaiKhoa"]);
                     UpdateNutKhoaMoKhoa();
                 }
+            }
+        }
+
+        private void ThucHienTimKiemTaiKhoan()
+        {
+            try
+            {
+                string kw = txt_TimTaiKhoan?.Text?.Trim() ?? "";
+                if (string.IsNullOrEmpty(kw) || kw == "materialTextBoxEdit1" || kw == "Tên cần tìm")
+                {
+                    LoadDanhSachTaiKhoan();
+                    return;
+                }
+
+                DataTable dt = _tkDAL.TimKiemTheoTenSinhVien(kw);
+                dgvTaiKhoan.DataSource = dt;
+
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không tìm thấy tài khoản của sinh viên có tên: " + kw, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tìm kiếm tài khoản: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnTimTaiKhoan_Click(object sender, EventArgs e)
+        {
+            ThucHienTimKiemTaiKhoan();
+        }
+
+        private void txt_TimTaiKhoan_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                ThucHienTimKiemTaiKhoan();
+            }
+        }
+
+        private void txt_TimTaiKhoan_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txt_TimTaiKhoan.Text))
+            {
+                LoadDanhSachTaiKhoan();
             }
         }
 
@@ -1285,9 +1306,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
             }
         }
+
         #endregion
 
-        #region Tiện ích chung & Điều hướng
+        #region 8. Tiện Ích Chung, Điều Hướng & Đóng Form
+
         private DateTime? ParseDate(string input)
         {
             if (string.IsNullOrWhiteSpace(input)) return null;
@@ -1337,11 +1360,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             Application.Exit();
         }
+
         #endregion
 
-        private void btnGV_Sua_Click_1(object sender, EventArgs e)
-        {
-            btnGV_Sua_Click(sender, e);
-        }
     }
 }

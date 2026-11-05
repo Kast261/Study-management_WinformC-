@@ -15,9 +15,15 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms
 {
     public partial class Frm_XemLaiBaiThi : ReaLTaiizor.Forms.MaterialForm
     {
+        #region Dữ liệu & Trạng thái
+
         private readonly int _ketQuaID;
         private readonly KetQuaDAL _ketQuaDAL = new KetQuaDAL();
         private DataGridView dgvChiTiet;
+
+        #endregion
+
+        #region 1. Khởi tạo & Cấu Hình Giao Diện
 
         public Frm_XemLaiBaiThi(int ketQuaID)
         {
@@ -53,11 +59,23 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms
             this.ResumeLayout(false);
         }
 
+        private void Frm_XemLaiBaiThi_Load(object sender, EventArgs e)
+        {
+        }
+
+        #endregion
+
+        #region 2. Tải Chi Tiết Bài Làm
+
         private void LoadChiTiet()
         {
             DataTable dt = _ketQuaDAL.LayChiTietBaiLamTheoKetQua(_ketQuaID);
             dgvChiTiet.DataSource = dt;
         }
+
+        #endregion
+
+        #region 3. Hiển Thị Đáp Án Đúng / Sai
 
         private void DgvChiTiet_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
@@ -81,8 +99,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms
             }
         }
 
-        private void Frm_XemLaiBaiThi_Load(object sender, EventArgs e)
-        {
-        }
+        #endregion
+
     }
 }

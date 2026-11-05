@@ -15,21 +15,25 @@ namespace BLT_Quan_Ly_Hoc_Tap
 {
     public partial class HocVien : ReaLTaiizor.Forms.MaterialForm
     {
+        #region Dữ liệu & Trạng thái
+
         private readonly LopHocDAL _lopDAL = new LopHocDAL();
         private readonly DeThiDAL _deThiDAL = new DeThiDAL();
         private readonly KetQuaDAL _ketQuaDAL = new KetQuaDAL();
         private readonly HocSinhDAL _hocSinhDAL = new HocSinhDAL();
         private readonly TaiKhoanDAL _taiKhoanDAL = new TaiKhoanDAL();
-
         private int _selectedLopDangKyID = 0;
         private int _selectedLopDangHocID = 0;
         private int _selectedDeThiID = 0;
-
         // Lưu trữ danh sách đề thi gốc để hỗ trợ việc lọc bằng ComboBox
         private DataTable _dtDeThi;
         private DataTable _dtBaiThiDangMo;
         private bool _dangTaiLopLocKetQua;
         private bool _daTaiHocVien;
+
+        #endregion
+
+        #region 1. Khởi tạo & Đăng ký sự kiện
 
         public HocVien()
         {
@@ -65,21 +69,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             this.DrawerTabControl = tabHocVien;
-        }
-
-        private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
-        {
-            if (grid == dgvLopDangKi)
-            {
-                _selectedLopDangKyID = 0;
-                lblHV_DangChon.Text = "Đang chọn: chưa chọn lớp";
-            }
-            if (grid == dgvLopThamGia)
-            {
-                _selectedLopDangHocID = 0;
-                lblHV_DangChon.Text = "Đang chọn: chưa chọn lớp";
-            }
-            if (grid == dgvHVDeThi) _selectedDeThiID = 0;
         }
 
         private void HocVien_Load(object sender, EventArgs e)
@@ -156,57 +145,33 @@ namespace BLT_Quan_Ly_Hoc_Tap
             BT_SoCau.DataPropertyName = "SoCau";
         }
 
-        private void LoadDanhSachDeThi()
+        private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
+        {
+            if (grid == dgvLopDangKi)
+            {
+                _selectedLopDangKyID = 0;
+                lblHV_DangChon.Text = "Đang chọn: chưa chọn lớp";
+            }
+            if (grid == dgvLopThamGia)
+            {
+                _selectedLopDangHocID = 0;
+                lblHV_DangChon.Text = "Đang chọn: chưa chọn lớp";
+            }
+            if (grid == dgvHVDeThi) _selectedDeThiID = 0;
+        }
+
+        #endregion
+
+        #region 2. Tab Trang Chủ
+
+        private void LoadLopHoc()
         {
             try
             {
-                DataTable exams = _deThiDAL.LayDeThiChoHocSinh(Session.NguoiDungID);
-                DataTable openExams = _deThiDAL.LayBaiThiDangMoChoHocSinh(Session.NguoiDungID);
-                _selectedDeThiID = 0;
-                _dtDeThi = exams;
-                _dtBaiThiDangMo = openExams;
-                dgvHVDeThi.DataSource = _dtDeThi;
-                lblHV_TongBaiThi.Text = $"Tổng bài thi: {_dtDeThi.Rows.Count:N0}";
-                // Nguồn riêng để lọc môn học ở tab Bài Thi không làm mất bài trên Trang chủ.
-                dgvHV_DeThiSapToi.DataSource = _dtBaiThiDangMo;
-                bool coBaiThi = _dtBaiThiDangMo.Rows.Count > 0;
-                foreverButton1.Enabled = btnHV_VaoLopHoc.Enabled = coBaiThi;
-                materialLabel2.Text = coBaiThi
-                    ? $"Bạn có {_dtBaiThiDangMo.Rows.Count:N0} bài thi đang mở chưa làm."
-                    : "Bạn chưa có bài thi đang mở để làm.";
-
-                if (materialComboBox1 != null)
-                {
-                    materialComboBox1.Items.Clear();
-                    materialComboBox1.Items.Add("-- Tất cả môn học --");
-
-                    if (_dtDeThi != null)
-                    {
-                        var dsMonHoc = new HashSet<string>();
-                        foreach (DataRow row in _dtDeThi.Rows)
-                        {
-                            string mon = row["MonHoc"].ToString();
-                            if (!string.IsNullOrEmpty(mon)) dsMonHoc.Add(mon);
-                        }
-
-                        foreach (var mon in dsMonHoc)
-                        {
-                            materialComboBox1.Items.Add(mon);
-                        }
-                    }
-                    materialComboBox1.SelectedIndex = 0;
-                }
+                DataTable dtLop = _lopDAL.LayTheoHocSinh(Session.NguoiDungID);
+                if (dgvHV_LopDangHoc != null) dgvHV_LopDangHoc.DataSource = dtLop;
             }
-            catch (Exception ex)
-            {
-                _selectedDeThiID = 0;
-                _dtDeThi = _dtBaiThiDangMo = null;
-                dgvHVDeThi.DataSource = null;
-                dgvHV_DeThiSapToi.DataSource = null;
-                foreverButton1.Enabled = btnHV_VaoLopHoc.Enabled = false;
-                materialLabel2.Text = "Không thể tải danh sách bài thi.";
-                MessageBox.Show("Không thể tải danh sách bài thi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch { }
         }
 
         private void btnHV_LamBaiNgay_Click(object sender, EventArgs e)
@@ -224,232 +189,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (selected != null) BatDauThi(Convert.ToInt32(selected["DeThiID"]));
         }
 
-        private void materialComboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_dtDeThi == null) return;
+        #endregion
 
-            string selectedMonHoc = materialComboBox1.SelectedItem?.ToString();
-
-            if (string.IsNullOrEmpty(selectedMonHoc) || selectedMonHoc == "-- Tất cả môn học --")
-            {
-                _dtDeThi.DefaultView.RowFilter = string.Empty;
-            }
-            else
-            {
-                selectedMonHoc = selectedMonHoc.Replace("'", "''");
-                _dtDeThi.DefaultView.RowFilter = $"MonHoc = '{selectedMonHoc}'";
-            }
-        }
-
-        private void dgvHVDeThi_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.RowIndex < dgvHVDeThi.Rows.Count)
-            {
-                var row = dgvHVDeThi.Rows[e.RowIndex];
-                if (row.DataBoundItem is DataRowView drv && drv.Row.Table.Columns.Contains("DeThiID"))
-                {
-                    _selectedDeThiID = Convert.ToInt32(drv["DeThiID"]);
-                }
-                else if (dgvHVDeThi.Columns.Contains("DeThiID") && row.Cells["DeThiID"].Value != null)
-                {
-                    _selectedDeThiID = Convert.ToInt32(row.Cells["DeThiID"].Value);
-                }
-            }
-        }
-
-        private void dgvHVDeThi_SelectionChanged(object sender, EventArgs e)
-        {
-            var row = dgvHVDeThi.CurrentRow?.DataBoundItem as DataRowView;
-            _selectedDeThiID = row == null ? 0 : Convert.ToInt32(row["DeThiID"]);
-            lblHVDT_ChonDT.Text = "Đang chọn: " + (row == null ? "chưa chọn đề thi" : row["TenDeThi"].ToString());
-            lblHVDT_ThongDT.Text = row == null ? "Chọn một đề thi để xem thông tin."
-                : $"{row["MonHoc"]} · {row["SoCau"]} câu · {row["ThoiGian"]} phút";
-            btnHVDT_LamBai.Enabled = row != null;
-        }
-
-        private void dgvHVKetQua_SelectionChanged(object sender, EventArgs e)
-        {
-            var row = dgvHVKetQua.CurrentRow?.DataBoundItem as DataRowView;
-            lblHVKQ_ChonDT.Text = "Đang chọn: " + (row == null ? "chưa chọn bài thi" : row["TenDeThi"].ToString());
-            lblHVKQ_TTDT.Text = row == null ? "Thông tin đề thi" : row["MonHoc"].ToString();
-            lblKQHV_Diem.Text = row == null || row["Diem"] == DBNull.Value
-                ? "Chưa có điểm" : Convert.ToDecimal(row["Diem"]).ToString("0.00") + "/10";
-            btnHVKQ_XuatFile.Enabled = row != null;
-        }
-
-        private void dgvHVKetQua_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || !(dgvHVKetQua.Rows[e.RowIndex].DataBoundItem is DataRowView row)) return;
-            try
-            {
-                using (var form = new Forms.Frm_XemLaiBaiThi(Convert.ToInt32(row["KetQuaID"])))
-                    form.ShowDialog(this);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Không thể xem chi tiết bài làm: " + ex.Message, "Lỗi");
-            }
-        }
-
-        private void btnHVKQ_BaoCao_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                int lopID = cmbKQHV_BaiThi.SelectedValue is int value ? value : 0;
-                using (DataTable results = _ketQuaDAL.LayKetQuaTheoLopDangHoc(Session.NguoiDungID, lopID))
-                    ExcelExportHelper.ExportBangDiemHocSinh(results, Session.HoTen ?? Session.TenDangNhap,
-                        null, null, null, Session.TenDangNhap);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Không thể xuất báo cáo kết quả: " + ex.Message, "Lỗi");
-            }
-        }
-
-        private void btnHVDT_LamBai_Click(object sender, EventArgs e)
-        {
-            if (_selectedDeThiID <= 0)
-            {
-                MessageBox.Show("Vui lòng chọn 1 đề thi từ danh sách bên trên trước khi bắt đầu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Kiểm tra trực tiếp Trạng Thái của dòng đang chọn
-            if (dgvHVDeThi.CurrentRow != null && dgvHVDeThi.CurrentRow.DataBoundItem is DataRowView drv)
-            {
-                string trangThai = drv["TrangThai"].ToString();
-
-                if (trangThai == "Đã làm")
-                {
-                    MessageBox.Show("Bạn đã hoàn thành bài thi này rồi! Bạn có thể xem lại điểm ở cột bên cạnh hoặc trong tab Lịch sử.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-                if (trangThai == "Hết hạn")
-                {
-                    MessageBox.Show("Bài thi này đã quá hạn nộp, bạn không thể làm bài được nữa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-            }
-
-            BatDauThi(_selectedDeThiID);
-        }
-
-        private void BatDauThi(int deThiID)
-        {
-            try
-            {
-                if (!_deThiDAL.CoTheBatDauThi(Session.NguoiDungID, deThiID))
-                {
-                    MessageBox.Show("Bài thi không còn khả dụng. Bài có thể đã đóng, hết hạn, đã nộp hoặc bạn không còn thuộc lớp được giao.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadDanhSachDeThi();
-                    return;
-                }
-
-                using (var frm = new Frm_KiemTra(deThiID))
-                {
-                    frm.ShowDialog(this);
-                }
-
-                LoadLichSuThi();
-                LoadDanhSachDeThi();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Không thể mở bài thi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void KhoiTaoHoSoCaNhan()
-        {
-            cmbTTHV_GioiTinh.Items.Clear();
-            cmbTTHV_GioiTinh.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
-            cmbTTHV_GioiTinh.SelectedIndex = -1;
-            txtTTHV_HovaTen.MaxLength = 100;
-            txtTTHV_Email.MaxLength = 100;
-            txtTTHV_SDT.MaxLength = 10;
-            txtTTHV_DiaChi.MaxLength = 255;
-            txtTTHV_NgaySinh.MaxLength = 10;
-            txtTTHV_NgaySinh.Clear();
-            foreach (var input in new[] { txtTTHV_MatKhauHienTai, txtTTHV_MKMoi, txtTTHV_XacNhanMK })
-                input.UseSystemPasswordChar = true;
-            materialLabel54.Text = "HV";
-            lblKQHV_Diem.Text = "Chưa chọn bài thi";
-            lblGVTT_HovaTen.Text = string.Empty;
-            txtTTHV_MatKhauHienTai.Clear();
-            txtTTHV_MKMoi.Clear();
-            txtTTHV_XacNhanMK.Clear();
-            btnTTHV_LuuThayDoi.Enabled = false;
-            btnTTHV_DoiMK.Enabled = false;
-        }
-
-        private bool CoPhienHocSinhHopLe()
-        {
-            return Session.IsHocSinh && Session.TaiKhoanID > 0;
-        }
-
-        private void HienThiHoSo(HocSinh hs)
-        {
-            string ngaySinh = hs.NgaySinh?.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) ?? "";
-            txtTTHV_HovaTen.Text = hs.HoTen ?? "";
-            txtTTHV_NgaySinh.Text = ngaySinh;
-            txtTTHV_Email.Text = hs.Email ?? "";
-            txtTTHV_SDT.Text = hs.SoDienThoai ?? "";
-            txtTTHV_DiaChi.Text = hs.DiaChi ?? "";
-            cmbTTHV_GioiTinh.SelectedIndex = -1;
-            foreach (object item in cmbTTHV_GioiTinh.Items)
-            {
-                if (string.Equals(item.ToString(), hs.GioiTinh?.Trim(), StringComparison.OrdinalIgnoreCase))
-                {
-                    cmbTTHV_GioiTinh.SelectedItem = item;
-                    break;
-                }
-            }
-
-            Session.HoTen = hs.HoTen;
-            lblGVTT_HovaTen.Text = hs.HoTen ?? "";
-            lblHV_LoiChao.Text = "Xin chào, " + hs.HoTen;
-        }
-
-        private bool LoadThongTinHocVien()
-        {
-            btnTTHV_LuuThayDoi.Enabled = false;
-            btnTTHV_DoiMK.Enabled = CoPhienHocSinhHopLe();
-            if (!CoPhienHocSinhHopLe())
-            {
-                MessageBox.Show("Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.", "Thông báo");
-                return false;
-            }
-
-            try
-            {
-                HocSinh hs = _hocSinhDAL.LayTheoTaiKhoan(Session.TaiKhoanID);
-                if (hs == null)
-                {
-                    MessageBox.Show("Không tìm thấy hồ sơ học sinh được liên kết với tài khoản. Vui lòng liên hệ quản trị viên.", "Thông báo");
-                    return false;
-                }
-
-                Session.NguoiDungID = hs.HocSinhID;
-                HienThiHoSo(hs);
-                btnTTHV_LuuThayDoi.Enabled = true;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Không thể tải hồ sơ học sinh: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-        }
-
-        private void LoadLopHoc()
-        {
-            try
-            {
-                DataTable dtLop = _lopDAL.LayTheoHocSinh(Session.NguoiDungID);
-                if (dgvHV_LopDangHoc != null) dgvHV_LopDangHoc.DataSource = dtLop;
-            }
-            catch { }
-        }
+        #region 3. Tab Lớp Học & Đăng Ký
 
         private void LoadTabLopHocCuaToi()
         {
@@ -566,6 +308,455 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
+        #endregion
+
+        #region 4. Tab Bài Thi & Làm Bài
+
+        private void LoadDanhSachDeThi()
+        {
+            try
+            {
+                DataTable exams = _deThiDAL.LayDeThiChoHocSinh(Session.NguoiDungID);
+                DataTable openExams = _deThiDAL.LayBaiThiDangMoChoHocSinh(Session.NguoiDungID);
+                _selectedDeThiID = 0;
+                _dtDeThi = exams;
+                _dtBaiThiDangMo = openExams;
+                dgvHVDeThi.DataSource = _dtDeThi;
+                lblHV_TongBaiThi.Text = $"Tổng bài thi: {_dtDeThi.Rows.Count:N0}";
+                // Nguồn riêng để lọc môn học ở tab Bài Thi không làm mất bài trên Trang chủ.
+                dgvHV_DeThiSapToi.DataSource = _dtBaiThiDangMo;
+                bool coBaiThi = _dtBaiThiDangMo.Rows.Count > 0;
+                foreverButton1.Enabled = btnHV_VaoLopHoc.Enabled = coBaiThi;
+                materialLabel2.Text = coBaiThi
+                    ? $"Bạn có {_dtBaiThiDangMo.Rows.Count:N0} bài thi đang mở chưa làm."
+                    : "Bạn chưa có bài thi đang mở để làm.";
+
+                if (materialComboBox1 != null)
+                {
+                    materialComboBox1.Items.Clear();
+                    materialComboBox1.Items.Add("-- Tất cả môn học --");
+
+                    if (_dtDeThi != null)
+                    {
+                        var dsMonHoc = new HashSet<string>();
+                        foreach (DataRow row in _dtDeThi.Rows)
+                        {
+                            string mon = row["MonHoc"].ToString();
+                            if (!string.IsNullOrEmpty(mon)) dsMonHoc.Add(mon);
+                        }
+
+                        foreach (var mon in dsMonHoc)
+                        {
+                            materialComboBox1.Items.Add(mon);
+                        }
+                    }
+                    materialComboBox1.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                _selectedDeThiID = 0;
+                _dtDeThi = _dtBaiThiDangMo = null;
+                dgvHVDeThi.DataSource = null;
+                dgvHV_DeThiSapToi.DataSource = null;
+                foreverButton1.Enabled = btnHV_VaoLopHoc.Enabled = false;
+                materialLabel2.Text = "Không thể tải danh sách bài thi.";
+                MessageBox.Show("Không thể tải danh sách bài thi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void materialComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_dtDeThi == null) return;
+
+            string selectedMonHoc = materialComboBox1.SelectedItem?.ToString();
+
+            if (string.IsNullOrEmpty(selectedMonHoc) || selectedMonHoc == "-- Tất cả môn học --")
+            {
+                _dtDeThi.DefaultView.RowFilter = string.Empty;
+            }
+            else
+            {
+                selectedMonHoc = selectedMonHoc.Replace("'", "''");
+                _dtDeThi.DefaultView.RowFilter = $"MonHoc = '{selectedMonHoc}'";
+            }
+        }
+
+        private void dgvHVDeThi_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < dgvHVDeThi.Rows.Count)
+            {
+                var row = dgvHVDeThi.Rows[e.RowIndex];
+                if (row.DataBoundItem is DataRowView drv && drv.Row.Table.Columns.Contains("DeThiID"))
+                {
+                    _selectedDeThiID = Convert.ToInt32(drv["DeThiID"]);
+                }
+                else if (dgvHVDeThi.Columns.Contains("DeThiID") && row.Cells["DeThiID"].Value != null)
+                {
+                    _selectedDeThiID = Convert.ToInt32(row.Cells["DeThiID"].Value);
+                }
+            }
+        }
+
+        private void dgvHVDeThi_SelectionChanged(object sender, EventArgs e)
+        {
+            var row = dgvHVDeThi.CurrentRow?.DataBoundItem as DataRowView;
+            _selectedDeThiID = row == null ? 0 : Convert.ToInt32(row["DeThiID"]);
+            lblHVDT_ChonDT.Text = "Đang chọn: " + (row == null ? "chưa chọn đề thi" : row["TenDeThi"].ToString());
+            lblHVDT_ThongDT.Text = row == null ? "Chọn một đề thi để xem thông tin."
+                : $"{row["MonHoc"]} · {row["SoCau"]} câu · {row["ThoiGian"]} phút";
+            btnHVDT_LamBai.Enabled = row != null;
+        }
+
+        private void btnHVDT_LamBai_Click(object sender, EventArgs e)
+        {
+            if (_selectedDeThiID <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn 1 đề thi từ danh sách bên trên trước khi bắt đầu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra trực tiếp Trạng Thái của dòng đang chọn
+            if (dgvHVDeThi.CurrentRow != null && dgvHVDeThi.CurrentRow.DataBoundItem is DataRowView drv)
+            {
+                string trangThai = drv["TrangThai"].ToString();
+
+                if (trangThai == "Đã làm")
+                {
+                    MessageBox.Show("Bạn đã hoàn thành bài thi này rồi! Bạn có thể xem lại điểm ở cột bên cạnh hoặc trong tab Lịch sử.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                if (trangThai == "Hết hạn")
+                {
+                    MessageBox.Show("Bài thi này đã quá hạn nộp, bạn không thể làm bài được nữa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            BatDauThi(_selectedDeThiID);
+        }
+
+        private void BatDauThi(int deThiID)
+        {
+            try
+            {
+                if (!_deThiDAL.CoTheBatDauThi(Session.NguoiDungID, deThiID))
+                {
+                    MessageBox.Show("Bài thi không còn khả dụng. Bài có thể đã đóng, hết hạn, đã nộp hoặc bạn không còn thuộc lớp được giao.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDanhSachDeThi();
+                    return;
+                }
+
+                using (var frm = new Frm_KiemTra(deThiID))
+                {
+                    frm.ShowDialog(this);
+                }
+
+                LoadLichSuThi();
+                LoadDanhSachDeThi();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể mở bài thi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        #endregion
+
+        #region 5. Tab Kết Quả Thi & Xuất Báo Cáo
+
+        private void KhoiTaoLocKetQua()
+        {
+            cmbKQHV_BaiThi.Hint = "Lọc kết quả theo lớp đang học";
+            cmbKQHV_BaiThi.SelectedIndexChanged += cmbKQHV_BaiThi_SelectedIndexChanged;
+            lblHVKQ_TongBaiThi.Text = "Chọn lớp đang học để xem kết quả bài thi đã nộp.";
+            btnHVKQ_XuatFile.Enabled = false;
+            btnHVKQ_BaoCao.Enabled = false;
+        }
+
+        private void LoadLichSuThi()
+        {
+            int selectedClass = cmbKQHV_BaiThi.SelectedValue is int value ? value : 0;
+            _dangTaiLopLocKetQua = true;
+            try
+            {
+                using (DataTable classes = _lopDAL.LayTheoHocSinh(Session.NguoiDungID))
+                {
+                    DataTable options = classes.DefaultView.ToTable(true, "LopHocID", "TenLop");
+                    DataRow all = options.NewRow();
+                    all["LopHocID"] = 0;
+                    all["TenLop"] = "Tất cả lớp đang học";
+                    options.Rows.InsertAt(all, 0);
+                    bool exists = false;
+                    foreach (DataRow row in options.Rows)
+                        if (Convert.ToInt32(row["LopHocID"]) == selectedClass) exists = true;
+                    cmbKQHV_BaiThi.DataSource = null;
+                    cmbKQHV_BaiThi.DisplayMember = "TenLop";
+                    cmbKQHV_BaiThi.ValueMember = "LopHocID";
+                    cmbKQHV_BaiThi.DataSource = options;
+                    cmbKQHV_BaiThi.SelectedValue = exists ? selectedClass : 0;
+                    cmbKQHV_BaiThi.Enabled = options.Rows.Count > 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                dgvHVKetQua.DataSource = null;
+                btnHVKQ_XuatFile.Enabled = false;
+                btnHVKQ_BaoCao.Enabled = false;
+                lblHVKQ_TongBaiThi.Text = "Không tải được danh sách lớp đang học.";
+                MessageBox.Show("Không tải được lớp để lọc kết quả: " + ex.Message, "Lỗi");
+                return;
+            }
+            finally { _dangTaiLopLocKetQua = false; }
+            HienThiKetQuaTheoLop();
+        }
+
+        private void cmbKQHV_BaiThi_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_dangTaiLopLocKetQua || !(cmbKQHV_BaiThi.SelectedValue is int)) return;
+            HienThiKetQuaTheoLop();
+        }
+
+        private void HienThiKetQuaTheoLop()
+        {
+            try
+            {
+                int lopID = cmbKQHV_BaiThi.SelectedValue is int value ? value : 0;
+                DataTable results = _ketQuaDAL.LayKetQuaTheoLopDangHoc(Session.NguoiDungID, lopID);
+                dgvHVKetQua.DataSource = results;
+                btnHVKQ_XuatFile.Enabled = results.Rows.Count > 0;
+                btnHVKQ_BaoCao.Enabled = results.Rows.Count > 0;
+                dgvHVKetQua_SelectionChanged(null, EventArgs.Empty);
+                lblHVKQ_TongBaiThi.Text = !cmbKQHV_BaiThi.Enabled ? "Bạn chưa có lớp đang học."
+                    : results.Rows.Count == 0 ? "Chưa có bài thi đã nộp trong lớp đang chọn."
+                    : $"{results.Rows.Count:N0} kết quả · {cmbKQHV_BaiThi.Text}";
+            }
+            catch (Exception ex)
+            {
+                dgvHVKetQua.DataSource = null;
+                btnHVKQ_XuatFile.Enabled = false;
+                btnHVKQ_BaoCao.Enabled = false;
+                lblHVKQ_TongBaiThi.Text = "Không tải được kết quả. Hãy mở lại tab để thử lại.";
+                MessageBox.Show("Không tải được kết quả bài thi: " + ex.Message, "Lỗi");
+            }
+        }
+
+        private void dgvHVKetQua_SelectionChanged(object sender, EventArgs e)
+        {
+            var row = dgvHVKetQua.CurrentRow?.DataBoundItem as DataRowView;
+            lblHVKQ_ChonDT.Text = "Đang chọn: " + (row == null ? "chưa chọn bài thi" : row["TenDeThi"].ToString());
+            lblHVKQ_TTDT.Text = row == null ? "Thông tin đề thi" : row["MonHoc"].ToString();
+            lblKQHV_Diem.Text = row == null || row["Diem"] == DBNull.Value
+                ? "Chưa có điểm" : Convert.ToDecimal(row["Diem"]).ToString("0.00") + "/10";
+            btnHVKQ_XuatFile.Enabled = row != null;
+        }
+
+        private void dgvHVKetQua_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || !(dgvHVKetQua.Rows[e.RowIndex].DataBoundItem is DataRowView row)) return;
+            try
+            {
+                using (var form = new Forms.Frm_XemLaiBaiThi(Convert.ToInt32(row["KetQuaID"])))
+                    form.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể xem chi tiết bài làm: " + ex.Message, "Lỗi");
+            }
+        }
+
+        private void btnHVKQ_XuatFile_Click(object sender, EventArgs e)
+        {
+            if (dgvHVKetQua.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn bài thi đã làm trong bảng lịch sử!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                var row = dgvHVKetQua.CurrentRow;
+                int ketQuaID = 0;
+
+                if (row.DataBoundItem is DataRowView drv && drv.Row.Table.Columns.Contains("KetQuaID"))
+                {
+                    ketQuaID = Convert.ToInt32(drv["KetQuaID"]);
+                }
+                else if (dgvHVKetQua.Columns.Contains("KetQuaID") && row.Cells["KetQuaID"].Value != null)
+                {
+                    ketQuaID = Convert.ToInt32(row.Cells["KetQuaID"].Value);
+                }
+
+                if (ketQuaID <= 0)
+                {
+                    MessageBox.Show("Không tìm thấy dữ liệu kết quả bài thi!", "Thông báo");
+                    return;
+                }
+
+                DataTable dtChiTiet = _ketQuaDAL.LayChiTietBaiLamTheoKetQua(ketQuaID);
+                if (dtChiTiet == null || dtChiTiet.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu chi tiết bài làm!", "Thông báo");
+                    return;
+                }
+
+                string tenDeThi = "";
+                string diem = "";
+                string thoiGianNop = "";
+
+                if (row.DataBoundItem is DataRowView drvRow)
+                {
+                    if (drvRow.Row.Table.Columns.Contains("TenDeThi")) tenDeThi = drvRow["TenDeThi"]?.ToString() ?? "";
+                    if (drvRow.Row.Table.Columns.Contains("Diem")) diem = drvRow["Diem"]?.ToString() ?? "";
+                    if (drvRow.Row.Table.Columns.Contains("ThoiGianNop")) thoiGianNop = drvRow["ThoiGianNop"]?.ToString() ?? "";
+                }
+
+                XuatChiTietBaiLamRaExcel(dtChiTiet, tenDeThi, diem, thoiGianNop);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi xuất file Excel: " + ex.Message, "Lỗi");
+            }
+        }
+
+        private void XuatChiTietBaiLamRaExcel(DataTable dt, string tenDeThi, string diem, string thoiGianNop)
+        {
+            var columns = new List<ExcelExportHelper.ColumnDefinition>
+            {
+                new ExcelExportHelper.ColumnDefinition { FieldName = "ThuTu", HeaderText = "STT", Width = 45, Alignment = "Center", IsNumeric = true },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "CauHoi", HeaderText = "Câu Hỏi", Width = 320, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnA", HeaderText = "Đáp Án A", Width = 150, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnB", HeaderText = "Đáp Án B", Width = 150, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnC", HeaderText = "Đáp Án C", Width = 150, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnD", HeaderText = "Đáp Án D", Width = 150, Alignment = "Left" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnDung", HeaderText = "Đáp Án Đúng", Width = 95, Alignment = "Center" },
+                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnChon", HeaderText = "Đáp Án Chọn", Width = 100, Alignment = "Center" },
+                new ExcelExportHelper.ColumnDefinition {
+                    FieldName = "LaDung",
+                    HeaderText = "Kết Quả",
+                    Width = 90,
+                    Alignment = "Center",
+                    ValueFormatter = val => {
+                        if (val == null || val == DBNull.Value) return "";
+                        bool isTrue = false;
+                        if (val is bool b) isTrue = b;
+                        else bool.TryParse(val.ToString(), out isTrue);
+                        return isTrue ? "ĐÚNG" : "SAI";
+                    }
+                }
+            };
+
+            string subTitle = $"Đề thi: {tenDeThi} | Điểm: {diem} | Nộp lúc: {thoiGianNop} | Học viên: {Session.TenDangNhap}";
+            ExcelExportHelper.ExportDataTable(
+                dt,
+                columns,
+                $"ChiTietBaiLam_{DateTime.Now:yyyyMMdd_HHmmss}.xls",
+                "BẢNG KẾT QUẢ CHI TIẾT BÀI THI",
+                subTitle
+            );
+        }
+
+        private void btnHVKQ_BaoCao_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int lopID = cmbKQHV_BaiThi.SelectedValue is int value ? value : 0;
+                using (DataTable results = _ketQuaDAL.LayKetQuaTheoLopDangHoc(Session.NguoiDungID, lopID))
+                    ExcelExportHelper.ExportBangDiemHocSinh(results, Session.HoTen ?? Session.TenDangNhap,
+                        null, null, null, Session.TenDangNhap);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể xuất báo cáo kết quả: " + ex.Message, "Lỗi");
+            }
+        }
+
+        #endregion
+
+        #region 6. Tab Thông Tin Cá Nhân & Đổi Mật Khẩu
+
+        private void KhoiTaoHoSoCaNhan()
+        {
+            cmbTTHV_GioiTinh.Items.Clear();
+            cmbTTHV_GioiTinh.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
+            cmbTTHV_GioiTinh.SelectedIndex = -1;
+            txtTTHV_HovaTen.MaxLength = 100;
+            txtTTHV_Email.MaxLength = 100;
+            txtTTHV_SDT.MaxLength = 10;
+            txtTTHV_DiaChi.MaxLength = 255;
+            txtTTHV_NgaySinh.MaxLength = 10;
+            txtTTHV_NgaySinh.Clear();
+            foreach (var input in new[] { txtTTHV_MatKhauHienTai, txtTTHV_MKMoi, txtTTHV_XacNhanMK })
+                input.UseSystemPasswordChar = true;
+            materialLabel54.Text = "HV";
+            lblKQHV_Diem.Text = "Chưa chọn bài thi";
+            lblGVTT_HovaTen.Text = string.Empty;
+            txtTTHV_MatKhauHienTai.Clear();
+            txtTTHV_MKMoi.Clear();
+            txtTTHV_XacNhanMK.Clear();
+            btnTTHV_LuuThayDoi.Enabled = false;
+            btnTTHV_DoiMK.Enabled = false;
+        }
+
+        private bool CoPhienHocSinhHopLe()
+        {
+            return Session.IsHocSinh && Session.TaiKhoanID > 0;
+        }
+
+        private bool LoadThongTinHocVien()
+        {
+            btnTTHV_LuuThayDoi.Enabled = false;
+            btnTTHV_DoiMK.Enabled = CoPhienHocSinhHopLe();
+            if (!CoPhienHocSinhHopLe())
+            {
+                MessageBox.Show("Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.", "Thông báo");
+                return false;
+            }
+
+            try
+            {
+                HocSinh hs = _hocSinhDAL.LayTheoTaiKhoan(Session.TaiKhoanID);
+                if (hs == null)
+                {
+                    MessageBox.Show("Không tìm thấy hồ sơ học sinh được liên kết với tài khoản. Vui lòng liên hệ quản trị viên.", "Thông báo");
+                    return false;
+                }
+
+                Session.NguoiDungID = hs.HocSinhID;
+                HienThiHoSo(hs);
+                btnTTHV_LuuThayDoi.Enabled = true;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải hồ sơ học sinh: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        private void HienThiHoSo(HocSinh hs)
+        {
+            string ngaySinh = hs.NgaySinh?.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) ?? "";
+            txtTTHV_HovaTen.Text = hs.HoTen ?? "";
+            txtTTHV_NgaySinh.Text = ngaySinh;
+            txtTTHV_Email.Text = hs.Email ?? "";
+            txtTTHV_SDT.Text = hs.SoDienThoai ?? "";
+            txtTTHV_DiaChi.Text = hs.DiaChi ?? "";
+            cmbTTHV_GioiTinh.SelectedIndex = -1;
+            foreach (object item in cmbTTHV_GioiTinh.Items)
+            {
+                if (string.Equals(item.ToString(), hs.GioiTinh?.Trim(), StringComparison.OrdinalIgnoreCase))
+                {
+                    cmbTTHV_GioiTinh.SelectedItem = item;
+                    break;
+                }
+            }
+
+            Session.HoTen = hs.HoTen;
+            lblGVTT_HovaTen.Text = hs.HoTen ?? "";
+            lblHV_LoiChao.Text = "Xin chào, " + hs.HoTen;
+        }
+
         private void BtnHV_LuuProfile_Click(object sender, EventArgs e)
         {
             if (!CoPhienHocSinhHopLe() || Session.NguoiDungID <= 0)
@@ -679,172 +870,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void KhoiTaoLocKetQua()
-        {
-            cmbKQHV_BaiThi.Hint = "Lọc kết quả theo lớp đang học";
-            cmbKQHV_BaiThi.SelectedIndexChanged += cmbKQHV_BaiThi_SelectedIndexChanged;
-            lblHVKQ_TongBaiThi.Text = "Chọn lớp đang học để xem kết quả bài thi đã nộp.";
-            btnHVKQ_XuatFile.Enabled = false;
-            btnHVKQ_BaoCao.Enabled = false;
-        }
+        #endregion
 
-        private void LoadLichSuThi()
-        {
-            int selectedClass = cmbKQHV_BaiThi.SelectedValue is int value ? value : 0;
-            _dangTaiLopLocKetQua = true;
-            try
-            {
-                using (DataTable classes = _lopDAL.LayTheoHocSinh(Session.NguoiDungID))
-                {
-                    DataTable options = classes.DefaultView.ToTable(true, "LopHocID", "TenLop");
-                    DataRow all = options.NewRow();
-                    all["LopHocID"] = 0;
-                    all["TenLop"] = "Tất cả lớp đang học";
-                    options.Rows.InsertAt(all, 0);
-                    bool exists = false;
-                    foreach (DataRow row in options.Rows)
-                        if (Convert.ToInt32(row["LopHocID"]) == selectedClass) exists = true;
-                    cmbKQHV_BaiThi.DataSource = null;
-                    cmbKQHV_BaiThi.DisplayMember = "TenLop";
-                    cmbKQHV_BaiThi.ValueMember = "LopHocID";
-                    cmbKQHV_BaiThi.DataSource = options;
-                    cmbKQHV_BaiThi.SelectedValue = exists ? selectedClass : 0;
-                    cmbKQHV_BaiThi.Enabled = options.Rows.Count > 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                dgvHVKetQua.DataSource = null;
-                btnHVKQ_XuatFile.Enabled = false;
-                btnHVKQ_BaoCao.Enabled = false;
-                lblHVKQ_TongBaiThi.Text = "Không tải được danh sách lớp đang học.";
-                MessageBox.Show("Không tải được lớp để lọc kết quả: " + ex.Message, "Lỗi");
-                return;
-            }
-            finally { _dangTaiLopLocKetQua = false; }
-            HienThiKetQuaTheoLop();
-        }
-
-        private void cmbKQHV_BaiThi_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_dangTaiLopLocKetQua || !(cmbKQHV_BaiThi.SelectedValue is int)) return;
-            HienThiKetQuaTheoLop();
-        }
-
-        private void HienThiKetQuaTheoLop()
-        {
-            try
-            {
-                int lopID = cmbKQHV_BaiThi.SelectedValue is int value ? value : 0;
-                DataTable results = _ketQuaDAL.LayKetQuaTheoLopDangHoc(Session.NguoiDungID, lopID);
-                dgvHVKetQua.DataSource = results;
-                btnHVKQ_XuatFile.Enabled = results.Rows.Count > 0;
-                btnHVKQ_BaoCao.Enabled = results.Rows.Count > 0;
-                dgvHVKetQua_SelectionChanged(null, EventArgs.Empty);
-                lblHVKQ_TongBaiThi.Text = !cmbKQHV_BaiThi.Enabled ? "Bạn chưa có lớp đang học."
-                    : results.Rows.Count == 0 ? "Chưa có bài thi đã nộp trong lớp đang chọn."
-                    : $"{results.Rows.Count:N0} kết quả · {cmbKQHV_BaiThi.Text}";
-            }
-            catch (Exception ex)
-            {
-                dgvHVKetQua.DataSource = null;
-                btnHVKQ_XuatFile.Enabled = false;
-                btnHVKQ_BaoCao.Enabled = false;
-                lblHVKQ_TongBaiThi.Text = "Không tải được kết quả. Hãy mở lại tab để thử lại.";
-                MessageBox.Show("Không tải được kết quả bài thi: " + ex.Message, "Lỗi");
-            }
-        }
-
-        private void btnHVKQ_XuatFile_Click(object sender, EventArgs e)
-        {
-            if (dgvHVKetQua.CurrentRow == null)
-            {
-                MessageBox.Show("Vui lòng chọn bài thi đã làm trong bảng lịch sử!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                var row = dgvHVKetQua.CurrentRow;
-                int ketQuaID = 0;
-
-                if (row.DataBoundItem is DataRowView drv && drv.Row.Table.Columns.Contains("KetQuaID"))
-                {
-                    ketQuaID = Convert.ToInt32(drv["KetQuaID"]);
-                }
-                else if (dgvHVKetQua.Columns.Contains("KetQuaID") && row.Cells["KetQuaID"].Value != null)
-                {
-                    ketQuaID = Convert.ToInt32(row.Cells["KetQuaID"].Value);
-                }
-
-                if (ketQuaID <= 0)
-                {
-                    MessageBox.Show("Không tìm thấy dữ liệu kết quả bài thi!", "Thông báo");
-                    return;
-                }
-
-                DataTable dtChiTiet = _ketQuaDAL.LayChiTietBaiLamTheoKetQua(ketQuaID);
-                if (dtChiTiet == null || dtChiTiet.Rows.Count == 0)
-                {
-                    MessageBox.Show("Không có dữ liệu chi tiết bài làm!", "Thông báo");
-                    return;
-                }
-
-                string tenDeThi = "";
-                string diem = "";
-                string thoiGianNop = "";
-
-                if (row.DataBoundItem is DataRowView drvRow)
-                {
-                    if (drvRow.Row.Table.Columns.Contains("TenDeThi")) tenDeThi = drvRow["TenDeThi"]?.ToString() ?? "";
-                    if (drvRow.Row.Table.Columns.Contains("Diem")) diem = drvRow["Diem"]?.ToString() ?? "";
-                    if (drvRow.Row.Table.Columns.Contains("ThoiGianNop")) thoiGianNop = drvRow["ThoiGianNop"]?.ToString() ?? "";
-                }
-
-                XuatChiTietBaiLamRaExcel(dtChiTiet, tenDeThi, diem, thoiGianNop);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi xuất file Excel: " + ex.Message, "Lỗi");
-            }
-        }
-
-        private void XuatChiTietBaiLamRaExcel(DataTable dt, string tenDeThi, string diem, string thoiGianNop)
-        {
-            var columns = new List<ExcelExportHelper.ColumnDefinition>
-            {
-                new ExcelExportHelper.ColumnDefinition { FieldName = "ThuTu", HeaderText = "STT", Width = 45, Alignment = "Center", IsNumeric = true },
-                new ExcelExportHelper.ColumnDefinition { FieldName = "CauHoi", HeaderText = "Câu Hỏi", Width = 320, Alignment = "Left" },
-                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnA", HeaderText = "Đáp Án A", Width = 150, Alignment = "Left" },
-                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnB", HeaderText = "Đáp Án B", Width = 150, Alignment = "Left" },
-                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnC", HeaderText = "Đáp Án C", Width = 150, Alignment = "Left" },
-                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnD", HeaderText = "Đáp Án D", Width = 150, Alignment = "Left" },
-                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnDung", HeaderText = "Đáp Án Đúng", Width = 95, Alignment = "Center" },
-                new ExcelExportHelper.ColumnDefinition { FieldName = "DapAnChon", HeaderText = "Đáp Án Chọn", Width = 100, Alignment = "Center" },
-                new ExcelExportHelper.ColumnDefinition {
-                    FieldName = "LaDung",
-                    HeaderText = "Kết Quả",
-                    Width = 90,
-                    Alignment = "Center",
-                    ValueFormatter = val => {
-                        if (val == null || val == DBNull.Value) return "";
-                        bool isTrue = false;
-                        if (val is bool b) isTrue = b;
-                        else bool.TryParse(val.ToString(), out isTrue);
-                        return isTrue ? "ĐÚNG" : "SAI";
-                    }
-                }
-            };
-
-            string subTitle = $"Đề thi: {tenDeThi} | Điểm: {diem} | Nộp lúc: {thoiGianNop} | Học viên: {Session.TenDangNhap}";
-            ExcelExportHelper.ExportDataTable(
-                dt,
-                columns,
-                $"ChiTietBaiLam_{DateTime.Now:yyyyMMdd_HHmmss}.xls",
-                "BẢNG KẾT QUẢ CHI TIẾT BÀI THI",
-                subTitle
-            );
-        }
+        #region 7. Điều Hướng & Sự Kiện Form
 
         private void TabHocVien_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -904,5 +932,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
         {
         }
+
+        #endregion
+
     }
 }
