@@ -235,6 +235,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -254,6 +255,8 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Screenshot 2026-11-05 084145.png" />
+    <None Include="Resources\Screenshot 2026-11-05 093003.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="Templates\CauHoi_Mau.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

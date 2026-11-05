@@ -107,6 +107,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageHV_ThongTin = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.materialCard11 = new ReaLTaiizor.Controls.MaterialCard();
+            this.txtHV_Profile_HTNTNS = new System.Windows.Forms.Label();
+            this.txtHV_Profile_HienThiTen = new System.Windows.Forms.Label();
             this.materialLabel23 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel22 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel21 = new ReaLTaiizor.Controls.MaterialLabel();
@@ -132,8 +134,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.txtHV_Profile_HienThiTen = new System.Windows.Forms.Label();
-            this.txtHV_Profile_HTNTNS = new System.Windows.Forms.Label();
             this.tabHocVien.SuspendLayout();
             this.pageHV_TrangChu.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -1110,6 +1110,22 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialCard11.Size = new System.Drawing.Size(383, 440);
             this.materialCard11.TabIndex = 0;
             // 
+            // txtHV_Profile_HTNTNS
+            // 
+            this.txtHV_Profile_HTNTNS.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHV_Profile_HTNTNS.Location = new System.Drawing.Point(28, 344);
+            this.txtHV_Profile_HTNTNS.Name = "txtHV_Profile_HTNTNS";
+            this.txtHV_Profile_HTNTNS.Size = new System.Drawing.Size(312, 30);
+            this.txtHV_Profile_HTNTNS.TabIndex = 1;
+            // 
+            // txtHV_Profile_HienThiTen
+            // 
+            this.txtHV_Profile_HienThiTen.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHV_Profile_HienThiTen.Location = new System.Drawing.Point(28, 288);
+            this.txtHV_Profile_HienThiTen.Name = "txtHV_Profile_HienThiTen";
+            this.txtHV_Profile_HienThiTen.Size = new System.Drawing.Size(312, 30);
+            this.txtHV_Profile_HienThiTen.TabIndex = 1;
+            // 
             // materialLabel23
             // 
             this.materialLabel23.AutoSize = true;
@@ -1258,7 +1274,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_Profile_NgaySinh.Size = new System.Drawing.Size(541, 60);
             this.txtHV_Profile_NgaySinh.TabIndex = 1;
             this.txtHV_Profile_NgaySinh.TabStop = false;
-            this.txtHV_Profile_NgaySinh.Text = "";
             this.txtHV_Profile_NgaySinh.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_Profile_NgaySinh.TrailingIcon = null;
             this.txtHV_Profile_NgaySinh.UseSystemPasswordChar = false;
@@ -1391,7 +1406,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel25.Location = new System.Drawing.Point(20, 17);
             this.materialLabel25.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialLabel25.Name = "materialLabel25";
-            this.materialLabel25.Size = new System.Drawing.Size(147, 24);
+            this.materialLabel25.Size = new System.Drawing.Size(134, 24);
             this.materialLabel25.TabIndex = 0;
             this.materialLabel25.Text = "Cập nhật hồ sơ";
             // 
@@ -1444,7 +1459,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_MatKhauCu.MaxLength = 32767;
             this.txtHV_MatKhauCu.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.txtHV_MatKhauCu.Name = "txtHV_MatKhauCu";
-            this.txtHV_MatKhauCu.PasswordChar = '*';
+            this.txtHV_MatKhauCu.PasswordChar = '●';
             this.txtHV_MatKhauCu.PrefixSuffixText = null;
             this.txtHV_MatKhauCu.ReadOnly = false;
             this.txtHV_MatKhauCu.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1492,7 +1507,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_MatKhauMoi.MaxLength = 32767;
             this.txtHV_MatKhauMoi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.txtHV_MatKhauMoi.Name = "txtHV_MatKhauMoi";
-            this.txtHV_MatKhauMoi.PasswordChar = '*';
+            this.txtHV_MatKhauMoi.PasswordChar = '●';
             this.txtHV_MatKhauMoi.PrefixSuffixText = null;
             this.txtHV_MatKhauMoi.ReadOnly = false;
             this.txtHV_MatKhauMoi.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1524,7 +1539,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_XacNhanMatKhau.MaxLength = 32767;
             this.txtHV_XacNhanMatKhau.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.txtHV_XacNhanMatKhau.Name = "txtHV_XacNhanMatKhau";
-            this.txtHV_XacNhanMatKhau.PasswordChar = '*';
+            this.txtHV_XacNhanMatKhau.PasswordChar = '●';
             this.txtHV_XacNhanMatKhau.PrefixSuffixText = null;
             this.txtHV_XacNhanMatKhau.ReadOnly = false;
             this.txtHV_XacNhanMatKhau.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1594,24 +1609,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.Column9.MinimumWidth = 6;
             this.Column9.Name = "Column9";
             this.Column9.Width = 125;
-            // 
-            // txtHV_Profile_HienThiTen
-            // 
-            this.txtHV_Profile_HienThiTen.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtHV_Profile_HienThiTen.Location = new System.Drawing.Point(28, 288);
-            this.txtHV_Profile_HienThiTen.Name = "txtHV_Profile_HienThiTen";
-            this.txtHV_Profile_HienThiTen.Size = new System.Drawing.Size(312, 30);
-            this.txtHV_Profile_HienThiTen.TabIndex = 1;
-            this.txtHV_Profile_HienThiTen.Text = "";
-            // 
-            // txtHV_Profile_HTNTNS
-            // 
-            this.txtHV_Profile_HTNTNS.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtHV_Profile_HTNTNS.Location = new System.Drawing.Point(28, 344);
-            this.txtHV_Profile_HTNTNS.Name = "txtHV_Profile_HTNTNS";
-            this.txtHV_Profile_HTNTNS.Size = new System.Drawing.Size(312, 30);
-            this.txtHV_Profile_HTNTNS.TabIndex = 1;
-            this.txtHV_Profile_HTNTNS.Text = "";
             // 
             // HocVien
             // 
