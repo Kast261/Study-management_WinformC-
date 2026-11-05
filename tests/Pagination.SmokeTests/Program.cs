@@ -30,6 +30,7 @@ internal static class Program
             ScrolledPageIsReplaced();
             TableLayoutAndHiddenTab();
             GradeReportUsesInvariantDecimals();
+            DatePickerInputsKeepDayMonthOrderAndMissingDates();
             Console.WriteLine("PASS: " + assertions + " WinForms pagination assertions");
             return 0;
         }
@@ -144,6 +145,36 @@ internal static class Program
                 "Closing a form must dispose and unregister pagination with pending UI work");
         }
         Application.DoEvents();
+    }
+
+    private static void DatePickerInputsKeepDayMonthOrderAndMissingDates()
+    {
+        var original = System.Globalization.CultureInfo.CurrentCulture;
+        try
+        {
+            foreach (string culture in new[] { "vi-VN", "en-US" })
+            {
+                System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(culture);
+                using (var picker = new DateTimePicker())
+                {
+                    DatePickerInput.Configure(picker);
+                    Check(!picker.Checked && DatePickerInput.ReadText(picker) == "",
+                        culture + ": an empty date must not silently become today's date");
+                    var birthday = new DateTime(2006, 4, 3);
+                    DatePickerInput.SetValue(picker, birthday);
+                    Check(picker.Checked && picker.Value.Date == birthday && DatePickerInput.ReadText(picker) == "03/04/2006",
+                        culture + ": a selected birthday must retain day/month order");
+                    DatePickerInput.SetValue(picker, DBNull.Value);
+                    Check(!picker.Checked && DatePickerInput.ReadText(picker) == "",
+                        culture + ": a missing database date must clear the previous selection");
+                    DatePickerInput.SetValue(picker, birthday);
+                    DatePickerInput.SetValue(picker, null);
+                    Check(!picker.Checked && DatePickerInput.ReadText(picker) == "",
+                        culture + ": null dates must remain missing");
+                }
+            }
+        }
+        finally { System.Globalization.CultureInfo.CurrentCulture = original; }
     }
 
     private static DataTable Table(int count)

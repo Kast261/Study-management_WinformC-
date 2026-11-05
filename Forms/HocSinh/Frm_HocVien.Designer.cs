@@ -164,6 +164,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel54 = new System.Windows.Forms.Panel();
             this.txtTTHV_HovaTen = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.materialLabel57 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.pnlTTHV_NgaySinh = new System.Windows.Forms.Panel();
+            this.lblTTHV_NgaySinh = new ReaLTaiizor.Controls.MaterialLabel();
+            this.txtTTHV_NgaySinh = new ReaLTaiizor.Controls.MaterialTextBoxEdit();
             this.panel55 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel31 = new System.Windows.Forms.TableLayoutPanel();
             this.panel56 = new System.Windows.Forms.Panel();
@@ -266,6 +269,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel54.SuspendLayout();
             this.panel55.SuspendLayout();
             this.tableLayoutPanel31.SuspendLayout();
+            this.pnlTTHV_NgaySinh.SuspendLayout();
             this.panel56.SuspendLayout();
             this.panel57.SuspendLayout();
             this.panel58.SuspendLayout();
@@ -1909,9 +1913,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel30.Location = new System.Drawing.Point(0, 30);
             this.tableLayoutPanel30.Name = "tableLayoutPanel30";
             this.tableLayoutPanel30.RowCount = 3;
-            this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27.05882F));
-            this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 56.76471F));
-            this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.17647F));
+            this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel30.Size = new System.Drawing.Size(777, 436);
             this.tableLayoutPanel30.TabIndex = 2;
             // 
@@ -1988,15 +1992,41 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel31.Controls.Add(this.panel57, 1, 0);
             this.tableLayoutPanel31.Controls.Add(this.panel58, 0, 1);
             this.tableLayoutPanel31.Controls.Add(this.panel59, 1, 1);
+            this.tableLayoutPanel31.Controls.Add(this.pnlTTHV_NgaySinh, 0, 2);
+            this.tableLayoutPanel31.SetColumnSpan(this.pnlTTHV_NgaySinh, 2);
             this.tableLayoutPanel31.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel31.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel31.Name = "tableLayoutPanel31";
-            this.tableLayoutPanel31.RowCount = 2;
-            this.tableLayoutPanel31.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel31.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel31.RowCount = 3;
+            this.tableLayoutPanel31.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel31.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel31.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel31.Size = new System.Drawing.Size(771, 241);
             this.tableLayoutPanel31.TabIndex = 0;
             // 
+            // pnlTTHV_NgaySinh
+            //
+            this.pnlTTHV_NgaySinh.Controls.Add(this.txtTTHV_NgaySinh);
+            this.pnlTTHV_NgaySinh.Controls.Add(this.lblTTHV_NgaySinh);
+            this.pnlTTHV_NgaySinh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTTHV_NgaySinh.Name = "pnlTTHV_NgaySinh";
+            this.pnlTTHV_NgaySinh.TabIndex = 4;
+            //
+            // lblTTHV_NgaySinh
+            //
+            this.lblTTHV_NgaySinh.AutoSize = true;
+            this.lblTTHV_NgaySinh.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTTHV_NgaySinh.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblTTHV_NgaySinh.Name = "lblTTHV_NgaySinh";
+            this.lblTTHV_NgaySinh.Text = "Ngày sinh (dd/MM/yyyy)";
+            //
+            // txtTTHV_NgaySinh
+            //
+            this.txtTTHV_NgaySinh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTTHV_NgaySinh.Name = "txtTTHV_NgaySinh";
+            this.txtTTHV_NgaySinh.MaxLength = 10;
+            this.txtTTHV_NgaySinh.TabIndex = 0;
+            //
             // panel56
             // 
             this.panel56.Controls.Add(this.cmbTTHV_GioiTinh);
@@ -2726,6 +2756,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel54.PerformLayout();
             this.panel55.ResumeLayout(false);
             this.tableLayoutPanel31.ResumeLayout(false);
+            this.pnlTTHV_NgaySinh.ResumeLayout(false);
+            this.pnlTTHV_NgaySinh.PerformLayout();
             this.panel56.ResumeLayout(false);
             this.panel56.PerformLayout();
             this.panel57.ResumeLayout(false);
@@ -2936,5 +2968,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel29;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel54;
         private ReaLTaiizor.Controls.MaterialLabel lblGVTT_HovaTen;
+        private System.Windows.Forms.Panel pnlTTHV_NgaySinh;
+        private ReaLTaiizor.Controls.MaterialLabel lblTTHV_NgaySinh;
+        private ReaLTaiizor.Controls.MaterialTextBoxEdit txtTTHV_NgaySinh;
     }
 }

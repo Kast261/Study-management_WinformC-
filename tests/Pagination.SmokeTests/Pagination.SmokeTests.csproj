@@ -14,6 +14,7 @@
     <Reference Include="System.Xml" />
     <Compile Include="Program.cs" />
     <Compile Include="../../Helpers/UI/PagedBindingList.cs" Link="PagedBindingList.cs" />
+    <Compile Include="../../Helpers/UI/DatePickerInput.cs" Link="DatePickerInput.cs" />
     <Compile Include="../../Helpers/UI/DataGridViewPager.cs" Link="DataGridViewPager.cs" />
     <Compile Include="../../Helpers/Export/ExcelExportHelper.cs" Link="ExcelExportHelper.cs" />
   </ItemGroup>

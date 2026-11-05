@@ -38,6 +38,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             this.DoubleBuffered = true;
             InitializeComponent();
+            CauHinhHoSo();
             KhoiTaoDashboard();
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
             this.DrawerTabControl = materialTabControl1;
@@ -47,8 +48,16 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
         {
-            if (grid == dgvGiaoVien) _selectedGiaoVienID = 0;
-            if (grid == dgvHocVien) _selectedHocVienID = 0;
+            if (grid == dgvGiaoVien)
+            {
+                _selectedGiaoVienID = 0;
+                headerLabel4.Text = "Đang chọn: chưa chọn giáo viên";
+            }
+            if (grid == dgvHocVien)
+            {
+                _selectedHocVienID = 0;
+                headerLabel15.Text = "Đang chọn: chưa chọn học viên";
+            }
             if (grid == dgvKhoaHoc) _selectedKhoaHocID = 0;
             if (grid == dgvLopHoc) _selectedLopHocID = 0;
             if (grid == dgvTaiKhoan)
@@ -82,6 +91,33 @@ namespace BLT_Quan_Ly_Hoc_Tap
         }
 
         #region Khởi tạo & Đăng ký sự kiện
+        private void CauHinhHoSo()
+        {
+            dgvGiaoVien.AutoGenerateColumns = false;
+            maGV.DataPropertyName = "GiaoVienID";
+            HoTen.DataPropertyName = "HoTen";
+            Column1.DataPropertyName = "ChuyenMon";
+            Column2.DataPropertyName = "SoDienThoai";
+            Column3.DataPropertyName = "Email";
+            Column4.DataPropertyName = "SoLop";
+
+            dgvHocVien.AutoGenerateColumns = false;
+            dataGridViewTextBoxColumn1.DataPropertyName = "HocSinhID";
+            dataGridViewTextBoxColumn2.DataPropertyName = "HoTen";
+            dataGridViewTextBoxColumn3.DataPropertyName = "NgaySinh";
+            dataGridViewTextBoxColumn3.DefaultCellStyle.Format = "dd/MM/yyyy";
+            dataGridViewTextBoxColumn4.DataPropertyName = "SoDienThoai";
+            dataGridViewTextBoxColumn5.DataPropertyName = "Email";
+            // Nguồn dữ liệu hiện có trả về lớp chính của học viên.
+            dataGridViewTextBoxColumn6.HeaderText = "Lớp học";
+            dataGridViewTextBoxColumn6.DataPropertyName = "TenLop";
+
+            DatePickerInput.Configure(txtGV_NgaySinh);
+            DatePickerInput.Configure(txtHV_NgaySinh);
+            txtGV_TimKiem.Text = "";
+            txtHV_TimKiem.Text = "";
+        }
+
         private void InitDropdownOptions()
         {
             // Giới tính Giáo Viên
@@ -110,6 +146,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             btnGV_Sua.Click += btnGV_Sua_Click;
             btnGV_Xoa.Click += btnGV_Xoa_Click;
             btnGV_LamMoi.Click += btnGV_LamMoi_Click;
+            btnGV_TaiLai.Click += btnGV_LamMoi_Click;
             txtGV_TimKiem.TextChanged += txtGV_TimKiem_TextChanged;
             dgvGiaoVien.CellClick += dgvGiaoVien_CellClick;
 
@@ -118,6 +155,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             btnHV_Sua.Click += btnHV_Sua_Click;
             btnHV_Xoa.Click += btnHV_Xoa_Click;
             btnHV_LamMoi.Click += btnHV_LamMoi_Click;
+            foreverButton2.Click += btnHV_LamMoi_Click;
             txtHV_TimKiem.TextChanged += txtHV_TimKiem_TextChanged;
             dgvHocVien.CellClick += dgvHocVien_CellClick;
 
@@ -299,18 +337,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 dgvGiaoVien.AutoGenerateColumns = false;
                 dgvGiaoVien.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-                Column1.DataPropertyName = "GiaoVienID";
-                Column2.DataPropertyName = "HoTen";
-                Column18.DataPropertyName = "GioiTinh";
-                Column19.DataPropertyName = "NgaySinh";
-                Column19.DefaultCellStyle.Format = "dd/MM/yyyy";
-                Column3.DataPropertyName = "ChuyenMon";
-                Column4.DataPropertyName = "Email";
-                Column16.DataPropertyName = "DiaChi";
-                Column17.DataPropertyName = "SoDienThoai";
-                Column5.DataPropertyName = "SoLop";
-
-                dgvGiaoVien.DataSource = _gvDAL.LayTatCa();
+                var danhSach = _gvDAL.LayTatCa();
+                dgvGiaoVien.DataSource = danhSach;
+                hlbl_SoLuong.Text = $"Số lượng giáo viên: {danhSach.Rows.Count:N0}";
             }
             catch (Exception ex)
             {
@@ -321,13 +350,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void LamMoiFormGV()
         {
             _selectedGiaoVienID = 0;
+            headerLabel4.Text = "Đang chọn: chưa chọn giáo viên";
             txtGV_HoTen.Clear();
-            txtGV_NgaySinh.Clear();
+            txtGV_NgaySinh.Checked = false;
             txtGV_ChuyenMon.Clear();
             txtGV_Email.Clear();
             txtGV_SoDienThoai.Clear();
             txtGV_DiaChi.Clear();
-            txtGV_TimKiem.Clear();
+            txtGV_TimKiem.Text = "";
             if (txtGV_GioiTinh.Items.Count > 0) txtGV_GioiTinh.SelectedIndex = 0;
             txtGV_HoTen.Focus();
         }
@@ -340,16 +370,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (row.DataBoundItem is DataRowView drv)
                 {
                     _selectedGiaoVienID = Convert.ToInt32(drv["GiaoVienID"]);
+                    headerLabel4.Text = "Đang chọn: " + drv["HoTen"];
                     txtGV_HoTen.Text = drv["HoTen"]?.ToString();
                     txtGV_ChuyenMon.Text = drv["ChuyenMon"]?.ToString();
                     txtGV_Email.Text = drv["Email"]?.ToString();
                     txtGV_SoDienThoai.Text = drv["SoDienThoai"]?.ToString();
                     txtGV_DiaChi.Text = drv["DiaChi"]?.ToString();
 
-                    if (drv["NgaySinh"] != DBNull.Value)
-                        txtGV_NgaySinh.Text = Convert.ToDateTime(drv["NgaySinh"]).ToString("dd/MM/yyyy");
-                    else
-                        txtGV_NgaySinh.Clear();
+                    DatePickerInput.SetValue(txtGV_NgaySinh, drv["NgaySinh"]);
 
                     string gt = drv["GioiTinh"]?.ToString();
                     if (!string.IsNullOrEmpty(gt) && txtGV_GioiTinh.Items.Contains(gt))
@@ -367,7 +395,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
-            if (!Validation.IsValidBirthDate(txtGV_NgaySinh.Text, out DateTime? ngaySinh, out string errNS))
+            if (!Validation.IsValidBirthDate(DatePickerInput.ReadText(txtGV_NgaySinh), out DateTime? ngaySinh, out string errNS))
             {
                 MessageBox.Show(errNS, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtGV_NgaySinh.Focus();
@@ -424,7 +452,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
-            if (!Validation.IsValidBirthDate(txtGV_NgaySinh.Text, out DateTime? ngaySinh, out string errNS))
+            if (!Validation.IsValidBirthDate(DatePickerInput.ReadText(txtGV_NgaySinh), out DateTime? ngaySinh, out string errNS))
             {
                 MessageBox.Show(errNS, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtGV_NgaySinh.Focus();
@@ -509,7 +537,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             else
             {
-                dgvGiaoVien.DataSource = _gvDAL.TimKiem(kw);
+                var danhSach = _gvDAL.TimKiem(kw);
+                dgvGiaoVien.DataSource = danhSach;
+                hlbl_SoLuong.Text = $"Số lượng giáo viên: {danhSach.Rows.Count:N0}";
             }
         }
         #endregion
@@ -522,17 +552,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 dgvHocVien.AutoGenerateColumns = false;
                 dgvHocVien.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-                dataGridViewTextBoxColumn1.DataPropertyName = "HocSinhID";
-                dataGridViewTextBoxColumn2.DataPropertyName = "HoTen";
-                Column20.DataPropertyName = "NgaySinh";
-                Column20.DefaultCellStyle.Format = "dd/MM/yyyy";
-                Column21.DataPropertyName = "GioiTinh";
-                Column22.DataPropertyName = "SoDienThoai";
-                dataGridViewTextBoxColumn3.DataPropertyName = "TenLop";
-                dataGridViewTextBoxColumn4.DataPropertyName = "Email";
-                dataGridViewTextBoxColumn5.DataPropertyName = "DiaChi";
-
-                dgvHocVien.DataSource = _hsDAL.LayTatCa();
+                var danhSach = _hsDAL.LayTatCa();
+                dgvHocVien.DataSource = danhSach;
+                headerLabel14.Text = $"Số lượng học viên: {danhSach.Rows.Count:N0}";
             }
             catch (Exception ex)
             {
@@ -543,12 +565,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void LamMoiFormHV()
         {
             _selectedHocVienID = 0;
+            headerLabel15.Text = "Đang chọn: chưa chọn học viên";
             txtHV_HoTen.Clear();
-            txtHV_NgaySinh.Clear();
+            txtHV_NgaySinh.Checked = false;
             txtHV_Email.Clear();
             txtHV_SoDienThoai.Clear();
             txtHV_DiaChi.Clear();
-            txtHV_TimKiem.Clear();
+            txtHV_TimKiem.Text = "";
             if (cboHV_GioiTinh.Items.Count > 0) cboHV_GioiTinh.SelectedIndex = 0;
             txtHV_HoTen.Focus();
         }
@@ -561,15 +584,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (row.DataBoundItem is DataRowView drv)
                 {
                     _selectedHocVienID = Convert.ToInt32(drv["HocSinhID"]);
+                    headerLabel15.Text = "Đang chọn: " + drv["HoTen"];
                     txtHV_HoTen.Text = drv["HoTen"]?.ToString();
                     txtHV_Email.Text = drv["Email"]?.ToString();
                     txtHV_SoDienThoai.Text = drv["SoDienThoai"]?.ToString();
                     txtHV_DiaChi.Text = drv["DiaChi"]?.ToString();
 
-                    if (drv["NgaySinh"] != DBNull.Value)
-                        txtHV_NgaySinh.Text = Convert.ToDateTime(drv["NgaySinh"]).ToString("dd/MM/yyyy");
-                    else
-                        txtHV_NgaySinh.Clear();
+                    DatePickerInput.SetValue(txtHV_NgaySinh, drv["NgaySinh"]);
 
                     string gt = drv["GioiTinh"]?.ToString();
                     if (!string.IsNullOrEmpty(gt) && cboHV_GioiTinh.Items.Contains(gt))
@@ -587,7 +608,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
-            if (!Validation.IsValidBirthDate(txtHV_NgaySinh.Text, out DateTime? ngaySinh, out string errNS))
+            if (!Validation.IsValidBirthDate(DatePickerInput.ReadText(txtHV_NgaySinh), out DateTime? ngaySinh, out string errNS))
             {
                 MessageBox.Show(errNS, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtHV_NgaySinh.Focus();
@@ -643,7 +664,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
-            if (!Validation.IsValidBirthDate(txtHV_NgaySinh.Text, out DateTime? ngaySinh, out string errNS))
+            if (!Validation.IsValidBirthDate(DatePickerInput.ReadText(txtHV_NgaySinh), out DateTime? ngaySinh, out string errNS))
             {
                 MessageBox.Show(errNS, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtHV_NgaySinh.Focus();
@@ -726,7 +747,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             else
             {
-                dgvHocVien.DataSource = _hsDAL.TimKiem(kw);
+                var danhSach = _hsDAL.TimKiem(kw);
+                dgvHocVien.DataSource = danhSach;
+                headerLabel14.Text = $"Số lượng học viên: {danhSach.Rows.Count:N0}";
             }
         }
         #endregion
@@ -1036,8 +1059,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 dgvTaiKhoan.AutoGenerateColumns = false;
                 dgvTaiKhoan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 Column9.DataPropertyName  = "TenDangNhap";
-                Column10.DataPropertyName = "VaiTro";
-                Column11.DataPropertyName = "TenNguoiDung";
+                Column10.DataPropertyName = "TenNguoiDung";
+                Column11.DataPropertyName = "VaiTro";
                 Column12.DataPropertyName = "TrangThaiHienThi";
                 dgvTaiKhoan.DataSource = _tkDAL.LayTatCaCoTenNguoiDung();
             }

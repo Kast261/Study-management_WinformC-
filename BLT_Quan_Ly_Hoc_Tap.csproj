@@ -190,6 +190,7 @@
     <Compile Include="DAL\Repositories\CauHoiImportDAL.cs" />
     <Compile Include="Models\Entities\KetQuaNhapCauHoi.cs" />
     <Compile Include="Helpers\UI\PagedBindingList.cs" />
+    <Compile Include="Helpers\UI\DatePickerInput.cs" />
     <Compile Include="Helpers\UI\DataGridViewPager.cs" />
     <Compile Include="Helpers\Export\ExcelExportHelper.cs" />
     <Compile Include="Helpers\Security\Passwords.cs" />
