@@ -53,6 +53,12 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
         {
             this.grid = grid;
             this.changed = changed;
+            // Designer-created columns define the displayed headers, order and formats.
+            // AutoGenerateColumns defaults to true and may not survive a Designer save.
+            // Disable it before any binding (including the pager's empty initial source)
+            // so database field names/IDs cannot replace or extend the designed columns.
+            // Grids without predefined columns still generate columns from their source.
+            if (grid.Columns.Count > 0) grid.AutoGenerateColumns = false;
             grid.AllowUserToAddRows = false;
             var toolbar = new FlowLayoutPanel
             {
