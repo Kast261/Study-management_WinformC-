@@ -35,7 +35,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             InitializeComponent();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             _deThiID = deThiID;
         }
 

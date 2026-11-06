@@ -1332,8 +1332,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // txtLH_KhoaHoc
             // 
             this.txtLH_KhoaHoc.AnimateReadOnly = false;
-            this.txtLH_KhoaHoc.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtLH_KhoaHoc.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtLH_KhoaHoc.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtLH_KhoaHoc.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txtLH_KhoaHoc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.txtLH_KhoaHoc.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
             this.txtLH_KhoaHoc.Depth = 0;
@@ -1668,6 +1668,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cboDK_LocTheoLop.FormattingEnabled = true;
             this.cboDK_LocTheoLop.Location = new System.Drawing.Point(4, 39);
             this.cboDK_LocTheoLop.Name = "cboDK_LocTheoLop";
+            this.cboDK_LocTheoLop.DisplayMember = "TenLop";
+            this.cboDK_LocTheoLop.ValueMember = "LopHocID";
             this.cboDK_LocTheoLop.Size = new System.Drawing.Size(514, 45);
             this.cboDK_LocTheoLop.TabIndex = 0;
             this.cboDK_LocTheoLop.SelectedIndexChanged += new System.EventHandler(this.cboDK_LocTheoLop_SelectedIndexChanged);
@@ -3021,6 +3023,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbDT_DeThi.MaxDropDownItems = 4;
             this.cmbDT_DeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmbDT_DeThi.Name = "cmbDT_DeThi";
+            this.cmbDT_DeThi.DisplayMember = "TenDeThi";
+            this.cmbDT_DeThi.ValueMember = "DeThiID";
             this.cmbDT_DeThi.Size = new System.Drawing.Size(643, 60);
             this.cmbDT_DeThi.StartIndex = 0;
             this.cmbDT_DeThi.TabIndex = 1;
@@ -3117,6 +3121,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbDT_GiaoChoLop.MaxDropDownItems = 4;
             this.cmbDT_GiaoChoLop.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmbDT_GiaoChoLop.Name = "cmbDT_GiaoChoLop";
+            this.cmbDT_GiaoChoLop.DisplayMember = "TenLop";
+            this.cmbDT_GiaoChoLop.ValueMember = "LopHocID";
             this.cmbDT_GiaoChoLop.Size = new System.Drawing.Size(643, 60);
             this.cmbDT_GiaoChoLop.StartIndex = 0;
             this.cmbDT_GiaoChoLop.TabIndex = 1;
@@ -3524,6 +3530,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbKQ_DeThi.MaxDropDownItems = 4;
             this.cmbKQ_DeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmbKQ_DeThi.Name = "cmbKQ_DeThi";
+            this.cmbKQ_DeThi.DisplayMember = "TenDeThi";
+            this.cmbKQ_DeThi.ValueMember = "DeThiID";
             this.cmbKQ_DeThi.Size = new System.Drawing.Size(499, 60);
             this.cmbKQ_DeThi.StartIndex = 0;
             this.cmbKQ_DeThi.TabIndex = 1;
@@ -4828,6 +4836,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1542, 874);
             this.Controls.Add(this.materialTabControl1);
+            this.DoubleBuffered = true;
+            this.DrawerTabControl = this.materialTabControl1;
             this.Name = "frm_GiaoVien";
             this.Text = "GiaoVien";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Frm_GiaoVien_FormClosed);

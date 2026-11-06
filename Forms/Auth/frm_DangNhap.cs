@@ -28,7 +28,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         public frm_DangNhap()
         {
             InitializeComponent();
-            this.AcceptButton = btn_DangNhap;
         }
 
         private bool IsDesignTime => DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime;

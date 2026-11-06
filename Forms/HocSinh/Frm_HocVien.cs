@@ -44,8 +44,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             dgvHVKetQua_SelectionChanged(null, EventArgs.Empty);
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            this.DrawerTabControl = tabHocVien;
         }
 
         private void HocVien_Load(object sender, EventArgs e)
@@ -401,8 +399,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     foreach (DataRow row in options.Rows)
                         if (Convert.ToInt32(row["LopHocID"]) == selectedClass) exists = true;
                     cmbKQHV_BaiThi.DataSource = null;
-                    cmbKQHV_BaiThi.DisplayMember = "TenLop";
-                    cmbKQHV_BaiThi.ValueMember = "LopHocID";
                     cmbKQHV_BaiThi.DataSource = options;
                     cmbKQHV_BaiThi.SelectedValue = exists ? selectedClass : 0;
                     cmbKQHV_BaiThi.Enabled = options.Rows.Count > 1;
