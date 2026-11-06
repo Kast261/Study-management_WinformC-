@@ -239,8 +239,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
-    <None Include="Database\PostgreSQL\Setup-LocalDatabase.ps1" />
-    <None Include="Database\PostgreSQL\README.md" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -262,12 +260,6 @@
     <None Include="Resources\Screenshot 2026-11-05 093003.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="Templates\CauHoi_Mau.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Database\PostgreSQL\01_Schema.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Database\PostgreSQL\02_DemoData.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
