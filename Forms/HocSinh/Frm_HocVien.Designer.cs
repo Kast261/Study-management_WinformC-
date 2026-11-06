@@ -1695,6 +1695,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbKQHV_BaiThi.MaxDropDownItems = 4;
             this.cmbKQHV_BaiThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmbKQHV_BaiThi.Name = "cmbKQHV_BaiThi";
+            this.cmbKQHV_BaiThi.DisplayMember = "TenLop";
+            this.cmbKQHV_BaiThi.ValueMember = "LopHocID";
             this.cmbKQHV_BaiThi.Size = new System.Drawing.Size(1289, 60);
             this.cmbKQHV_BaiThi.StartIndex = 0;
             this.cmbKQHV_BaiThi.TabIndex = 1;
@@ -2847,6 +2849,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1598, 1098);
             this.Controls.Add(this.tabHocVien);
+            this.DrawerTabControl = this.tabHocVien;
             this.Name = "HocVien";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HocVien";

@@ -37,6 +37,32 @@ File xử lý giữ phần tải `DataSource`, lọc, phân trang và nghiệp v
 thi và thao tác tạm ngắt/nối lại sự kiện radio khi đổi câu hỏi vẫn cần thực hiện
 khi chạy. Form kết quả bài thi vẫn có phần giao diện tạo bằng code từ trước.
 
+### Các thiết lập cố định còn lại đã chuyển về Designer
+
+- Admin: cấu hình `cAD_HocVien` (series, tiêu đề, màu, trục, nhãn và tooltip) nằm
+  trong `Frm_Admin.Designer.cs`. Không còn xóa rồi tạo lại series/tiêu đề khi mở
+  form. Dữ liệu biểu đồ, khoảng chia trục theo số học viên và thông báo khi chưa
+  có dữ liệu vẫn cập nhật khi tải database. Giữ tên series `HocVien` và tiêu đề
+  trạng thái `TrangThaiDuLieu` khi chỉnh biểu đồ vì phần nạp dữ liệu dùng các tên này.
+- Admin: bỏ xử lý Resize tự chia lại độ rộng các cột `LvAD_LopHoc`. Chỉnh độ rộng
+  bằng **Columns → Width** trong Designer; giá trị đó không còn bị code ghi đè.
+- Admin, Giáo viên và Học viên: liên kết menu với tab (`DrawerTabControl`) nằm
+  trong Designer. Các cấu hình `DisplayMember`/`ValueMember` cố định của ComboBox
+  cũng nằm trong Designer. Riêng tài khoản gán cho giáo viên/học viên vẫn phải
+  thay `ValueMember` khi người dùng chọn vai trò khác nhau.
+- Giáo viên: chế độ gợi ý tên khóa học nằm trong Designer. Danh sách gợi ý vẫn
+  được lấy từ database lúc chạy.
+- Đăng nhập: nút Enter mặc định (`AcceptButton`) nằm trong Designer.
+- Các form Học viên, Làm bài và Xem lại bài thi không còn đặt lại theme khi mở.
+  Theme Material dùng chung vẫn được khởi tạo một lần trong `Program.Main`.
+
+Đã rà cả 7 form trong thư mục `Forms`. Ngoài form `FrmKetQuaBaiThi` được giữ
+nguyên, không còn phần tạo panel/nút/nhãn hoặc dựng lại bố cục trong file xử lý
+của các form. Helper phân trang được giữ nguyên. MessageBox, SnackBar, hộp thoại
+mở/lưu file, timer và nội dung lấy từ database vẫn tạo/cập nhật khi cần; chúng
+không thay thế các control đã kéo thả. Màu đúng/sai trong bảng xem lại bài làm,
+trạng thái nút và ô nhập cũng vẫn thay đổi theo dữ liệu/nghiệp vụ.
+
 ## Kiểm tra trên Windows
 
 Khôi phục NuGet, sau đó Rebuild project bằng Visual Studio/.NET Framework 4.8.

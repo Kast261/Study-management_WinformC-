@@ -43,11 +43,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         public Frm_Admin()
         {
-            this.DoubleBuffered = true;
             InitializeComponent();
-            KhoiTaoDashboard();
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
-            this.DrawerTabControl = materialTabControl1;
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -74,14 +71,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 // Load danh sách khóa học vào ComboBox Lớp Học
                 DataTable dtKH = _khDAL.LayTatCa();
                 cboLop_KhoaHoc.DataSource = dtKH;
-                cboLop_KhoaHoc.DisplayMember = "TenKhoaHoc";
-                cboLop_KhoaHoc.ValueMember = "KhoaHocID";
 
                 // Load danh sách giáo viên vào ComboBox Lớp Học (materialComboBox2)
                 DataTable dtGV = _gvDAL.LayTatCa();
                 materialComboBox2.DataSource = dtGV;
-                materialComboBox2.DisplayMember = "HoTen";
-                materialComboBox2.ValueMember = "GiaoVienID";
             }
             catch (Exception ex)
             {
@@ -114,51 +107,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         #endregion
 
         #region 2. Tab Trang Chủ & Thống Kê
-
-        private void KhoiTaoDashboard()
-        {
-            // Chỉ cấu hình hành vi; các control và bố cục vẫn nằm trong Designer.
-
-            CanCotLopMoiNhat();
-
-            cAD_HocVien.Series.Clear();
-            cAD_HocVien.Legends.Clear();
-            cAD_HocVien.Titles.Clear();
-            cAD_HocVien.Titles.Add("Học viên theo khóa học (tối đa 6 khóa học)");
-            cAD_HocVien.Titles.Add(new Title("", Docking.Bottom) { Name = "TrangThaiDuLieu" });
-            var series = new Series("HocVien")
-            {
-                ChartType = SeriesChartType.Column,
-                Color = Color.FromArgb(37, 99, 235),
-                IsValueShownAsLabel = true,
-                IsVisibleInLegend = false,
-                ChartArea = cAD_HocVien.ChartAreas[0].Name,
-                ToolTip = "#VALX: #VALY học viên"
-            };
-            cAD_HocVien.Series.Add(series);
-            var area = cAD_HocVien.ChartAreas[0];
-            area.AxisX.Interval = 1;
-            area.AxisX.MajorGrid.Enabled = false;
-            area.AxisX.LabelStyle.IsEndLabelVisible = true;
-            area.AxisY.Minimum = 0;
-            area.AxisY.Interval = 1;
-            area.AxisY.LabelStyle.Format = "0";
-            area.AxisY.Title = "Số học viên";
-            area.AxisY.MajorGrid.LineColor = Color.FromArgb(230, 234, 240);
-        }
-
-        private void LvAD_LopHoc_Resize(object sender, EventArgs e)
-        {
-            CanCotLopMoiNhat();
-        }
-
-        private void CanCotLopMoiNhat()
-        {
-            int width = Math.Max(0, LvAD_LopHoc.ClientSize.Width - 24);
-            columnHeader1.Width = width * 40 / 100;
-            columnHeader2.Width = width * 40 / 100;
-            columnHeader3.Width = width - columnHeader1.Width - columnHeader2.Width;
-        }
 
         private void LoadDashboard()
         {
@@ -1013,7 +961,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 {
                     DataTable dt = _gvDAL.LayTatCa();
                     cmbTK_GanCho.DataSource    = dt;
-                    cmbTK_GanCho.DisplayMember = "HoTen";
                     cmbTK_GanCho.ValueMember   = "GiaoVienID";
                     cmbTK_GanCho.Visible       = true;
                 }
@@ -1021,7 +968,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 {
                     DataTable dt = _hsDAL.LayTatCa();
                     cmbTK_GanCho.DataSource    = dt;
-                    cmbTK_GanCho.DisplayMember = "HoTen";
                     cmbTK_GanCho.ValueMember   = "HocSinhID";
                     cmbTK_GanCho.Visible       = true;
                 }

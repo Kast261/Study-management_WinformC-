@@ -31,7 +31,6 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms
             DataGridViewPager.AttachAll(this);
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             LoadChiTiet();
         }
 

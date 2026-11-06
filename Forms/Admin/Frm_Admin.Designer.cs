@@ -30,8 +30,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             System.Windows.Forms.DataGridViewCellStyle styleDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.materialTabControl1 = new ReaLTaiizor.Controls.MaterialTabControl();
             this.pageDashboard = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
@@ -474,7 +475,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.LvAD_LopHoc.TabIndex = 5;
             this.LvAD_LopHoc.UseCompatibleStateImageBehavior = false;
             this.LvAD_LopHoc.View = System.Windows.Forms.View.Details;
-            this.LvAD_LopHoc.Resize += new System.EventHandler(this.LvAD_LopHoc_Resize);
             // 
             // columnHeader1
             // 
@@ -493,20 +493,36 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // cAD_HocVien
             // 
+            chartArea2.AxisX.Interval = 1D;
+            chartArea2.AxisX.MajorGrid.Enabled = false;
+            chartArea2.AxisX.LabelStyle.IsEndLabelVisible = true;
+            chartArea2.AxisY.Minimum = 0D;
+            chartArea2.AxisY.Interval = 1D;
+            chartArea2.AxisY.LabelStyle.Format = "0";
+            chartArea2.AxisY.Title = "Số học viên";
+            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.FromArgb(230, 234, 240);
             chartArea2.Name = "ChartArea1";
             this.cAD_HocVien.ChartAreas.Add(chartArea2);
             this.cAD_HocVien.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.cAD_HocVien.Legends.Add(legend2);
             this.cAD_HocVien.Location = new System.Drawing.Point(3, 312);
             this.cAD_HocVien.Name = "cAD_HocVien";
             series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Column;
+            series2.Color = System.Drawing.Color.FromArgb(37, 99, 235);
+            series2.IsValueShownAsLabel = true;
+            series2.IsVisibleInLegend = false;
+            series2.Name = "HocVien";
+            series2.ToolTip = "#VALX: #VALY học viên";
             this.cAD_HocVien.Series.Add(series2);
             this.cAD_HocVien.Size = new System.Drawing.Size(801, 509);
             this.cAD_HocVien.TabIndex = 6;
             this.cAD_HocVien.Text = "chart1";
+            title1.Name = "Title1";
+            title1.Text = "Học viên theo khóa học (tối đa 6 khóa học)";
+            title2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            title2.Name = "TrangThaiDuLieu";
+            this.cAD_HocVien.Titles.Add(title1);
+            this.cAD_HocVien.Titles.Add(title2);
             // 
             // panel2
             // 
@@ -2164,6 +2180,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // cboLop_KhoaHoc
             // 
             this.cboLop_KhoaHoc.AutoResize = false;
+            this.cboLop_KhoaHoc.DisplayMember = "TenKhoaHoc";
+            this.cboLop_KhoaHoc.ValueMember = "KhoaHocID";
             this.cboLop_KhoaHoc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cboLop_KhoaHoc.Depth = 0;
             this.cboLop_KhoaHoc.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -2188,6 +2206,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // materialComboBox2
             // 
             this.materialComboBox2.AutoResize = false;
+            this.materialComboBox2.DisplayMember = "HoTen";
+            this.materialComboBox2.ValueMember = "GiaoVienID";
             this.materialComboBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.materialComboBox2.Depth = 0;
             this.materialComboBox2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -2743,6 +2763,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // cmbTK_GanCho
             // 
             this.cmbTK_GanCho.AutoResize = false;
+            this.cmbTK_GanCho.DisplayMember = "HoTen";
             this.cmbTK_GanCho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cmbTK_GanCho.Depth = 0;
             this.cmbTK_GanCho.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -3012,6 +3033,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1634, 940);
             this.Controls.Add(this.materialTabControl1);
+            this.DoubleBuffered = true;
+            this.DrawerTabControl = this.materialTabControl1;
             this.Name = "Frm_Admin";
             this.Text = "Main";
             this.Load += new System.EventHandler(this.FrmMain_Load);

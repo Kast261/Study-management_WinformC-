@@ -37,12 +37,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         public frm_GiaoVien()
         {
-            this.DoubleBuffered = true;
             InitializeComponent();
             lblGVTT_HovaTen.Text = Session.HoTen ?? Session.TenDangNhap ?? "";
 
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
-            this.DrawerTabControl = materialTabControl1;
         }
 
         private void GiaoVien_Load(object sender, EventArgs e)
@@ -75,8 +73,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             var tenKhoaHoc = new AutoCompleteStringCollection();
             foreach (DataRow row in _khoaHoc.Rows) tenKhoaHoc.Add(row["TenKhoaHoc"].ToString());
             txtLH_KhoaHoc.AutoCompleteCustomSource = tenKhoaHoc;
-            txtLH_KhoaHoc.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            txtLH_KhoaHoc.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
 
             // Nạp môn học (khóa học) mà giáo viên đang dạy cho cả Tab Câu hỏi (cmbCH_MonHoc) và Tab Bài thi (cmbDT_MonHoc)
             LoadMonHocGiaoVien();
@@ -211,8 +207,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 dtDuyet.Rows.InsertAt(drAll, 0);
 
                 cboDK_LocTheoLop.DataSource = dtDuyet;
-                cboDK_LocTheoLop.DisplayMember = "TenLop";
-                cboDK_LocTheoLop.ValueMember = "LopHocID";
 
                 // Cập nhật lớp học cho form Đề thi theo môn học hiện tại
                 FilterLopTheoMonHoc(cmbDT_MonHoc.SelectedItem?.ToString());
@@ -979,13 +973,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 DataTable dt = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID);
 
-                // Cài đặt DisplayMember & ValueMember TRƯỚC khi gán DataSource
-                cmbDT_DeThi.DisplayMember = "TenDeThi";
-                cmbDT_DeThi.ValueMember = "DeThiID";
                 cmbDT_DeThi.DataSource = dt.Copy();
 
-                cmbKQ_DeThi.DisplayMember = "TenDeThi";
-                cmbKQ_DeThi.ValueMember = "DeThiID";
                 cmbKQ_DeThi.DataSource = dt.Copy();
 
                 // Chỉ lấy các đề thi đã có câu hỏi
@@ -1091,8 +1080,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (string.IsNullOrWhiteSpace(tenMonHoc))
                 {
                     cmbDT_GiaoChoLop.DataSource = dtLop.Copy();
-                    cmbDT_GiaoChoLop.DisplayMember = "TenLop";
-                    cmbDT_GiaoChoLop.ValueMember = "LopHocID";
                     return;
                 }
 
@@ -1108,8 +1095,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 {
                     cmbDT_GiaoChoLop.DataSource = dtLop.Copy();
                 }
-                cmbDT_GiaoChoLop.DisplayMember = "TenLop";
-                cmbDT_GiaoChoLop.ValueMember = "LopHocID";
             }
             catch { }
         }
