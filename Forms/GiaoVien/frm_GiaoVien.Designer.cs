@@ -29,18 +29,18 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
             this.mnuCH_Excel = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuCH_LuuMauExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.tipCH_Excel = new System.Windows.Forms.ToolTip(this.components);
@@ -708,8 +708,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn11
             // 
             this.dataGridViewTextBoxColumn11.DataPropertyName = "DaNop";
-            dataGridViewCellStyle13.Format = "N0";
-            this.dataGridViewTextBoxColumn11.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle37.Format = "N0";
+            this.dataGridViewTextBoxColumn11.DefaultCellStyle = dataGridViewCellStyle37;
             this.dataGridViewTextBoxColumn11.HeaderText = "Đã Nộp";
             this.dataGridViewTextBoxColumn11.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
@@ -718,9 +718,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn12
             // 
             this.dataGridViewTextBoxColumn12.DataPropertyName = "DiemTrungBinh";
-            dataGridViewCellStyle14.Format = "0.00";
-            dataGridViewCellStyle14.NullValue = "—";
-            this.dataGridViewTextBoxColumn12.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle38.Format = "0.00";
+            dataGridViewCellStyle38.NullValue = "—";
+            this.dataGridViewTextBoxColumn12.DefaultCellStyle = dataGridViewCellStyle38;
             this.dataGridViewTextBoxColumn12.HeaderText = "Điểm Trung Bình";
             this.dataGridViewTextBoxColumn12.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
@@ -1015,14 +1015,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvLopHoc.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLopHoc.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvLopHoc.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLopHoc.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle39.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle39.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle39.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle39.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle39.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle39.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLopHoc.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle39;
             this.dgvLopHoc.ColumnHeadersHeight = 44;
             this.dgvLopHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvLopHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -1083,8 +1083,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // Column3
             // 
             this.Column3.DataPropertyName = "NgayBatDau";
-            dataGridViewCellStyle16.Format = "dd/MM/yyyy";
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle40.Format = "dd/MM/yyyy";
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle40;
             this.Column3.HeaderText = "Bắt đầu";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
@@ -1093,8 +1093,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // Column4
             // 
             this.Column4.DataPropertyName = "NgayKetThuc";
-            dataGridViewCellStyle17.Format = "dd/MM/yyyy";
-            this.Column4.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle41.Format = "dd/MM/yyyy";
+            this.Column4.DefaultCellStyle = dataGridViewCellStyle41;
             this.Column4.HeaderText = "kết thúc";
             this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
@@ -1665,13 +1665,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // cboDK_LocTheoLop
             // 
+            this.cboDK_LocTheoLop.DisplayMember = "TenLop";
             this.cboDK_LocTheoLop.FormattingEnabled = true;
             this.cboDK_LocTheoLop.Location = new System.Drawing.Point(4, 39);
             this.cboDK_LocTheoLop.Name = "cboDK_LocTheoLop";
-            this.cboDK_LocTheoLop.DisplayMember = "TenLop";
-            this.cboDK_LocTheoLop.ValueMember = "LopHocID";
             this.cboDK_LocTheoLop.Size = new System.Drawing.Size(514, 45);
             this.cboDK_LocTheoLop.TabIndex = 0;
+            this.cboDK_LocTheoLop.ValueMember = "LopHocID";
             this.cboDK_LocTheoLop.SelectedIndexChanged += new System.EventHandler(this.cboDK_LocTheoLop_SelectedIndexChanged);
             // 
             // panel16
@@ -1695,14 +1695,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvDSYeuCau.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvDSYeuCau.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvDSYeuCau.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDSYeuCau.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle42.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle42.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle42.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle42.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle42.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle42.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDSYeuCau.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle42;
             this.dgvDSYeuCau.ColumnHeadersHeight = 44;
             this.dgvDSYeuCau.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvDSYeuCau.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -1770,8 +1770,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn18
             // 
             this.dataGridViewTextBoxColumn18.DataPropertyName = "NgayDangKy";
-            dataGridViewCellStyle19.Format = "dd/MM/yyyy HH:mm";
-            this.dataGridViewTextBoxColumn18.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle43.Format = "dd/MM/yyyy HH:mm";
+            this.dataGridViewTextBoxColumn18.DefaultCellStyle = dataGridViewCellStyle43;
             this.dataGridViewTextBoxColumn18.HeaderText = "Ngày Đăng Kí";
             this.dataGridViewTextBoxColumn18.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
@@ -2634,14 +2634,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvCauHoi.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvCauHoi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvCauHoi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCauHoi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle44.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle44.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle44.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle44.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle44.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCauHoi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle44;
             this.dgvCauHoi.ColumnHeadersHeight = 44;
             this.dgvCauHoi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvCauHoi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -2847,14 +2847,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvGVDeThi.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvGVDeThi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvGVDeThi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle21.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvGVDeThi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle45.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle45.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle45.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle45.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle45.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle45.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvGVDeThi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle45;
             this.dgvGVDeThi.ColumnHeadersHeight = 44;
             this.dgvGVDeThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvGVDeThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -3009,6 +3009,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbDT_DeThi.AutoResize = false;
             this.cmbDT_DeThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cmbDT_DeThi.Depth = 0;
+            this.cmbDT_DeThi.DisplayMember = "TenDeThi";
             this.cmbDT_DeThi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbDT_DeThi.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.cmbDT_DeThi.DropDownHeight = 218;
@@ -3023,11 +3024,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbDT_DeThi.MaxDropDownItems = 4;
             this.cmbDT_DeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmbDT_DeThi.Name = "cmbDT_DeThi";
-            this.cmbDT_DeThi.DisplayMember = "TenDeThi";
-            this.cmbDT_DeThi.ValueMember = "DeThiID";
             this.cmbDT_DeThi.Size = new System.Drawing.Size(643, 60);
             this.cmbDT_DeThi.StartIndex = 0;
             this.cmbDT_DeThi.TabIndex = 1;
+            this.cmbDT_DeThi.ValueMember = "DeThiID";
             this.cmbDT_DeThi.SelectedIndexChanged += new System.EventHandler(this.cmbDT_DeThi_SelectedIndexChanged);
             // 
             // materialLabel46
@@ -3107,6 +3107,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbDT_GiaoChoLop.AutoResize = false;
             this.cmbDT_GiaoChoLop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cmbDT_GiaoChoLop.Depth = 0;
+            this.cmbDT_GiaoChoLop.DisplayMember = "TenLop";
             this.cmbDT_GiaoChoLop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbDT_GiaoChoLop.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.cmbDT_GiaoChoLop.DropDownHeight = 218;
@@ -3121,11 +3122,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbDT_GiaoChoLop.MaxDropDownItems = 4;
             this.cmbDT_GiaoChoLop.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmbDT_GiaoChoLop.Name = "cmbDT_GiaoChoLop";
-            this.cmbDT_GiaoChoLop.DisplayMember = "TenLop";
-            this.cmbDT_GiaoChoLop.ValueMember = "LopHocID";
             this.cmbDT_GiaoChoLop.Size = new System.Drawing.Size(643, 60);
             this.cmbDT_GiaoChoLop.StartIndex = 0;
             this.cmbDT_GiaoChoLop.TabIndex = 1;
+            this.cmbDT_GiaoChoLop.ValueMember = "LopHocID";
             // 
             // materialLabel50
             // 
@@ -3516,6 +3516,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbKQ_DeThi.AutoResize = false;
             this.cmbKQ_DeThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cmbKQ_DeThi.Depth = 0;
+            this.cmbKQ_DeThi.DisplayMember = "TenDeThi";
             this.cmbKQ_DeThi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbKQ_DeThi.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.cmbKQ_DeThi.DropDownHeight = 218;
@@ -3530,11 +3531,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbKQ_DeThi.MaxDropDownItems = 4;
             this.cmbKQ_DeThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmbKQ_DeThi.Name = "cmbKQ_DeThi";
-            this.cmbKQ_DeThi.DisplayMember = "TenDeThi";
-            this.cmbKQ_DeThi.ValueMember = "DeThiID";
             this.cmbKQ_DeThi.Size = new System.Drawing.Size(499, 60);
             this.cmbKQ_DeThi.StartIndex = 0;
             this.cmbKQ_DeThi.TabIndex = 1;
+            this.cmbKQ_DeThi.ValueMember = "DeThiID";
             this.cmbKQ_DeThi.SelectedIndexChanged += new System.EventHandler(this.cmbKQ_DeThi_SelectedIndexChanged);
             // 
             // materialLabel37
@@ -3656,14 +3656,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvKetQua.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvKetQua.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvKetQua.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle22.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvKetQua.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle46.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle46.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle46.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle46.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle46.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle46.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle46.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvKetQua.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle46;
             this.dgvKetQua.ColumnHeadersHeight = 44;
             this.dgvKetQua.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvKetQua.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -3714,8 +3714,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn28
             // 
             this.dataGridViewTextBoxColumn28.DataPropertyName = "Diem";
-            dataGridViewCellStyle23.Format = "0.00";
-            this.dataGridViewTextBoxColumn28.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle47.Format = "0.00";
+            this.dataGridViewTextBoxColumn28.DefaultCellStyle = dataGridViewCellStyle47;
             this.dataGridViewTextBoxColumn28.HeaderText = "Điểm";
             this.dataGridViewTextBoxColumn28.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn28.Name = "dataGridViewTextBoxColumn28";
@@ -3724,8 +3724,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn29
             // 
             this.dataGridViewTextBoxColumn29.DataPropertyName = "ThoiGianNop";
-            dataGridViewCellStyle24.Format = "dd/MM/yyyy HH:mm";
-            this.dataGridViewTextBoxColumn29.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle48.Format = "dd/MM/yyyy HH:mm";
+            this.dataGridViewTextBoxColumn29.DefaultCellStyle = dataGridViewCellStyle48;
             this.dataGridViewTextBoxColumn29.HeaderText = "Nộp Lúc";
             this.dataGridViewTextBoxColumn29.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn29.Name = "dataGridViewTextBoxColumn29";
@@ -4599,7 +4599,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridView7.Name = "dataGridView7";
             this.dataGridView7.RowHeadersWidth = 51;
             this.dataGridView7.RowTemplate.Height = 24;
-            this.dataGridView7.Size = new System.Drawing.Size(32, -57);
+            this.dataGridView7.Size = new System.Drawing.Size(32, 0);
             this.dataGridView7.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn1
@@ -4688,7 +4688,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dataGridView8.Name = "dataGridView8";
             this.dataGridView8.RowHeadersWidth = 51;
             this.dataGridView8.RowTemplate.Height = 24;
-            this.dataGridView8.Size = new System.Drawing.Size(32, -57);
+            this.dataGridView8.Size = new System.Drawing.Size(32, 0);
             this.dataGridView8.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn4
@@ -4836,7 +4836,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1542, 874);
             this.Controls.Add(this.materialTabControl1);
-            this.DoubleBuffered = true;
             this.DrawerTabControl = this.materialTabControl1;
             this.Name = "frm_GiaoVien";
             this.Text = "GiaoVien";

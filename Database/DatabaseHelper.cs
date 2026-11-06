@@ -48,8 +48,17 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
             }
             catch (NpgsqlException ex)
             {
-                loi = "Không thể kết nối PostgreSQL. Kiểm tra dịch vụ, Host, Port và cấu hình kết nối.\n"
-                    + ex.Message;
+                loi = "Không thể kết nối PostgreSQL.\n" + ex.Message;
+
+                Exception chiTiet = ex.InnerException;
+                while (chiTiet != null)
+                {
+                    loi += "\n" + chiTiet.GetType().Name
+                        + ": " + chiTiet.Message;
+
+                    chiTiet = chiTiet.InnerException;
+                }
+
                 return false;
             }
             catch (Exception ex) when (ex is InvalidOperationException || ex is ArgumentException)
