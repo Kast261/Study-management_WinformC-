@@ -25,6 +25,7 @@ internal static class Program
             BoundTableAndExport();
             TypedModelList();
             ManualColumnsRemainBound();
+            DesignerHeadersSurviveAutomaticColumnGeneration();
             DateColumnsRemainBoundAcrossPages();
             ResultColumnsOnHiddenTabRemainVisibleWhenFiltering();
             ScrolledPageIsReplaced();
@@ -324,6 +325,73 @@ internal static class Program
             Click(grid, "Trang sau");
             Check((int)grid.Rows[0].Cells["colID"].Value == 21, "Manual columns must remain bound on later pages");
             Check(DataGridViewPager.GetExportRows(grid, grid.Columns.Cast<DataGridViewColumn>().ToList()).Count() == 42, "Export must also support manual Designer columns");
+            form.Close();
+        }
+    }
+
+    private static void DesignerHeadersSurviveAutomaticColumnGeneration()
+    {
+        using (var form = new Form { ClientSize = new Size(1100, 450) })
+        {
+            // AutoGenerateColumns defaults to true when the Designer doesn't persist it.
+            var grid = new DataGridView { Name = "dgvDSYeuCau", Dock = DockStyle.Fill,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
+            string[] fields = { "HoTen", "Email", "SoDienThoai", "TenLop", "SiSo", "NgayDangKy" };
+            string[] headers = { "Học Viên", "Email", "Điện Thoại", "Lớp Học", "Sĩ Số", "Ngày Đăng Kí" };
+            var columns = fields.Select((field, i) => new DataGridViewTextBoxColumn
+            {
+                Name = "designerColumn" + i, DataPropertyName = field, HeaderText = headers[i],
+                FillWeight = i == 0 ? 200 : 100
+            }).ToArray();
+            columns[5].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+            grid.Columns.AddRange(columns);
+            form.Controls.Add(grid);
+            DataGridViewPager.AttachAll(form);
+            form.Show();
+            Application.DoEvents();
+            Check(columns.SequenceEqual(grid.Columns.Cast<DataGridViewColumn>()),
+                "Attaching pagination before data loads must preserve all Designer columns");
+
+            // PostgreSQL returns unquoted field names in lowercase, plus internal IDs.
+            var table = new DataTable();
+            table.Columns.Add("dangkyid", typeof(int));
+            table.Columns.Add("lophocid", typeof(int));
+            table.Columns.Add("hocsinhid", typeof(int));
+            foreach (string field in fields.Take(4)) table.Columns.Add(field.ToLowerInvariant(), typeof(string));
+            table.Columns.Add("siso", typeof(int));
+            table.Columns.Add("ngaydangky", typeof(DateTime));
+            table.Columns.Add("trangthai", typeof(string));
+            grid.DataSource = table;
+            Application.DoEvents();
+            Check(grid.Columns.Cast<DataGridViewColumn>().Select(c => c.HeaderText).SequenceEqual(headers),
+                "An empty registration result must retain Vietnamese Designer headers without internal ID columns");
+            for (int i = 1; i <= 21; i++)
+                table.Rows.Add(i, 2, i, "Học viên " + i, "hv@example.test", "0123456789", "Lớp Toán", 21,
+                    new DateTime(2026, 11, 6, 9, 30, 0), "ChoDuyet");
+            Application.DoEvents();
+            Check(grid.Rows[0].Cells[columns[0].Name].Value.ToString() == "Học viên 1",
+                "Designer columns must bind lowercase PostgreSQL fields without changing their names");
+            Check(grid.Rows[0].Cells[columns[5].Name].FormattedValue.ToString() == "06/11/2026 09:30",
+                "Registration dates must retain Designer formatting");
+            grid.Sort(columns[0], ListSortDirection.Descending);
+            Application.DoEvents();
+            Click(grid, "Trang sau");
+            Check(grid.Rows.Count == 1 && columns.SequenceEqual(grid.Columns.Cast<DataGridViewColumn>()),
+                "Sorting and paging must reuse the original columns, not regenerate raw field headers");
+            Check(columns[0].FillWeight == 200 && columns[5].DefaultCellStyle.Format == "dd/MM/yyyy HH:mm",
+                "Paging must preserve Designer widths and date formats");
+            table.DefaultView.RowFilter = "dangkyid < 0";
+            Application.DoEvents();
+            Check(grid.Rows.Count == 0 && grid.Columns.Cast<DataGridViewColumn>().Select(c => c.HeaderText).SequenceEqual(headers),
+                "Filtering all rows out must keep Vietnamese headers visible");
+            grid.DataSource = null;
+            grid.DataSource = table.Copy();
+            Application.DoEvents();
+            Check(grid.Rows.Count == 20 && columns.SequenceEqual(grid.Columns.Cast<DataGridViewColumn>()),
+                "Reloading a source must not replace Designer columns");
+            var exported = DataGridViewPager.GetExportRows(grid, grid.Columns.Cast<DataGridViewColumn>().ToList()).ToList();
+            Check(exported.Count == 21 && exported.All(row => row.Length == 6 && row[0].ToString().StartsWith("Học viên ")),
+                "Export must use the six designed columns with their bound values across all pages");
             form.Close();
         }
     }
