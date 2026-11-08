@@ -65,6 +65,42 @@ namespace Dashboard.Tests
         }
 
         [Fact]
+        public void SummaryRefreshesAllFourCountsAfterInsertAndDelete()
+        {
+            using var db = new DashboardDatabase();
+            DatabaseHelper.ExecuteNonQuery(@"
+                INSERT INTO GiaoVien SELECT n,'Giáo viên ' || n FROM generate_series(1,7) n;
+                INSERT INTO KhoaHoc SELECT n,'Khóa ' || n FROM generate_series(1,5) n;
+                INSERT INTO LopHoc (LopHocID,TenLop,GiaoVienID,KhoaHocID)
+                    SELECT n,'Lớp ' || n,1,1 FROM generate_series(1,9) n;
+                INSERT INTO HocSinh (HocSinhID,LopHocID)
+                    SELECT n,CASE WHEN n%2=0 THEN 1 ELSE NULL END FROM generate_series(1,33) n;");
+            var dal = new DashboardDAL();
+            using var before = dal.LayTongQuan();
+            Assert.Equal(new long[] { 33,7,5,9 }, before.Rows[0].ItemArray.Select(Convert.ToInt64));
+            DatabaseHelper.ExecuteNonQuery(@"
+                DELETE FROM HocSinh WHERE HocSinhID<=5;
+                DELETE FROM GiaoVien WHERE GiaoVienID=7;
+                DELETE FROM KhoaHoc WHERE KhoaHocID=5;
+                DELETE FROM LopHoc WHERE LopHocID=9;");
+            using var after = dal.LayTongQuan();
+            Assert.Equal(new long[] { 28,6,4,8 }, after.Rows[0].ItemArray.Select(Convert.ToInt64));
+        }
+
+        [Fact]
+        public void SummaryDoesNotDependOnEnrollmentDataUsedByTheChart()
+        {
+            using var db = new DashboardDatabase();
+            DatabaseHelper.ExecuteNonQuery(@"
+                INSERT INTO HocSinh (HocSinhID) VALUES (1);
+                DROP TABLE DangKyLop;");
+            var dal = new DashboardDAL();
+            Assert.Throws<Npgsql.PostgresException>(() => dal.LayHocVienTheoKhoaHoc());
+            using var summary = dal.LayTongQuan();
+            Assert.Equal(new long[] { 1,0,0,0 }, summary.Rows[0].ItemArray.Select(Convert.ToInt64));
+        }
+
+        [Fact]
         public void CourseChartLimitsToSixAndUsesIdsToResolveDuplicateNameTies()
         {
             using var db = new DashboardDatabase();
