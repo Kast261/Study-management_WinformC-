@@ -213,7 +213,13 @@ internal static class Program
             grid.DataError += (s, e) => { throw e.Exception; };
             form.Controls.Add(grid);
             int selectionResets = 0;
-            DataGridViewPager.AttachAll(form, (g, reason) => selectionResets++);
+            int reportedPage = 0, reportedPages = 0;
+            Check(!DataGridViewPager.TryGetPageInfo(grid, out _, out _), "An unattached grid has no page metadata");
+            DataGridViewPager.AttachAll(form, (g, reason) =>
+            {
+                selectionResets++;
+                DataGridViewPager.TryGetPageInfo(g, out reportedPage, out reportedPages);
+            });
             DataGridViewPager.AttachAll(form);
             Check(Descendants(form).OfType<FlowLayoutPanel>().Count() == 1, "AttachAll must be idempotent");
             form.Show();
@@ -224,7 +230,9 @@ internal static class Program
             Check(grid.Columns.Count == 2, "Auto-generated DataTable columns must survive paging");
             Check(ReferenceEquals(grid.Rows[0].DataBoundItem, table.DefaultView[0]), "DataRowView identity must survive");
             Check(Page(grid).Maximum == 3, "43 rows must produce 3 pages");
+            Check(reportedPage == 1 && reportedPages == 3, "Home page labels must receive full page totals during binding callbacks");
             Click(grid, "Trang sau");
+            Check(reportedPage == 2 && reportedPages == 3, "Home page labels must update when navigating to the next page");
             Check((int)grid.Rows[0].Cells["ID"].Value == 21, "Next page must start at ID 21");
             Check(grid.CurrentRow == null && grid.SelectedRows.Count == 0, "Paging must clear stale selection");
             Click(grid, "Trang cuối");
@@ -251,6 +259,7 @@ internal static class Program
             table.DefaultView.RowFilter = "ID > 5";
             Application.DoEvents();
             Check(Page(grid).Value == 1 && Page(grid).Maximum == 4, "Filtering must reset the page and total");
+            Check(reportedPage == 1 && reportedPages == 4, "Home page labels must reset with filtered page totals");
             var columns = grid.Columns.Cast<DataGridViewColumn>().ToList();
             Check(DataGridViewPager.GetExportRows(grid, columns).Count() == 38, "Export must include all filtered pages");
             string csv = Path.GetTempFileName();
@@ -275,9 +284,11 @@ internal static class Program
             grid.DataSource = null;
             Application.DoEvents();
             Check(grid.Rows.Count == 0 && Page(grid).Value == 0, "Clearing a grid must display page 0/0");
+            Check(reportedPage == 0 && reportedPages == 0, "Home page labels must clear stale totals when a result is empty");
             Check(!Page(grid).Enabled, "Navigation must be disabled for empty results");
             Check(selectionResets > 1, "Domain selections must be invalidated when page contents change");
             form.Close();
+            Check(!DataGridViewPager.TryGetPageInfo(grid, out _, out _), "Disposed grids must release their page metadata");
         }
     }
 

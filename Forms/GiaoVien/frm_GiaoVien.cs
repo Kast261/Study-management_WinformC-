@@ -38,6 +38,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         public frm_GiaoVien()
         {
             InitializeComponent();
+            if (System.ComponentModel.LicenseManager.UsageMode != System.ComponentModel.LicenseUsageMode.Designtime)
+                this.DrawerTabControl = materialTabControl1;
             lblGVTT_HovaTen.Text = Session.HoTen ?? Session.TenDangNhap ?? "";
 
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
@@ -47,14 +49,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                lblGV_LoiChao.Text = $"Xin Chào, {Session.HoTen ?? Session.TenDangNhap}";
-                LoadKetQuaThiGanDay();
+                LoadTrangChu();
                 _daTaiTrangChu = true;
 
                 InitDropdowns();
 
                 // Load dữ liệu ban đầu cho các tab
-                LoadLopHocCuaToi();
                 LoadDanhSachLopQuanLy();
                 cboDK_LocTheoLop_SelectedIndexChanged(null, null);
                 LoadDeThiCombobox();
@@ -163,32 +163,74 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         #region 2. Tab Trang Chủ & Quản Lý Lớp Học
 
-        private void LoadKetQuaThiGanDay()
+        private void LoadTrangChu()
         {
+            var vi = CultureInfo.GetCultureInfo("vi-VN");
+            lblTCGV_Chao.Text = "Xin chào, " + (Session.HoTen ?? Session.TenDangNhap);
+            lblTCGV_NgayThangHT.Text = DateTime.Today.ToString("dddd, dd/MM/yyyy", vi);
             try
             {
+                DataTable classes = _lopDAL.LayTheoGiaoVien(Session.NguoiDungID);
                 DataTable results = _deThiDAL.LayTongHopKetQuaGanDay(Session.NguoiDungID);
-                dgvGV_LichDay.DataSource = results;
-                materialLabel34.Text = results.Rows.Count > 0
-                    ? "Kết quả bài thi gần đây"
-                    : "Kết quả bài thi gần đây — chưa có bài nộp";
+                using (DataTable summary = new DashboardDAL().LayTongQuanGiaoVien(Session.NguoiDungID))
+                {
+                    DataRow row = summary.Rows[0];
+                    long classCount = Convert.ToInt64(row["SoLopHoc"]);
+                    long studentCount = Convert.ToInt64(row["SoHocVien"]);
+                    long pending = Convert.ToInt64(row["SoChoDuyet"]);
+                    long openExams = Convert.ToInt64(row["SoBaiThiDangMo"]);
+                    dgvBaiThiDangMo.DataSource = classes;
+                    dgvTCBaiThi.DataSource = results;
+                    lblTCGV_LopDH.Text = $"Lớp đang dạy\n{classCount:N0}";
+                    lblTCGV_HocVien.Text = $"Học viên\n{studentCount:N0}";
+                    lblTCGV_ChoDuyet.Text = $"Yêu cầu chờ duyệt\n{pending:N0}";
+                    lblTCGV_BaiThiDangMo.Text = $"Bài thi đang mở\n{openExams:N0}";
+                    lblTCGV_SoLopQuanLy.Text = $"{classCount:N0} lớp đang quản lý";
+                    lblTCGV_SoYeuCauChoDuyet.Text = $"{pending:N0} yêu cầu đăng ký đang chờ duyệt";
+                    lblTCHV_TatCaBaiThi.Text = $"Bạn đang quản lý {classCount:N0} lớp và có {pending:N0} yêu cầu chờ duyệt.";
+                    btnTCGV_DuyetNgay.Enabled = pending > 0;
+                }
             }
             catch (Exception ex)
             {
-                dgvGV_LichDay.DataSource = null;
-                materialLabel34.Text = "Kết quả bài thi gần đây — không tải được";
-                MessageBox.Show("Không thể tải kết quả thi gần đây: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dgvBaiThiDangMo.DataSource = dgvTCBaiThi.DataSource = null;
+                lblTCGV_LopDH.Text = "Lớp đang dạy\n--";
+                lblTCGV_HocVien.Text = "Học viên\n--";
+                lblTCGV_ChoDuyet.Text = "Yêu cầu chờ duyệt\n--";
+                lblTCGV_BaiThiDangMo.Text = "Bài thi đang mở\n--";
+                lblTCGV_SoLopQuanLy.Text = "Chưa tải được danh sách lớp";
+                lblTCGV_SoYeuCauChoDuyet.Text = "Chưa tải được yêu cầu đăng ký";
+                lblTCHV_TatCaBaiThi.Text = "Không tải được dữ liệu trang chủ. Mở lại tab để thử lại.";
+                btnTCGV_DuyetNgay.Enabled = false;
+                MessageBox.Show("Không thể tải trang chủ giáo viên: " + ex.Message, "Lỗi");
             }
         }
 
-        private void LoadLopHocCuaToi()
+        private void btnTCGV_GiaoBai_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DataTable dt = _lopDAL.LayTheoGiaoVien(Session.NguoiDungID);
-                if (dgvGV_LopCuaToi != null) dgvGV_LopCuaToi.DataSource = dt;
-            }
-            catch { }
+            materialTabControl1.SelectedTab = pageGV_QuanLyDeThi;
+        }
+
+        private void btnTCGV_QuanLyLop_Click(object sender, EventArgs e)
+        {
+            materialTabControl1.SelectedTab = pageGV_LopHoc;
+        }
+
+        private void btnTCGV_DuyetNgay_Click(object sender, EventArgs e)
+        {
+            materialTabControl1.SelectedTab = pageGV_DuyetHocVien;
+        }
+
+        private void lblTCGV_XemTatCaBaiThi_Click(object sender, EventArgs e)
+        {
+            materialTabControl1.SelectedTab = pageGV_KetQuaThi;
+        }
+
+        private void dgvTCBaiThi_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || !(dgvTCBaiThi.Rows[e.RowIndex].DataBoundItem is DataRowView row)) return;
+            materialTabControl1.SelectedTab = pageGV_KetQuaThi;
+            cmbKQ_DeThi.SelectedValue = Convert.ToInt32(row["DeThiID"]);
         }
 
         private void LoadDanhSachLopQuanLy()
@@ -331,7 +373,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 MessageBox.Show("Tạo lớp học mới thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachLopQuanLy();
-                LoadLopHocCuaToi();
+                LoadTrangChu();
             }
         }
 
@@ -419,7 +461,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             nUDLH_SiSo.Value = 40;
             headerLabel4.Text = "Đang chọn: chưa chọn lớp";
             LoadDanhSachLopQuanLy();
-            LoadLopHocCuaToi();
+            LoadTrangChu();
         }
 
         #endregion
@@ -1603,7 +1645,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     MessageBox.Show("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Session.HoTen = gv.HoTen;
                     lblGVTT_HovaTen.Text = gv.HoTen;
-                    lblGV_LoiChao.Text = $"Xin Chào, {gv.HoTen}";
+                    lblTCGV_Chao.Text = $"Xin Chào, {gv.HoTen}";
                 }
             }
             catch (Exception ex)
@@ -1680,8 +1722,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 // SelectedIndexChanged có thể chạy ngay trong InitializeComponent.
                 if (_daTaiTrangChu)
                 {
-                    LoadLopHocCuaToi();
-                    LoadKetQuaThiGanDay();
+                    LoadTrangChu();
                 }
             }
             else if (materialTabControl1.SelectedTab == pageGV_LopHoc)

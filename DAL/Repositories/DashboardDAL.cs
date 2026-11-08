@@ -1,10 +1,31 @@
 using System.Data;
+using Npgsql;
 using BLT_Quan_Ly_Hoc_Tap.Database;
 
 namespace BLT_Quan_Ly_Hoc_Tap.DAL
 {
     public class DashboardDAL
     {
+        public DataTable LayTongQuanGiaoVien(int giaoVienID)
+        {
+            return DatabaseHelper.ExecuteQuery(@"
+                SELECT (SELECT COUNT(*) FROM LopHoc WHERE GiaoVienID=@gv) AS SoLopHoc,
+                       (SELECT COUNT(DISTINCT h.HocSinhID)
+                        FROM HocSinh h JOIN LopHoc l ON h.LopHocID=l.LopHocID OR EXISTS (
+                            SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID
+                              AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')
+                        WHERE l.GiaoVienID=@gv) AS SoHocVien,
+                       (SELECT COUNT(*) FROM DangKyLop dk
+                        JOIN LopHoc l ON l.LopHocID=dk.LopHocID
+                        JOIN HocSinh h ON h.HocSinhID=dk.HocSinhID
+                        WHERE l.GiaoVienID=@gv AND (dk.TrangThai='Chờ duyệt' OR dk.TrangThai IS NULL)) AS SoChoDuyet,
+                       (SELECT COUNT(*) FROM DeThi d JOIN LopHoc l ON l.LopHocID=d.LopHocID
+                        WHERE d.GiaoVienID=@gv AND d.TrangThai='Đang mở' AND d.ThoiGian>0
+                          AND (d.HanNop IS NULL OR d.HanNop>CURRENT_TIMESTAMP)
+                          AND EXISTS (SELECT 1 FROM CauHoi c WHERE c.DeThiID=d.DeThiID)) AS SoBaiThiDangMo",
+                new NpgsqlParameter("@gv", giaoVienID));
+        }
+
         public DataTable LayTongQuan()
         {
             return DatabaseHelper.ExecuteQuery(@"

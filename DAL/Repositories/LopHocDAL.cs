@@ -62,6 +62,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     l.TenLop, 
                     g.HoTen AS TenGiaoVien, 
                     l.LichHoc, 
+                    l.NgayBatDau,
+                    l.NgayKetThuc,
                     COALESCE(l.TrangThai, 'Đang mở') AS TrangThai
                 FROM LopHoc l
                 LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
