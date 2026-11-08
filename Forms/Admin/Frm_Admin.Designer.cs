@@ -28,11 +28,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle styleDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.materialTabControl1 = new ReaLTaiizor.Controls.MaterialTabControl();
             this.pageDashboard = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
@@ -495,20 +495,18 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             chartArea2.AxisX.Interval = 1D;
             chartArea2.AxisX.MajorGrid.Enabled = false;
-            chartArea2.AxisX.LabelStyle.IsEndLabelVisible = true;
-            chartArea2.AxisY.Minimum = 0D;
             chartArea2.AxisY.Interval = 1D;
             chartArea2.AxisY.LabelStyle.Format = "0";
+            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(234)))), ((int)(((byte)(240)))));
+            chartArea2.AxisY.Minimum = 0D;
             chartArea2.AxisY.Title = "Số học viên";
-            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.FromArgb(230, 234, 240);
             chartArea2.Name = "ChartArea1";
             this.cAD_HocVien.ChartAreas.Add(chartArea2);
             this.cAD_HocVien.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cAD_HocVien.Location = new System.Drawing.Point(3, 312);
             this.cAD_HocVien.Name = "cAD_HocVien";
             series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Column;
-            series2.Color = System.Drawing.Color.FromArgb(37, 99, 235);
+            series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
             series2.IsValueShownAsLabel = true;
             series2.IsVisibleInLegend = false;
             series2.Name = "HocVien";
@@ -517,12 +515,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cAD_HocVien.Size = new System.Drawing.Size(801, 509);
             this.cAD_HocVien.TabIndex = 6;
             this.cAD_HocVien.Text = "chart1";
-            title1.Name = "Title1";
-            title1.Text = "Học viên theo khóa học (tối đa 6 khóa học)";
-            title2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            title2.Name = "TrangThaiDuLieu";
-            this.cAD_HocVien.Titles.Add(title1);
-            this.cAD_HocVien.Titles.Add(title2);
+            title3.Name = "Title1";
+            title3.Text = "Học viên theo khóa học (tối đa 6 khóa học)";
+            title4.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            title4.Name = "TrangThaiDuLieu";
+            this.cAD_HocVien.Titles.Add(title3);
+            this.cAD_HocVien.Titles.Add(title4);
             // 
             // panel2
             // 
@@ -775,7 +773,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtGV_TimKiem.ReadOnly = false;
             this.txtGV_TimKiem.Size = new System.Drawing.Size(581, 46);
             this.txtGV_TimKiem.TabIndex = 2;
-            this.txtGV_TimKiem.Text = "";
             this.txtGV_TimKiem.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtGV_TimKiem.UseSystemPasswordChar = false;
             this.txtGV_TimKiem.TextChanged += new System.EventHandler(this.txtGV_TimKiem_TextChanged);
@@ -851,56 +848,55 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvGiaoVien.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvGiaoVien.Size = new System.Drawing.Size(1024, 546);
             this.dgvGiaoVien.TabIndex = 5;
-            this.dgvGiaoVien.AutoGenerateColumns = false;
             this.dgvGiaoVien.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGiaoVien_CellClick);
             // 
             // maGV
             // 
+            this.maGV.DataPropertyName = "GiaoVienID";
             this.maGV.HeaderText = "Mã";
             this.maGV.MinimumWidth = 6;
             this.maGV.Name = "maGV";
             this.maGV.ReadOnly = true;
-            this.maGV.DataPropertyName = "GiaoVienID";
             // 
             // HoTen
             // 
+            this.HoTen.DataPropertyName = "HoTen";
             this.HoTen.HeaderText = "Họ Tên";
             this.HoTen.MinimumWidth = 6;
             this.HoTen.Name = "HoTen";
             this.HoTen.ReadOnly = true;
-            this.HoTen.DataPropertyName = "HoTen";
             // 
             // Column1
             // 
+            this.Column1.DataPropertyName = "ChuyenMon";
             this.Column1.HeaderText = "Chuyên môn";
             this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
-            this.Column1.DataPropertyName = "ChuyenMon";
             // 
             // Column2
             // 
+            this.Column2.DataPropertyName = "SoDienThoai";
             this.Column2.HeaderText = "Điện Thoại";
             this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
-            this.Column2.DataPropertyName = "SoDienThoai";
             // 
             // Column3
             // 
+            this.Column3.DataPropertyName = "Email";
             this.Column3.HeaderText = "Email";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
-            this.Column3.DataPropertyName = "Email";
             // 
             // Column4
             // 
+            this.Column4.DataPropertyName = "SoLop";
             this.Column4.HeaderText = "Số lớp";
             this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
-            this.Column4.DataPropertyName = "SoLop";
             // 
             // panel6
             // 
@@ -1059,25 +1055,27 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             this.txtGV_GioiTinh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtGV_GioiTinh.FormattingEnabled = true;
+            this.txtGV_GioiTinh.Items.AddRange(new object[] {
+            "Nam",
+            "Nữ",
+            "Khác"});
             this.txtGV_GioiTinh.Location = new System.Drawing.Point(333, 30);
             this.txtGV_GioiTinh.Name = "txtGV_GioiTinh";
             this.txtGV_GioiTinh.Size = new System.Drawing.Size(182, 36);
             this.txtGV_GioiTinh.TabIndex = 2;
-            this.txtGV_GioiTinh.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
-            this.txtGV_GioiTinh.SelectedIndex = 0;
             // 
             // txtGV_NgaySinh
             // 
             this.txtGV_NgaySinh.CalendarFont = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtGV_NgaySinh.Checked = false;
             this.txtGV_NgaySinh.CustomFormat = "dd/MM/yyyy";
             this.txtGV_NgaySinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtGV_NgaySinh.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.txtGV_NgaySinh.Location = new System.Drawing.Point(5, 30);
             this.txtGV_NgaySinh.Name = "txtGV_NgaySinh";
+            this.txtGV_NgaySinh.ShowCheckBox = true;
             this.txtGV_NgaySinh.Size = new System.Drawing.Size(227, 38);
             this.txtGV_NgaySinh.TabIndex = 1;
-            this.txtGV_NgaySinh.ShowCheckBox = true;
-            this.txtGV_NgaySinh.Checked = false;
             // 
             // headerLabel7
             // 
@@ -1442,7 +1440,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.txtHV_TimKiem.ReadOnly = false;
             this.txtHV_TimKiem.Size = new System.Drawing.Size(581, 46);
             this.txtHV_TimKiem.TabIndex = 2;
-            this.txtHV_TimKiem.Text = "";
             this.txtHV_TimKiem.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtHV_TimKiem.UseSystemPasswordChar = false;
             this.txtHV_TimKiem.TextChanged += new System.EventHandler(this.txtHV_TimKiem_TextChanged);
@@ -1518,58 +1515,57 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvHocVien.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvHocVien.Size = new System.Drawing.Size(1024, 546);
             this.dgvHocVien.TabIndex = 5;
-            this.dgvHocVien.AutoGenerateColumns = false;
             this.dgvHocVien.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvHocVien_CellClick);
             // 
             // dataGridViewTextBoxColumn1
             // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "HocSinhID";
             this.dataGridViewTextBoxColumn1.HeaderText = "Mã";
             this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "HocSinhID";
             // 
             // dataGridViewTextBoxColumn2
             // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "HoTen";
             this.dataGridViewTextBoxColumn2.HeaderText = "Họ Tên";
             this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "HoTen";
             // 
             // dataGridViewTextBoxColumn3
             // 
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "NgaySinh";
+            dataGridViewCellStyle2.Format = "dd/MM/yyyy";
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewTextBoxColumn3.HeaderText = "Ngày Sinh";
             this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "NgaySinh";
-            styleDataGridViewTextBoxColumn3.Format = "dd/MM/yyyy";
-            this.dataGridViewTextBoxColumn3.DefaultCellStyle = styleDataGridViewTextBoxColumn3;
             // 
             // dataGridViewTextBoxColumn4
             // 
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "SoDienThoai";
             this.dataGridViewTextBoxColumn4.HeaderText = "Điện Thoại";
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "SoDienThoai";
             // 
             // dataGridViewTextBoxColumn5
             // 
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "Email";
             this.dataGridViewTextBoxColumn5.HeaderText = "Email";
             this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            this.dataGridViewTextBoxColumn5.DataPropertyName = "Email";
             // 
             // dataGridViewTextBoxColumn6
             // 
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "TenLop";
             this.dataGridViewTextBoxColumn6.HeaderText = "Lớp học";
             this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "TenLop";
             // 
             // panel18
             // 
@@ -1727,25 +1723,27 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             this.cboHV_GioiTinh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboHV_GioiTinh.FormattingEnabled = true;
+            this.cboHV_GioiTinh.Items.AddRange(new object[] {
+            "Nam",
+            "Nữ",
+            "Khác"});
             this.cboHV_GioiTinh.Location = new System.Drawing.Point(333, 30);
             this.cboHV_GioiTinh.Name = "cboHV_GioiTinh";
             this.cboHV_GioiTinh.Size = new System.Drawing.Size(182, 36);
             this.cboHV_GioiTinh.TabIndex = 2;
-            this.cboHV_GioiTinh.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
-            this.cboHV_GioiTinh.SelectedIndex = 0;
             // 
             // txtHV_NgaySinh
             // 
             this.txtHV_NgaySinh.CalendarFont = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHV_NgaySinh.Checked = false;
             this.txtHV_NgaySinh.CustomFormat = "dd/MM/yyyy";
             this.txtHV_NgaySinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtHV_NgaySinh.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.txtHV_NgaySinh.Location = new System.Drawing.Point(5, 30);
             this.txtHV_NgaySinh.Name = "txtHV_NgaySinh";
+            this.txtHV_NgaySinh.ShowCheckBox = true;
             this.txtHV_NgaySinh.Size = new System.Drawing.Size(227, 38);
             this.txtHV_NgaySinh.TabIndex = 1;
-            this.txtHV_NgaySinh.ShowCheckBox = true;
-            this.txtHV_NgaySinh.Checked = false;
             // 
             // headerLabel18
             // 
@@ -2180,10 +2178,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // cboLop_KhoaHoc
             // 
             this.cboLop_KhoaHoc.AutoResize = false;
-            this.cboLop_KhoaHoc.DisplayMember = "TenKhoaHoc";
-            this.cboLop_KhoaHoc.ValueMember = "KhoaHocID";
             this.cboLop_KhoaHoc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cboLop_KhoaHoc.Depth = 0;
+            this.cboLop_KhoaHoc.DisplayMember = "TenKhoaHoc";
             this.cboLop_KhoaHoc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboLop_KhoaHoc.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.cboLop_KhoaHoc.DropDownHeight = 218;
@@ -2202,14 +2199,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cboLop_KhoaHoc.Size = new System.Drawing.Size(727, 60);
             this.cboLop_KhoaHoc.StartIndex = 0;
             this.cboLop_KhoaHoc.TabIndex = 2;
+            this.cboLop_KhoaHoc.ValueMember = "KhoaHocID";
             // 
             // materialComboBox2
             // 
             this.materialComboBox2.AutoResize = false;
-            this.materialComboBox2.DisplayMember = "HoTen";
-            this.materialComboBox2.ValueMember = "GiaoVienID";
             this.materialComboBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.materialComboBox2.Depth = 0;
+            this.materialComboBox2.DisplayMember = "HoTen";
             this.materialComboBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.materialComboBox2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.materialComboBox2.DropDownHeight = 218;
@@ -2228,6 +2225,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialComboBox2.Size = new System.Drawing.Size(727, 60);
             this.materialComboBox2.StartIndex = 0;
             this.materialComboBox2.TabIndex = 3;
+            this.materialComboBox2.ValueMember = "GiaoVienID";
             // 
             // dgvLopHoc
             // 
@@ -2253,40 +2251,39 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvLopHoc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvLopHoc.Size = new System.Drawing.Size(727, 319);
             this.dgvLopHoc.TabIndex = 4;
-            this.dgvLopHoc.AutoGenerateColumns = false;
             this.dgvLopHoc.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLopHoc_CellClick);
             // 
             // Column8
             // 
+            this.Column8.DataPropertyName = "TenLop";
             this.Column8.HeaderText = "Tên Lớp";
             this.Column8.MinimumWidth = 6;
             this.Column8.Name = "Column8";
             this.Column8.ReadOnly = true;
-            this.Column8.DataPropertyName = "TenLop";
             // 
             // Column13
             // 
+            this.Column13.DataPropertyName = "SiSo";
             this.Column13.HeaderText = "Sĩ Số";
             this.Column13.MinimumWidth = 6;
             this.Column13.Name = "Column13";
             this.Column13.ReadOnly = true;
-            this.Column13.DataPropertyName = "SiSo";
             // 
             // Column14
             // 
+            this.Column14.DataPropertyName = "TenKhoaHoc";
             this.Column14.HeaderText = "Khóa Học";
             this.Column14.MinimumWidth = 6;
             this.Column14.Name = "Column14";
             this.Column14.ReadOnly = true;
-            this.Column14.DataPropertyName = "TenKhoaHoc";
             // 
             // Column15
             // 
+            this.Column15.DataPropertyName = "TenGiaoVien";
             this.Column15.HeaderText = "Giáo Viên";
             this.Column15.MinimumWidth = 6;
             this.Column15.Name = "Column15";
             this.Column15.ReadOnly = true;
-            this.Column15.DataPropertyName = "TenGiaoVien";
             // 
             // materialLabel13
             // 
@@ -2456,24 +2453,23 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvKhoaHoc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvKhoaHoc.Size = new System.Drawing.Size(727, 432);
             this.dgvKhoaHoc.TabIndex = 5;
-            this.dgvKhoaHoc.AutoGenerateColumns = false;
             this.dgvKhoaHoc.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvKhoaHoc_CellClick);
             // 
             // Column6
             // 
+            this.Column6.DataPropertyName = "TenKhoaHoc";
             this.Column6.HeaderText = "Khóa Học";
             this.Column6.MinimumWidth = 6;
             this.Column6.Name = "Column6";
             this.Column6.ReadOnly = true;
-            this.Column6.DataPropertyName = "TenKhoaHoc";
             // 
             // Column7
             // 
+            this.Column7.DataPropertyName = "MoTa";
             this.Column7.HeaderText = "Mô Tả";
             this.Column7.MinimumWidth = 6;
             this.Column7.Name = "Column7";
             this.Column7.ReadOnly = true;
-            this.Column7.DataPropertyName = "MoTa";
             // 
             // tableLayoutPanel15
             // 
@@ -2749,6 +2745,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbTK_VaiTro.Hint = "Vai trò";
             this.cmbTK_VaiTro.IntegralHeight = false;
             this.cmbTK_VaiTro.ItemHeight = 54;
+            this.cmbTK_VaiTro.Items.AddRange(new object[] {
+            "Admin",
+            "GiaoVien",
+            "HocSinh"});
             this.cmbTK_VaiTro.Location = new System.Drawing.Point(3, 438);
             this.cmbTK_VaiTro.MaxDropDownItems = 4;
             this.cmbTK_VaiTro.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
@@ -2756,16 +2756,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbTK_VaiTro.Size = new System.Drawing.Size(571, 60);
             this.cmbTK_VaiTro.StartIndex = 0;
             this.cmbTK_VaiTro.TabIndex = 2;
-            this.cmbTK_VaiTro.Items.AddRange(new object[] { "Admin", "GiaoVien", "HocSinh" });
-            this.cmbTK_VaiTro.SelectedIndex = 2;
             this.cmbTK_VaiTro.SelectedIndexChanged += new System.EventHandler(this.cmbTK_VaiTro_Changed);
             // 
             // cmbTK_GanCho
             // 
             this.cmbTK_GanCho.AutoResize = false;
-            this.cmbTK_GanCho.DisplayMember = "HoTen";
             this.cmbTK_GanCho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cmbTK_GanCho.Depth = 0;
+            this.cmbTK_GanCho.DisplayMember = "HoTen";
             this.cmbTK_GanCho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbTK_GanCho.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.cmbTK_GanCho.DropDownHeight = 218;
@@ -2969,40 +2967,39 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvTaiKhoan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTaiKhoan.Size = new System.Drawing.Size(895, 636);
             this.dgvTaiKhoan.TabIndex = 4;
-            this.dgvTaiKhoan.AutoGenerateColumns = false;
             this.dgvTaiKhoan.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTaiKhoan_CellClick);
             // 
             // Column9
             // 
+            this.Column9.DataPropertyName = "TenDangNhap";
             this.Column9.HeaderText = "Tài Khoản";
             this.Column9.MinimumWidth = 6;
             this.Column9.Name = "Column9";
             this.Column9.ReadOnly = true;
-            this.Column9.DataPropertyName = "TenDangNhap";
             // 
             // Column10
             // 
+            this.Column10.DataPropertyName = "TenNguoiDung";
             this.Column10.HeaderText = "Người Dùng";
             this.Column10.MinimumWidth = 6;
             this.Column10.Name = "Column10";
             this.Column10.ReadOnly = true;
-            this.Column10.DataPropertyName = "TenNguoiDung";
             // 
             // Column11
             // 
+            this.Column11.DataPropertyName = "VaiTro";
             this.Column11.HeaderText = "Vai Trò";
             this.Column11.MinimumWidth = 6;
             this.Column11.Name = "Column11";
             this.Column11.ReadOnly = true;
-            this.Column11.DataPropertyName = "VaiTro";
             // 
             // Column12
             // 
+            this.Column12.DataPropertyName = "TrangThaiHienThi";
             this.Column12.HeaderText = "Trạng Thái";
             this.Column12.MinimumWidth = 6;
             this.Column12.Name = "Column12";
             this.Column12.ReadOnly = true;
-            this.Column12.DataPropertyName = "TrangThaiHienThi";
             // 
             // materialLabel9
             // 
@@ -3033,12 +3030,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1634, 940);
             this.Controls.Add(this.materialTabControl1);
-            this.DoubleBuffered = true;
             this.DrawerTabControl = this.materialTabControl1;
             this.Name = "Frm_Admin";
             this.Text = "Main";
-            this.Load += new System.EventHandler(this.FrmMain_Load);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Frm_Admin_FormClosed);
+            this.Load += new System.EventHandler(this.FrmMain_Load);
             this.materialTabControl1.ResumeLayout(false);
             this.pageDashboard.ResumeLayout(false);
             this.tableLayoutPanel13.ResumeLayout(false);
