@@ -371,15 +371,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // lblTC_KhoaHoc
             // 
-            this.lblTC_KhoaHoc.AutoSize = true;
+            this.lblTC_KhoaHoc.AutoSize = false;
             this.lblTC_KhoaHoc.Depth = 0;
+            this.lblTC_KhoaHoc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTC_KhoaHoc.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTC_KhoaHoc.Location = new System.Drawing.Point(102, 21);
+            this.lblTC_KhoaHoc.Location = new System.Drawing.Point(17, 17);
             this.lblTC_KhoaHoc.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.lblTC_KhoaHoc.Name = "lblTC_KhoaHoc";
-            this.lblTC_KhoaHoc.Size = new System.Drawing.Size(87, 24);
+            this.lblTC_KhoaHoc.Size = new System.Drawing.Size(332, 122);
             this.lblTC_KhoaHoc.TabIndex = 0;
-            this.lblTC_KhoaHoc.Text = "Khóa Học";
+            this.lblTC_KhoaHoc.Text = "KHÓA HỌC\n--";
+            this.lblTC_KhoaHoc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // materialCard4
             // 
@@ -398,15 +400,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // lblTC_LopHoc
             // 
-            this.lblTC_LopHoc.AutoSize = true;
+            this.lblTC_LopHoc.AutoSize = false;
             this.lblTC_LopHoc.Depth = 0;
+            this.lblTC_LopHoc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTC_LopHoc.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTC_LopHoc.Location = new System.Drawing.Point(32, 21);
+            this.lblTC_LopHoc.Location = new System.Drawing.Point(17, 17);
             this.lblTC_LopHoc.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.lblTC_LopHoc.Name = "lblTC_LopHoc";
-            this.lblTC_LopHoc.Size = new System.Drawing.Size(74, 24);
+            this.lblTC_LopHoc.Size = new System.Drawing.Size(333, 122);
             this.lblTC_LopHoc.TabIndex = 0;
-            this.lblTC_LopHoc.Text = "Lớp Học";
+            this.lblTC_LopHoc.Text = "LỚP HỌC\n--";
+            this.lblTC_LopHoc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel1
             // 
@@ -609,15 +613,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // lblTC_HocVien
             // 
-            this.lblTC_HocVien.AutoSize = true;
+            this.lblTC_HocVien.AutoSize = false;
             this.lblTC_HocVien.Depth = 0;
+            this.lblTC_HocVien.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTC_HocVien.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTC_HocVien.Location = new System.Drawing.Point(103, 21);
+            this.lblTC_HocVien.Location = new System.Drawing.Point(17, 17);
             this.lblTC_HocVien.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.lblTC_HocVien.Name = "lblTC_HocVien";
-            this.lblTC_HocVien.Size = new System.Drawing.Size(81, 24);
+            this.lblTC_HocVien.Size = new System.Drawing.Size(332, 122);
             this.lblTC_HocVien.TabIndex = 0;
-            this.lblTC_HocVien.Text = "Học Viên";
+            this.lblTC_HocVien.Text = "HỌC VIÊN\n--";
+            this.lblTC_HocVien.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // materialCard3
             // 
@@ -636,15 +642,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // lblTC_GiaoVien
             // 
-            this.lblTC_GiaoVien.AutoSize = true;
+            this.lblTC_GiaoVien.AutoSize = false;
             this.lblTC_GiaoVien.Depth = 0;
+            this.lblTC_GiaoVien.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTC_GiaoVien.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTC_GiaoVien.Location = new System.Drawing.Point(121, 17);
+            this.lblTC_GiaoVien.Location = new System.Drawing.Point(17, 17);
             this.lblTC_GiaoVien.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.lblTC_GiaoVien.Name = "lblTC_GiaoVien";
-            this.lblTC_GiaoVien.Size = new System.Drawing.Size(84, 24);
+            this.lblTC_GiaoVien.Size = new System.Drawing.Size(333, 122);
             this.lblTC_GiaoVien.TabIndex = 0;
-            this.lblTC_GiaoVien.Text = "Giáo viên";
+            this.lblTC_GiaoVien.Text = "GIÁO VIÊN\n--";
+            this.lblTC_GiaoVien.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pageGiaoVien
             // 
@@ -2883,6 +2891,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.btnTK_KhoaMoKhoa.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnTK_KhoaMoKhoa.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.btnTK_KhoaMoKhoa.Name = "btnTK_KhoaMoKhoa";
+            this.btnTK_KhoaMoKhoa.Enabled = false;
             this.btnTK_KhoaMoKhoa.NoAccentTextColor = System.Drawing.Color.Empty;
             this.btnTK_KhoaMoKhoa.Size = new System.Drawing.Size(215, 45);
             this.btnTK_KhoaMoKhoa.TabIndex = 1;
@@ -2967,7 +2976,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvTaiKhoan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTaiKhoan.Size = new System.Drawing.Size(895, 636);
             this.dgvTaiKhoan.TabIndex = 4;
-            this.dgvTaiKhoan.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTaiKhoan_CellClick);
+            this.dgvTaiKhoan.SelectionChanged += new System.EventHandler(this.dgvTaiKhoan_SelectionChanged);
             // 
             // Column9
             // 

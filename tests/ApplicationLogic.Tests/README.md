@@ -19,6 +19,10 @@ Trang chủ được kiểm tra với học viên thuộc nhiều lớp, yêu c�
 đề hết hạn/đã đóng/chưa giao/không có câu hỏi, điểm bằng 0 và điểm chưa có.
 Thống kê học viên tính trên toàn bộ dữ liệu, kể cả khi bảng đang lọc hoặc phân trang.
 
+Quản lý tài khoản kiểm tra việc chặn khóa Admin ngay tại DAL, kể cả khi role trên
+form đã cũ hoặc khác chữ hoa/thường; vẫn mở khóa được Admin từng bị khóa và
+khóa/mở khóa được Giáo viên, Học sinh, Học viên.
+
 Chạy kiểm tra báo cáo XML với `vi-VN`/`en-US` và DataGridView thực qua
 `tests/Pagination.SmokeTests` theo README của `tests/Pagination.Tests`.
 Các thao tác phòng thi, hộp thoại đóng form và giao diện ReaLTaiizor cần kiểm tra trên Windows.
