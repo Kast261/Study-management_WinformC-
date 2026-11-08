@@ -244,7 +244,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 // Nguồn riêng để lọc môn học ở tab Bài Thi không làm mất bài trên Trang chủ.
                 dgvHV_DeThiSapToi.DataSource = _dtBaiThiDangMo;
                 bool coBaiThi = _dtBaiThiDangMo.Rows.Count > 0;
-                foreverButton1.Enabled = btnHV_VaoLopHoc.Enabled = coBaiThi;
+                btnTCHV_BatDauLamBai.Enabled = btnHV_VaoLopHoc.Enabled = coBaiThi;
                 materialLabel2.Text = coBaiThi
                     ? $"Bạn có {_dtBaiThiDangMo.Rows.Count:N0} bài thi đang mở chưa làm."
                     : "Bạn chưa có bài thi đang mở để làm.";

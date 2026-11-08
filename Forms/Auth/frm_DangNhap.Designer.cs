@@ -334,12 +334,12 @@
             // 
             // frm_DangNhap
             // 
+            this.AcceptButton = this.btn_DangNhap;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(1462, 808);
             this.Controls.Add(this.panel2);
-            this.AcceptButton = this.btn_DangNhap;
             this.Name = "frm_DangNhap";
             this.Text = "Đăng Nhập";
             this.Load += new System.EventHandler(this.Frm_DangNhap_Load);
