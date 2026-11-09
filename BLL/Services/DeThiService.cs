@@ -76,6 +76,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
             return _deThiDAL.XoaDeThi(deThiID, out thongBao);
         }
 
+        public bool XoaDeThi(int deThiID, int taiKhoanID, int giaoVienID, out string thongBao)
+        {
+            return _deThiDAL.XoaDeThi(deThiID, taiKhoanID, giaoVienID, out thongBao);
+        }
+
         public bool CapNhatSoCau(int deThiID)
         {
             return _deThiDAL.CapNhatSoCau(deThiID);

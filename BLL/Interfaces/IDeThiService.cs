@@ -18,6 +18,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces
         bool GiaoDeThiChoLop(int deThiID, int lopHocID, int thoiGian, DateTime? hanNop, string monHoc = null);
         bool KiemTraDeThiChuaGiao(int deThiID);
         bool XoaDeThi(int deThiID, out string thongBao);
+        bool XoaDeThi(int deThiID, int taiKhoanID, int giaoVienID, out string thongBao);
         bool CapNhatSoCau(int deThiID);
         bool ThemCauHoi(CauHoi ch);
         bool XoaCauHoi(int cauHoiID);

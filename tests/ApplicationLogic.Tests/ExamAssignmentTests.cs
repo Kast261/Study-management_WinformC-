@@ -105,14 +105,37 @@ namespace ApplicationLogic.Tests
         [InlineData("UPDATE TaiKhoan SET NguoiDungID=999 WHERE TaiKhoanID=2")]
         [InlineData("UPDATE DeThi SET GiaoVienID=999 WHERE DeThiID=1")]
         [InlineData("UPDATE LopHoc SET GiaoVienID=999 WHERE LopHocID=1")]
-        [InlineData("UPDATE KhoaHoc SET TenKhoaHoc='Tin học' WHERE KhoaHocID=1")]
         [InlineData("DELETE FROM CauHoi")]
-        public void InvalidOwnershipSubjectOrEmptySourceDoesNotCreateAnAssignment(string sql)
+        public void InvalidOwnershipOrEmptySourceDoesNotCreateAnAssignment(string sql)
         {
             using var db = new LogicDatabase();
             DatabaseHelper.ExecuteNonQuery(sql);
             Assert.Throws<InvalidOperationException>(() => Assign());
             Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM DeThi"));
+        }
+
+        [Theory]
+        [InlineData("UPDATE KhoaHoc SET TenKhoaHoc='Toán nâng cao' WHERE KhoaHocID=1")]
+        [InlineData("UPDATE KhoaHoc SET TenKhoaHoc='Tin học' WHERE KhoaHocID=1")]
+        [InlineData("UPDATE LopHoc SET KhoaHocID=NULL WHERE LopHocID=1")]
+        public void OwnedClassShownByTheFormCanReceiveExamRegardlessOfItsCourseName(string sql)
+        {
+            using var db = new LogicDatabase();
+            DatabaseHelper.ExecuteNonQuery(sql);
+            var listed = new LopHocDAL().LayTheoGiaoVien(101);
+            Assert.Contains(listed.Rows.Cast<DataRow>(), row => (int)row["LopHocID"] == 1);
+
+            int first = Assign(), repeated = Assign();
+            Assert.NotEqual(first, repeated);
+            var dal = new DeThiDAL();
+            Assert.All(new[] { first, repeated }, id => {
+                Assert.Equal(1, dal.LayTheoID(id).LopHocID);
+                Assert.Equal("Toán", dal.LayTheoID(id).MonHoc);
+                Assert.Equal(2, dal.LayDanhSachCauHoi(id).Count);
+                Assert.True(dal.CoTheBatDauThi(11, id));
+            });
+            Assert.Equal("Toán", dal.LayTheoID(1).MonHoc);
+            Assert.Equal(1, dal.LayTheoID(1).LopHocID);
         }
 
         [Fact]
