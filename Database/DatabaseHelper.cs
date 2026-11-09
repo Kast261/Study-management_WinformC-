@@ -10,7 +10,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
 {
     public static class DatabaseHelper
     {
-        public static string ConnectionString = ConfigurationManager.ConnectionStrings["ChuoiKetNoi"]?.ConnectionString;
+        public static string ConnectionString = ConfigurationManager.ConnectionStrings["ChuoiKetNoi"].ConnectionString;
 
         public static NpgsqlConnection GetConnection() => new NpgsqlConnection(ConnectionString);
 
@@ -32,39 +32,14 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
                 loi = null;
                 return true;
             }
-            catch (PostgresException ex) when (ex.SqlState == "28P01")
+            catch (Npgsql.NpgsqlException ex)
             {
-                loi = "PostgreSQL từ chối tên đăng nhập hoặc mật khẩu (28P01). "
-                    + "Hãy đặt lại mật khẩu tài khoản study_app trong pgAdmin và cập nhật cùng mật khẩu "
-                    + "trong mục ChuoiKetNoi của App.config (hoặc file .exe.config đang chạy). "
-                    + "Đây là tài khoản kết nối database, không phải tài khoản đăng nhập ứng dụng.";
-                return false;
-            }
-            catch (PostgresException ex) when (ex.SqlState == "3D000")
-            {
-                loi = "Database PostgreSQL chưa tồn tại (3D000). Hãy tạo database theo "
-                    + "Database/PostgreSQL/README.md rồi kiểm tra tên Database trong ChuoiKetNoi.";
-                return false;
-            }
-            catch (NpgsqlException ex)
-            {
-                loi = "Không thể kết nối PostgreSQL.\n" + ex.Message;
+                loi = ex.ToString();
 
-                Exception chiTiet = ex.InnerException;
-                while (chiTiet != null)
-                {
-                    loi += "\n" + chiTiet.GetType().Name
-                        + ": " + chiTiet.Message;
+                if (ex.InnerException != null)
+                    loi += "\n\nChi tiết:\n" + ex.InnerException;
 
-                    chiTiet = chiTiet.InnerException;
-                }
-
-                return false;
-            }
-            catch (Exception ex) when (ex is InvalidOperationException || ex is ArgumentException)
-            {
-                loi = "Chuỗi kết nối PostgreSQL chưa có hoặc không hợp lệ. Hãy kiểm tra mục ChuoiKetNoi "
-                    + "trong App.config hoặc file .exe.config đang chạy.";
+                MessageBox.Show(loi, "Lỗi SSL");
                 return false;
             }
         }

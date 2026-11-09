@@ -31,9 +31,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
             return _deThiDAL.LayDeThiTheoLop(lopID);
         }
 
-        public DataTable LayDeThiTheoGiaoVien(int gvID)
+        public DataTable LayDeThiTheoGiaoVien(int gvID, bool baoGomDaXoa = false)
         {
-            return _deThiDAL.LayDeThiTheoGiaoVien(gvID);
+            return _deThiDAL.LayDeThiTheoGiaoVien(gvID, baoGomDaXoa);
         }
 
         public DeThi LayTheoID(int deThiID)
@@ -56,6 +56,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
             return _deThiDAL.TaoDeThiMoiLayID(de);
         }
 
+        public int TaoLanGiaoDeThi(int taiKhoanID, int giaoVienID, int deThiID, int lopHocID, int thoiGian, DateTime? hanNop, string monHoc = null)
+        {
+            return _deThiDAL.TaoLanGiaoDeThi(taiKhoanID, giaoVienID, deThiID, lopHocID, thoiGian, hanNop, monHoc);
+        }
+
         public bool GiaoDeThiChoLop(int deThiID, int lopHocID, int thoiGian, DateTime? hanNop, string monHoc = null)
         {
             return _deThiDAL.GiaoDeThiChoLop(deThiID, lopHocID, thoiGian, hanNop, monHoc);
@@ -69,6 +74,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
         public bool XoaDeThi(int deThiID, out string thongBao)
         {
             return _deThiDAL.XoaDeThi(deThiID, out thongBao);
+        }
+
+        public bool XoaDeThi(int deThiID, int taiKhoanID, int giaoVienID, out string thongBao)
+        {
+            return _deThiDAL.XoaDeThi(deThiID, taiKhoanID, giaoVienID, out thongBao);
         }
 
         public bool CapNhatSoCau(int deThiID)

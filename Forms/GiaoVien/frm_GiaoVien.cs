@@ -25,6 +25,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private int _selectedCauHoiID = 0;
         private int _selectedDeThiID   = 0;  
         private bool _isSyncingMonHoc = false;
+        private bool _dangTaiDeThi;
         private bool _dangNhapExcel;
         private bool _daTaiTrangChu;
         private DataTable _khoaHoc;
@@ -38,6 +39,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         public frm_GiaoVien()
         {
             InitializeComponent();
+            if (System.ComponentModel.LicenseManager.UsageMode != System.ComponentModel.LicenseUsageMode.Designtime)
+                this.DrawerTabControl = materialTabControl1;
             lblGVTT_HovaTen.Text = Session.HoTen ?? Session.TenDangNhap ?? "";
 
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
@@ -47,14 +50,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                lblGV_LoiChao.Text = $"Xin Chào, {Session.HoTen ?? Session.TenDangNhap}";
-                LoadKetQuaThiGanDay();
+                LoadTrangChu();
                 _daTaiTrangChu = true;
 
                 InitDropdowns();
 
                 // Load dữ liệu ban đầu cho các tab
-                LoadLopHocCuaToi();
                 LoadDanhSachLopQuanLy();
                 cboDK_LocTheoLop_SelectedIndexChanged(null, null);
                 LoadDeThiCombobox();
@@ -127,7 +128,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
 
                 _isSyncingMonHoc = false;
-                FilterLopTheoMonHoc(cmbDT_MonHoc.SelectedItem?.ToString());
+                LoadLopGiaoDeThi();
             }
             catch (Exception ex)
             {
@@ -148,14 +149,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 _selectedCauHoiID = 0;
                 materialLabel15.Text = "Đang chỉnh sửa: câu hỏi mới";
             }
-            if (grid == dgvGVDeThi)
+            if (grid == dgvGVDeThi && reason != PageChangeReason.Data)
             {
                 _selectedDeThiID = 0;
-                if (reason != PageChangeReason.Data)
-                {
-                    cmbDT_DeThi.SelectedIndex = -1;
-                    dgvCauHoi.DataSource = null;
-                }
+                cmbDT_DeThi.SelectedIndex = -1;
+                dgvCauHoi.DataSource = null;
             }
         }
 
@@ -163,32 +161,74 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         #region 2. Tab Trang Chủ & Quản Lý Lớp Học
 
-        private void LoadKetQuaThiGanDay()
+        private void LoadTrangChu()
         {
+            var vi = CultureInfo.GetCultureInfo("vi-VN");
+            lblTCGV_Chao.Text = "Xin chào, " + (Session.HoTen ?? Session.TenDangNhap);
+            lblTCGV_NgayThangHT.Text = DateTime.Today.ToString("dddd, dd/MM/yyyy", vi);
             try
             {
+                DataTable classes = _lopDAL.LayTheoGiaoVien(Session.NguoiDungID);
                 DataTable results = _deThiDAL.LayTongHopKetQuaGanDay(Session.NguoiDungID);
-                dgvGV_LichDay.DataSource = results;
-                materialLabel34.Text = results.Rows.Count > 0
-                    ? "Kết quả bài thi gần đây"
-                    : "Kết quả bài thi gần đây — chưa có bài nộp";
+                using (DataTable summary = new DashboardDAL().LayTongQuanGiaoVien(Session.NguoiDungID))
+                {
+                    DataRow row = summary.Rows[0];
+                    long classCount = Convert.ToInt64(row["SoLopHoc"]);
+                    long studentCount = Convert.ToInt64(row["SoHocVien"]);
+                    long pending = Convert.ToInt64(row["SoChoDuyet"]);
+                    long openExams = Convert.ToInt64(row["SoBaiThiDangMo"]);
+                    dgvBaiThiDangMo.DataSource = classes;
+                    dgvTCBaiThi.DataSource = results;
+                    lblTCGV_LopDH.Text = $"Lớp đang dạy\n{classCount:N0}";
+                    lblTCGV_HocVien.Text = $"Học viên\n{studentCount:N0}";
+                    lblTCGV_ChoDuyet.Text = $"Yêu cầu chờ duyệt\n{pending:N0}";
+                    lblTCGV_BaiThiDangMo.Text = $"Bài thi đang mở\n{openExams:N0}";
+                    lblTCGV_SoLopQuanLy.Text = $"{classCount:N0} lớp đang quản lý";
+                    lblTCGV_SoYeuCauChoDuyet.Text = $"{pending:N0} yêu cầu đăng ký đang chờ duyệt";
+                    lblTCHV_TatCaBaiThi.Text = $"Bạn đang quản lý {classCount:N0} lớp và có {pending:N0} yêu cầu chờ duyệt.";
+                    btnTCGV_DuyetNgay.Enabled = pending > 0;
+                }
             }
             catch (Exception ex)
             {
-                dgvGV_LichDay.DataSource = null;
-                materialLabel34.Text = "Kết quả bài thi gần đây — không tải được";
-                MessageBox.Show("Không thể tải kết quả thi gần đây: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dgvBaiThiDangMo.DataSource = dgvTCBaiThi.DataSource = null;
+                lblTCGV_LopDH.Text = "Lớp đang dạy\n--";
+                lblTCGV_HocVien.Text = "Học viên\n--";
+                lblTCGV_ChoDuyet.Text = "Yêu cầu chờ duyệt\n--";
+                lblTCGV_BaiThiDangMo.Text = "Bài thi đang mở\n--";
+                lblTCGV_SoLopQuanLy.Text = "Chưa tải được danh sách lớp";
+                lblTCGV_SoYeuCauChoDuyet.Text = "Chưa tải được yêu cầu đăng ký";
+                lblTCHV_TatCaBaiThi.Text = "Không tải được dữ liệu trang chủ. Mở lại tab để thử lại.";
+                btnTCGV_DuyetNgay.Enabled = false;
+                MessageBox.Show("Không thể tải trang chủ giáo viên: " + ex.Message, "Lỗi");
             }
         }
 
-        private void LoadLopHocCuaToi()
+        private void btnTCGV_GiaoBai_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DataTable dt = _lopDAL.LayTheoGiaoVien(Session.NguoiDungID);
-                if (dgvGV_LopCuaToi != null) dgvGV_LopCuaToi.DataSource = dt;
-            }
-            catch { }
+            materialTabControl1.SelectedTab = pageGV_QuanLyDeThi;
+        }
+
+        private void btnTCGV_QuanLyLop_Click(object sender, EventArgs e)
+        {
+            materialTabControl1.SelectedTab = pageGV_LopHoc;
+        }
+
+        private void btnTCGV_DuyetNgay_Click(object sender, EventArgs e)
+        {
+            materialTabControl1.SelectedTab = pageGV_DuyetHocVien;
+        }
+
+        private void lblTCGV_XemTatCaBaiThi_Click(object sender, EventArgs e)
+        {
+            materialTabControl1.SelectedTab = pageGV_KetQuaThi;
+        }
+
+        private void dgvTCBaiThi_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || !(dgvTCBaiThi.Rows[e.RowIndex].DataBoundItem is DataRowView row)) return;
+            materialTabControl1.SelectedTab = pageGV_KetQuaThi;
+            cmbKQ_DeThi.SelectedValue = Convert.ToInt32(row["DeThiID"]);
         }
 
         private void LoadDanhSachLopQuanLy()
@@ -208,8 +248,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 cboDK_LocTheoLop.DataSource = dtDuyet;
 
-                // Cập nhật lớp học cho form Đề thi theo môn học hiện tại
-                FilterLopTheoMonHoc(cmbDT_MonHoc.SelectedItem?.ToString());
+                // Nạp các lớp giáo viên phụ trách để nhận bài thi
+                LoadLopGiaoDeThi();
             }
             catch(Exception ex) {
                 MessageBox.Show(
@@ -331,7 +371,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 MessageBox.Show("Tạo lớp học mới thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachLopQuanLy();
-                LoadLopHocCuaToi();
+                LoadTrangChu();
             }
         }
 
@@ -419,7 +459,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             nUDLH_SiSo.Value = 40;
             headerLabel4.Text = "Đang chọn: chưa chọn lớp";
             LoadDanhSachLopQuanLy();
-            LoadLopHocCuaToi();
+            LoadTrangChu();
         }
 
         #endregion
@@ -530,7 +570,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (!string.IsNullOrEmpty(monHoc) && cmbDT_MonHoc.Items.Contains(monHoc))
                 {
                     cmbDT_MonHoc.SelectedItem = monHoc;
-                    FilterLopTheoMonHoc(monHoc);
+                    LoadLopGiaoDeThi();
                 }
             }
             finally
@@ -591,6 +631,16 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 monHoc = cmbDT_MonHoc.SelectedItem?.ToString() ?? "Lập trình C# WinForms";
             }
 
+            int.TryParse(cmbDT_DeThi.SelectedValue?.ToString(), out int currentID);
+            DataRow existing = ExamSelection.FindDraft(_deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID),
+                tenDe, monHoc, currentID);
+            if (existing != null)
+            {
+                LoadDeThiCombobox(Convert.ToInt32(existing["DeThiID"]));
+                LamMoiFormCauHoi();
+                return;
+            }
+
             DeThi de = new DeThi
             {
                 TenDeThi   = tenDe,
@@ -610,14 +660,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 // Làm mới danh sách đề thi và chọn đề vừa tạo
                 _selectedDeThiID = newID;
-                LoadDeThiCombobox();
-                try
-                {
-                    cmbDT_DeThi.SelectedValue = newID;
-                    _selectedDeThiID = newID;
-                }
-                catch { }
-
+                LoadDeThiCombobox(newID);
                 // Reset form câu hỏi để bắt đầu nhập câu mới
                 LamMoiFormCauHoi();
 
@@ -654,37 +697,34 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
 
                 string tenDeNhap = txtCH_TenDeThi?.Text?.Trim();
+                string monHocDaChon = cmbCH_MonHoc.SelectedItem?.ToString() ?? cmbCH_MonHoc.Text?.Trim();
+                if (string.IsNullOrWhiteSpace(monHocDaChon))
+                {
+                    MessageBox.Show("Vui lòng chọn môn học cho câu hỏi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 int deID = 0;
 
                 // Nếu người dùng có nhập tên đề vào ô txtCH_TenDeThi
                 if (!string.IsNullOrEmpty(tenDeNhap))
                 {
                     // Kiểm tra xem đề thi này đã có trong danh sách chưa
-                    if (cmbDT_DeThi.DataSource is DataTable dtDe)
+                    int.TryParse(cmbDT_DeThi.SelectedValue?.ToString(), out int currentID);
+                    DataRow existing = ExamSelection.FindDraft(_deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID),
+                        tenDeNhap, monHocDaChon, currentID);
+                    if (existing != null)
                     {
-                        foreach (DataRow r in dtDe.Rows)
-                        {
-                            if (r["TenDeThi"]?.ToString()?.Trim().Equals(tenDeNhap, StringComparison.OrdinalIgnoreCase) == true)
-                            {
-                                deID = Convert.ToInt32(r["DeThiID"]);
-                                cmbDT_DeThi.SelectedValue = deID;
-                                _selectedDeThiID = deID;
-                                break;
-                            }
-                        }
+                        deID = Convert.ToInt32(existing["DeThiID"]);
+                        cmbDT_DeThi.SelectedValue = deID;
                     }
 
                     // Nếu chưa có đề thi này, tự động tạo mới luôn
                     if (deID <= 0)
                     {
-                        string monHoc = cmbCH_MonHoc.SelectedItem?.ToString() ?? cmbCH_MonHoc.Text?.Trim();
-                        if (string.IsNullOrWhiteSpace(monHoc))
-                            monHoc = cmbDT_MonHoc.SelectedItem?.ToString() ?? "Lập trình C# WinForms";
-
                         DeThi deMoi = new DeThi
                         {
                             TenDeThi = tenDeNhap,
-                            MonHoc = monHoc,
+                            MonHoc = monHocDaChon,
                             GiaoVienID = Session.NguoiDungID,
                             SoCau = 0,
                             ThoiGian = 45,
@@ -693,8 +733,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                         deID = _deThiDAL.TaoDeThiMoiLayID(deMoi);
                         if (deID > 0)
                         {
-                            LoadDeThiCombobox();
-                            try { cmbDT_DeThi.SelectedValue = deID; _selectedDeThiID = deID; } catch { }
+                            LoadDeThiCombobox(deID);
                         }
                     }
                 }
@@ -703,6 +742,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (deID <= 0 && cmbDT_DeThi.SelectedValue != null)
                 {
                     int.TryParse(cmbDT_DeThi.SelectedValue.ToString(), out deID);
+                    DeThi deDaChon = deID > 0 ? _deThiDAL.LayTheoID(deID) : null;
+                    if (deDaChon == null || !string.Equals(deDaChon.MonHoc?.Trim(), monHocDaChon.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        MessageBox.Show("Đề thi đang chọn thuộc môn khác. Vui lòng nhập tên đề mới hoặc chọn đề đúng môn học!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
                 }
 
                 if (deID <= 0)
@@ -731,9 +777,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     MessageBox.Show($"Thêm câu hỏi thứ {ch.ThuTu} thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     // Đồng bộ cập nhật lại danh sách đề thi ở cả 2 tab
-                    LoadDeThiCombobox();
-                    try { cmbDT_DeThi.SelectedValue = deID; } catch { }
-                    cmbDT_DeThi_SelectedIndexChanged(null, null);
+                    LoadDeThiCombobox(deID);
                     LamMoiFormCauHoi();
                 }
             }
@@ -914,8 +958,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 try
                 {
                     _selectedDeThiID = result.DeThiID;
-                    LoadDeThiCombobox();
-                    cmbDT_DeThi.SelectedValue = result.DeThiID;
+                    LoadDeThiCombobox(result.DeThiID);
                     if (!int.TryParse(cmbDT_DeThi.SelectedValue?.ToString(), out int displayedID) || displayedID != result.DeThiID)
                         throw new InvalidOperationException("Chưa tải được đề vừa nhập trong danh sách.");
                     _selectedDeThiID = result.DeThiID;
@@ -957,146 +1000,91 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         #region 5. Tab Quản Lý & Giao Đề Thi
 
-        private void LoadDeThiCombobox()
+        private void LoadDeThiCombobox(int preferredDeID = 0)
         {
             try
             {
-                int currentDeID = 0;
-                if (cmbDT_DeThi.SelectedValue != null)
-                {
+                int currentDeID = preferredDeID;
+                if (currentDeID <= 0 && cmbDT_DeThi.SelectedValue != null)
                     int.TryParse(cmbDT_DeThi.SelectedValue.ToString(), out currentDeID);
-                }
-                if (currentDeID <= 0 && _selectedDeThiID > 0)
-                {
-                    currentDeID = _selectedDeThiID;
-                }
-
+                if (currentDeID <= 0) currentDeID = _selectedDeThiID;
+                int resultDeID = cmbKQ_DeThi.SelectedValue is int id ? id : 0;
                 DataTable dt = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID);
-
-                cmbDT_DeThi.DataSource = dt.Copy();
-
-                cmbKQ_DeThi.DataSource = dt.Copy();
-
-                // Chỉ lấy các đề thi đã có câu hỏi
-                DataTable deThiCoCauHoi = dt.Clone();
-
-                foreach (DataRow r in dt.Rows)
+                DataTable resultOptions = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID, true);
+                resultOptions.Columns.Add("TenHienThiKetQua", typeof(string));
+                foreach (DataRow row in resultOptions.Rows)
+                    row["TenHienThiKetQua"] = Convert.ToString(row["TenDeThi"])
+                        + (Convert.ToString(row["TrangThai"]) == "Đã xóa" ? " (đã xóa)" : "");
+                DataTable deThiCoCauHoi = ExamSelection.WithQuestions(dt);
+                // Binding temporarily selects the first exam. Do not let that
+                // selection replace the subject/name while restoring the real exam.
+                _dangTaiDeThi = true;
+                try
                 {
-                    if (r["SoCau"] != DBNull.Value &&
-                        Convert.ToInt32(r["SoCau"]) > 0)
+                    cmbDT_DeThi.DisplayMember = dt.Columns["TenDeThi"].ColumnName;
+                    cmbDT_DeThi.ValueMember = dt.Columns["DeThiID"].ColumnName;
+                    // Đề vừa tạo phải có trong ComboBox ngay cả khi chưa thêm câu hỏi.
+                    cmbDT_DeThi.DataSource = dt.Copy();
+                    cmbKQ_DeThi.DisplayMember = "TenHienThiKetQua";
+                    cmbKQ_DeThi.ValueMember = resultOptions.Columns["DeThiID"].ColumnName;
+                    cmbKQ_DeThi.DataSource = resultOptions;
+
+                    dgvGVDeThi.DataSource = deThiCoCauHoi;
+                    lblDT_SoDeThi.Text = $"Số đề thi: {deThiCoCauHoi.Rows.Count:N0}";
+
+                    foreach (DataRow row in dt.Rows)
                     {
-                        deThiCoCauHoi.ImportRow(r);
+                        int deID = Convert.ToInt32(row["DeThiID"]);
+                        if (deID == currentDeID) cmbDT_DeThi.SelectedValue = deID;
                     }
+                    foreach (DataRow row in resultOptions.Rows)
+                        if (Convert.ToInt32(row["DeThiID"]) == resultDeID)
+                            cmbKQ_DeThi.SelectedValue = resultDeID;
                 }
+                finally { _dangTaiDeThi = false; }
 
-                // Hiển thị danh sách đề thi có câu hỏi
-                dgvGVDeThi.DataSource = null;
-                dgvGVDeThi.DataSource = deThiCoCauHoi;
-                lblDT_SoDeThi.Text = $"Số đề thi: {deThiCoCauHoi.Rows.Count:N0}";
-
-                // Khôi phục lại đề thi đang chọn nếu có
-                if (currentDeID > 0)
-                {
-                    try { cmbDT_DeThi.SelectedValue = currentDeID; } catch { }
-                    _selectedDeThiID = currentDeID;
-                }
-                else if (dt.Rows.Count > 0)
-                {
-                    _selectedDeThiID = Convert.ToInt32(dt.Rows[0]["DeThiID"]);
-                }
-
-                // Cập nhật số câu hiển thị
-                if (_selectedDeThiID > 0 && dt != null)
-                {
-                    DataGridViewPager.ShowItem(dgvGVDeThi, "DeThiID", _selectedDeThiID);
-                    // Đọc metadata từ DataTable gốc, không từ các hàng đang chờ bind.
-                    foreach (DataRow rowView in dt.Rows)
-                    {
-                        string colName = rowView.Table.Columns.Contains("DeThiID") ? "DeThiID" : "dethiid";
-                        if (rowView.Table.Columns.Contains(colName) &&
-                            rowView[colName] != DBNull.Value &&
-                            Convert.ToInt32(rowView[colName]) == _selectedDeThiID)
-                        {
-                            txtDT_SoCauHoi.Text = _deThiDAL.DemSoCauHoiHienTai(_selectedDeThiID).ToString();
-
-                            string monHoc = rowView.Table.Columns.Contains("MonHoc") ? rowView["MonHoc"]?.ToString() : "";
-                            if (!string.IsNullOrEmpty(monHoc))
-                            {
-                                _isSyncingMonHoc = true;
-                                if (cmbDT_MonHoc.Items.Contains(monHoc)) cmbDT_MonHoc.SelectedItem = monHoc;
-                                else cmbDT_MonHoc.Text = monHoc;
-
-                                if (cmbCH_MonHoc.Items.Contains(monHoc)) cmbCH_MonHoc.SelectedItem = monHoc;
-                                else cmbCH_MonHoc.Text = monHoc;
-                                _isSyncingMonHoc = false;
-
-                                FilterLopTheoMonHoc(monHoc);
-                            }
-
-                            if (rowView.Table.Columns.Contains("ThoiGian") && rowView["ThoiGian"] != DBNull.Value)
-                                txtDT_ThoiGian.Text = rowView["ThoiGian"].ToString();
-
-                            if (rowView.Table.Columns.Contains("TenDeThi") && txtCH_TenDeThi != null)
-                                txtCH_TenDeThi.Text = rowView["TenDeThi"]?.ToString() ?? "";
-
-                            if (rowView.Table.Columns.Contains("LopHocID") && rowView["LopHocID"] != DBNull.Value)
-                            {
-                                int lopID = Convert.ToInt32(rowView["LopHocID"]);
-                                if (lopID > 0)
-                                {
-                                    try { cmbDT_GiaoChoLop.SelectedValue = lopID; } catch { }
-                                }
-                            }
-                            break;
-                        }
-                    }
-                }
+                // Apply metadata only after the final selection is in place.
+                cmbDT_DeThi_SelectedIndexChanged(null, EventArgs.Empty);
+                cmbKQ_DeThi_SelectedIndexChanged(null, EventArgs.Empty);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Lỗi tải danh sách đề thi: " + ex.Message,
-                    "Lỗi",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Lỗi tải danh sách đề thi: " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// Lọc danh sách lớp học ở cmbDT_GiaoChoLop theo môn học đang chọn
+        /// Lớp nhận đề là các lớp giáo viên phụ trách, không phụ thuộc tên khóa học.
         /// </summary>
-        private void FilterLopTheoMonHoc(string tenMonHoc)
+        private void LoadLopGiaoDeThi(bool preferSubject = false)
         {
+            int selectedClass = cmbDT_GiaoChoLop.SelectedValue is int id ? id : 0;
             try
             {
-                DataTable dtLop = _lopDAL.LayTheoGiaoVien(Session.NguoiDungID);
-                if (dtLop == null || dtLop.Rows.Count == 0)
+                DataTable classes = _lopDAL.LayTheoGiaoVien(Session.NguoiDungID);
+                cmbDT_GiaoChoLop.DataSource = null;
+                if (classes == null)
                 {
-                    cmbDT_GiaoChoLop.DataSource = null;
+                    cmbDT_GiaoChoLop.Enabled = false;
                     return;
                 }
-
-                if (string.IsNullOrWhiteSpace(tenMonHoc))
-                {
-                    cmbDT_GiaoChoLop.DataSource = dtLop.Copy();
-                    return;
-                }
-
-                DataView dv = dtLop.DefaultView;
-                dv.RowFilter = $"TenKhoaHoc = '{tenMonHoc.Replace("'", "''")}'";
-                DataTable dtFiltered = dv.ToTable();
-
-                if (dtFiltered.Rows.Count > 0)
-                {
-                    cmbDT_GiaoChoLop.DataSource = dtFiltered;
-                }
-                else
-                {
-                    cmbDT_GiaoChoLop.DataSource = dtLop.Copy();
-                }
+                cmbDT_GiaoChoLop.DisplayMember = classes.Columns["TenLop"].ColumnName;
+                cmbDT_GiaoChoLop.ValueMember = classes.Columns["LopHocID"].ColumnName;
+                cmbDT_GiaoChoLop.DataSource = classes;
+                string subject = cmbDT_MonHoc.SelectedItem?.ToString() ?? cmbDT_MonHoc.Text;
+                int preferred = ExamSelection.PreferredClassID(classes, subject, selectedClass, preferSubject);
+                if (preferred > 0) cmbDT_GiaoChoLop.SelectedValue = preferred;
+                else cmbDT_GiaoChoLop.SelectedIndex = -1;
+                cmbDT_GiaoChoLop.Enabled = classes.Rows.Count > 0;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                cmbDT_GiaoChoLop.DataSource = null;
+                cmbDT_GiaoChoLop.Enabled = false;
+                MessageBox.Show("Không tải được lớp nhận đề: " + ex.Message,
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void cmbDT_MonHoc_SelectedIndexChanged(object sender, EventArgs e)
@@ -1110,7 +1098,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 {
                     if (cmbCH_MonHoc.Items.Contains(monHoc))
                         cmbCH_MonHoc.SelectedItem = monHoc;
-                    FilterLopTheoMonHoc(monHoc);
+                    LoadLopGiaoDeThi(true);
                 }
             }
             finally
@@ -1121,6 +1109,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void cmbDT_DeThi_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_dangTaiDeThi) return;
             if (cmbDT_DeThi.SelectedValue != null && int.TryParse(cmbDT_DeThi.SelectedValue.ToString(), out int deID) && deID > 0)
             {
                 _selectedDeThiID = deID;
@@ -1144,12 +1133,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                         else cmbCH_MonHoc.Text = de.MonHoc;
                         _isSyncingMonHoc = false;
 
-                        FilterLopTheoMonHoc(de.MonHoc);
-                    }
-
-                    if (de.LopHocID > 0)
-                    {
-                        try { cmbDT_GiaoChoLop.SelectedValue = de.LopHocID; } catch { }
+                        LoadLopGiaoDeThi(true);
                     }
 
                     if (txtCH_TenDeThi != null && !string.IsNullOrEmpty(de.TenDeThi))
@@ -1185,63 +1169,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void dgvGVDeThi_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex >= dgvGVDeThi.Rows.Count) return;
-
-            var row = dgvGVDeThi.Rows[e.RowIndex];
-            if (row.DataBoundItem is DataRowView drv)
-            {
-                int deID = 0;
-                if (drv.Row.Table.Columns.Contains("DeThiID") && drv["DeThiID"] != DBNull.Value)
-                    deID = Convert.ToInt32(drv["DeThiID"]);
-                else if (drv.Row.Table.Columns.Contains("dethiid") && drv["dethiid"] != DBNull.Value)
-                    deID = Convert.ToInt32(drv["dethiid"]);
-
-                if (deID > 0)
-                {
-                    _selectedDeThiID = deID;
-                    try { cmbDT_DeThi.SelectedValue = deID; } catch { }
-
-                    // Hiển thị số câu hiện có của đề thi đang chọn
-                    int soCauHienCo = _deThiDAL.DemSoCauHoiHienTai(_selectedDeThiID);
-                    txtDT_SoCauHoi.Text = soCauHienCo.ToString();
-
-                    // Cập nhật Môn học cho cả 2 tab
-                    string monHoc = drv.Row.Table.Columns.Contains("MonHoc") ? drv["MonHoc"]?.ToString() : "";
-                    if (!string.IsNullOrEmpty(monHoc))
-                    {
-                        _isSyncingMonHoc = true;
-                        if (cmbDT_MonHoc.Items.Contains(monHoc)) cmbDT_MonHoc.SelectedItem = monHoc;
-                        else cmbDT_MonHoc.Text = monHoc;
-
-                        if (cmbCH_MonHoc.Items.Contains(monHoc)) cmbCH_MonHoc.SelectedItem = monHoc;
-                        else cmbCH_MonHoc.Text = monHoc;
-                        _isSyncingMonHoc = false;
-
-                        FilterLopTheoMonHoc(monHoc);
-                    }
-
-                    // Cập nhật Thời gian
-                    if (drv.Row.Table.Columns.Contains("ThoiGian") && drv["ThoiGian"] != DBNull.Value)
-                        txtDT_ThoiGian.Text = drv["ThoiGian"].ToString();
-
-                    // Cập nhật Tên đề thi lên Tab Câu hỏi
-                    string tenDe = drv.Row.Table.Columns.Contains("TenDeThi") ? drv["TenDeThi"]?.ToString() : "";
-                    if (!string.IsNullOrEmpty(tenDe) && txtCH_TenDeThi != null)
-                        txtCH_TenDeThi.Text = tenDe;
-
-                    // Cập nhật lớp học nếu đã giao
-                    if (drv.Row.Table.Columns.Contains("LopHocID") && drv["LopHocID"] != DBNull.Value)
-                    {
-                        int lopID = Convert.ToInt32(drv["LopHocID"]);
-                        if (lopID > 0)
-                        {
-                            try { cmbDT_GiaoChoLop.SelectedValue = lopID; } catch { }
-                        }
-                    }
-
-                    // Tải câu hỏi lên dgvCauHoi
-                    dgvCauHoi.DataSource = _deThiDAL.LayDanhSachCauHoi(deID);
-                }
-            }
+            if (!(dgvGVDeThi.Rows[e.RowIndex].DataBoundItem is DataRowView row)) return;
+            int deID = Convert.ToInt32(row["DeThiID"]);
+            if (cmbDT_DeThi.SelectedValue is int currentID && currentID == deID)
+                cmbDT_DeThi_SelectedIndexChanged(null, EventArgs.Empty);
+            else
+                cmbDT_DeThi.SelectedValue = deID;
         }
 
         private void dgvGVDeThi_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1278,25 +1211,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
         // -----------------------------------------------------------------------
         private void btnDT_GiaoBaiThi_Click(object sender, EventArgs e)
         {
-            // 1. Tự động lấy DeThiID từ ComboBox nếu chưa click chọn dòng trong bảng
-            if (_selectedDeThiID <= 0 && cmbDT_DeThi.SelectedValue != null)
+            // Dùng đúng mã đề đang hiển thị, không dùng mã cache còn lại từ tab khác.
+            if (!(cmbDT_DeThi.SelectedValue is int deNguonID) || deNguonID <= 0)
             {
-                int.TryParse(cmbDT_DeThi.SelectedValue.ToString(), out _selectedDeThiID);
-            }
-
-            // 2. Nếu vẫn <= 0, lấy từ dòng hiện tại của dgvGVDeThi
-            if (_selectedDeThiID <= 0 && dgvGVDeThi.CurrentRow != null && dgvGVDeThi.CurrentRow.DataBoundItem is DataRowView drv)
-            {
-                if (drv.Row.Table.Columns.Contains("DeThiID") && drv["DeThiID"] != DBNull.Value)
-                    _selectedDeThiID = Convert.ToInt32(drv["DeThiID"]);
-                else if (drv.Row.Table.Columns.Contains("dethiid") && drv["dethiid"] != DBNull.Value)
-                    _selectedDeThiID = Convert.ToInt32(drv["dethiid"]);
-            }
-
-            if (_selectedDeThiID <= 0)
-            {
-                MessageBox.Show(
-                    "Vui lòng chọn đề thi từ danh sách hoặc ComboBox!",
+                MessageBox.Show("Vui lòng chọn đề thi cần giao trong danh sách!",
                     "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -1310,11 +1228,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
 
             // 3. Kiểm tra đề thi có câu hỏi chưa
-            int soCauHienCo = _deThiDAL.DemSoCauHoiHienTai(_selectedDeThiID);
+            int soCauHienCo = _deThiDAL.DemSoCauHoiHienTai(deNguonID);
             if (soCauHienCo == 0)
             {
                 MessageBox.Show(
-                    $"Đề thi (Mã: {_selectedDeThiID}) hiện chưa có câu hỏi nào trong cơ sở dữ liệu!\nVui lòng chuyển sang Tab 'Câu Hỏi' để thêm câu hỏi trước khi giao cho lớp.",
+                    $"Đề thi (Mã: {deNguonID}) hiện chưa có câu hỏi nào trong cơ sở dữ liệu!\nVui lòng chuyển sang Tab 'Câu Hỏi' để thêm câu hỏi trước khi giao cho lớp.",
                     "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -1324,34 +1242,51 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (thoiGian <= 0) thoiGian = 45;
 
             int lopHocID = Convert.ToInt32(cmbDT_GiaoChoLop.SelectedValue);
+            string monHocGiao = (cmbDT_MonHoc.SelectedItem?.ToString() ?? cmbDT_MonHoc.Text).Trim();
+            if (string.IsNullOrWhiteSpace(monHocGiao) || monHocGiao.Length > 100)
+            {
+                MessageBox.Show("Vui lòng chọn môn học hợp lệ trước khi giao đề.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             DateTime? hanNop = DateTime.Now.AddDays(7);
-            string monHocGiao = cmbDT_MonHoc.SelectedItem?.ToString() ?? cmbDT_MonHoc.Text?.Trim();
-
             if (MessageBox.Show(
-                    $"Giao đề thi cho lớp đã chọn?\nSố câu: {soCauHienCo} | Thời gian: {thoiGian} phút",
+                    $"Tạo lượt giao mới cho lớp {cmbDT_GiaoChoLop.Text}?\nMôn học: {monHocGiao}\nSố câu: {soCauHienCo} | Thời gian: {thoiGian} phút\nMỗi lần giao là một bài thi riêng, kể cả lớp đã được giao đề này.",
                     "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
-            if (_deThiDAL.GiaoDeThiChoLop(_selectedDeThiID, lopHocID, thoiGian, hanNop, monHocGiao))
+            int lanGiaoID;
+            try
             {
-                MessageBox.Show(
-                    "Giao đề thi thành công!",
-                    "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                _selectedDeThiID = 0;
-                txtDT_SoCauHoi.Text = "";
-                LoadDeThiCombobox();
+                lanGiaoID = _deThiDAL.TaoLanGiaoDeThi(Session.TaiKhoanID, Session.NguoiDungID,
+                    deNguonID, lopHocID, thoiGian, hanNop, monHocGiao);
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Giao đề thi thất bại! Vui lòng thử lại.",
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể giao đề thi: " + ex.Message,
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            MessageBox.Show($"Đã tạo lượt giao #{lanGiaoID} cho lớp {cmbDT_GiaoChoLop.Text}.\n"
+                + "Bạn có thể chọn lớp khác hoặc tiếp tục giao thêm lượt cho lớp này. Kết quả các lượt trước được giữ nguyên.",
+                "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            try
+            {
+                // Chọn lượt vừa lưu để bảng, ComboBox và môn học cùng hiển thị một bản ghi.
+                LoadDeThiCombobox(lanGiaoID);
+                cmbDT_GiaoChoLop.SelectedValue = lopHocID;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lượt giao #{lanGiaoID} đã lưu, nhưng chưa tải lại được danh sách. Không cần giao lại.\n" + ex.Message,
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         // -----------------------------------------------------------------------
         // btnDT_XoaDeThi (Tab Quản Lý Đề Thi):
-        //   Xóa đề thi mà chưa giao bài thi cho bất kỳ lớp nào (và chưa có học sinh làm bài).
+        //   Ẩn đề/lượt đang chọn, giữ lại kết quả và câu hỏi để xem lịch sử bài làm.
         // -----------------------------------------------------------------------
         private void btnDT_XoaDeThi_Click(object sender, EventArgs e)
         {
@@ -1381,21 +1316,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             DeThi de = _deThiDAL.LayTheoID(deID);
             string tenDeThi = de?.TenDeThi ?? $"Mã {deID}";
 
-            // 3. Kiểm tra xem đề thi đã giao bài chưa
-            if (!_deThiDAL.KiemTraDeThiChuaGiao(deID))
-            {
-                MessageBox.Show(
-                    $"Không thể xóa đề thi \"{tenDeThi}\" vì đề thi này đã được giao cho lớp học hoặc đã có học sinh làm bài!\n\nChỉ được phép xóa đề thi chưa giao bài.",
-                    "Không thể xóa",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-
             // 4. Hỏi xác nhận người dùng
             DialogResult confirm = MessageBox.Show(
-                $"Bạn có chắc chắn muốn xóa đề thi \"{tenDeThi}\" (Mã đề: {deID}) không?\n\nLưu ý: Tất cả các câu hỏi thuộc đề thi này cũng sẽ bị xóa vĩnh viễn.",
+                $"Bạn có chắc chắn muốn xóa đề thi \"{tenDeThi}\" (Mã đề: {deID}) khỏi danh sách giao bài không?\n\nĐiểm, đáp án và lịch sử bài làm của học sinh vẫn được giữ để xem lại.",
                 "Xác nhận xóa đề thi",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
@@ -1404,7 +1327,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (confirm != DialogResult.Yes) return;
 
             // 5. Thực hiện xóa
-            if (_deThiDAL.XoaDeThi(deID, out string thongBao))
+            if (_deThiDAL.XoaDeThi(deID, Session.TaiKhoanID, Session.NguoiDungID, out string thongBao))
             {
                 MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -1428,6 +1351,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void cmbKQ_DeThi_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_dangTaiDeThi) return;
             if (cmbKQ_DeThi.SelectedValue != null && int.TryParse(cmbKQ_DeThi.SelectedValue.ToString(), out int deID))
                 _ketQua = _deThiDAL.LayKetQuaTheoDeThi(deID);
             else
@@ -1603,7 +1527,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     MessageBox.Show("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Session.HoTen = gv.HoTen;
                     lblGVTT_HovaTen.Text = gv.HoTen;
-                    lblGV_LoiChao.Text = $"Xin Chào, {gv.HoTen}";
+                    lblTCGV_Chao.Text = $"Xin Chào, {gv.HoTen}";
                 }
             }
             catch (Exception ex)
@@ -1680,8 +1604,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 // SelectedIndexChanged có thể chạy ngay trong InitializeComponent.
                 if (_daTaiTrangChu)
                 {
-                    LoadLopHocCuaToi();
-                    LoadKetQuaThiGanDay();
+                    LoadTrangChu();
                 }
             }
             else if (materialTabControl1.SelectedTab == pageGV_LopHoc)

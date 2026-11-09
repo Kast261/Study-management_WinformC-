@@ -24,5 +24,6 @@
     <None Include="Fixtures/*.xlsx" CopyToOutputDirectory="PreserveNewest" />
     <None Include="Fixtures/*.xls" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../Templates/CauHoi_Mau.xlsx" Link="Fixtures/CauHoi_Mau.xlsx" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../Templates/CauHoi_CSharp_WinForms_20.xlsx" Link="Fixtures/CauHoi_CSharp_WinForms_20.xlsx" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

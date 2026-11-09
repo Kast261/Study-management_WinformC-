@@ -36,6 +36,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private int _selectedLopHocID = 0;
         private int _selectedTaiKhoanID = 0;
         private bool _selectedTrangThaiKhoa = false;
+        private bool _selectedTaiKhoanLaAdmin = false;
 
         #endregion
 
@@ -100,6 +101,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 _selectedTaiKhoanID = 0;
                 _selectedTrangThaiKhoa = false;
+                _selectedTaiKhoanLaAdmin = false;
                 UpdateNutKhoaMoKhoa();
             }
         }
@@ -117,10 +119,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             UseWaitCursor = true;
             try
             {
-                // Đọc đủ dữ liệu trước khi thay giao diện để tránh cập nhật dở dang khi lỗi SQL.
+                lblTC_HocVien.Text = "HỌC VIÊN\n--";
+                lblTC_GiaoVien.Text = "GIÁO VIÊN\n--";
+                lblTC_KhoaHoc.Text = "KHÓA HỌC\n--";
+                lblTC_LopHoc.Text = "LỚP HỌC\n--";
+
+                // Số lượng lấy từ toàn bộ dữ liệu, không phụ thuộc bộ lọc/phân trang
+                // hay việc tải biểu đồ và danh sách lớp có thành công hay không.
                 using (DataTable tongQuan = _dashboardDAL.LayTongQuan())
-                using (DataTable theoKhoaHoc = _dashboardDAL.LayHocVienTheoKhoaHoc())
-                using (DataTable lopMoiNhat = _dashboardDAL.LayLopMoiNhat())
                 {
                     var vi = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
                     DataRow row = tongQuan.Rows[0];
@@ -128,6 +134,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     lblTC_GiaoVien.Text = "GIÁO VIÊN\n" + Convert.ToInt64(row["SoGiaoVien"]).ToString("N0", vi);
                     lblTC_KhoaHoc.Text = "KHÓA HỌC\n" + Convert.ToInt64(row["SoKhoaHoc"]).ToString("N0", vi);
                     lblTC_LopHoc.Text = "LỚP HỌC\n" + Convert.ToInt64(row["SoLopHoc"]).ToString("N0", vi);
+                }
+
+                using (DataTable theoKhoaHoc = _dashboardDAL.LayHocVienTheoKhoaHoc())
+                using (DataTable lopMoiNhat = _dashboardDAL.LayLopMoiNhat())
+                {
                     HienThiBieuDoDashboard(theoKhoaHoc);
                     HienThiLopMoiNhat(lopMoiNhat);
                 }
@@ -935,6 +946,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             _selectedTaiKhoanID = 0;
             _selectedTrangThaiKhoa = false;
+            _selectedTaiKhoanLaAdmin = false;
             if (txtTK_TaiKhoanDangNhap != null) txtTK_TaiKhoanDangNhap.Clear();
             if (txtTK_MatKhau != null) txtTK_MatKhau.Clear();
             if (cmbTK_VaiTro != null && cmbTK_VaiTro.Items.Count > 0) cmbTK_VaiTro.SelectedIndex = 0;
@@ -945,6 +957,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void UpdateNutKhoaMoKhoa()
         {
             if (btnTK_KhoaMoKhoa == null) return;
+            btnTK_KhoaMoKhoa.Enabled = _selectedTaiKhoanID > 0
+                && (_selectedTrangThaiKhoa || !_selectedTaiKhoanLaAdmin);
             if (_selectedTrangThaiKhoa)
                 btnTK_KhoaMoKhoa.Text = "Mở Tài Khoản";
             else
@@ -985,18 +999,21 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LoadDropdownGanCho();
         }
 
-        private void dgvTaiKhoan_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvTaiKhoan_SelectionChanged(object sender, EventArgs e)
         {
-            if (e.RowIndex >= 0 && e.RowIndex < dgvTaiKhoan.Rows.Count)
+            _selectedTaiKhoanID = 0;
+            _selectedTrangThaiKhoa = false;
+            _selectedTaiKhoanLaAdmin = false;
+            // SelectionChanged có thể chạy trước khi CurrentRow chuyển sang dòng mới.
+            var row = dgvTaiKhoan.SelectedRows.Count == 1
+                ? dgvTaiKhoan.SelectedRows[0].DataBoundItem as DataRowView : null;
+            if (row != null)
             {
-                var row = dgvTaiKhoan.Rows[e.RowIndex];
-                if (row.DataBoundItem is DataRowView drv)
-                {
-                    _selectedTaiKhoanID    = Convert.ToInt32(drv["TaiKhoanID"]);
-                    _selectedTrangThaiKhoa = drv["TrangThaiKhoa"] != DBNull.Value && Convert.ToBoolean(drv["TrangThaiKhoa"]);
-                    UpdateNutKhoaMoKhoa();
-                }
+                _selectedTaiKhoanID = Convert.ToInt32(row["TaiKhoanID"]);
+                _selectedTrangThaiKhoa = !row.Row.IsNull("TrangThaiKhoa") && Convert.ToBoolean(row["TrangThaiKhoa"]);
+                _selectedTaiKhoanLaAdmin = string.Equals(row["VaiTro"].ToString().Trim(), "Admin", StringComparison.OrdinalIgnoreCase);
             }
+            UpdateNutKhoaMoKhoa();
         }
 
         private void ThucHienTimKiemTaiKhoan()
@@ -1094,18 +1111,34 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 return;
             }
 
+            if (_selectedTaiKhoanLaAdmin && !_selectedTrangThaiKhoa)
+            {
+                MessageBox.Show("Không được khóa tài khoản có vai trò Admin.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             bool seKhoa = !_selectedTrangThaiKhoa; // Đảo trạng thái
             string msg  = seKhoa ? "Bạn có chắc chắn muốn KHÓA tài khoản này?" : "Bạn có chắc chắn muốn MỞ tài khoản này?";
             if (MessageBox.Show(msg, "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
-            if (_tkDAL.KhoaHoacMoKhoaTaiKhoan(_selectedTaiKhoanID, seKhoa))
+            try
             {
-                string thongBao = seKhoa ? "Đã khóa tài khoản thành công!" : "Đã mở khóa tài khoản thành công!";
-                MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                _selectedTrangThaiKhoa = seKhoa;
-                UpdateNutKhoaMoKhoa();
+                if (_tkDAL.KhoaHoacMoKhoaTaiKhoan(_selectedTaiKhoanID, seKhoa))
+                {
+                    string thongBao = seKhoa ? "Đã khóa tài khoản thành công!" : "Đã mở khóa tài khoản thành công!";
+                    MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Không thể đổi trạng thái: tài khoản không còn tồn tại hoặc đã chuyển thành Admin nên không được khóa. Vui lòng chọn lại tài khoản.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
                 LoadDanhSachTaiKhoan();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể khóa/mở khóa tài khoản: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

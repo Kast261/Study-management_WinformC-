@@ -45,6 +45,36 @@ namespace ExcelImport.Tests
         }
 
         [Fact]
+        public void CSharpWorkbookImportsAndCanBeAssignedRepeatedlyAndToOtherClasses()
+        {
+            using var db = new ImportDatabase();
+            DatabaseHelper.ExecuteNonQuery(@"
+                ALTER TABLE DeThi ADD MoTa text, ADD HanNop timestamp,
+                    ADD NgayTao timestamp DEFAULT CURRENT_TIMESTAMP;
+                CREATE TABLE KhoaHoc (KhoaHocID integer PRIMARY KEY,TenKhoaHoc text);
+                CREATE TABLE LopHoc (LopHocID integer PRIMARY KEY,GiaoVienID integer,KhoaHocID integer);
+                INSERT INTO KhoaHoc VALUES (1,'Lập trình C# WinForms');
+                INSERT INTO LopHoc VALUES (1,11,1),(2,11,1);");
+            var target = Target();
+            target.MonHoc = "Lập trình C# WinForms";
+            var questions = CauHoiExcelReader.Read(ExcelReaderTests.Fixture("CauHoi_CSharp_WinForms_20.xlsx"));
+            var imported = new CauHoiImportDAL().Nhap(1, target, questions);
+            var dal = new DeThiDAL();
+            int first = dal.TaoLanGiaoDeThi(1, 11, imported.DeThiID, 1, 45, null);
+            int otherClass = dal.TaoLanGiaoDeThi(1, 11, imported.DeThiID, 2, 30, null);
+            int repeated = dal.TaoLanGiaoDeThi(1, 11, imported.DeThiID, 1, 60, null);
+            Assert.Equal(20, imported.SoCauDaNhap);
+            Assert.Equal(4, new[] { imported.DeThiID, first, otherClass, repeated }.Distinct().Count());
+            Assert.All(new[] { imported.DeThiID, first, otherClass, repeated }, id => {
+                var saved = dal.LayDanhSachCauHoi(id);
+                Assert.Equal(questions.Select(q => q.NoiDung), saved.Select(q => q.NoiDung));
+                Assert.Equal(questions.Select(q => q.DapAnDung), saved.Select(q => q.DapAnDung));
+                Assert.Equal(Enumerable.Range(1, 20), saved.Select(q => q.ThuTu));
+            });
+            Assert.Equal(80L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM CauHoi"));
+        }
+
+        [Fact]
         public void AppendsAfterMaximumOrderAndRecalculatesStaleQuestionCount()
         {
             using var db = new ImportDatabase();

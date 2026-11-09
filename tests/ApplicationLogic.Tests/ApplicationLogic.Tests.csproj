@@ -10,6 +10,9 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="all" />
     <PackageReference Include="Npgsql" Version="6.0.11" />
     <Compile Include="../../DAL/Repositories/DeThiDAL.cs" Link="Production/DeThiDAL.cs" />
+    <Compile Include="../../DAL/Repositories/DashboardDAL.cs" Link="Production/DashboardDAL.cs" />
+    <Compile Include="../../Helpers/HomeDashboardSummary.cs" Link="Production/HomeDashboardSummary.cs" />
+    <Compile Include="../../Helpers/ExamSelection.cs" Link="Production/ExamSelection.cs" />
     <Compile Include="../../DAL/Repositories/KetQuaDAL.cs" Link="Production/KetQuaDAL.cs" />
     <Compile Include="../../DAL/Repositories/LopHocDAL.cs" Link="Production/LopHocDAL.cs" />
     <Compile Include="../../DAL/Repositories/HocSinhDAL.cs" Link="Production/HocSinhDAL.cs" />

@@ -335,8 +335,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool KhoaHoacMoKhoaTaiKhoan(int taiKhoanID, bool khoa)
         {
-            // Cập nhật cả TrangThaiKhoa hoặc TrangThai tuỳ schema
-            string sql = "UPDATE TaiKhoan SET TrangThaiKhoa = @khoa WHERE TaiKhoanID = @id";
+            // Kiểm tra role ngay trong UPDATE, kể cả khi danh sách trên form đã cũ.
+            // Vẫn cho phép mở lại một tài khoản Admin từng bị khóa trước đây.
+            string sql = @"UPDATE TaiKhoan SET TrangThaiKhoa = @khoa
+                           WHERE TaiKhoanID = @id
+                             AND (NOT @khoa OR LOWER(BTRIM(COALESCE(VaiTro, ''))) <> 'admin')";
 
             NpgsqlParameter[] pars = {
                 new NpgsqlParameter("@khoa", khoa),

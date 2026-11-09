@@ -71,11 +71,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             string sql = @"SELECT DeThiID, TenDeThi, MoTa, ThoiGian, MonHoc, SoCau,
                                   GiaoVienID, LopHocID, NgayTao, HanNop, TrangThai
-                           FROM DeThi WHERE LopHocID = @lopID";
+                           FROM DeThi WHERE LopHocID = @lopID AND COALESCE(TrangThai,'') <> 'Đã xóa'";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@lopID", lopID) });
         }
 
-        public DataTable LayDeThiTheoGiaoVien(int gvID)
+        public DataTable LayDeThiTheoGiaoVien(int gvID, bool baoGomDaXoa = false)
         {
             string sql = @"SELECT d.DeThiID AS ""DeThiID"", 
                                   d.TenDeThi AS ""TenDeThi"", 
@@ -92,8 +92,10 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                            FROM DeThi d
                            LEFT JOIN LopHoc l ON l.LopHocID = d.LopHocID
                            WHERE d.GiaoVienID = @gvID
+                             AND (@baoGomDaXoa OR COALESCE(d.TrangThai,'') <> 'Đã xóa')
                            ORDER BY d.DeThiID DESC";
-            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@gvID", gvID) });
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter("@gvID", gvID),
+                new NpgsqlParameter("@baoGomDaXoa", baoGomDaXoa));
         }
 
         public DeThi LayTheoID(int deThiID)
@@ -197,7 +199,88 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
 
         /// <summary>
-        /// Giao đề thi đã có cho lớp học (cập nhật LopHocID, ThoiGian, HanNop, TrangThai, MonHoc).
+        /// Tạo một lượt giao độc lập, sao chép câu hỏi và giữ nguyên đề/bài làm cũ.
+        /// Mỗi lần gọi thành công trả về một DeThiID mới, kể cả cùng đề và cùng lớp.
+        /// </summary>
+        public int TaoLanGiaoDeThi(int taiKhoanID, int giaoVienID, int deThiID, int lopHocID,
+            int thoiGian, DateTime? hanNop, string monHoc = null)
+        {
+            if (taiKhoanID <= 0 || giaoVienID <= 0 || deThiID <= 0 || lopHocID <= 0 || thoiGian <= 0)
+                throw new ArgumentException("Vui lòng chọn đề thi, lớp học và thời gian làm bài hợp lệ.");
+            if (hanNop.HasValue && hanNop.Value <= DateTime.Now)
+                throw new ArgumentException("Hạn nộp phải ở trong tương lai.");
+            if (monHoc != null)
+            {
+                monHoc = monHoc.Trim();
+                if (monHoc.Length == 0 || monHoc.Length > 100)
+                    throw new ArgumentException("Môn học phải có từ 1 đến 100 ký tự.");
+            }
+
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    KiemTraQuyenGiaoVien(conn, transaction, taiKhoanID, giaoVienID);
+
+                    // Cùng khóa với các thao tác sửa/nhập câu hỏi để bộ đề được sao chép trọn vẹn.
+                    using (var source = new NpgsqlCommand(@"
+                        SELECT DeThiID FROM DeThi
+                        WHERE DeThiID=@de AND GiaoVienID=@gv
+                          AND COALESCE(TrangThai,'') <> 'Đã xóa' FOR UPDATE", conn, transaction))
+                    {
+                        source.Parameters.AddWithValue("de", deThiID);
+                        source.Parameters.AddWithValue("gv", giaoVienID);
+                        object value = source.ExecuteScalar();
+                        if (value == null)
+                            throw new InvalidOperationException("Không tìm thấy đề thi thuộc giáo viên đang đăng nhập.");
+                    }
+
+                    using (var target = new NpgsqlCommand(@"
+                        SELECT l.LopHocID FROM LopHoc l
+                        WHERE l.LopHocID=@lop AND l.GiaoVienID=@gv
+                        FOR SHARE OF l", conn, transaction))
+                    {
+                        target.Parameters.AddWithValue("lop", lopHocID);
+                        target.Parameters.AddWithValue("gv", giaoVienID);
+                        if (target.ExecuteScalar() == null)
+                            throw new InvalidOperationException("Lớp nhận đề không tồn tại hoặc không còn do bạn phụ trách. Hãy tải lại danh sách lớp.");
+                    }
+
+                    int lanGiaoID;
+                    using (var insert = new NpgsqlCommand(@"
+                        INSERT INTO DeThi (TenDeThi,MoTa,ThoiGian,MonHoc,SoCau,GiaoVienID,LopHocID,HanNop,TrangThai)
+                        SELECT TenDeThi,MoTa,@tg,COALESCE(@mon,MonHoc),0,GiaoVienID,@lop,@han,'Đang mở'
+                        FROM DeThi WHERE DeThiID=@de RETURNING DeThiID", conn, transaction))
+                    {
+                        insert.Parameters.AddWithValue("de", deThiID);
+                        insert.Parameters.AddWithValue("lop", lopHocID);
+                        insert.Parameters.AddWithValue("tg", thoiGian);
+                        insert.Parameters.Add(new NpgsqlParameter("mon", NpgsqlTypes.NpgsqlDbType.Varchar)
+                            { Value = (object)monHoc ?? DBNull.Value });
+                        insert.Parameters.Add(new NpgsqlParameter("han", NpgsqlTypes.NpgsqlDbType.Timestamp)
+                            { Value = (object)hanNop ?? DBNull.Value });
+                        lanGiaoID = Convert.ToInt32(insert.ExecuteScalar());
+                    }
+                    using (var copy = new NpgsqlCommand(@"
+                        INSERT INTO CauHoi (DeThiID,NoiDung,DapAnA,DapAnB,DapAnC,DapAnD,DapAnDung,ThuTu)
+                        SELECT @moi,NoiDung,DapAnA,DapAnB,DapAnC,DapAnD,DapAnDung,ThuTu
+                        FROM CauHoi WHERE DeThiID=@de ORDER BY ThuTu,CauHoiID", conn, transaction))
+                    {
+                        copy.Parameters.AddWithValue("moi", lanGiaoID);
+                        copy.Parameters.AddWithValue("de", deThiID);
+                        if (copy.ExecuteNonQuery() == 0)
+                            throw new InvalidOperationException("Đề thi chưa có câu hỏi. Hãy thêm câu hỏi trước khi giao.");
+                    }
+                    CapNhatSoCau(conn, transaction, lanGiaoID);
+                    transaction.Commit();
+                    return lanGiaoID;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Cập nhật lần giao hiện có trước khi có bài làm. Dùng TaoLanGiaoDeThi để giao thêm lần mới.
         /// </summary>
         public bool GiaoDeThiChoLop(int deThiID, int lopHocID, int thoiGian, DateTime? hanNop, string monHoc = null)
         {
@@ -210,6 +293,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     using (var check = new NpgsqlCommand(@"
                         SELECT d.DeThiID FROM DeThi d JOIN LopHoc l ON l.LopHocID=@lop AND l.GiaoVienID=d.GiaoVienID
                         WHERE d.DeThiID=@id AND (COALESCE(d.LopHocID,0)=0 OR d.LopHocID=@lop)
+                          AND COALESCE(d.TrangThai,'') <> 'Đã xóa'
                         FOR UPDATE OF d", conn, transaction))
                     {
                         check.Parameters.AddWithValue("id", deThiID); check.Parameters.AddWithValue("lop", lopHocID);
@@ -330,6 +414,72 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             catch (Exception ex)
             {
                 thongBao = "Lỗi khi xóa đề thi: " + ex.Message;
+                return false;
+            }
+        }
+
+        private static void KiemTraQuyenGiaoVien(NpgsqlConnection conn, NpgsqlTransaction transaction,
+            int taiKhoanID, int giaoVienID)
+        {
+            using (var auth = new NpgsqlCommand(@"
+                SELECT gv.GiaoVienID FROM GiaoVien gv
+                JOIN TaiKhoan tk ON tk.TaiKhoanID=@tk
+                WHERE gv.GiaoVienID=@gv AND LOWER(tk.VaiTro)='giaovien'
+                  AND COALESCE(tk.TrangThaiKhoa,FALSE)=FALSE
+                  AND (tk.NguoiDungID=gv.GiaoVienID OR
+                      (COALESCE(tk.NguoiDungID,0)=0 AND gv.TaiKhoanID=tk.TaiKhoanID))
+                FOR SHARE OF tk", conn, transaction))
+            {
+                auth.Parameters.AddWithValue("tk", taiKhoanID);
+                auth.Parameters.AddWithValue("gv", giaoVienID);
+                if (auth.ExecuteScalar() == null)
+                    throw new InvalidOperationException("Tài khoản không có quyền thao tác với đề thi của giáo viên này.");
+            }
+        }
+
+        /// <summary>
+        /// Ẩn đề/lượt giao do giáo viên sở hữu, giữ câu hỏi và toàn bộ lịch sử bài làm.
+        /// </summary>
+        public bool XoaDeThi(int deThiID, int taiKhoanID, int giaoVienID, out string thongBao)
+        {
+            try
+            {
+                using (var conn = DatabaseHelper.GetConnection())
+                {
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        KiemTraQuyenGiaoVien(conn, transaction, taiKhoanID, giaoVienID);
+                        string tenDeThi;
+                        // Cùng khóa với NopBai để không phát sinh bài làm trong khi đang xóa.
+                        using (var check = new NpgsqlCommand(@"
+                            SELECT TenDeThi FROM DeThi WHERE DeThiID=@de AND GiaoVienID=@gv FOR UPDATE", conn, transaction))
+                        {
+                            check.Parameters.AddWithValue("de", deThiID);
+                            check.Parameters.AddWithValue("gv", giaoVienID);
+                            object value = check.ExecuteScalar();
+                            if (value == null)
+                            {
+                                thongBao = "Đề thi không tồn tại hoặc không thuộc giáo viên đang đăng nhập.";
+                                return false;
+                            }
+                            tenDeThi = Convert.ToString(value);
+                        }
+                        using (var delete = new NpgsqlCommand(@"
+                            UPDATE DeThi SET TrangThai='Đã xóa' WHERE DeThiID=@de", conn, transaction))
+                        {
+                            delete.Parameters.AddWithValue("de", deThiID);
+                            delete.ExecuteNonQuery();
+                        }
+                        transaction.Commit();
+                        thongBao = $"Đã ẩn đề thi \"{tenDeThi}\" (mã {deThiID}) khỏi danh sách giao bài. Kết quả và bài làm của học sinh được giữ nguyên.";
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                thongBao = "Không thể xóa đề thi: " + ex.Message;
                 return false;
             }
         }

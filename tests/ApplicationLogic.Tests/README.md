@@ -15,6 +15,14 @@ liên kết tài khoản, thay đổi hồ sơ giáo viên, giữ lịch/ngày c
 các lần nộp/duyệt đồng thời, sửa câu hỏi sau khi giao, thứ tự câu hỏi sau khi xóa,
 giao lại đề đã có kết quả, xóa hồ sơ có dữ liệu liên kết và tạo tài khoản.
 
+Trang chủ được kiểm tra với học viên thuộc nhiều lớp, yêu cầu chờ duyệt/đã duyệt,
+đề hết hạn/đã đóng/chưa giao/không có câu hỏi, điểm bằng 0 và điểm chưa có.
+Thống kê học viên tính trên toàn bộ dữ liệu, kể cả khi bảng đang lọc hoặc phân trang.
+
+Quản lý tài khoản kiểm tra việc chặn khóa Admin ngay tại DAL, kể cả khi role trên
+form đã cũ hoặc khác chữ hoa/thường; vẫn mở khóa được Admin từng bị khóa và
+khóa/mở khóa được Giáo viên, Học sinh, Học viên.
+
 Chạy kiểm tra báo cáo XML với `vi-VN`/`en-US` và DataGridView thực qua
 `tests/Pagination.SmokeTests` theo README của `tests/Pagination.Tests`.
 Các thao tác phòng thi, hộp thoại đóng form và giao diện ReaLTaiizor cần kiểm tra trên Windows.

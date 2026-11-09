@@ -169,6 +169,15 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             }
         }
 
+        public static bool TryGetPageInfo(DataGridView grid, out int pageNumber, out int pageCount)
+        {
+            pageNumber = pageCount = 0;
+            if (grid == null || !pagers.TryGetValue(grid, out var pager) || pager.disposed) return false;
+            pageNumber = pager.rows.PageNumber;
+            pageCount = pager.rows.PageCount;
+            return true;
+        }
+
         private static IEnumerable<DataGridView> FindGrids(Control root)
         {
             foreach (Control child in root.Controls)
