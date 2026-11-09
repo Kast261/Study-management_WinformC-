@@ -34,6 +34,7 @@ namespace ApplicationLogic.Tests
                 INSERT INTO HocSinh (HocSinhID, HoTen, TaiKhoanID, LopHocID) VALUES (11, 'A', 1, 1), (22, 'B', 3, NULL), (33, 'C', NULL, NULL);
                 INSERT INTO DeThi VALUES (1, 'Đề 1', '', 45, 'Toán', 2, 101, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 day', 'Đang mở');
                 INSERT INTO CauHoi VALUES (1, 1, 'Câu 1', 'A', 'B', 'C', 'D', 'A', 1), (2, 1, 'Câu 2', 'A', 'B', 'C', 'D', 'B', 2);
+                SELECT setval(pg_get_serial_sequence('DeThi','dethiid'), 1);
                 SELECT setval(pg_get_serial_sequence('CauHoi','cauhoiid'), 2);");
             database.SeedAccount(1, 11);
             database.SeedAccount(2, 101, "GiaoVien");

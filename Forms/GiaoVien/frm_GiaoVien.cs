@@ -1012,16 +1012,23 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (currentDeID <= 0) currentDeID = _selectedDeThiID;
                 int resultDeID = cmbKQ_DeThi.SelectedValue is int id ? id : 0;
                 DataTable dt = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID);
+                dt.Columns.Add("TenHienThi", typeof(string));
+                foreach (DataRow row in dt.Rows)
+                {
+                    bool daGiao = row["LopHocID"] != DBNull.Value && Convert.ToInt32(row["LopHocID"]) > 0;
+                    string phanLoai = daGiao ? "Lượt giao · " + row["TenLop"] : "Đề gốc";
+                    row["TenHienThi"] = $"{row["TenDeThi"]} · {phanLoai} · #{row["DeThiID"]}";
+                }
 
                 // Binding temporarily selects the first exam. Do not let that
                 // selection replace the subject/name while restoring the real exam.
                 _dangTaiDeThi = true;
                 try
                 {
-                    cmbDT_DeThi.DisplayMember = dt.Columns["TenDeThi"].ColumnName;
+                    cmbDT_DeThi.DisplayMember = "TenHienThi";
                     cmbDT_DeThi.ValueMember = dt.Columns["DeThiID"].ColumnName;
                     cmbDT_DeThi.DataSource = dt.Copy();
-                    cmbKQ_DeThi.DisplayMember = dt.Columns["TenDeThi"].ColumnName;
+                    cmbKQ_DeThi.DisplayMember = "TenHienThi";
                     cmbKQ_DeThi.ValueMember = dt.Columns["DeThiID"].ColumnName;
                     cmbKQ_DeThi.DataSource = dt.Copy();
 
@@ -1315,27 +1322,38 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             int lopHocID = Convert.ToInt32(cmbDT_GiaoChoLop.SelectedValue);
             DateTime? hanNop = DateTime.Now.AddDays(7);
-            string monHocGiao = cmbDT_MonHoc.SelectedItem?.ToString() ?? cmbDT_MonHoc.Text?.Trim();
-
             if (MessageBox.Show(
-                    $"Giao đề thi cho lớp đã chọn?\nSố câu: {soCauHienCo} | Thời gian: {thoiGian} phút",
+                    $"Tạo lượt giao mới cho lớp {cmbDT_GiaoChoLop.Text}?\nSố câu: {soCauHienCo} | Thời gian: {thoiGian} phút\nMỗi lần giao là một bài thi riêng, kể cả lớp đã được giao đề này.",
                     "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
-            if (_deThiDAL.GiaoDeThiChoLop(_selectedDeThiID, lopHocID, thoiGian, hanNop, monHocGiao))
+            int deNguonID = _selectedDeThiID;
+            int lanGiaoID;
+            try
             {
-                MessageBox.Show(
-                    "Giao đề thi thành công!",
-                    "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                _selectedDeThiID = 0;
-                txtDT_SoCauHoi.Text = "";
-                LoadDeThiCombobox();
+                lanGiaoID = _deThiDAL.TaoLanGiaoDeThi(Session.TaiKhoanID, Session.NguoiDungID,
+                    deNguonID, lopHocID, thoiGian, hanNop);
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Giao đề thi thất bại! Vui lòng thử lại.",
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể giao đề thi: " + ex.Message,
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            MessageBox.Show($"Đã tạo lượt giao #{lanGiaoID} cho lớp {cmbDT_GiaoChoLop.Text}.\n"
+                + "Bạn có thể chọn lớp khác hoặc tiếp tục giao thêm lượt cho lớp này. Kết quả các lượt trước được giữ nguyên.",
+                "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            try
+            {
+                // Giữ đề nguồn và lớp đích để tiếp tục giao, không chuyển sang bản vừa sao chép.
+                LoadDeThiCombobox(deNguonID);
+                cmbDT_GiaoChoLop.SelectedValue = lopHocID;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lượt giao #{lanGiaoID} đã lưu, nhưng chưa tải lại được danh sách. Không cần giao lại.\n" + ex.Message,
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

@@ -14,6 +14,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces
         List<CauHoi> LayDanhSachCauHoi(int deThiID);
         bool ThemDeThi(DeThi de);
         int TaoDeThiMoiLayID(DeThi de);
+        int TaoLanGiaoDeThi(int taiKhoanID, int giaoVienID, int deThiID, int lopHocID, int thoiGian, DateTime? hanNop);
         bool GiaoDeThiChoLop(int deThiID, int lopHocID, int thoiGian, DateTime? hanNop, string monHoc = null);
         bool KiemTraDeThiChuaGiao(int deThiID);
         bool XoaDeThi(int deThiID, out string thongBao);

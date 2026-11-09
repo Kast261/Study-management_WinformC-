@@ -1,5 +1,9 @@
 Nhập câu hỏi từ Excel trong form Giáo viên:
 
+File `CauHoi_CSharp_WinForms_20.xlsx` có sẵn 20 câu trắc nghiệm môn **Lập trình
+C# WinForms**, đủ bốn phương án và đáp án đúng. Có thể nhập trực tiếp vào một
+đề gốc mới; hướng dẫn nằm ở sheet `HuongDan`.
+
 1. Nhấp chuột phải nút **Nhập Excel** → **Lưu file Excel mẫu...**.
 2. Mở `CauHoi_Mau.xlsx`, điền dữ liệu trong sheet **CauHoi**. Thay hoặc xóa hai
    câu hỏi ví dụ trước khi nhập bộ câu hỏi thật.
@@ -28,3 +32,10 @@ File sai sẽ báo sheet và số dòng lỗi, không lưu một phần dữ li�
 thành công được lưu trọn gói trong một transaction. Nhập lại cùng file sẽ thêm
 câu hỏi lần nữa; các câu hỏi cũ không bị xóa. Đề đã giao hoặc có bài làm cần
 được giữ nguyên; hãy tạo đề mới để nhập bộ câu hỏi khác.
+
+Giao nhiều lần: chọn đề gốc ở **Quản lý đề thi**, chọn lớp rồi bấm **Giao bài thi**.
+Mỗi lần xác nhận tạo một lượt thi riêng có mã riêng. Có thể chọn lớp khác cùng
+môn hoặc giao tiếp cho cùng lớp, kể cả khi học viên đã nộp lượt trước. Danh sách
+đề và bộ lọc kết quả ghi rõ đề gốc/lượt giao, tên lớp và mã để tránh chọn nhầm.
+Điểm, câu trả lời, thời gian và hạn nộp của mỗi lượt độc lập; sửa hoặc nhập thêm
+câu hỏi vào đề gốc không đổi nội dung các lượt đã giao.
