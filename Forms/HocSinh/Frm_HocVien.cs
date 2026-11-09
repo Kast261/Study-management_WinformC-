@@ -40,7 +40,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             InitializeComponent();
             if (System.ComponentModel.LicenseManager.UsageMode != System.ComponentModel.LicenseUsageMode.Designtime)
+            {
                 this.DrawerTabControl = tabHocVien;
+                HienThiTheHoSo(new HocSinh { HoTen = Session.HoTen ?? Session.TenDangNhap });
+            }
             btnTCHV_BatDauLamBai.Enabled = btnTCHV_LamBai.Enabled = false;
             lblTCHV_NgayThangHT.Text = DateTime.Today.ToString("dddd, dd/MM/yyyy", CultureInfo.GetCultureInfo("vi-VN"));
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
@@ -721,9 +724,23 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
             }
 
-            Session.HoTen = hs.HoTen;
-            lblGVTT_HovaTen.Text = hs.HoTen ?? "";
-            lblTCHV_Chao.Text = "Xin chào, " + hs.HoTen;
+            HienThiTheHoSo(hs);
+        }
+
+        private static string GiaTriHoSo(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "Chưa cập nhật" : value.Trim();
+        }
+
+        private void HienThiTheHoSo(HocSinh hs)
+        {
+            string hoTen = string.IsNullOrWhiteSpace(hs.HoTen) ? GiaTriHoSo(Session.TenDangNhap) : hs.HoTen.Trim();
+            lblTTHV_HoTen.Text = hoTen;
+            lblTTHV_DiaChi.Text = "Địa chỉ: " + GiaTriHoSo(hs.DiaChi);
+            lblTTHV_Email.Text = "Email: " + GiaTriHoSo(hs.Email);
+            lblTTHV_SDT.Text = "Số điện thoại: " + GiaTriHoSo(hs.SoDienThoai);
+            Session.HoTen = hoTen;
+            lblTCHV_Chao.Text = "Xin chào, " + hoTen;
         }
 
         private void BtnHV_LuuProfile_Click(object sender, EventArgs e)
@@ -868,6 +885,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (tabHocVien.SelectedTab == pageHV_LopHoc)
             {
                 LoadTabLopHocCuaToi();
+                return;
+            }
+
+            if (tabHocVien.SelectedTab == pageHV_ThongTin)
+            {
+                LoadThongTinHocVien();
                 return;
             }
 
