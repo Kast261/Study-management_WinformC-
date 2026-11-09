@@ -251,13 +251,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel47 = new ReaLTaiizor.Controls.MaterialLabel();
             this.panel51 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel29 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTTHV_SDT = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTTHV_Email = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTTHV_DiaChi = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTTHV_HoTen = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel54 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel24 = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageHV_DangXuat = new System.Windows.Forms.TabPage();
-            this.lblTTHV_HoTen = new ReaLTaiizor.Controls.MaterialLabel();
-            this.lblTTHV_DiaChi = new ReaLTaiizor.Controls.MaterialLabel();
-            this.lblTTHV_Email = new ReaLTaiizor.Controls.MaterialLabel();
-            this.lblTTHV_SDT = new ReaLTaiizor.Controls.MaterialLabel();
             this.tabHocVien.SuspendLayout();
             this.pageHV_TrangChu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -3284,6 +3284,62 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel29.Size = new System.Drawing.Size(777, 877);
             this.tableLayoutPanel29.TabIndex = 0;
             // 
+            // lblTTHV_SDT
+            // 
+            this.lblTTHV_SDT.Depth = 0;
+            this.lblTTHV_SDT.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTHV_SDT.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTHV_SDT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTHV_SDT.Location = new System.Drawing.Point(3, 625);
+            this.lblTTHV_SDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTHV_SDT.Name = "lblTTHV_SDT";
+            this.lblTTHV_SDT.Size = new System.Drawing.Size(771, 125);
+            this.lblTTHV_SDT.TabIndex = 6;
+            this.lblTTHV_SDT.Text = "Số Điện Thoại";
+            this.lblTTHV_SDT.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTTHV_Email
+            // 
+            this.lblTTHV_Email.Depth = 0;
+            this.lblTTHV_Email.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTHV_Email.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTHV_Email.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTHV_Email.Location = new System.Drawing.Point(3, 500);
+            this.lblTTHV_Email.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTHV_Email.Name = "lblTTHV_Email";
+            this.lblTTHV_Email.Size = new System.Drawing.Size(771, 125);
+            this.lblTTHV_Email.TabIndex = 5;
+            this.lblTTHV_Email.Text = "Email: ";
+            this.lblTTHV_Email.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTTHV_DiaChi
+            // 
+            this.lblTTHV_DiaChi.Depth = 0;
+            this.lblTTHV_DiaChi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTHV_DiaChi.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTHV_DiaChi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTHV_DiaChi.Location = new System.Drawing.Point(3, 375);
+            this.lblTTHV_DiaChi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTHV_DiaChi.Name = "lblTTHV_DiaChi";
+            this.lblTTHV_DiaChi.Size = new System.Drawing.Size(771, 125);
+            this.lblTTHV_DiaChi.TabIndex = 4;
+            this.lblTTHV_DiaChi.Text = "Địa Chỉ";
+            this.lblTTHV_DiaChi.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTTHV_HoTen
+            // 
+            this.lblTTHV_HoTen.Depth = 0;
+            this.lblTTHV_HoTen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTHV_HoTen.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTHV_HoTen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTHV_HoTen.Location = new System.Drawing.Point(3, 178);
+            this.lblTTHV_HoTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTHV_HoTen.Name = "lblTTHV_HoTen";
+            this.lblTTHV_HoTen.Size = new System.Drawing.Size(771, 197);
+            this.lblTTHV_HoTen.TabIndex = 3;
+            this.lblTTHV_HoTen.Text = "Lương Trung Thành";
+            this.lblTTHV_HoTen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // materialLabel54
             // 
             this.materialLabel54.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -3321,62 +3377,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageHV_DangXuat.TabIndex = 0;
             this.pageHV_DangXuat.Text = "Đăng Xuất";
             this.pageHV_DangXuat.UseVisualStyleBackColor = true;
-            // 
-            // lblTTHV_HoTen
-            // 
-            this.lblTTHV_HoTen.Depth = 0;
-            this.lblTTHV_HoTen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTTHV_HoTen.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTTHV_HoTen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
-            this.lblTTHV_HoTen.Location = new System.Drawing.Point(3, 178);
-            this.lblTTHV_HoTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTTHV_HoTen.Name = "lblTTHV_HoTen";
-            this.lblTTHV_HoTen.Size = new System.Drawing.Size(771, 197);
-            this.lblTTHV_HoTen.TabIndex = 3;
-            this.lblTTHV_HoTen.Text = "Lương Trung Thành";
-            this.lblTTHV_HoTen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblTTHV_DiaChi
-            // 
-            this.lblTTHV_DiaChi.Depth = 0;
-            this.lblTTHV_DiaChi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTTHV_DiaChi.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTTHV_DiaChi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
-            this.lblTTHV_DiaChi.Location = new System.Drawing.Point(3, 375);
-            this.lblTTHV_DiaChi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTTHV_DiaChi.Name = "lblTTHV_DiaChi";
-            this.lblTTHV_DiaChi.Size = new System.Drawing.Size(771, 125);
-            this.lblTTHV_DiaChi.TabIndex = 4;
-            this.lblTTHV_DiaChi.Text = "Địa Chỉ";
-            this.lblTTHV_DiaChi.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblTTHV_Email
-            // 
-            this.lblTTHV_Email.Depth = 0;
-            this.lblTTHV_Email.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTTHV_Email.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTTHV_Email.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
-            this.lblTTHV_Email.Location = new System.Drawing.Point(3, 500);
-            this.lblTTHV_Email.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTTHV_Email.Name = "lblTTHV_Email";
-            this.lblTTHV_Email.Size = new System.Drawing.Size(771, 125);
-            this.lblTTHV_Email.TabIndex = 5;
-            this.lblTTHV_Email.Text = "Email: ";
-            this.lblTTHV_Email.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblTTHV_SDT
-            // 
-            this.lblTTHV_SDT.Depth = 0;
-            this.lblTTHV_SDT.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTTHV_SDT.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTTHV_SDT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
-            this.lblTTHV_SDT.Location = new System.Drawing.Point(3, 625);
-            this.lblTTHV_SDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTTHV_SDT.Name = "lblTTHV_SDT";
-            this.lblTTHV_SDT.Size = new System.Drawing.Size(771, 125);
-            this.lblTTHV_SDT.TabIndex = 6;
-            this.lblTTHV_SDT.Text = "Số Điện Thoại";
-            this.lblTTHV_SDT.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // HocVien
             // 
