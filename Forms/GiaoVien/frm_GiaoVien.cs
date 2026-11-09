@@ -1011,8 +1011,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 int resultDeID = cmbKQ_DeThi.SelectedValue is int id ? id : 0;
                 DataTable dt = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID);
                 DataTable deThiCoCauHoi = ExamSelection.WithQuestions(dt);
-                bool dangGiaoBai = materialTabControl1.SelectedTab == pageGV_QuanLyDeThi;
-                DataTable selectable = dangGiaoBai ? deThiCoCauHoi : dt;
                 // Binding temporarily selects the first exam. Do not let that
                 // selection replace the subject/name while restoring the real exam.
                 _dangTaiDeThi = true;
@@ -1020,7 +1018,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 {
                     cmbDT_DeThi.DisplayMember = dt.Columns["TenDeThi"].ColumnName;
                     cmbDT_DeThi.ValueMember = dt.Columns["DeThiID"].ColumnName;
-                    cmbDT_DeThi.DataSource = selectable.Copy();
+                    // Đề vừa tạo phải có trong ComboBox ngay cả khi chưa thêm câu hỏi.
+                    cmbDT_DeThi.DataSource = dt.Copy();
                     cmbKQ_DeThi.DisplayMember = dt.Columns["TenDeThi"].ColumnName;
                     cmbKQ_DeThi.ValueMember = dt.Columns["DeThiID"].ColumnName;
                     cmbKQ_DeThi.DataSource = dt.Copy();

@@ -4,11 +4,12 @@ Trong tab **Câu hỏi**, tạo đề rồi thêm câu hỏi hoặc nhập Excel
 với tên và môn của một đề gốc đang có sẽ mở lại đề đó để tiếp tục soạn, giữ
 nguyên câu hỏi đã lưu. Để tạo bộ đề khác, dùng tên đề khác.
 
-Tab **Bài thi** và ComboBox giao đề chỉ liệt kê các đề có câu hỏi đã lưu.
-Chọn tên đề sẽ nạp lại đúng số câu theo mã đề, không cần nhập lại câu hỏi.
-Nút giao dùng mã đề đang hiển thị trong ComboBox, không dùng mã cache từ lần
-chọn trước hoặc từ một đề rỗng trùng tên. Tab câu hỏi vẫn truy cập được đề
-chưa có câu hỏi để soạn tiếp.
+Đề vừa tạo xuất hiện ngay trong ComboBox tab **Bài thi**, kể cả khi đang có
+0 câu hỏi. Chuyển tab hoặc tải lại danh sách vẫn giữ đúng mã đề đang chọn.
+Sau khi thêm câu hỏi hoặc nhập Excel, chọn lại tên đề sẽ nạp đúng số câu đã
+lưu để giao trực tiếp, không cần nhập lại. Bảng đề tiếp tục chỉ liệt kê các
+đề đã có câu hỏi. Nút giao dùng mã đề đang hiển thị trong ComboBox và kiểm tra
+câu hỏi thực tế trước khi tạo lượt thi.
 
 Trong **Giáo viên → Quản lý đề thi**, chọn đề có câu hỏi, chọn lớp do
 giáo viên phụ trách rồi bấm **Giao bài thi**. Mỗi lần xác nhận tạo một lượt mới.
