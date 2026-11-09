@@ -34,6 +34,8 @@ câu hỏi lần nữa; các câu hỏi cũ không bị xóa. Đề đã giao ho
 được giữ nguyên; hãy tạo đề mới để nhập bộ câu hỏi khác.
 
 Giao nhiều lần: chọn đề gốc ở **Quản lý đề thi**, chọn lớp rồi bấm **Giao bài thi**.
+Đề đã nhập câu hỏi được chọn và giao trực tiếp; không cần nhập Excel lại khi
+chuyển tab. ComboBox giao đề chỉ hiển thị các đề có câu hỏi đã lưu.
 Mỗi lần xác nhận tạo một lượt thi riêng có mã riêng. Có thể chọn lớp khác do
 giáo viên phụ trách hoặc giao tiếp cho cùng lớp, kể cả khi học viên đã nộp lượt
 trước. ComboBox đề thi chỉ hiện tên đề; chọn lớp nhận bài ở **Giao cho lớp**.

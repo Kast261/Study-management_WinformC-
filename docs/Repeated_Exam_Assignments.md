@@ -1,5 +1,15 @@
 # Giao đề nhiều lớp và nhiều lần
 
+Trong tab **Câu hỏi**, tạo đề rồi thêm câu hỏi hoặc nhập Excel. Bấm **Tạo đề**
+với tên và môn của một đề gốc đang có sẽ mở lại đề đó để tiếp tục soạn, giữ
+nguyên câu hỏi đã lưu. Để tạo bộ đề khác, dùng tên đề khác.
+
+Tab **Bài thi** và ComboBox giao đề chỉ liệt kê các đề có câu hỏi đã lưu.
+Chọn tên đề sẽ nạp lại đúng số câu theo mã đề, không cần nhập lại câu hỏi.
+Nút giao dùng mã đề đang hiển thị trong ComboBox, không dùng mã cache từ lần
+chọn trước hoặc từ một đề rỗng trùng tên. Tab câu hỏi vẫn truy cập được đề
+chưa có câu hỏi để soạn tiếp.
+
 Trong **Giáo viên → Quản lý đề thi**, chọn đề có câu hỏi, chọn lớp do
 giáo viên phụ trách rồi bấm **Giao bài thi**. Mỗi lần xác nhận tạo một lượt mới.
 Sau khi giao, đề nguồn và lớp đích vẫn được chọn để tiếp tục giao cho lớp đó
@@ -16,6 +26,11 @@ Khóa đề nguồn dùng chung với luồng sửa/nhập câu hỏi để trá
 Tài khoản giáo viên phải còn hoạt động, sở hữu đề và phụ trách lớp nhận bài.
 Danh sách lớp và điều kiện giao không phụ thuộc tên khóa học hay việc lớp đã
 được phân loại. Môn học lưu trên lượt giao được lấy nguyên từ đề nguồn.
+Khi đổi môn/đề, form ưu tiên lớp cùng môn trong các lớp giáo viên phụ trách,
+thay vì giữ lớp khác môn từ lần chọn trước. Nếu không có lớp phù hợp, để trống
+ô chọn để giáo viên chủ động chọn lớp. Vẫn có thể chọn lớp khác trong danh sách.
+Nếu lớp **Mạng Máy Tính N06** không có trong danh sách xổ xuống, kiểm tra lớp
+đã được phân công cho đúng giáo viên đang đăng nhập ở màn hình quản lý lớp.
 Lỗi sao chép sẽ rollback toàn bộ lượt mới. Các thao tác sửa câu hỏi tiếp tục
 bị chặn trên những lượt đã giao; chỉ sửa đề gốc chưa giao.
 
@@ -41,3 +56,5 @@ Các kiểm thử gồm giao khác lớp/cùng lớp, giao lại sau khi đã n�
 sai quyền, giao cho lớp có tên khóa học khác hoặc chưa phân loại, hai lần giao
 đồng thời, rollback khi sao chép/xóa lỗi, xóa lượt đã có bài làm theo khóa ngoại
 và nhập file `Templates/CauHoi_CSharp_WinForms_20.xlsx` rồi giao ba lượt độc lập.
+`ExamSelectionTests` kiểm tra thêm luồng tạo đề, lưu 20 câu, chọn lại đề,
+giao cho N06 và nộp bài đạt 10 điểm mà không thêm lại câu hỏi.
