@@ -67,9 +67,10 @@ namespace ApplicationLogic.Tests
         }
 
         [Fact]
-        public void NetworkingExamPrefersN06InsteadOfPreviouslySelectedWinformsClass()
+        public void MultipleMatchingClassesRequireExplicitChoice()
         {
-            Assert.Equal(2, ExamSelection.PreferredClassID(Classes(), " Mạng  máy tính ", 1, true));
+            Assert.Equal(0, ExamSelection.PreferredClassID(Classes(), " Mạng  máy tính ", 1, true));
+            Assert.Equal(0, ExamSelection.PreferredClassID(Classes(), "Mạng máy tính", 0, false));
         }
 
         [Fact]
@@ -84,7 +85,30 @@ namespace ApplicationLogic.Tests
         {
             var classes = Classes();
             classes.Columns.Remove("TenKhoaHoc");
+            classes.Rows.RemoveAt(2);
             Assert.Equal(2, ExamSelection.PreferredClassID(classes, "Mạng máy tính", 1, true));
+        }
+
+        [Fact]
+        public void DuplicateClassNamesAreDistinguishableAndAssignmentReachesSelectedStudents()
+        {
+            using var db = new LogicDatabase();
+            DatabaseHelper.ExecuteNonQuery("UPDATE LopHoc SET TenLop='Toán Lớp 2'; UPDATE HocSinh SET LopHocID=2 WHERE HocSinhID=22");
+            using var classes = new LopHocDAL().LayTheoGiaoVien(101);
+            Assert.Equal(0, ExamSelection.PreferredClassID(classes, "Toán", 0, true));
+            Assert.Equal(0, ExamSelection.PreferredClassID(classes, "Toán", 999, false));
+            Assert.NotEqual(ExamSelection.ClassDisplayName(classes.Rows[0]), ExamSelection.ClassDisplayName(classes.Rows[1]));
+            Assert.All(classes.Rows.Cast<DataRow>(), row =>
+                Assert.Contains("Mã lớp #" + row["LopHocID"], ExamSelection.ClassDisplayName(row)));
+
+            int selected = ExamSelection.PreferredClassID(classes, "Toán", 2, true);
+            Assert.Equal(2, selected);
+            var exams = new DeThiDAL();
+            int assigned = exams.TaoLanGiaoDeThi(2, 101, 1, selected, 45, null);
+            Assert.Contains(exams.LayDeThiChoHocSinh(22).Rows.Cast<DataRow>(), row => (int)row["DeThiID"] == assigned);
+            Assert.Contains(exams.LayBaiThiDangMoChoHocSinh(22).Rows.Cast<DataRow>(), row => (int)row["DeThiID"] == assigned);
+            Assert.True(exams.CoTheBatDauThi(22, assigned));
+            Assert.False(exams.CoTheBatDauThi(11, assigned));
         }
 
         [Fact]

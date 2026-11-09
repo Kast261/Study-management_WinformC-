@@ -1072,7 +1072,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     cmbDT_GiaoChoLop.Enabled = false;
                     return;
                 }
-                cmbDT_GiaoChoLop.DisplayMember = classes.Columns["TenLop"].ColumnName;
+                classes.Columns.Add("NhanLopNhanDe", typeof(string));
+                foreach (DataRow classroom in classes.Rows)
+                    classroom["NhanLopNhanDe"] = ExamSelection.ClassDisplayName(classroom);
+                cmbDT_GiaoChoLop.DisplayMember = "NhanLopNhanDe";
                 cmbDT_GiaoChoLop.ValueMember = classes.Columns["LopHocID"].ColumnName;
                 cmbDT_GiaoChoLop.DataSource = classes;
                 string subject = cmbDT_MonHoc.SelectedItem?.ToString() ?? cmbDT_MonHoc.Text;
@@ -1259,7 +1262,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     return;
                 }
 
-                string tenLop = Convert.ToString(classroom["TenLop"]);
+                string tenLop = ExamSelection.ClassDisplayName(classroom.Row);
                 if (MessageBox.Show(this,
                         $"Giao đề \"{exam["TenDeThi"]}\" cho lớp {tenLop}?\nMôn học: {monHocGiao}\nSố câu: {soCauHienCo} | Thời gian: {thoiGian} phút\nMỗi lần giao là một bài thi riêng, hạn nộp sau 7 ngày.",
                         "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)

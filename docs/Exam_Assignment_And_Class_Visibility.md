@@ -7,6 +7,13 @@ Chọn đề đã lưu câu hỏi, môn học, lớp nhận bài và thời gian
 hiển thị trạng thái kiểm tra/lưu và luôn được bật lại sau khi hoàn tất hoặc hủy.
 Lỗi kiểm tra câu hỏi và lỗi lưu đều được thông báo trên cửa sổ giáo viên.
 
+Ô **Giao cho lớp** hiển thị tên, mã lớp và lịch học để phân biệt các lớp trùng
+tên. Khi có nhiều lớp phù hợp và chưa chọn lớp nhận, giáo viên phải chọn rõ
+một lớp; ứng dụng không tự lấy lớp đầu tiên. Hộp xác nhận và thông báo thành
+công giữ mã lớp này để đối chiếu với đăng ký của học viên. Đề đã giao nhầm
+lớp cần giao lại cho đúng mã lớp; bản sửa không tự chuyển đề hoặc mở quyền
+cho các học viên ở lớp khác chỉ vì tên lớp giống nhau.
+
 Không cần tạo lại đề hoặc thêm lại câu hỏi khi giao. Mỗi lần xác nhận tạo một
 lượt giao độc lập, sao chép các câu hỏi đã lưu và đặt hạn nộp sau 7 ngày. Giáo
 viên vẫn có thể giao cùng đề cho nhiều lớp hoặc giao nhiều lần cho một lớp.

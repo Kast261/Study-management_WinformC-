@@ -41,7 +41,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
             var rows = classes.Rows.Cast<DataRow>().ToArray();
             DataRow current = rows.FirstOrDefault(row => Convert.ToInt32(row["LopHocID"]) == currentID);
             if (!preferSubject)
-                return current == null ? Convert.ToInt32(rows[0]["LopHocID"]) : currentID;
+                return current != null ? currentID : rows.Length == 1 ? Convert.ToInt32(rows[0]["LopHocID"]) : 0;
 
             string normalizedSubject = Normalize(subject);
             if (normalizedSubject.Length == 0) return 0;
@@ -53,7 +53,17 @@ namespace BLT_Quan_Ly_Hoc_Tap.Helpers
                     || name.StartsWith(normalizedSubject + " ", StringComparison.OrdinalIgnoreCase);
             }).ToArray();
             if (matching.Any(row => Convert.ToInt32(row["LopHocID"]) == currentID)) return currentID;
-            return matching.Length == 0 ? 0 : Convert.ToInt32(matching[0]["LopHocID"]);
+            // Nhiều lớp cùng môn không có nghĩa là cùng nhóm học viên.
+            // Không tự chọn lớp mới nhất khi giáo viên chưa chỉ định lớp nhận.
+            return matching.Length == 1 ? Convert.ToInt32(matching[0]["LopHocID"]) : 0;
+        }
+
+        public static string ClassDisplayName(DataRow classroom)
+        {
+            string schedule = classroom.Table.Columns.Contains("LichHoc")
+                ? Convert.ToString(classroom["LichHoc"]).Trim() : "";
+            return $"{classroom["TenLop"]} (Mã lớp #{classroom["LopHocID"]})"
+                + (schedule.Length == 0 ? "" : " · " + schedule);
         }
     }
 }
