@@ -481,6 +481,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     foreach (DataRow row in options.Rows)
                         if (Convert.ToInt32(row["LopHocID"]) == selectedClass) exists = true;
                     cmbKQHV_BaiThi.DataSource = null;
+                    // Reapply binding members after detaching the previous source.
+                    // PostgreSQL may return lowercase column names.
+                    cmbKQHV_BaiThi.DisplayMember = options.Columns["TenLop"].ColumnName;
+                    cmbKQHV_BaiThi.ValueMember = options.Columns["LopHocID"].ColumnName;
                     cmbKQHV_BaiThi.DataSource = options;
                     cmbKQHV_BaiThi.SelectedValue = exists ? selectedClass : 0;
                     cmbKQHV_BaiThi.Enabled = options.Rows.Count > 1;
