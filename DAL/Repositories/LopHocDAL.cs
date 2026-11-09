@@ -260,7 +260,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                         cmd.Parameters.AddWithValue("hs", hocSinhID);
                         if (cmd.ExecuteNonQuery() != 1) return false;
                     }
-                    using (var cmd = new NpgsqlCommand("UPDATE HocSinh SET LopHocID=@lop WHERE HocSinhID=@hs", conn, transaction))
+                    // Đăng ký đã duyệt ở trên lưu tư cách thành viên của lớp mới.
+                    // Giữ lớp chính cũ để không làm mất lớp/bài thi khi học thêm lớp khác.
+                    using (var cmd = new NpgsqlCommand(@"
+                        UPDATE HocSinh SET LopHocID=COALESCE(NULLIF(LopHocID,0),@lop)
+                        WHERE HocSinhID=@hs", conn, transaction))
                     {
                         cmd.Parameters.AddWithValue("lop", lopHocID); cmd.Parameters.AddWithValue("hs", hocSinhID);
                         if (cmd.ExecuteNonQuery() != 1) return false;

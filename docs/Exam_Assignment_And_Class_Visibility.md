@@ -22,6 +22,11 @@ Quyền xem bài dựa trên lớp hiện tại hoặc đăng ký **Đã duyệt
 ngày đăng ký/duyệt có trước hay sau ngày giao đề. Học viên chờ duyệt, bị từ
 chối hoặc thuộc lớp khác không nhìn thấy bài của lớp này.
 
+Khi duyệt thêm lớp, giữ lớp chính hiện có của học viên; lớp mới được ghi nhận
+qua đăng ký đã duyệt. Việc duyệt lớp mới không được ghi đè lớp chính và làm
+mất bài thi của lớp cũ. Mã lớp quyết định quyền truy cập; hai lớp trùng tên
+vẫn là hai lớp độc lập.
+
 Danh sách lớp và bài thi được cập nhật khi đổi tab hoặc quay lại cửa sổ học
 viên. Bộ lọc môn học và bài đang chọn được giữ nếu vẫn còn trong danh sách.
 Tab **Bài thi** giữ cả bài hết hạn/đã đóng để học viên vào lớp sau có thể thấy
@@ -44,3 +49,9 @@ Kiểm tra trên Windows sau khi build:
    đó xuất hiện; bài đang mở có thể làm, bài hết hạn/đã đóng vẫn xem được trong
    danh sách nhưng không thể bắt đầu làm.
 6. Kiểm tra học viên chờ duyệt không thấy các bài của lớp chưa tham gia.
+
+Nếu một tài khoản vẫn không thấy bài dù đã duyệt, chạy truy vấn chỉ đọc trong
+`docs/Diagnose_Student_Assigned_Exams.sql` trên database đang dùng. Kết quả
+đối chiếu mã hồ sơ, mã lớp chính/đăng ký, giáo viên, lượt giao và trạng thái đề;
+không lấy mật khẩu hay tự thêm quyền vào lớp. Dữ liệu đã bị mất liên kết lớp
+trước bản sửa cần đối chiếu để khôi phục đúng lớp, không tự suy luận theo tên.
