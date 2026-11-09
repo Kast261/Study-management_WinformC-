@@ -20,7 +20,8 @@ lại cả đề cũ đã giao/có bài làm.
 Mỗi lượt có mã riêng, bộ câu hỏi riêng, thời gian làm bài và hạn nộp riêng.
 Học viên làm và nộp từng lượt một lần. Một lượt mới không di chuyển, mở lại
 hay ghi đè lượt cũ; điểm và câu trả lời của những lần trước vẫn được giữ.
-ComboBox chọn đề và lọc kết quả chỉ hiển thị tên đề. Lớp nhận bài nằm ở ComboBox
+ComboBox chọn đề hiển thị tên đề; bộ lọc kết quả thêm nhãn **(đã xóa)** cho đề
+đã ẩn để giáo viên vẫn xem lại điểm. Lớp nhận bài nằm ở ComboBox
 **Giao cho lớp**; cột **Lớp được giao** trên bảng đề được ẩn.
 
 `TaoLanGiaoDeThi` sao chép metadata và câu hỏi trong cùng transaction PostgreSQL.
@@ -45,11 +46,13 @@ không cần migration. Hàm `GiaoDeThiChoLop` cũ chỉ cập nhật lần giao
 trước khi có bài làm; nút giao bài trên form dùng `TaoLanGiaoDeThi`.
 
 **Xóa Đề Thi** hỗ trợ cả lượt đã giao, thông qua overload `XoaDeThi` có tài khoản
-và mã giáo viên. Hộp xác nhận nêu rõ tên/mã đề và việc xóa cả câu hỏi, bài làm,
-điểm. Transaction khóa đề cùng cơ chế với nộp bài, xóa chi tiết trước kết quả,
-sau đó câu hỏi và đề. Nếu lỗi thì rollback toàn bộ. Lớp học, đề nguồn và các lượt
-khác vẫn còn nguyên khi xóa một lượt sao chép. Overload cũ không nhận tài khoản
-tiếp tục chỉ xóa đề chưa giao.
+và mã giáo viên. Thao tác đổi trạng thái thành **Đã xóa**, ẩn đề khỏi bảng và
+ComboBox giao bài, đồng thời ngừng nhận bài mới. Metadata, câu hỏi, kết quả,
+đáp án đã chọn, điểm và thời gian nộp còn nguyên để xem lại và xuất báo cáo.
+Transaction khóa đề cùng cơ chế với nộp bài để không mất kết quả khi hai thao
+tác diễn ra đồng thời. Nếu lỗi thì rollback. Bộ lọc tab **Kết quả** của giáo viên
+vẫn bao gồm đề đã ẩn. Overload cũ không nhận tài khoản tiếp tục chỉ xóa đề chưa
+giao và không có bài làm. Không cần thay đổi cấu trúc database.
 
 Kiểm thử với PostgreSQL dùng một lần:
 
@@ -60,7 +63,7 @@ python3 tests/StudentProfile.Tests/run.py --project tests/ExcelImport.Tests/Exce
 
 Các kiểm thử gồm giao khác lớp/cùng lớp, giao lại sau khi đã nộp, chặn truy cập
 sai quyền, giao cho lớp có tên khóa học khác hoặc chưa phân loại, hai lần giao
-đồng thời, rollback khi sao chép/xóa lỗi, xóa lượt đã có bài làm theo khóa ngoại
+đồng thời, rollback khi sao chép/ẩn đề lỗi, ẩn lượt đã có bài làm mà giữ toàn bộ lịch sử
 và nhập file `Templates/CauHoi_CSharp_WinForms_20.xlsx` rồi giao ba lượt độc lập.
 `ExamSelectionTests` kiểm tra thêm luồng tạo đề, lưu 20 câu, chọn lại đề,
 giao cho N06 và nộp bài đạt 10 điểm mà không thêm lại câu hỏi.

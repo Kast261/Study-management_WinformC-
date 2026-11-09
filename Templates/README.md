@@ -47,4 +47,6 @@ bảng và ComboBox chọn ngay lượt vừa tạo để hiển thị đúng m�
 câu hỏi vào đề gốc không đổi nội dung các lượt đã giao.
 
 **Xóa Đề Thi** xóa đúng đề/lượt đang chọn sau khi xác nhận, kể cả lượt đã giao.
-Câu hỏi, bài làm và điểm của lượt đó cũng bị xóa; lớp học và các lượt khác còn nguyên.
+Đề được ẩn khỏi danh sách giao bài; câu hỏi, bài làm và điểm vẫn được giữ để
+học sinh xem lại lịch sử, đáp án và xuất kết quả. Giáo viên xem lại trong tab
+**Kết quả**, với nhãn **(đã xóa)** trên những đề đã ẩn.
