@@ -48,7 +48,7 @@ namespace ApplicationLogic.Tests
         }
 
         [Fact]
-        public void AssignmentOptionsExcludeEmptyDraftEvenWhenNamesAreIdentical()
+        public void ExamGridKeepsOnlyExamsWithSavedQuestions()
         {
             var ready = ExamSelection.WithQuestions(Exams());
             Assert.Equal(new[] { 1, 3, 4 }, ready.Rows.Cast<DataRow>().Select(row => (int)row["DeThiID"]));
