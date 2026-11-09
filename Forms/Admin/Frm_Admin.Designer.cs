@@ -2633,8 +2633,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel11.Controls.Add(this.txtTK_TaiKhoanDangNhap, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.btnTK_TaoTaiKhoan, 0, 4);
             this.tableLayoutPanel11.Controls.Add(this.txtTK_MatKhau, 0, 1);
-            this.tableLayoutPanel11.Controls.Add(this.cmbTK_VaiTro, 0, 3);
-            this.tableLayoutPanel11.Controls.Add(this.cmbTK_GanCho, 0, 2);
+            this.tableLayoutPanel11.Controls.Add(this.cmbTK_VaiTro, 0, 2);
+            this.tableLayoutPanel11.Controls.Add(this.cmbTK_GanCho, 0, 3);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel11.Location = new System.Drawing.Point(17, 47);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
@@ -2753,7 +2753,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             "Admin",
             "GiaoVien",
             "HocSinh"});
-            this.cmbTK_VaiTro.Location = new System.Drawing.Point(3, 438);
+            this.cmbTK_VaiTro.Location = new System.Drawing.Point(3, 293);
             this.cmbTK_VaiTro.MaxDropDownItems = 4;
             this.cmbTK_VaiTro.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmbTK_VaiTro.Name = "cmbTK_VaiTro";
@@ -2779,7 +2779,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.cmbTK_GanCho.Hint = "Gán Cho";
             this.cmbTK_GanCho.IntegralHeight = false;
             this.cmbTK_GanCho.ItemHeight = 54;
-            this.cmbTK_GanCho.Location = new System.Drawing.Point(3, 293);
+            this.cmbTK_GanCho.Location = new System.Drawing.Point(3, 438);
             this.cmbTK_GanCho.MaxDropDownItems = 4;
             this.cmbTK_GanCho.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmbTK_GanCho.Name = "cmbTK_GanCho";
