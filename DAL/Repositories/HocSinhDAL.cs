@@ -49,19 +49,57 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 DiaChi = r["DiaChi"]?.ToString()
             };
         }
-        public bool Them(HocSinh hs)
+        public bool Them(HocSinh hs, int lopHocID = 0)
         {
-            string sql = @"INSERT INTO HocSinh (HoTen, NgaySinh, GioiTinh, Email, SoDienThoai, DiaChi) 
-                           VALUES (@hoten, @ngaysinh, @gioitinh, @email, @sdt, @diachi)";
+            if (hs == null || lopHocID < 0) return false;
+            string sql = @"INSERT INTO HocSinh (HoTen, NgaySinh, GioiTinh, Email, SoDienThoai, DiaChi, LopHocID)
+                           VALUES (@hoten, @ngaysinh, @gioitinh, @email, @sdt, @diachi, @lop) RETURNING HocSinhID";
             NpgsqlParameter[] pars = {
                 new NpgsqlParameter("@hoten", hs.HoTen),
                 new NpgsqlParameter("@ngaysinh", (object)hs.NgaySinh ?? DBNull.Value),
                 new NpgsqlParameter("@gioitinh", (object)hs.GioiTinh ?? DBNull.Value),
                 new NpgsqlParameter("@email", (object)hs.Email ?? DBNull.Value),
                 new NpgsqlParameter("@sdt", (object)hs.SoDienThoai ?? DBNull.Value),
-                new NpgsqlParameter("@diachi", (object)hs.DiaChi ?? DBNull.Value)
+                new NpgsqlParameter("@diachi", (object)hs.DiaChi ?? DBNull.Value),
+                new NpgsqlParameter("@lop", NpgsqlTypes.NpgsqlDbType.Integer) { Value = lopHocID > 0 ? (object)lopHocID : DBNull.Value }
             };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    if (lopHocID > 0)
+                    {
+                        // Cùng khóa với đăng ký/duyệt lớp để không vượt sĩ số khi thêm đồng thời.
+                        using (var check = new NpgsqlCommand(@"
+                            SELECT COALESCE(SiSoToiDa,40) FROM LopHoc
+                            WHERE LopHocID=@lop AND COALESCE(TrangThai,'Đang mở')='Đang mở'
+                            FOR UPDATE", conn, transaction))
+                        {
+                            check.Parameters.AddWithValue("lop", lopHocID);
+                            object capacity = check.ExecuteScalar();
+                            if (capacity == null) return false;
+                            using (var count = new NpgsqlCommand(@"
+                                SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=@lop OR EXISTS (
+                                    SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID
+                                    AND dk.LopHocID=@lop AND dk.TrangThai='Đã duyệt')", conn, transaction))
+                            {
+                                count.Parameters.AddWithValue("lop", lopHocID);
+                                if (Convert.ToInt64(count.ExecuteScalar()) >= Convert.ToInt32(capacity)) return false;
+                            }
+                        }
+                    }
+                    int hocSinhID;
+                    using (var insert = new NpgsqlCommand(sql, conn, transaction))
+                    {
+                        insert.Parameters.AddRange(pars);
+                        hocSinhID = Convert.ToInt32(insert.ExecuteScalar());
+                    }
+                    transaction.Commit();
+                    hs.HocSinhID = hocSinhID;
+                    return true;
+                }
+            }
         }
 
         public HocSinh LayTheoTaiKhoan(int taiKhoanID)

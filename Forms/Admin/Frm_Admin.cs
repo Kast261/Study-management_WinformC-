@@ -29,6 +29,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private readonly TaiKhoanDAL _tkDAL = new TaiKhoanDAL();
         private readonly DashboardDAL _dashboardDAL = new DashboardDAL();
         private bool _dangTaiDashboard;
+        private readonly ComboBox _lopChoHocVienMoi = new ComboBox
+        {
+            Dock = DockStyle.Fill,
+            DropDownStyle = ComboBoxStyle.DropDownList,
+            AccessibleName = "Xếp lớp cho học viên mới"
+        };
 
         private int _selectedGiaoVienID = 0;
         private int _selectedHocVienID = 0;
@@ -45,6 +51,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         public Frm_Admin()
         {
             InitializeComponent();
+            tableLayoutPanel22.Controls.Add(_lopChoHocVienMoi, 0, 2);
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
         }
 
@@ -440,6 +447,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 var danhSach = _hsDAL.LayTatCa();
                 dgvHocVien.DataSource = danhSach;
                 headerLabel14.Text = $"Số lượng học viên: {danhSach.Rows.Count:N0}";
+                LoadLopChoHocVienMoi();
             }
             catch (Exception ex)
             {
@@ -450,6 +458,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void LamMoiFormHV()
         {
             _selectedHocVienID = 0;
+            if (_lopChoHocVienMoi.Items.Count > 0) _lopChoHocVienMoi.SelectedIndex = 0;
             headerLabel15.Text = "Đang chọn: chưa chọn học viên";
             txtHV_HoTen.Clear();
             txtHV_NgaySinh.Checked = false;
@@ -539,13 +548,44 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 DiaChi = txtHV_DiaChi.Text.Trim()
             };
 
-            if (_hsDAL.Them(hs))
+            int lopHocID = _lopChoHocVienMoi.SelectedValue is int id ? id : 0;
+            try
             {
-                MessageBox.Show("Thêm học viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (!_hsDAL.Them(hs, lopHocID))
+                {
+                    MessageBox.Show("Không thể thêm học viên. Lớp được chọn có thể đã đóng hoặc đủ sĩ số; hãy tải lại danh sách.", "Thông báo");
+                    return;
+                }
+                MessageBox.Show(lopHocID > 0
+                    ? "Thêm và xếp lớp học viên thành công! Sau khi tạo tài khoản liên kết với hồ sơ này, học viên sẽ thấy các đề đã giao cho lớp."
+                    : "Thêm học viên thành công! Học viên chưa được xếp lớp; cần đăng ký lớp và được giáo viên duyệt để thấy đề thi.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachHocVien();
                 LoadDashboard();
                 LoadDanhSachLopHoc(); // Cập nhật sĩ số các lớp
                 LamMoiFormHV();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể thêm học viên: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadLopChoHocVienMoi()
+        {
+            using (DataTable allClasses = _lopDAL.LayTatCa())
+            {
+                var choices = new DataTable();
+                choices.Columns.Add("LopHocID", typeof(int));
+                choices.Columns.Add("NhanLop");
+                choices.Rows.Add(0, "-- Chưa xếp lớp (học viên mới cần đăng ký và được duyệt) --");
+                foreach (DataRow classroom in allClasses.Rows)
+                    if (classroom.IsNull("TrangThai") || Convert.ToString(classroom["TrangThai"]) == "Đang mở")
+                        choices.Rows.Add(classroom["LopHocID"], ExamSelection.ClassDisplayName(classroom));
+                _lopChoHocVienMoi.DisplayMember = "NhanLop";
+                _lopChoHocVienMoi.ValueMember = "LopHocID";
+                _lopChoHocVienMoi.DataSource = choices;
+                _lopChoHocVienMoi.SelectedIndex = 0;
             }
         }
 
