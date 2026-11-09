@@ -56,9 +56,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
             return _deThiDAL.TaoDeThiMoiLayID(de);
         }
 
-        public int TaoLanGiaoDeThi(int taiKhoanID, int giaoVienID, int deThiID, int lopHocID, int thoiGian, DateTime? hanNop)
+        public int TaoLanGiaoDeThi(int taiKhoanID, int giaoVienID, int deThiID, int lopHocID, int thoiGian, DateTime? hanNop, string monHoc = null)
         {
-            return _deThiDAL.TaoLanGiaoDeThi(taiKhoanID, giaoVienID, deThiID, lopHocID, thoiGian, hanNop);
+            return _deThiDAL.TaoLanGiaoDeThi(taiKhoanID, giaoVienID, deThiID, lopHocID, thoiGian, hanNop, monHoc);
         }
 
         public bool GiaoDeThiChoLop(int deThiID, int lopHocID, int thoiGian, DateTime? hanNop, string monHoc = null)

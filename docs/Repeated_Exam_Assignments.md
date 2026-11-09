@@ -12,8 +12,9 @@ chưa có câu hỏi để soạn tiếp.
 
 Trong **Giáo viên → Quản lý đề thi**, chọn đề có câu hỏi, chọn lớp do
 giáo viên phụ trách rồi bấm **Giao bài thi**. Mỗi lần xác nhận tạo một lượt mới.
-Sau khi giao, đề nguồn và lớp đích vẫn được chọn để tiếp tục giao cho lớp đó
-hoặc đổi sang lớp khác. Có thể dùng lại cả đề cũ đã giao/có bài làm.
+Sau khi giao, lượt vừa tạo được chọn ngay trên bảng và ComboBox, đồng thời
+giữ lớp đích để tiếp tục giao cho lớp đó hoặc đổi sang lớp khác. Có thể dùng
+lại cả đề cũ đã giao/có bài làm.
 
 Mỗi lượt có mã riêng, bộ câu hỏi riêng, thời gian làm bài và hạn nộp riêng.
 Học viên làm và nộp từng lượt một lần. Một lượt mới không di chuyển, mở lại
@@ -25,7 +26,11 @@ ComboBox chọn đề và lọc kết quả chỉ hiển thị tên đề. Lớp
 Khóa đề nguồn dùng chung với luồng sửa/nhập câu hỏi để tránh sao chép một phần.
 Tài khoản giáo viên phải còn hoạt động, sở hữu đề và phụ trách lớp nhận bài.
 Danh sách lớp và điều kiện giao không phụ thuộc tên khóa học hay việc lớp đã
-được phân loại. Môn học lưu trên lượt giao được lấy nguyên từ đề nguồn.
+được phân loại. Môn học lưu trên lượt giao được lấy từ ô **Môn học** khi xác
+nhận giao. Chẳng hạn, chọn **Lập trình C# WinForms** sẽ lưu và hiển thị đúng
+tên này trên bảng của giáo viên, học viên và kết quả thi, dù tái sử dụng bộ
+câu hỏi của một đề gốc mang tên môn khác. Đề gốc và những lượt trước còn nguyên.
+Các caller không truyền môn học vẫn dùng môn của đề nguồn để tương thích.
 Khi đổi môn/đề, form ưu tiên lớp cùng môn trong các lớp giáo viên phụ trách,
 thay vì giữ lớp khác môn từ lần chọn trước. Nếu không có lớp phù hợp, để trống
 ô chọn để giáo viên chủ động chọn lớp. Vẫn có thể chọn lớp khác trong danh sách.

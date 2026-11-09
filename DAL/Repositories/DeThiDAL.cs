@@ -201,12 +201,18 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         /// Mỗi lần gọi thành công trả về một DeThiID mới, kể cả cùng đề và cùng lớp.
         /// </summary>
         public int TaoLanGiaoDeThi(int taiKhoanID, int giaoVienID, int deThiID, int lopHocID,
-            int thoiGian, DateTime? hanNop)
+            int thoiGian, DateTime? hanNop, string monHoc = null)
         {
             if (taiKhoanID <= 0 || giaoVienID <= 0 || deThiID <= 0 || lopHocID <= 0 || thoiGian <= 0)
                 throw new ArgumentException("Vui lòng chọn đề thi, lớp học và thời gian làm bài hợp lệ.");
             if (hanNop.HasValue && hanNop.Value <= DateTime.Now)
                 throw new ArgumentException("Hạn nộp phải ở trong tương lai.");
+            if (monHoc != null)
+            {
+                monHoc = monHoc.Trim();
+                if (monHoc.Length == 0 || monHoc.Length > 100)
+                    throw new ArgumentException("Môn học phải có từ 1 đến 100 ký tự.");
+            }
 
             using (var conn = DatabaseHelper.GetConnection())
             {
@@ -241,12 +247,14 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     int lanGiaoID;
                     using (var insert = new NpgsqlCommand(@"
                         INSERT INTO DeThi (TenDeThi,MoTa,ThoiGian,MonHoc,SoCau,GiaoVienID,LopHocID,HanNop,TrangThai)
-                        SELECT TenDeThi,MoTa,@tg,MonHoc,0,GiaoVienID,@lop,@han,'Đang mở'
+                        SELECT TenDeThi,MoTa,@tg,COALESCE(@mon,MonHoc),0,GiaoVienID,@lop,@han,'Đang mở'
                         FROM DeThi WHERE DeThiID=@de RETURNING DeThiID", conn, transaction))
                     {
                         insert.Parameters.AddWithValue("de", deThiID);
                         insert.Parameters.AddWithValue("lop", lopHocID);
                         insert.Parameters.AddWithValue("tg", thoiGian);
+                        insert.Parameters.Add(new NpgsqlParameter("mon", NpgsqlTypes.NpgsqlDbType.Varchar)
+                            { Value = (object)monHoc ?? DBNull.Value });
                         insert.Parameters.Add(new NpgsqlParameter("han", NpgsqlTypes.NpgsqlDbType.Timestamp)
                             { Value = (object)hanNop ?? DBNull.Value });
                         lanGiaoID = Convert.ToInt32(insert.ExecuteScalar());

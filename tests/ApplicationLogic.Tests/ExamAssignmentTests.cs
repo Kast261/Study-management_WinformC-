@@ -21,6 +21,54 @@ namespace ApplicationLogic.Tests
             => new DeThiDAL().TaoLanGiaoDeThi(2, 101, sourceId, classId, minutes, DateTime.Now.AddDays(3));
 
         [Fact]
+        public void SelectedSubjectIsSavedOnNewRoundAndDisplayedInTeacherStudentAndResultTables()
+        {
+            using var db = new LogicDatabase();
+            MakeSourceReusable();
+            DatabaseHelper.ExecuteNonQuery("UPDATE DeThi SET MonHoc='Mạng máy tính' WHERE DeThiID=1");
+            const string selectedSubject = "Lập trình C# WinForms";
+            var dal = new DeThiDAL();
+            int winforms = dal.TaoLanGiaoDeThi(2, 101, 1, 1, 45, null, "  " + selectedSubject + "  ");
+            int networking = dal.TaoLanGiaoDeThi(2, 101, 1, 1, 45, null, "Mạng máy tính");
+            Assert.Equal(selectedSubject, dal.LayTheoID(winforms).MonHoc);
+            Assert.Equal("Mạng máy tính", dal.LayTheoID(networking).MonHoc);
+            Assert.Equal("Mạng máy tính", dal.LayTheoID(1).MonHoc);
+            using var teacher = dal.LayDeThiTheoGiaoVien(101);
+            using var student = dal.LayDeThiChoHocSinh(11);
+            foreach (var table in new[] { teacher, student })
+            {
+                Assert.Equal(selectedSubject, table.Rows.Cast<DataRow>().Single(row => (int)row["DeThiID"] == winforms)["MonHoc"]);
+                Assert.Equal("Mạng máy tính", table.Rows.Cast<DataRow>().Single(row => (int)row["DeThiID"] == networking)["MonHoc"]);
+            }
+            var answers = dal.LayDanhSachCauHoi(winforms).ToDictionary(q => q.CauHoiID, q => q.DapAnDung);
+            var resultDal = new KetQuaDAL();
+            Assert.Equal(10M, resultDal.NopBai(1, 11, winforms, answers).Diem);
+            using var results = resultDal.LayKetQuaTheoLopDangHoc(11, 1);
+            Assert.Equal(selectedSubject, Assert.Single(results.Rows.Cast<DataRow>())["MonHoc"]);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("   ")]
+        public void ExplicitBlankSubjectDoesNotSilentlyReuseTheSourceSubject(string subject)
+        {
+            using var db = new LogicDatabase();
+            Assert.Throws<ArgumentException>(() => new DeThiDAL().TaoLanGiaoDeThi(2, 101, 1, 1, 45, null, subject));
+            Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM DeThi"));
+        }
+
+        [Fact]
+        public void SubjectLengthMatchesTheDatabaseLimit()
+        {
+            using var db = new LogicDatabase();
+            var dal = new DeThiDAL();
+            Assert.Throws<ArgumentException>(() => dal.TaoLanGiaoDeThi(2, 101, 1, 1, 45, null, new string('X', 101)));
+            Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM DeThi"));
+            int assigned = dal.TaoLanGiaoDeThi(2, 101, 1, 1, 45, null, new string('X', 100));
+            Assert.Equal(100, dal.LayTheoID(assigned).MonHoc.Length);
+        }
+
+        [Fact]
         public void SameSourceCanBeAssignedToMultipleClassesAndRepeatedlyToOneClass()
         {
             using var db = new LogicDatabase();
