@@ -9,7 +9,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces
     {
         DataTable LayDeThiChoHocSinh(int hocSinhID);
         DataTable LayDeThiTheoLop(int lopID);
-        DataTable LayDeThiTheoGiaoVien(int gvID);
+        DataTable LayDeThiTheoGiaoVien(int gvID, bool baoGomDaXoa = false);
         DeThi LayTheoID(int deThiID);
         List<CauHoi> LayDanhSachCauHoi(int deThiID);
         bool ThemDeThi(DeThi de);

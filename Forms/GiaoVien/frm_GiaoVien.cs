@@ -1010,6 +1010,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (currentDeID <= 0) currentDeID = _selectedDeThiID;
                 int resultDeID = cmbKQ_DeThi.SelectedValue is int id ? id : 0;
                 DataTable dt = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID);
+                DataTable resultOptions = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID, true);
+                resultOptions.Columns.Add("TenHienThiKetQua", typeof(string));
+                foreach (DataRow row in resultOptions.Rows)
+                    row["TenHienThiKetQua"] = Convert.ToString(row["TenDeThi"])
+                        + (Convert.ToString(row["TrangThai"]) == "Đã xóa" ? " (đã xóa)" : "");
                 DataTable deThiCoCauHoi = ExamSelection.WithQuestions(dt);
                 // Binding temporarily selects the first exam. Do not let that
                 // selection replace the subject/name while restoring the real exam.
@@ -1020,9 +1025,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     cmbDT_DeThi.ValueMember = dt.Columns["DeThiID"].ColumnName;
                     // Đề vừa tạo phải có trong ComboBox ngay cả khi chưa thêm câu hỏi.
                     cmbDT_DeThi.DataSource = dt.Copy();
-                    cmbKQ_DeThi.DisplayMember = dt.Columns["TenDeThi"].ColumnName;
-                    cmbKQ_DeThi.ValueMember = dt.Columns["DeThiID"].ColumnName;
-                    cmbKQ_DeThi.DataSource = dt.Copy();
+                    cmbKQ_DeThi.DisplayMember = "TenHienThiKetQua";
+                    cmbKQ_DeThi.ValueMember = resultOptions.Columns["DeThiID"].ColumnName;
+                    cmbKQ_DeThi.DataSource = resultOptions;
 
                     dgvGVDeThi.DataSource = deThiCoCauHoi;
                     lblDT_SoDeThi.Text = $"Số đề thi: {deThiCoCauHoi.Rows.Count:N0}";
@@ -1031,8 +1036,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     {
                         int deID = Convert.ToInt32(row["DeThiID"]);
                         if (deID == currentDeID) cmbDT_DeThi.SelectedValue = deID;
-                        if (deID == resultDeID) cmbKQ_DeThi.SelectedValue = deID;
                     }
+                    foreach (DataRow row in resultOptions.Rows)
+                        if (Convert.ToInt32(row["DeThiID"]) == resultDeID)
+                            cmbKQ_DeThi.SelectedValue = resultDeID;
                 }
                 finally { _dangTaiDeThi = false; }
 
@@ -1279,7 +1286,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         // -----------------------------------------------------------------------
         // btnDT_XoaDeThi (Tab Quản Lý Đề Thi):
-        //   Xóa đúng đề/lượt đang chọn sau khi xác nhận cả câu hỏi và bài làm liên quan.
+        //   Ẩn đề/lượt đang chọn, giữ lại kết quả và câu hỏi để xem lịch sử bài làm.
         // -----------------------------------------------------------------------
         private void btnDT_XoaDeThi_Click(object sender, EventArgs e)
         {
@@ -1311,7 +1318,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             // 4. Hỏi xác nhận người dùng
             DialogResult confirm = MessageBox.Show(
-                $"Bạn có chắc chắn muốn xóa đề thi \"{tenDeThi}\" (Mã đề: {deID}) không?\n\nToàn bộ câu hỏi, bài làm và điểm của đề/lượt này sẽ bị xóa vĩnh viễn. Các lượt khác và lớp học vẫn được giữ nguyên.",
+                $"Bạn có chắc chắn muốn xóa đề thi \"{tenDeThi}\" (Mã đề: {deID}) khỏi danh sách giao bài không?\n\nĐiểm, đáp án và lịch sử bài làm của học sinh vẫn được giữ để xem lại.",
                 "Xác nhận xóa đề thi",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question

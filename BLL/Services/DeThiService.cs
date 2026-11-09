@@ -31,9 +31,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
             return _deThiDAL.LayDeThiTheoLop(lopID);
         }
 
-        public DataTable LayDeThiTheoGiaoVien(int gvID)
+        public DataTable LayDeThiTheoGiaoVien(int gvID, bool baoGomDaXoa = false)
         {
-            return _deThiDAL.LayDeThiTheoGiaoVien(gvID);
+            return _deThiDAL.LayDeThiTheoGiaoVien(gvID, baoGomDaXoa);
         }
 
         public DeThi LayTheoID(int deThiID)

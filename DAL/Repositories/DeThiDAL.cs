@@ -71,11 +71,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             string sql = @"SELECT DeThiID, TenDeThi, MoTa, ThoiGian, MonHoc, SoCau,
                                   GiaoVienID, LopHocID, NgayTao, HanNop, TrangThai
-                           FROM DeThi WHERE LopHocID = @lopID";
+                           FROM DeThi WHERE LopHocID = @lopID AND COALESCE(TrangThai,'') <> 'Đã xóa'";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@lopID", lopID) });
         }
 
-        public DataTable LayDeThiTheoGiaoVien(int gvID)
+        public DataTable LayDeThiTheoGiaoVien(int gvID, bool baoGomDaXoa = false)
         {
             string sql = @"SELECT d.DeThiID AS ""DeThiID"", 
                                   d.TenDeThi AS ""TenDeThi"", 
@@ -92,8 +92,10 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                            FROM DeThi d
                            LEFT JOIN LopHoc l ON l.LopHocID = d.LopHocID
                            WHERE d.GiaoVienID = @gvID
+                             AND (@baoGomDaXoa OR COALESCE(d.TrangThai,'') <> 'Đã xóa')
                            ORDER BY d.DeThiID DESC";
-            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@gvID", gvID) });
+            return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter("@gvID", gvID),
+                new NpgsqlParameter("@baoGomDaXoa", baoGomDaXoa));
         }
 
         public DeThi LayTheoID(int deThiID)
@@ -224,7 +226,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     // Cùng khóa với các thao tác sửa/nhập câu hỏi để bộ đề được sao chép trọn vẹn.
                     using (var source = new NpgsqlCommand(@"
                         SELECT DeThiID FROM DeThi
-                        WHERE DeThiID=@de AND GiaoVienID=@gv FOR UPDATE", conn, transaction))
+                        WHERE DeThiID=@de AND GiaoVienID=@gv
+                          AND COALESCE(TrangThai,'') <> 'Đã xóa' FOR UPDATE", conn, transaction))
                     {
                         source.Parameters.AddWithValue("de", deThiID);
                         source.Parameters.AddWithValue("gv", giaoVienID);
@@ -290,6 +293,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     using (var check = new NpgsqlCommand(@"
                         SELECT d.DeThiID FROM DeThi d JOIN LopHoc l ON l.LopHocID=@lop AND l.GiaoVienID=d.GiaoVienID
                         WHERE d.DeThiID=@id AND (COALESCE(d.LopHocID,0)=0 OR d.LopHocID=@lop)
+                          AND COALESCE(d.TrangThai,'') <> 'Đã xóa'
                         FOR UPDATE OF d", conn, transaction))
                     {
                         check.Parameters.AddWithValue("id", deThiID); check.Parameters.AddWithValue("lop", lopHocID);
@@ -434,8 +438,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
 
         /// <summary>
-        /// Xóa đúng đề/lượt giao do giáo viên sở hữu cùng bài làm và câu hỏi của lượt đó.
-        /// Các bản giao khác và lớp học được giữ nguyên.
+        /// Ẩn đề/lượt giao do giáo viên sở hữu, giữ câu hỏi và toàn bộ lịch sử bài làm.
         /// </summary>
         public bool XoaDeThi(int deThiID, int taiKhoanID, int giaoVienID, out string thongBao)
         {
@@ -463,16 +466,13 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                             tenDeThi = Convert.ToString(value);
                         }
                         using (var delete = new NpgsqlCommand(@"
-                            DELETE FROM ChiTietBaiLam WHERE KetQuaID IN (SELECT KetQuaID FROM KetQuaThi WHERE DeThiID=@de);
-                            DELETE FROM KetQuaThi WHERE DeThiID=@de;
-                            DELETE FROM CauHoi WHERE DeThiID=@de;
-                            DELETE FROM DeThi WHERE DeThiID=@de", conn, transaction))
+                            UPDATE DeThi SET TrangThai='Đã xóa' WHERE DeThiID=@de", conn, transaction))
                         {
                             delete.Parameters.AddWithValue("de", deThiID);
                             delete.ExecuteNonQuery();
                         }
                         transaction.Commit();
-                        thongBao = $"Đã xóa đề thi \"{tenDeThi}\" (mã {deThiID}) cùng câu hỏi và bài làm của lượt này.";
+                        thongBao = $"Đã ẩn đề thi \"{tenDeThi}\" (mã {deThiID}) khỏi danh sách giao bài. Kết quả và bài làm của học sinh được giữ nguyên.";
                         return true;
                     }
                 }
