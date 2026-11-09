@@ -40,8 +40,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             InitializeComponent();
             if (System.ComponentModel.LicenseManager.UsageMode != System.ComponentModel.LicenseUsageMode.Designtime)
+            {
                 this.DrawerTabControl = materialTabControl1;
-            lblGVTT_HovaTen.Text = Session.HoTen ?? Session.TenDangNhap ?? "";
+                HienThiTheHoSo(new GiaoVien { HoTen = Session.HoTen ?? Session.TenDangNhap });
+            }
 
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
         }
@@ -50,6 +52,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
+                LoadThongTinCaNhan();
                 LoadTrangChu();
                 _daTaiTrangChu = true;
 
@@ -59,7 +62,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 LoadDanhSachLopQuanLy();
                 cboDK_LocTheoLop_SelectedIndexChanged(null, null);
                 LoadDeThiCombobox();
-                LoadThongTinCaNhan();
             }
             catch (Exception ex)
             {
@@ -1477,14 +1479,43 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (gv != null)
                 {
                     txtGVTT_HovaTen.Text = gv.HoTen;
-                    lblGVTT_HovaTen.Text = gv.HoTen;
                     txtTTGV_Email.Text = gv.Email;
                     txtTTGV_DienThoai.Text = gv.SoDienThoai;
                     txtTTGV_DiaChi.Text = gv.DiaChi;
-                    cmbTTGV_GioiTinh.SelectedItem = gv.GioiTinh;
+                    cmbTTGV_GioiTinh.SelectedIndex = -1;
+                    foreach (object item in cmbTTGV_GioiTinh.Items)
+                        if (string.Equals(item.ToString(), gv.GioiTinh?.Trim(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            cmbTTGV_GioiTinh.SelectedItem = item;
+                            break;
+                        }
+                    HienThiTheHoSo(gv);
+                }
+                else
+                {
+                    MessageBox.Show("Không tìm thấy hồ sơ giáo viên đang đăng nhập.", "Thông báo");
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải hồ sơ giáo viên: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private static string GiaTriHoSo(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "Chưa cập nhật" : value.Trim();
+        }
+
+        private void HienThiTheHoSo(GiaoVien gv)
+        {
+            string hoTen = string.IsNullOrWhiteSpace(gv.HoTen) ? GiaTriHoSo(Session.TenDangNhap) : gv.HoTen.Trim();
+            lblGVTT_HovaTen.Text = hoTen;
+            lblTTGV_ChuyenMon.Text = "Chuyên môn: " + GiaTriHoSo(gv.ChuyenMon);
+            lblTTGV_Email.Text = "Email: " + GiaTriHoSo(gv.Email);
+            lblTTGV_SDT.Text = "Số điện thoại: " + GiaTriHoSo(gv.SoDienThoai);
+            Session.HoTen = hoTen;
+            lblTCGV_Chao.Text = "Xin chào, " + hoTen;
         }
 
         private void btnTTGV_LuuThayDoi_Click(object sender, EventArgs e)
@@ -1525,9 +1556,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (new GiaoVienDAL().CapNhatHoSoCaNhan(Session.TaiKhoanID, gv))
                 {
                     MessageBox.Show("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Session.HoTen = gv.HoTen;
-                    lblGVTT_HovaTen.Text = gv.HoTen;
-                    lblTCGV_Chao.Text = $"Xin Chào, {gv.HoTen}";
+                    // Đọc lại cả chuyên môn được giữ nguyên trong database, thay vì dùng model chỉnh sửa thiếu trường này.
+                    LoadThongTinCaNhan();
                 }
             }
             catch (Exception ex)
