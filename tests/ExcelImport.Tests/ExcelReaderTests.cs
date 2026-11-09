@@ -35,6 +35,19 @@ namespace ExcelImport.Tests
         }
 
         [Fact]
+        public void ReadsAllTwentyCSharpQuestionsWithVietnameseTextAndBalancedAnswerKeys()
+        {
+            var questions = CauHoiExcelReader.Read(Fixture("CauHoi_CSharp_WinForms_20.xlsx"));
+            Assert.Equal(20, questions.Count);
+            Assert.Contains("C# WinForms", questions[0].NoiDung);
+            Assert.Contains("txtHoTen", questions[19].NoiDung);
+            Assert.All(questions, question => Assert.Null(CauHoiExcelReader.ValidateQuestion(question)));
+            Assert.Equal(20, questions.Select(question => question.NoiDung).Distinct().Count());
+            foreach (string letter in new[] { "A", "B", "C", "D" })
+                Assert.Equal(5, questions.Count(question => question.DapAnDung == letter));
+        }
+
+        [Fact]
         public void FindsHeadersAfterNotesAndOnLaterSheets()
         {
             var questions = CauHoiExcelReader.Read(Fixture("notes-first.xlsx"));
