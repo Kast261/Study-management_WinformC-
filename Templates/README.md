@@ -39,6 +39,8 @@ chuyển tab. ComboBox giao đề chỉ hiển thị các đề có câu hỏi �
 Mỗi lần xác nhận tạo một lượt thi riêng có mã riêng. Có thể chọn lớp khác do
 giáo viên phụ trách hoặc giao tiếp cho cùng lớp, kể cả khi học viên đã nộp lượt
 trước. ComboBox đề thi chỉ hiện tên đề; chọn lớp nhận bài ở **Giao cho lớp**.
+Môn học của lượt giao dùng đúng tên đang chọn ở ô **Môn học**. Sau khi giao,
+bảng và ComboBox chọn ngay lượt vừa tạo để hiển thị đúng môn đã lưu.
 Điểm, câu trả lời, thời gian và hạn nộp của mỗi lượt độc lập; sửa hoặc nhập thêm
 câu hỏi vào đề gốc không đổi nội dung các lượt đã giao.
 

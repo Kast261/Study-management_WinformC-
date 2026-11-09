@@ -1236,9 +1236,16 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (thoiGian <= 0) thoiGian = 45;
 
             int lopHocID = Convert.ToInt32(cmbDT_GiaoChoLop.SelectedValue);
+            string monHocGiao = (cmbDT_MonHoc.SelectedItem?.ToString() ?? cmbDT_MonHoc.Text).Trim();
+            if (string.IsNullOrWhiteSpace(monHocGiao) || monHocGiao.Length > 100)
+            {
+                MessageBox.Show("Vui lòng chọn môn học hợp lệ trước khi giao đề.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             DateTime? hanNop = DateTime.Now.AddDays(7);
             if (MessageBox.Show(
-                    $"Tạo lượt giao mới cho lớp {cmbDT_GiaoChoLop.Text}?\nSố câu: {soCauHienCo} | Thời gian: {thoiGian} phút\nMỗi lần giao là một bài thi riêng, kể cả lớp đã được giao đề này.",
+                    $"Tạo lượt giao mới cho lớp {cmbDT_GiaoChoLop.Text}?\nMôn học: {monHocGiao}\nSố câu: {soCauHienCo} | Thời gian: {thoiGian} phút\nMỗi lần giao là một bài thi riêng, kể cả lớp đã được giao đề này.",
                     "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
@@ -1246,7 +1253,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 lanGiaoID = _deThiDAL.TaoLanGiaoDeThi(Session.TaiKhoanID, Session.NguoiDungID,
-                    deNguonID, lopHocID, thoiGian, hanNop);
+                    deNguonID, lopHocID, thoiGian, hanNop, monHocGiao);
             }
             catch (Exception ex)
             {
@@ -1260,8 +1267,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
             try
             {
-                // Giữ đề nguồn và lớp đích để tiếp tục giao, không chuyển sang bản vừa sao chép.
-                LoadDeThiCombobox(deNguonID);
+                // Chọn lượt vừa lưu để bảng, ComboBox và môn học cùng hiển thị một bản ghi.
+                LoadDeThiCombobox(lanGiaoID);
                 cmbDT_GiaoChoLop.SelectedValue = lopHocID;
             }
             catch (Exception ex)
