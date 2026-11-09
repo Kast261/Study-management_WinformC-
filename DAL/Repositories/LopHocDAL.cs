@@ -282,10 +282,14 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                   AND EXISTS (SELECT 1 FROM LopHoc l WHERE l.LopHocID=dk.LopHocID AND (@gv=0 OR l.GiaoVienID=@gv))",
                 new NpgsqlParameter("dk", dangKyID), new NpgsqlParameter("gv", giaoVienID)) == 1;
         }
-        public bool DongDangKyLop(int lopHocID)
+        public bool DongDangKyLop(int lopHocID, int giaoVienID = 0)
         {
-            string sql = "UPDATE LopHoc SET TrangThai = 'Đã đóng' WHERE LopHocID = @id";
-            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", lopHocID) }) > 0;
+            if (lopHocID <= 0 || giaoVienID < 0) return false;
+            string sql = @"UPDATE LopHoc SET TrangThai = 'Đã đóng'
+                           WHERE LopHocID = @id AND (@gv=0 OR GiaoVienID=@gv)
+                             AND COALESCE(TrangThai,'Đang mở')='Đang mở'";
+            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter("id", lopHocID),
+                new NpgsqlParameter("gv", giaoVienID)) == 1;
         }
 
         /// <summary>

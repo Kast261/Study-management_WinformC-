@@ -25,6 +25,18 @@ của lượt đó, kể cả khi một lớp khác có cùng môn học.
 
 ## Học viên
 
+Khi Admin thêm học viên, có thể chọn lớp trong ô xếp lớp ngay dưới ngày sinh/
+giới tính. Lớp hiển thị tên, mã lớp và lịch học; không tự chọn một lớp bất kỳ.
+Chọn lớp trước khi bấm **Thêm mới**, rồi tạo tài khoản liên kết đúng hồ sơ vừa
+thêm. Học viên được xếp lớp sẽ thấy cả các đề đã giao trước lúc tạo hồ sơ.
+Chỉ nhận học viên mới vào lớp đang mở và còn chỗ; tạo hồ sơ và xếp lớp cùng
+một transaction, không để lại hồ sơ dở dang khi lớp đóng/đầy.
+
+Nếu giữ **Chưa xếp lớp**, tạo tài khoản chưa tự cấp quyền xem đề. Học viên cần
+đăng ký lớp và được giáo viên duyệt. Các hồ sơ đã tạo trước bản sửa mà chưa
+xếp lớp cũng cần thực hiện bước đăng ký/duyệt này. Ô xếp lớp dành cho thêm mới,
+không chuyển lớp của học viên cũ khi sửa thông tin cá nhân.
+
 Quyền xem bài dựa trên lớp hiện tại hoặc đăng ký **Đã duyệt**, không phụ thuộc
 ngày đăng ký/duyệt có trước hay sau ngày giao đề. Học viên chờ duyệt, bị từ
 chối hoặc thuộc lớp khác không nhìn thấy bài của lớp này.
@@ -41,6 +53,16 @@ lịch sử giao bài. Trang chủ chỉ hiển thị bài còn có thể bắt 
 được giáo viên xóa vẫn tuân theo cơ chế giữ kết quả trong tab Kết quả.
 
 ## Kiểm tra
+
+**Đóng đăng kí** trên form giáo viên lấy mã từ dòng đang được chọn, xác nhận
+cả tên và mã lớp, rồi cập nhật duy nhất mã lớp đó với điều kiện giáo viên sở
+hữu lớp. Đóng đăng ký không đóng các lớp trùng tên/cùng môn, không đóng đề thi
+và không thu hồi quyền làm bài của học viên đã thuộc lớp.
+
+`tests/ApplicationLogic.Tests/AdminEnrollmentAndClassClosureTests.cs` kiểm tra
+tạo hồ sơ có xếp lớp → tạo tài khoản → đăng nhập → xem/làm đề đã giao; hồ sơ
+chưa xếp lớp; lớp đóng/đầy/không tồn tại; thêm đồng thời không vượt sĩ số; đóng
+một lớp trùng tên vẫn đăng ký được lớp khác và vẫn làm được đề cũ.
 
 `tests/ApplicationLogic.Tests/ClassExamVisibilityTests.cs` kiểm tra với
 PostgreSQL: duyệt trước/sau lúc giao, giao nhiều lượt, nộp bài sau khi được

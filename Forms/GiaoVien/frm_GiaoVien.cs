@@ -434,19 +434,25 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnLH_DongDK_Click(object sender, EventArgs e)
         {
-            if (_selectedLopHocID <= 0)
+            var selected = dgvLopHoc.CurrentRow?.DataBoundItem as DataRowView;
+            if (selected == null || dgvLopHoc.SelectedRows.Count != 1 || Session.NguoiDungID <= 0)
             {
                 MessageBox.Show("Vui lòng chọn lớp học cần đóng đăng ký!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (MessageBox.Show("Đóng đăng ký cho lớp này? Học viên mới sẽ không thể đăng ký vào nữa.", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            int lopHocID = Convert.ToInt32(selected["LopHocID"]);
+            string tenLop = ExamSelection.ClassDisplayName(selected.Row);
+            if (MessageBox.Show($"Đóng đăng ký cho {tenLop}? Học viên mới sẽ không thể đăng ký vào lớp này. Các lớp khác vẫn mở đăng ký.", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (_lopDAL.DongDangKyLop(_selectedLopHocID))
+                if (_lopDAL.DongDangKyLop(lopHocID, Session.NguoiDungID))
                 {
-                    MessageBox.Show("Đã đóng đăng ký lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Đã đóng đăng ký {tenLop}.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadDanhSachLopQuanLy();
+                    LoadTrangChu();
                 }
+                else
+                    MessageBox.Show("Lớp đã đóng hoặc không còn do bạn phụ trách. Vui lòng tải lại danh sách.", "Thông báo");
             }
         }
 
