@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.IO;
 using System.Linq;
 using BLT_Quan_Ly_Hoc_Tap.DAL;
 using BLT_Quan_Ly_Hoc_Tap.Database;
@@ -81,6 +82,8 @@ namespace ApplicationLogic.Tests
             Assert.Equal(new[] { assignment }, Ids(exams.LayBaiThiDangMoChoHocSinh(studentId), "DeThiID"));
             Assert.Equal("Toán Lớp 2", exams.LayDeThiChoHocSinh(studentId).Rows[0]["TenLop"]);
             Assert.True(exams.CoTheBatDauThi(studentId, assignment));
+            using var report = Diagnose();
+            Assert.Equal("Đủ điều kiện hiện bài thi", Assert.Single(report.Rows.Cast<DataRow>())["ChanDoan"]);
         }
 
         [Fact]
@@ -88,6 +91,7 @@ namespace ApplicationLogic.Tests
         {
             using var db = new LogicDatabase();
             DatabaseHelper.ExecuteNonQuery(@"
+                UPDATE TaiKhoan SET TenDangNhap='HungHocVien' WHERE TaiKhoanID=3;
                 UPDATE LopHoc SET TenLop='Toán Lớp 2' WHERE LopHocID=2;
                 INSERT INTO LopHoc (LopHocID,TenLop,GiaoVienID,KhoaHocID)
                     VALUES (3,'Toán Lớp 2',101,1);");
@@ -99,11 +103,23 @@ namespace ApplicationLogic.Tests
             int otherClassExam = exams.TaoLanGiaoDeThi(2, 101, 1, 3, 45, null);
             Assert.Empty(exams.LayDeThiChoHocSinh(22).Rows);
             Assert.False(exams.CoTheBatDauThi(22, otherClassExam));
+            using var report = Diagnose();
+            Assert.Equal("Học viên chưa thuộc mã lớp này: kiểm tra lớp trùng tên",
+                report.Rows.Cast<DataRow>().Single(row => Convert.ToInt32(row["LopHocID"]) == 3)["ChanDoan"]);
+            Assert.Equal("Chưa có lượt đề thi được lưu cho mã lớp này",
+                report.Rows.Cast<DataRow>().Single(row => Convert.ToInt32(row["LopHocID"]) == 2)["ChanDoan"]);
             int correctClassExam = exams.TaoLanGiaoDeThi(2, 101, 1, 2, 45, null);
             Assert.Equal(new[] { correctClassExam }, Ids(exams.LayDeThiChoHocSinh(22), "DeThiID"));
         }
 
         private static int[] Ids(DataTable table, string column) => table.Rows.Cast<DataRow>()
             .Select(row => Convert.ToInt32(row[column])).OrderBy(id => id).ToArray();
+
+        private static DataTable Diagnose()
+        {
+            using var stream = typeof(StudentAssignedExamFlowTests).Assembly.GetManifestResourceStream("DiagnoseStudentExams.sql");
+            using var reader = new StreamReader(stream);
+            return DatabaseHelper.ExecuteQuery(reader.ReadToEnd());
+        }
     }
 }
