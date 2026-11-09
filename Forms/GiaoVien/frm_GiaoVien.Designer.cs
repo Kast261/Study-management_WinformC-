@@ -28,27 +28,77 @@ namespace BLT_Quan_Ly_Hoc_Tap
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle styledataGridViewTextBoxColumn33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle styledataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
             this.mnuCH_Excel = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuCH_LuuMauExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.tipCH_Excel = new System.Windows.Forms.ToolTip(this.components);
             this.btnCH_Excel = new ReaLTaiizor.Controls.ForeverButton();
             this.materialTabControl1 = new ReaLTaiizor.Controls.MaterialTabControl();
             this.pageGV_TrangChu = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel34 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.lblTCHV_TatCaBaiThi = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTCGV_Chao = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel66 = new System.Windows.Forms.Panel();
+            this.lblTCGV_NgayThangHT = new ReaLTaiizor.Controls.MaterialLabel();
+            this.btnTCGV_GiaoBai = new ReaLTaiizor.Controls.ForeverButton();
+            this.tableLayoutPanel35 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel67 = new System.Windows.Forms.Panel();
+            this.lblTCGV_LopDH = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel68 = new System.Windows.Forms.Panel();
+            this.lblTCGV_HocVien = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel69 = new System.Windows.Forms.Panel();
+            this.lblTCGV_ChoDuyet = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel70 = new System.Windows.Forms.Panel();
+            this.lblTCGV_BaiThiDangMo = new ReaLTaiizor.Controls.MaterialLabel();
+            this.tableLayoutPanel36 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel71 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel37 = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvBaiThiDangMo = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel72 = new System.Windows.Forms.Panel();
+            this.lblTCGV_XemTatCaLop = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel29 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.materialLabel30 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel73 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel38 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel74 = new System.Windows.Forms.Panel();
+            this.lblTCGV_SoLopQuanLy = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel75 = new System.Windows.Forms.Panel();
+            this.btnTCGV_QuanLyLop = new ReaLTaiizor.Controls.ForeverButton();
+            this.tableLayoutPanel39 = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvTCBaiThi = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel40 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel76 = new System.Windows.Forms.Panel();
+            this.materialLabel32 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel77 = new System.Windows.Forms.Panel();
+            this.lblTCGV_XemTatCaBaiThi = new ReaLTaiizor.Controls.MaterialLabel();
+            this.tableLayoutPanel41 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel78 = new System.Windows.Forms.Panel();
+            this.materialLabel33 = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTCGV_SoYeuCauChoDuyet = new ReaLTaiizor.Controls.MaterialLabel();
+            this.panel79 = new System.Windows.Forms.Panel();
+            this.btnTCGV_DuyetNgay = new ReaLTaiizor.Controls.ForeverButton();
             this.pageGV_LopHoc = new System.Windows.Forms.TabPage();
             this.tlpTeacherPage = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -304,59 +354,38 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel54 = new ReaLTaiizor.Controls.MaterialLabel();
             this.lblGVTT_HovaTen = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageGV_DangXuat = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel34 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.lblTCHV_TatCaBaiThi = new ReaLTaiizor.Controls.MaterialLabel();
-            this.lblTCGV_Chao = new ReaLTaiizor.Controls.MaterialLabel();
-            this.panel66 = new System.Windows.Forms.Panel();
-            this.lblTCGV_NgayThangHT = new ReaLTaiizor.Controls.MaterialLabel();
-            this.btnTCGV_GiaoBai = new ReaLTaiizor.Controls.ForeverButton();
-            this.tableLayoutPanel35 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel67 = new System.Windows.Forms.Panel();
-            this.lblTCGV_LopDH = new ReaLTaiizor.Controls.MaterialLabel();
-            this.panel68 = new System.Windows.Forms.Panel();
-            this.lblTCGV_HocVien = new ReaLTaiizor.Controls.MaterialLabel();
-            this.panel69 = new System.Windows.Forms.Panel();
-            this.lblTCGV_ChoDuyet = new ReaLTaiizor.Controls.MaterialLabel();
-            this.panel70 = new System.Windows.Forms.Panel();
-            this.lblTCGV_BaiThiDangMo = new ReaLTaiizor.Controls.MaterialLabel();
-            this.tableLayoutPanel36 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel71 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel37 = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvBaiThiDangMo = new System.Windows.Forms.DataGridView();
-            this.panel72 = new System.Windows.Forms.Panel();
-            this.lblTCGV_XemTatCaLop = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialLabel29 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialLabel30 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.panel73 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel38 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel74 = new System.Windows.Forms.Panel();
-            this.lblTCGV_SoLopQuanLy = new ReaLTaiizor.Controls.MaterialLabel();
-            this.panel75 = new System.Windows.Forms.Panel();
-            this.btnTCGV_QuanLyLop = new ReaLTaiizor.Controls.ForeverButton();
-            this.tableLayoutPanel39 = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvTCBaiThi = new System.Windows.Forms.DataGridView();
-            this.tableLayoutPanel40 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel76 = new System.Windows.Forms.Panel();
-            this.materialLabel32 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.panel77 = new System.Windows.Forms.Panel();
-            this.lblTCGV_XemTatCaBaiThi = new ReaLTaiizor.Controls.MaterialLabel();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tableLayoutPanel41 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel78 = new System.Windows.Forms.Panel();
-            this.lblTCGV_SoYeuCauChoDuyet = new ReaLTaiizor.Controls.MaterialLabel();
-            this.materialLabel33 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.panel79 = new System.Windows.Forms.Panel();
-            this.btnTCGV_DuyetNgay = new ReaLTaiizor.Controls.ForeverButton();
+            this.lblTTGV_ChuyenMon = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTTGV_Email = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTTGV_SDT = new ReaLTaiizor.Controls.MaterialLabel();
             this.mnuCH_Excel.SuspendLayout();
             this.materialTabControl1.SuspendLayout();
             this.pageGV_TrangChu.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
+            this.tableLayoutPanel34.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel66.SuspendLayout();
+            this.tableLayoutPanel35.SuspendLayout();
+            this.panel67.SuspendLayout();
+            this.panel68.SuspendLayout();
+            this.panel69.SuspendLayout();
+            this.panel70.SuspendLayout();
+            this.tableLayoutPanel36.SuspendLayout();
+            this.panel71.SuspendLayout();
+            this.tableLayoutPanel37.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBaiThiDangMo)).BeginInit();
+            this.panel72.SuspendLayout();
+            this.panel73.SuspendLayout();
+            this.tableLayoutPanel38.SuspendLayout();
+            this.panel74.SuspendLayout();
+            this.panel75.SuspendLayout();
+            this.tableLayoutPanel39.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTCBaiThi)).BeginInit();
+            this.tableLayoutPanel40.SuspendLayout();
+            this.panel76.SuspendLayout();
+            this.panel77.SuspendLayout();
+            this.tableLayoutPanel41.SuspendLayout();
+            this.panel78.SuspendLayout();
+            this.panel79.SuspendLayout();
             this.pageGV_LopHoc.SuspendLayout();
             this.tlpTeacherPage.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -464,32 +493,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel50.SuspendLayout();
             this.panel51.SuspendLayout();
             this.tableLayoutPanel29.SuspendLayout();
-            this.tableLayoutPanel8.SuspendLayout();
-            this.tableLayoutPanel34.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel66.SuspendLayout();
-            this.tableLayoutPanel35.SuspendLayout();
-            this.panel67.SuspendLayout();
-            this.panel68.SuspendLayout();
-            this.panel69.SuspendLayout();
-            this.panel70.SuspendLayout();
-            this.tableLayoutPanel36.SuspendLayout();
-            this.panel71.SuspendLayout();
-            this.tableLayoutPanel37.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBaiThiDangMo)).BeginInit();
-            this.panel72.SuspendLayout();
-            this.panel73.SuspendLayout();
-            this.tableLayoutPanel38.SuspendLayout();
-            this.panel74.SuspendLayout();
-            this.panel75.SuspendLayout();
-            this.tableLayoutPanel39.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTCBaiThi)).BeginInit();
-            this.tableLayoutPanel40.SuspendLayout();
-            this.panel76.SuspendLayout();
-            this.panel77.SuspendLayout();
-            this.tableLayoutPanel41.SuspendLayout();
-            this.panel78.SuspendLayout();
-            this.panel79.SuspendLayout();
             this.SuspendLayout();
             // 
             // mnuCH_Excel
@@ -556,6 +559,683 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageGV_TrangChu.TabIndex = 0;
             this.pageGV_TrangChu.Text = "Trang Chủ";
             this.pageGV_TrangChu.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.ColumnCount = 1;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel34, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel35, 0, 1);
+            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel36, 0, 2);
+            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel41, 0, 3);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 4;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.1924F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.74256F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65.30343F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.81794F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(1522, 758);
+            this.tableLayoutPanel8.TabIndex = 1;
+            // 
+            // tableLayoutPanel34
+            // 
+            this.tableLayoutPanel34.ColumnCount = 2;
+            this.tableLayoutPanel34.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.48092F));
+            this.tableLayoutPanel34.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.51908F));
+            this.tableLayoutPanel34.Controls.Add(this.panel3, 0, 0);
+            this.tableLayoutPanel34.Controls.Add(this.panel66, 1, 0);
+            this.tableLayoutPanel34.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel34.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel34.Name = "tableLayoutPanel34";
+            this.tableLayoutPanel34.RowCount = 1;
+            this.tableLayoutPanel34.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel34.Size = new System.Drawing.Size(1516, 71);
+            this.tableLayoutPanel34.TabIndex = 0;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.lblTCHV_TatCaBaiThi);
+            this.panel3.Controls.Add(this.lblTCGV_Chao);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(3, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1168, 65);
+            this.panel3.TabIndex = 0;
+            // 
+            // lblTCHV_TatCaBaiThi
+            // 
+            this.lblTCHV_TatCaBaiThi.AutoSize = true;
+            this.lblTCHV_TatCaBaiThi.Depth = 0;
+            this.lblTCHV_TatCaBaiThi.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTCHV_TatCaBaiThi.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCHV_TatCaBaiThi.Location = new System.Drawing.Point(0, 30);
+            this.lblTCHV_TatCaBaiThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCHV_TatCaBaiThi.Name = "lblTCHV_TatCaBaiThi";
+            this.lblTCHV_TatCaBaiThi.Size = new System.Drawing.Size(385, 24);
+            this.lblTCHV_TatCaBaiThi.TabIndex = 1;
+            this.lblTCHV_TatCaBaiThi.Text = "Số Bài thi đang mở , hãy hoàn thành bài tập";
+            // 
+            // lblTCGV_Chao
+            // 
+            this.lblTCGV_Chao.AutoSize = true;
+            this.lblTCGV_Chao.Depth = 0;
+            this.lblTCGV_Chao.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTCGV_Chao.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_Chao.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblTCGV_Chao.Location = new System.Drawing.Point(0, 0);
+            this.lblTCGV_Chao.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_Chao.Name = "lblTCGV_Chao";
+            this.lblTCGV_Chao.Size = new System.Drawing.Size(59, 30);
+            this.lblTCGV_Chao.TabIndex = 0;
+            this.lblTCGV_Chao.Text = "Chào";
+            // 
+            // panel66
+            // 
+            this.panel66.Controls.Add(this.lblTCGV_NgayThangHT);
+            this.panel66.Controls.Add(this.btnTCGV_GiaoBai);
+            this.panel66.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel66.Location = new System.Drawing.Point(1177, 3);
+            this.panel66.Name = "panel66";
+            this.panel66.Size = new System.Drawing.Size(336, 65);
+            this.panel66.TabIndex = 1;
+            // 
+            // lblTCGV_NgayThangHT
+            // 
+            this.lblTCGV_NgayThangHT.AutoSize = true;
+            this.lblTCGV_NgayThangHT.Depth = 0;
+            this.lblTCGV_NgayThangHT.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTCGV_NgayThangHT.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_NgayThangHT.Location = new System.Drawing.Point(0, 0);
+            this.lblTCGV_NgayThangHT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_NgayThangHT.Name = "lblTCGV_NgayThangHT";
+            this.lblTCGV_NgayThangHT.Size = new System.Drawing.Size(226, 24);
+            this.lblTCGV_NgayThangHT.TabIndex = 1;
+            this.lblTCGV_NgayThangHT.Text = "Thứ Ngày Tháng Hiện Tại";
+            // 
+            // btnTCGV_GiaoBai
+            // 
+            this.btnTCGV_GiaoBai.BackColor = System.Drawing.Color.Transparent;
+            this.btnTCGV_GiaoBai.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(83)))), ((int)(((byte)(183)))));
+            this.btnTCGV_GiaoBai.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTCGV_GiaoBai.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnTCGV_GiaoBai.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnTCGV_GiaoBai.Location = new System.Drawing.Point(0, 25);
+            this.btnTCGV_GiaoBai.Name = "btnTCGV_GiaoBai";
+            this.btnTCGV_GiaoBai.Rounded = false;
+            this.btnTCGV_GiaoBai.Size = new System.Drawing.Size(336, 40);
+            this.btnTCGV_GiaoBai.TabIndex = 0;
+            this.btnTCGV_GiaoBai.Text = "Giao Bài Tập";
+            this.btnTCGV_GiaoBai.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.btnTCGV_GiaoBai.Click += new System.EventHandler(this.btnTCGV_GiaoBai_Click);
+            // 
+            // tableLayoutPanel35
+            // 
+            this.tableLayoutPanel35.ColumnCount = 4;
+            this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel35.Controls.Add(this.panel67, 0, 0);
+            this.tableLayoutPanel35.Controls.Add(this.panel68, 1, 0);
+            this.tableLayoutPanel35.Controls.Add(this.panel69, 2, 0);
+            this.tableLayoutPanel35.Controls.Add(this.panel70, 3, 0);
+            this.tableLayoutPanel35.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel35.Location = new System.Drawing.Point(3, 80);
+            this.tableLayoutPanel35.Name = "tableLayoutPanel35";
+            this.tableLayoutPanel35.RowCount = 1;
+            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 98F));
+            this.tableLayoutPanel35.Size = new System.Drawing.Size(1516, 98);
+            this.tableLayoutPanel35.TabIndex = 1;
+            // 
+            // panel67
+            // 
+            this.panel67.Controls.Add(this.lblTCGV_LopDH);
+            this.panel67.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel67.Location = new System.Drawing.Point(3, 3);
+            this.panel67.Name = "panel67";
+            this.panel67.Size = new System.Drawing.Size(373, 92);
+            this.panel67.TabIndex = 0;
+            // 
+            // lblTCGV_LopDH
+            // 
+            this.lblTCGV_LopDH.Depth = 0;
+            this.lblTCGV_LopDH.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTCGV_LopDH.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_LopDH.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblTCGV_LopDH.Location = new System.Drawing.Point(0, 0);
+            this.lblTCGV_LopDH.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_LopDH.Name = "lblTCGV_LopDH";
+            this.lblTCGV_LopDH.Size = new System.Drawing.Size(373, 92);
+            this.lblTCGV_LopDH.TabIndex = 0;
+            this.lblTCGV_LopDH.Text = "Lớp đang dạy\n--";
+            this.lblTCGV_LopDH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel68
+            // 
+            this.panel68.Controls.Add(this.lblTCGV_HocVien);
+            this.panel68.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel68.Location = new System.Drawing.Point(382, 3);
+            this.panel68.Name = "panel68";
+            this.panel68.Size = new System.Drawing.Size(373, 92);
+            this.panel68.TabIndex = 1;
+            // 
+            // lblTCGV_HocVien
+            // 
+            this.lblTCGV_HocVien.Depth = 0;
+            this.lblTCGV_HocVien.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTCGV_HocVien.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_HocVien.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblTCGV_HocVien.Location = new System.Drawing.Point(0, 0);
+            this.lblTCGV_HocVien.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_HocVien.Name = "lblTCGV_HocVien";
+            this.lblTCGV_HocVien.Size = new System.Drawing.Size(373, 92);
+            this.lblTCGV_HocVien.TabIndex = 0;
+            this.lblTCGV_HocVien.Text = "Học viên\n--";
+            this.lblTCGV_HocVien.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel69
+            // 
+            this.panel69.Controls.Add(this.lblTCGV_ChoDuyet);
+            this.panel69.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel69.Location = new System.Drawing.Point(761, 3);
+            this.panel69.Name = "panel69";
+            this.panel69.Size = new System.Drawing.Size(373, 92);
+            this.panel69.TabIndex = 2;
+            // 
+            // lblTCGV_ChoDuyet
+            // 
+            this.lblTCGV_ChoDuyet.Depth = 0;
+            this.lblTCGV_ChoDuyet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTCGV_ChoDuyet.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_ChoDuyet.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblTCGV_ChoDuyet.Location = new System.Drawing.Point(0, 0);
+            this.lblTCGV_ChoDuyet.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_ChoDuyet.Name = "lblTCGV_ChoDuyet";
+            this.lblTCGV_ChoDuyet.Size = new System.Drawing.Size(373, 92);
+            this.lblTCGV_ChoDuyet.TabIndex = 0;
+            this.lblTCGV_ChoDuyet.Text = "Yêu cầu chờ duyệt\n--";
+            this.lblTCGV_ChoDuyet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel70
+            // 
+            this.panel70.Controls.Add(this.lblTCGV_BaiThiDangMo);
+            this.panel70.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel70.Location = new System.Drawing.Point(1140, 3);
+            this.panel70.Name = "panel70";
+            this.panel70.Size = new System.Drawing.Size(373, 92);
+            this.panel70.TabIndex = 3;
+            // 
+            // lblTCGV_BaiThiDangMo
+            // 
+            this.lblTCGV_BaiThiDangMo.Depth = 0;
+            this.lblTCGV_BaiThiDangMo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTCGV_BaiThiDangMo.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_BaiThiDangMo.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblTCGV_BaiThiDangMo.Location = new System.Drawing.Point(0, 0);
+            this.lblTCGV_BaiThiDangMo.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_BaiThiDangMo.Name = "lblTCGV_BaiThiDangMo";
+            this.lblTCGV_BaiThiDangMo.Size = new System.Drawing.Size(373, 92);
+            this.lblTCGV_BaiThiDangMo.TabIndex = 0;
+            this.lblTCGV_BaiThiDangMo.Text = "Bài thi đang mở\n--";
+            this.lblTCGV_BaiThiDangMo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel36
+            // 
+            this.tableLayoutPanel36.ColumnCount = 2;
+            this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.22691F));
+            this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.77309F));
+            this.tableLayoutPanel36.Controls.Add(this.panel71, 0, 0);
+            this.tableLayoutPanel36.Controls.Add(this.tableLayoutPanel39, 1, 0);
+            this.tableLayoutPanel36.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel36.Location = new System.Drawing.Point(3, 184);
+            this.tableLayoutPanel36.Name = "tableLayoutPanel36";
+            this.tableLayoutPanel36.RowCount = 1;
+            this.tableLayoutPanel36.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel36.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 488F));
+            this.tableLayoutPanel36.Size = new System.Drawing.Size(1516, 488);
+            this.tableLayoutPanel36.TabIndex = 2;
+            // 
+            // panel71
+            // 
+            this.panel71.Controls.Add(this.tableLayoutPanel37);
+            this.panel71.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel71.Location = new System.Drawing.Point(3, 3);
+            this.panel71.Name = "panel71";
+            this.panel71.Size = new System.Drawing.Size(998, 482);
+            this.panel71.TabIndex = 0;
+            // 
+            // tableLayoutPanel37
+            // 
+            this.tableLayoutPanel37.ColumnCount = 1;
+            this.tableLayoutPanel37.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel37.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel37.Controls.Add(this.dgvBaiThiDangMo, 0, 1);
+            this.tableLayoutPanel37.Controls.Add(this.panel72, 0, 0);
+            this.tableLayoutPanel37.Controls.Add(this.panel73, 0, 2);
+            this.tableLayoutPanel37.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel37.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel37.Name = "tableLayoutPanel37";
+            this.tableLayoutPanel37.RowCount = 3;
+            this.tableLayoutPanel37.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.82255F));
+            this.tableLayoutPanel37.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 72.44259F));
+            this.tableLayoutPanel37.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.66026F));
+            this.tableLayoutPanel37.Size = new System.Drawing.Size(998, 482);
+            this.tableLayoutPanel37.TabIndex = 0;
+            // 
+            // dgvBaiThiDangMo
+            // 
+            this.dgvBaiThiDangMo.AllowUserToAddRows = false;
+            this.dgvBaiThiDangMo.AllowUserToDeleteRows = false;
+            this.dgvBaiThiDangMo.AllowUserToResizeColumns = false;
+            this.dgvBaiThiDangMo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvBaiThiDangMo.BackgroundColor = System.Drawing.Color.White;
+            this.dgvBaiThiDangMo.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvBaiThiDangMo.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvBaiThiDangMo.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBaiThiDangMo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            this.dgvBaiThiDangMo.ColumnHeadersHeight = 44;
+            this.dgvBaiThiDangMo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvBaiThiDangMo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn8,
+            this.dataGridViewTextBoxColumn9});
+            this.dgvBaiThiDangMo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvBaiThiDangMo.EnableHeadersVisualStyles = false;
+            this.dgvBaiThiDangMo.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
+            this.dgvBaiThiDangMo.Location = new System.Drawing.Point(3, 74);
+            this.dgvBaiThiDangMo.MultiSelect = false;
+            this.dgvBaiThiDangMo.Name = "dgvBaiThiDangMo";
+            this.dgvBaiThiDangMo.ReadOnly = true;
+            this.dgvBaiThiDangMo.RowHeadersVisible = false;
+            this.dgvBaiThiDangMo.RowHeadersWidth = 51;
+            this.dgvBaiThiDangMo.RowTemplate.Height = 24;
+            this.dgvBaiThiDangMo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvBaiThiDangMo.Size = new System.Drawing.Size(992, 343);
+            this.dgvBaiThiDangMo.TabIndex = 6;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.DataPropertyName = "TenLop";
+            this.dataGridViewTextBoxColumn7.HeaderText = "Lớp Học";
+            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.DataPropertyName = "SiSo";
+            this.dataGridViewTextBoxColumn8.HeaderText = "Sĩ Số";
+            this.dataGridViewTextBoxColumn8.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.DataPropertyName = "LichHoc";
+            this.dataGridViewTextBoxColumn9.HeaderText = "Lịch Học";
+            this.dataGridViewTextBoxColumn9.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            // 
+            // panel72
+            // 
+            this.panel72.Controls.Add(this.lblTCGV_XemTatCaLop);
+            this.panel72.Controls.Add(this.materialLabel29);
+            this.panel72.Controls.Add(this.materialLabel30);
+            this.panel72.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel72.Location = new System.Drawing.Point(3, 3);
+            this.panel72.Name = "panel72";
+            this.panel72.Size = new System.Drawing.Size(992, 65);
+            this.panel72.TabIndex = 0;
+            // 
+            // lblTCGV_XemTatCaLop
+            // 
+            this.lblTCGV_XemTatCaLop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTCGV_XemTatCaLop.AutoSize = true;
+            this.lblTCGV_XemTatCaLop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblTCGV_XemTatCaLop.Depth = 0;
+            this.lblTCGV_XemTatCaLop.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_XemTatCaLop.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.lblTCGV_XemTatCaLop.Location = new System.Drawing.Point(869, 16);
+            this.lblTCGV_XemTatCaLop.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_XemTatCaLop.Name = "lblTCGV_XemTatCaLop";
+            this.lblTCGV_XemTatCaLop.Size = new System.Drawing.Size(107, 24);
+            this.lblTCGV_XemTatCaLop.TabIndex = 2;
+            this.lblTCGV_XemTatCaLop.Text = "Xem Tất Cả";
+            this.lblTCGV_XemTatCaLop.Click += new System.EventHandler(this.btnTCGV_QuanLyLop_Click);
+            // 
+            // materialLabel29
+            // 
+            this.materialLabel29.AutoSize = true;
+            this.materialLabel29.Depth = 0;
+            this.materialLabel29.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel29.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel29.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel29.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel29.Name = "materialLabel29";
+            this.materialLabel29.Size = new System.Drawing.Size(277, 24);
+            this.materialLabel29.TabIndex = 1;
+            this.materialLabel29.Text = "Các Lớp Đang Được Phân Công";
+            // 
+            // materialLabel30
+            // 
+            this.materialLabel30.AutoSize = true;
+            this.materialLabel30.Depth = 0;
+            this.materialLabel30.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel30.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel30.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel30.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel30.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel30.Name = "materialLabel30";
+            this.materialLabel30.Size = new System.Drawing.Size(185, 30);
+            this.materialLabel30.TabIndex = 0;
+            this.materialLabel30.Text = "Lớp Học Của Tôi";
+            // 
+            // panel73
+            // 
+            this.panel73.Controls.Add(this.tableLayoutPanel38);
+            this.panel73.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel73.Location = new System.Drawing.Point(3, 423);
+            this.panel73.Name = "panel73";
+            this.panel73.Size = new System.Drawing.Size(992, 56);
+            this.panel73.TabIndex = 7;
+            // 
+            // tableLayoutPanel38
+            // 
+            this.tableLayoutPanel38.ColumnCount = 2;
+            this.tableLayoutPanel38.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.05943F));
+            this.tableLayoutPanel38.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.94058F));
+            this.tableLayoutPanel38.Controls.Add(this.panel74, 0, 0);
+            this.tableLayoutPanel38.Controls.Add(this.panel75, 1, 0);
+            this.tableLayoutPanel38.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel38.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel38.Name = "tableLayoutPanel38";
+            this.tableLayoutPanel38.RowCount = 1;
+            this.tableLayoutPanel38.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel38.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
+            this.tableLayoutPanel38.Size = new System.Drawing.Size(992, 56);
+            this.tableLayoutPanel38.TabIndex = 0;
+            // 
+            // panel74
+            // 
+            this.panel74.Controls.Add(this.lblTCGV_SoLopQuanLy);
+            this.panel74.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel74.Location = new System.Drawing.Point(3, 3);
+            this.panel74.Name = "panel74";
+            this.panel74.Size = new System.Drawing.Size(669, 50);
+            this.panel74.TabIndex = 0;
+            // 
+            // lblTCGV_SoLopQuanLy
+            // 
+            this.lblTCGV_SoLopQuanLy.AutoSize = true;
+            this.lblTCGV_SoLopQuanLy.Depth = 0;
+            this.lblTCGV_SoLopQuanLy.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTCGV_SoLopQuanLy.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_SoLopQuanLy.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblTCGV_SoLopQuanLy.Location = new System.Drawing.Point(0, 0);
+            this.lblTCGV_SoLopQuanLy.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_SoLopQuanLy.Name = "lblTCGV_SoLopQuanLy";
+            this.lblTCGV_SoLopQuanLy.Size = new System.Drawing.Size(240, 30);
+            this.lblTCGV_SoLopQuanLy.TabIndex = 0;
+            this.lblTCGV_SoLopQuanLy.Text = "Số Lớp Đang Quản Lý";
+            // 
+            // panel75
+            // 
+            this.panel75.Controls.Add(this.btnTCGV_QuanLyLop);
+            this.panel75.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel75.Location = new System.Drawing.Point(678, 3);
+            this.panel75.Name = "panel75";
+            this.panel75.Size = new System.Drawing.Size(311, 50);
+            this.panel75.TabIndex = 1;
+            // 
+            // btnTCGV_QuanLyLop
+            // 
+            this.btnTCGV_QuanLyLop.BackColor = System.Drawing.Color.Transparent;
+            this.btnTCGV_QuanLyLop.BaseColor = System.Drawing.Color.White;
+            this.btnTCGV_QuanLyLop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTCGV_QuanLyLop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnTCGV_QuanLyLop.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnTCGV_QuanLyLop.Location = new System.Drawing.Point(0, 0);
+            this.btnTCGV_QuanLyLop.Name = "btnTCGV_QuanLyLop";
+            this.btnTCGV_QuanLyLop.Rounded = false;
+            this.btnTCGV_QuanLyLop.Size = new System.Drawing.Size(311, 50);
+            this.btnTCGV_QuanLyLop.TabIndex = 1;
+            this.btnTCGV_QuanLyLop.Text = "Quản Lý Lớp";
+            this.btnTCGV_QuanLyLop.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(83)))), ((int)(((byte)(183)))));
+            this.btnTCGV_QuanLyLop.Click += new System.EventHandler(this.btnTCGV_QuanLyLop_Click);
+            // 
+            // tableLayoutPanel39
+            // 
+            this.tableLayoutPanel39.ColumnCount = 1;
+            this.tableLayoutPanel39.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel39.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel39.Controls.Add(this.dgvTCBaiThi, 0, 1);
+            this.tableLayoutPanel39.Controls.Add(this.tableLayoutPanel40, 0, 0);
+            this.tableLayoutPanel39.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel39.Location = new System.Drawing.Point(1007, 3);
+            this.tableLayoutPanel39.Name = "tableLayoutPanel39";
+            this.tableLayoutPanel39.RowCount = 2;
+            this.tableLayoutPanel39.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.57692F));
+            this.tableLayoutPanel39.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.42308F));
+            this.tableLayoutPanel39.Size = new System.Drawing.Size(506, 482);
+            this.tableLayoutPanel39.TabIndex = 1;
+            // 
+            // dgvTCBaiThi
+            // 
+            this.dgvTCBaiThi.AllowUserToAddRows = false;
+            this.dgvTCBaiThi.AllowUserToDeleteRows = false;
+            this.dgvTCBaiThi.AllowUserToResizeColumns = false;
+            this.dgvTCBaiThi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTCBaiThi.BackgroundColor = System.Drawing.Color.White;
+            this.dgvTCBaiThi.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvTCBaiThi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvTCBaiThi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTCBaiThi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            this.dgvTCBaiThi.ColumnHeadersHeight = 44;
+            this.dgvTCBaiThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvTCBaiThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn11,
+            this.dataGridViewTextBoxColumn12,
+            this.dataGridViewTextBoxColumn33});
+            this.dgvTCBaiThi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTCBaiThi.EnableHeadersVisualStyles = false;
+            this.dgvTCBaiThi.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
+            this.dgvTCBaiThi.Location = new System.Drawing.Point(3, 53);
+            this.dgvTCBaiThi.MultiSelect = false;
+            this.dgvTCBaiThi.Name = "dgvTCBaiThi";
+            this.dgvTCBaiThi.ReadOnly = true;
+            this.dgvTCBaiThi.RowHeadersVisible = false;
+            this.dgvTCBaiThi.RowHeadersWidth = 51;
+            this.dgvTCBaiThi.RowTemplate.Height = 24;
+            this.dgvTCBaiThi.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTCBaiThi.Size = new System.Drawing.Size(500, 426);
+            this.dgvTCBaiThi.TabIndex = 7;
+            this.dgvTCBaiThi.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTCBaiThi_CellDoubleClick);
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.DataPropertyName = "TenDeThi";
+            this.dataGridViewTextBoxColumn11.HeaderText = "Đề Thi";
+            this.dataGridViewTextBoxColumn11.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            this.dataGridViewTextBoxColumn11.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            this.dataGridViewTextBoxColumn12.DataPropertyName = "DaNop";
+            dataGridViewCellStyle17.Format = "N0";
+            this.dataGridViewTextBoxColumn12.DefaultCellStyle = dataGridViewCellStyle17;
+            this.dataGridViewTextBoxColumn12.HeaderText = "Đã Nộp";
+            this.dataGridViewTextBoxColumn12.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            this.dataGridViewTextBoxColumn12.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn33
+            // 
+            this.dataGridViewTextBoxColumn33.DataPropertyName = "DiemTrungBinh";
+            dataGridViewCellStyle18.Format = "0.00";
+            dataGridViewCellStyle18.NullValue = "--";
+            this.dataGridViewTextBoxColumn33.DefaultCellStyle = dataGridViewCellStyle18;
+            this.dataGridViewTextBoxColumn33.HeaderText = "Điểm Trung Bình";
+            this.dataGridViewTextBoxColumn33.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn33.Name = "dataGridViewTextBoxColumn33";
+            this.dataGridViewTextBoxColumn33.ReadOnly = true;
+            // 
+            // tableLayoutPanel40
+            // 
+            this.tableLayoutPanel40.ColumnCount = 2;
+            this.tableLayoutPanel40.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.2017F));
+            this.tableLayoutPanel40.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.7983F));
+            this.tableLayoutPanel40.Controls.Add(this.panel76, 0, 0);
+            this.tableLayoutPanel40.Controls.Add(this.panel77, 1, 0);
+            this.tableLayoutPanel40.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel40.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel40.Name = "tableLayoutPanel40";
+            this.tableLayoutPanel40.RowCount = 1;
+            this.tableLayoutPanel40.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel40.Size = new System.Drawing.Size(500, 44);
+            this.tableLayoutPanel40.TabIndex = 0;
+            // 
+            // panel76
+            // 
+            this.panel76.Controls.Add(this.materialLabel32);
+            this.panel76.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel76.Location = new System.Drawing.Point(3, 3);
+            this.panel76.Name = "panel76";
+            this.panel76.Size = new System.Drawing.Size(270, 38);
+            this.panel76.TabIndex = 0;
+            // 
+            // materialLabel32
+            // 
+            this.materialLabel32.AutoSize = true;
+            this.materialLabel32.Depth = 0;
+            this.materialLabel32.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel32.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel32.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.materialLabel32.Location = new System.Drawing.Point(0, 0);
+            this.materialLabel32.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel32.Name = "materialLabel32";
+            this.materialLabel32.Size = new System.Drawing.Size(230, 30);
+            this.materialLabel32.TabIndex = 0;
+            this.materialLabel32.Text = "Kết Quả Thi Gần Đây";
+            // 
+            // panel77
+            // 
+            this.panel77.Controls.Add(this.lblTCGV_XemTatCaBaiThi);
+            this.panel77.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel77.Location = new System.Drawing.Point(279, 3);
+            this.panel77.Name = "panel77";
+            this.panel77.Size = new System.Drawing.Size(218, 38);
+            this.panel77.TabIndex = 1;
+            // 
+            // lblTCGV_XemTatCaBaiThi
+            // 
+            this.lblTCGV_XemTatCaBaiThi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTCGV_XemTatCaBaiThi.AutoSize = true;
+            this.lblTCGV_XemTatCaBaiThi.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblTCGV_XemTatCaBaiThi.Depth = 0;
+            this.lblTCGV_XemTatCaBaiThi.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_XemTatCaBaiThi.Location = new System.Drawing.Point(108, 7);
+            this.lblTCGV_XemTatCaBaiThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_XemTatCaBaiThi.Name = "lblTCGV_XemTatCaBaiThi";
+            this.lblTCGV_XemTatCaBaiThi.Size = new System.Drawing.Size(107, 24);
+            this.lblTCGV_XemTatCaBaiThi.TabIndex = 2;
+            this.lblTCGV_XemTatCaBaiThi.Text = "Xem Tất Cả";
+            this.lblTCGV_XemTatCaBaiThi.Click += new System.EventHandler(this.lblTCGV_XemTatCaBaiThi_Click);
+            // 
+            // tableLayoutPanel41
+            // 
+            this.tableLayoutPanel41.ColumnCount = 2;
+            this.tableLayoutPanel41.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 83.31135F));
+            this.tableLayoutPanel41.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.68865F));
+            this.tableLayoutPanel41.Controls.Add(this.panel78, 0, 0);
+            this.tableLayoutPanel41.Controls.Add(this.panel79, 1, 0);
+            this.tableLayoutPanel41.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel41.Location = new System.Drawing.Point(3, 678);
+            this.tableLayoutPanel41.Name = "tableLayoutPanel41";
+            this.tableLayoutPanel41.RowCount = 1;
+            this.tableLayoutPanel41.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel41.Size = new System.Drawing.Size(1516, 77);
+            this.tableLayoutPanel41.TabIndex = 3;
+            // 
+            // panel78
+            // 
+            this.panel78.Controls.Add(this.materialLabel33);
+            this.panel78.Controls.Add(this.lblTCGV_SoYeuCauChoDuyet);
+            this.panel78.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel78.Location = new System.Drawing.Point(3, 3);
+            this.panel78.Name = "panel78";
+            this.panel78.Size = new System.Drawing.Size(1257, 71);
+            this.panel78.TabIndex = 0;
+            // 
+            // materialLabel33
+            // 
+            this.materialLabel33.AutoSize = true;
+            this.materialLabel33.Depth = 0;
+            this.materialLabel33.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialLabel33.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel33.Location = new System.Drawing.Point(0, 30);
+            this.materialLabel33.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.materialLabel33.Name = "materialLabel33";
+            this.materialLabel33.Size = new System.Drawing.Size(279, 24);
+            this.materialLabel33.TabIndex = 1;
+            this.materialLabel33.Text = "Xem và Duyệt Học Viên vào lớp";
+            // 
+            // lblTCGV_SoYeuCauChoDuyet
+            // 
+            this.lblTCGV_SoYeuCauChoDuyet.AutoSize = true;
+            this.lblTCGV_SoYeuCauChoDuyet.Depth = 0;
+            this.lblTCGV_SoYeuCauChoDuyet.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTCGV_SoYeuCauChoDuyet.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCGV_SoYeuCauChoDuyet.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblTCGV_SoYeuCauChoDuyet.Location = new System.Drawing.Point(0, 0);
+            this.lblTCGV_SoYeuCauChoDuyet.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCGV_SoYeuCauChoDuyet.Name = "lblTCGV_SoYeuCauChoDuyet";
+            this.lblTCGV_SoYeuCauChoDuyet.Size = new System.Drawing.Size(312, 30);
+            this.lblTCGV_SoYeuCauChoDuyet.TabIndex = 0;
+            this.lblTCGV_SoYeuCauChoDuyet.Text = "Số Yêu Cầu Đang Chờ Duyệt";
+            // 
+            // panel79
+            // 
+            this.panel79.Controls.Add(this.btnTCGV_DuyetNgay);
+            this.panel79.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel79.Location = new System.Drawing.Point(1266, 3);
+            this.panel79.Name = "panel79";
+            this.panel79.Size = new System.Drawing.Size(247, 71);
+            this.panel79.TabIndex = 1;
+            // 
+            // btnTCGV_DuyetNgay
+            // 
+            this.btnTCGV_DuyetNgay.BackColor = System.Drawing.Color.Transparent;
+            this.btnTCGV_DuyetNgay.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(139)))), ((int)(((byte)(8)))));
+            this.btnTCGV_DuyetNgay.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTCGV_DuyetNgay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnTCGV_DuyetNgay.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnTCGV_DuyetNgay.Location = new System.Drawing.Point(0, 0);
+            this.btnTCGV_DuyetNgay.Name = "btnTCGV_DuyetNgay";
+            this.btnTCGV_DuyetNgay.Rounded = false;
+            this.btnTCGV_DuyetNgay.Size = new System.Drawing.Size(247, 71);
+            this.btnTCGV_DuyetNgay.TabIndex = 0;
+            this.btnTCGV_DuyetNgay.Text = "Duyệt Ngay";
+            this.btnTCGV_DuyetNgay.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.btnTCGV_DuyetNgay.Click += new System.EventHandler(this.btnTCGV_DuyetNgay_Click);
             // 
             // pageGV_LopHoc
             // 
@@ -738,14 +1418,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvLopHoc.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLopHoc.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvLopHoc.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLopHoc.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLopHoc.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             this.dgvLopHoc.ColumnHeadersHeight = 44;
             this.dgvLopHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvLopHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -806,8 +1486,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // Column3
             // 
             this.Column3.DataPropertyName = "NgayBatDau";
-            dataGridViewCellStyle27.Format = "dd/MM/yyyy";
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle20.Format = "dd/MM/yyyy";
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle20;
             this.Column3.HeaderText = "Bắt đầu";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
@@ -816,8 +1496,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // Column4
             // 
             this.Column4.DataPropertyName = "NgayKetThuc";
-            dataGridViewCellStyle28.Format = "dd/MM/yyyy";
-            this.Column4.DefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle21.Format = "dd/MM/yyyy";
+            this.Column4.DefaultCellStyle = dataGridViewCellStyle21;
             this.Column4.HeaderText = "kết thúc";
             this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
@@ -1418,14 +2098,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvDSYeuCau.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvDSYeuCau.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvDSYeuCau.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle29.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle29.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle29.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle29.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle29.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDSYeuCau.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle29;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle22.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDSYeuCau.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
             this.dgvDSYeuCau.ColumnHeadersHeight = 44;
             this.dgvDSYeuCau.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvDSYeuCau.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -1493,8 +2173,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn18
             // 
             this.dataGridViewTextBoxColumn18.DataPropertyName = "NgayDangKy";
-            dataGridViewCellStyle30.Format = "dd/MM/yyyy HH:mm";
-            this.dataGridViewTextBoxColumn18.DefaultCellStyle = dataGridViewCellStyle30;
+            dataGridViewCellStyle23.Format = "dd/MM/yyyy HH:mm";
+            this.dataGridViewTextBoxColumn18.DefaultCellStyle = dataGridViewCellStyle23;
             this.dataGridViewTextBoxColumn18.HeaderText = "Ngày Đăng Kí";
             this.dataGridViewTextBoxColumn18.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
@@ -2357,14 +3037,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvCauHoi.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvCauHoi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvCauHoi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle31.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle31.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCauHoi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle31;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle24.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCauHoi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle24;
             this.dgvCauHoi.ColumnHeadersHeight = 44;
             this.dgvCauHoi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvCauHoi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -2570,14 +3250,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvGVDeThi.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvGVDeThi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvGVDeThi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle32.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvGVDeThi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle25.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvGVDeThi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
             this.dgvGVDeThi.ColumnHeadersHeight = 44;
             this.dgvGVDeThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvGVDeThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -3380,14 +4060,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvKetQua.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvKetQua.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvKetQua.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle33.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvKetQua.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle26.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvKetQua.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
             this.dgvKetQua.ColumnHeadersHeight = 44;
             this.dgvKetQua.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvKetQua.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -3438,8 +4118,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn28
             // 
             this.dataGridViewTextBoxColumn28.DataPropertyName = "Diem";
-            dataGridViewCellStyle34.Format = "0.00";
-            this.dataGridViewTextBoxColumn28.DefaultCellStyle = dataGridViewCellStyle34;
+            dataGridViewCellStyle27.Format = "0.00";
+            this.dataGridViewTextBoxColumn28.DefaultCellStyle = dataGridViewCellStyle27;
             this.dataGridViewTextBoxColumn28.HeaderText = "Điểm";
             this.dataGridViewTextBoxColumn28.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn28.Name = "dataGridViewTextBoxColumn28";
@@ -3448,8 +4128,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn29
             // 
             this.dataGridViewTextBoxColumn29.DataPropertyName = "ThoiGianNop";
-            dataGridViewCellStyle35.Format = "dd/MM/yyyy HH:mm";
-            this.dataGridViewTextBoxColumn29.DefaultCellStyle = dataGridViewCellStyle35;
+            dataGridViewCellStyle28.Format = "dd/MM/yyyy HH:mm";
+            this.dataGridViewTextBoxColumn29.DefaultCellStyle = dataGridViewCellStyle28;
             this.dataGridViewTextBoxColumn29.HeaderText = "Nộp Lúc";
             this.dataGridViewTextBoxColumn29.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn29.Name = "dataGridViewTextBoxColumn29";
@@ -4237,20 +4917,21 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             this.tableLayoutPanel29.ColumnCount = 1;
             this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel29.Controls.Add(this.lblTTGV_SDT, 0, 4);
+            this.tableLayoutPanel29.Controls.Add(this.lblTTGV_Email, 0, 3);
+            this.tableLayoutPanel29.Controls.Add(this.lblTTGV_ChuyenMon, 0, 2);
             this.tableLayoutPanel29.Controls.Add(this.materialLabel54, 0, 0);
             this.tableLayoutPanel29.Controls.Add(this.lblGVTT_HovaTen, 0, 1);
             this.tableLayoutPanel29.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel29.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel29.Name = "tableLayoutPanel29";
-            this.tableLayoutPanel29.RowCount = 7;
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.59259F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.66667F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.62963F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutPanel29.RowCount = 6;
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.74074F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.59259F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 19.18736F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21.21896F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.07229F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 230F));
             this.tableLayoutPanel29.Size = new System.Drawing.Size(749, 675);
             this.tableLayoutPanel29.TabIndex = 0;
             // 
@@ -4262,10 +4943,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel54.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.materialLabel54.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
             this.materialLabel54.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
-            this.materialLabel54.Location = new System.Drawing.Point(246, 3);
+            this.materialLabel54.Location = new System.Drawing.Point(246, 0);
             this.materialLabel54.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialLabel54.Name = "materialLabel54";
-            this.materialLabel54.Size = new System.Drawing.Size(257, 133);
+            this.materialLabel54.Size = new System.Drawing.Size(257, 128);
             this.materialLabel54.TabIndex = 2;
             this.materialLabel54.Text = "GV";
             this.materialLabel54.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -4276,10 +4957,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.lblGVTT_HovaTen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGVTT_HovaTen.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.lblGVTT_HovaTen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
-            this.lblGVTT_HovaTen.Location = new System.Drawing.Point(3, 139);
+            this.lblGVTT_HovaTen.Location = new System.Drawing.Point(3, 128);
             this.lblGVTT_HovaTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.lblGVTT_HovaTen.Name = "lblGVTT_HovaTen";
-            this.lblGVTT_HovaTen.Size = new System.Drawing.Size(743, 99);
+            this.lblGVTT_HovaTen.Size = new System.Drawing.Size(743, 56);
             this.lblGVTT_HovaTen.TabIndex = 1;
             this.lblGVTT_HovaTen.Text = "Lương Trung Thành";
             this.lblGVTT_HovaTen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -4294,684 +4975,47 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageGV_DangXuat.Text = "Đăng Xuất";
             this.pageGV_DangXuat.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanel8
-            // 
-            this.tableLayoutPanel8.ColumnCount = 1;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel34, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel35, 0, 1);
-            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel36, 0, 2);
-            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel41, 0, 3);
-            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 4;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.1924F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.74256F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65.30343F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.81794F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(1522, 758);
-            this.tableLayoutPanel8.TabIndex = 1;
-            // 
-            // tableLayoutPanel34
-            // 
-            this.tableLayoutPanel34.ColumnCount = 2;
-            this.tableLayoutPanel34.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.48092F));
-            this.tableLayoutPanel34.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.51908F));
-            this.tableLayoutPanel34.Controls.Add(this.panel3, 0, 0);
-            this.tableLayoutPanel34.Controls.Add(this.panel66, 1, 0);
-            this.tableLayoutPanel34.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel34.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel34.Name = "tableLayoutPanel34";
-            this.tableLayoutPanel34.RowCount = 1;
-            this.tableLayoutPanel34.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel34.Size = new System.Drawing.Size(1516, 71);
-            this.tableLayoutPanel34.TabIndex = 0;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.lblTCHV_TatCaBaiThi);
-            this.panel3.Controls.Add(this.lblTCGV_Chao);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(3, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1168, 65);
-            this.panel3.TabIndex = 0;
-            // 
-            // lblTCHV_TatCaBaiThi
-            // 
-            this.lblTCHV_TatCaBaiThi.AutoSize = true;
-            this.lblTCHV_TatCaBaiThi.Depth = 0;
-            this.lblTCHV_TatCaBaiThi.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTCHV_TatCaBaiThi.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCHV_TatCaBaiThi.Location = new System.Drawing.Point(0, 30);
-            this.lblTCHV_TatCaBaiThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCHV_TatCaBaiThi.Name = "lblTCHV_TatCaBaiThi";
-            this.lblTCHV_TatCaBaiThi.Size = new System.Drawing.Size(385, 24);
-            this.lblTCHV_TatCaBaiThi.TabIndex = 1;
-            this.lblTCHV_TatCaBaiThi.Text = "Số Bài thi đang mở , hãy hoàn thành bài tập";
-            // 
-            // lblTCGV_Chao
-            // 
-            this.lblTCGV_Chao.AutoSize = true;
-            this.lblTCGV_Chao.Depth = 0;
-            this.lblTCGV_Chao.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTCGV_Chao.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_Chao.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.lblTCGV_Chao.Location = new System.Drawing.Point(0, 0);
-            this.lblTCGV_Chao.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_Chao.Name = "lblTCGV_Chao";
-            this.lblTCGV_Chao.Size = new System.Drawing.Size(59, 30);
-            this.lblTCGV_Chao.TabIndex = 0;
-            this.lblTCGV_Chao.Text = "Chào";
-            // 
-            // panel66
-            // 
-            this.panel66.Controls.Add(this.lblTCGV_NgayThangHT);
-            this.panel66.Controls.Add(this.btnTCGV_GiaoBai);
-            this.panel66.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel66.Location = new System.Drawing.Point(1177, 3);
-            this.panel66.Name = "panel66";
-            this.panel66.Size = new System.Drawing.Size(336, 65);
-            this.panel66.TabIndex = 1;
-            // 
-            // lblTCGV_NgayThangHT
-            // 
-            this.lblTCGV_NgayThangHT.AutoSize = true;
-            this.lblTCGV_NgayThangHT.Depth = 0;
-            this.lblTCGV_NgayThangHT.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTCGV_NgayThangHT.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_NgayThangHT.Location = new System.Drawing.Point(0, 0);
-            this.lblTCGV_NgayThangHT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_NgayThangHT.Name = "lblTCGV_NgayThangHT";
-            this.lblTCGV_NgayThangHT.Size = new System.Drawing.Size(226, 24);
-            this.lblTCGV_NgayThangHT.TabIndex = 1;
-            this.lblTCGV_NgayThangHT.Text = "Thứ Ngày Tháng Hiện Tại";
-            // 
-            // btnTCGV_GiaoBai
-            // 
-            this.btnTCGV_GiaoBai.BackColor = System.Drawing.Color.Transparent;
-            this.btnTCGV_GiaoBai.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(83)))), ((int)(((byte)(183)))));
-            this.btnTCGV_GiaoBai.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTCGV_GiaoBai.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnTCGV_GiaoBai.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnTCGV_GiaoBai.Location = new System.Drawing.Point(0, 25);
-            this.btnTCGV_GiaoBai.Name = "btnTCGV_GiaoBai";
-            this.btnTCGV_GiaoBai.Rounded = false;
-            this.btnTCGV_GiaoBai.Size = new System.Drawing.Size(336, 40);
-            this.btnTCGV_GiaoBai.TabIndex = 0;
-            this.btnTCGV_GiaoBai.Text = "Giao Bài Tập";
-            this.btnTCGV_GiaoBai.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
-            this.btnTCGV_GiaoBai.Click += new System.EventHandler(this.btnTCGV_GiaoBai_Click);
-            // 
-            // tableLayoutPanel35
-            // 
-            this.tableLayoutPanel35.ColumnCount = 4;
-            this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel35.Controls.Add(this.panel67, 0, 0);
-            this.tableLayoutPanel35.Controls.Add(this.panel68, 1, 0);
-            this.tableLayoutPanel35.Controls.Add(this.panel69, 2, 0);
-            this.tableLayoutPanel35.Controls.Add(this.panel70, 3, 0);
-            this.tableLayoutPanel35.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel35.Location = new System.Drawing.Point(3, 80);
-            this.tableLayoutPanel35.Name = "tableLayoutPanel35";
-            this.tableLayoutPanel35.RowCount = 1;
-            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 128F));
-            this.tableLayoutPanel35.Size = new System.Drawing.Size(1516, 98);
-            this.tableLayoutPanel35.TabIndex = 1;
-            // 
-            // panel67
-            // 
-            this.panel67.Controls.Add(this.lblTCGV_LopDH);
-            this.panel67.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel67.Location = new System.Drawing.Point(3, 3);
-            this.panel67.Name = "panel67";
-            this.panel67.Size = new System.Drawing.Size(373, 92);
-            this.panel67.TabIndex = 0;
-            // 
-            // lblTCGV_LopDH
-            // 
-            this.lblTCGV_LopDH.Depth = 0;
-            this.lblTCGV_LopDH.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTCGV_LopDH.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_LopDH.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.lblTCGV_LopDH.Location = new System.Drawing.Point(0, 0);
-            this.lblTCGV_LopDH.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_LopDH.Name = "lblTCGV_LopDH";
-            this.lblTCGV_LopDH.Size = new System.Drawing.Size(373, 92);
-            this.lblTCGV_LopDH.TabIndex = 0;
-            this.lblTCGV_LopDH.Text = "Lớp đang dạy\n--";
-            this.lblTCGV_LopDH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel68
-            // 
-            this.panel68.Controls.Add(this.lblTCGV_HocVien);
-            this.panel68.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel68.Location = new System.Drawing.Point(382, 3);
-            this.panel68.Name = "panel68";
-            this.panel68.Size = new System.Drawing.Size(373, 92);
-            this.panel68.TabIndex = 1;
-            // 
-            // lblTCGV_HocVien
-            // 
-            this.lblTCGV_HocVien.Depth = 0;
-            this.lblTCGV_HocVien.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTCGV_HocVien.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_HocVien.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.lblTCGV_HocVien.Location = new System.Drawing.Point(0, 0);
-            this.lblTCGV_HocVien.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_HocVien.Name = "lblTCGV_HocVien";
-            this.lblTCGV_HocVien.Size = new System.Drawing.Size(373, 92);
-            this.lblTCGV_HocVien.TabIndex = 0;
-            this.lblTCGV_HocVien.Text = "Học viên\n--";
-            this.lblTCGV_HocVien.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel69
-            // 
-            this.panel69.Controls.Add(this.lblTCGV_ChoDuyet);
-            this.panel69.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel69.Location = new System.Drawing.Point(761, 3);
-            this.panel69.Name = "panel69";
-            this.panel69.Size = new System.Drawing.Size(373, 92);
-            this.panel69.TabIndex = 2;
-            // 
-            // lblTCGV_ChoDuyet
-            // 
-            this.lblTCGV_ChoDuyet.Depth = 0;
-            this.lblTCGV_ChoDuyet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTCGV_ChoDuyet.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_ChoDuyet.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.lblTCGV_ChoDuyet.Location = new System.Drawing.Point(0, 0);
-            this.lblTCGV_ChoDuyet.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_ChoDuyet.Name = "lblTCGV_ChoDuyet";
-            this.lblTCGV_ChoDuyet.Size = new System.Drawing.Size(373, 92);
-            this.lblTCGV_ChoDuyet.TabIndex = 0;
-            this.lblTCGV_ChoDuyet.Text = "Yêu cầu chờ duyệt\n--";
-            this.lblTCGV_ChoDuyet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel70
-            // 
-            this.panel70.Controls.Add(this.lblTCGV_BaiThiDangMo);
-            this.panel70.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel70.Location = new System.Drawing.Point(1140, 3);
-            this.panel70.Name = "panel70";
-            this.panel70.Size = new System.Drawing.Size(373, 92);
-            this.panel70.TabIndex = 3;
-            // 
-            // lblTCGV_BaiThiDangMo
-            // 
-            this.lblTCGV_BaiThiDangMo.Depth = 0;
-            this.lblTCGV_BaiThiDangMo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTCGV_BaiThiDangMo.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_BaiThiDangMo.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.lblTCGV_BaiThiDangMo.Location = new System.Drawing.Point(0, 0);
-            this.lblTCGV_BaiThiDangMo.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_BaiThiDangMo.Name = "lblTCGV_BaiThiDangMo";
-            this.lblTCGV_BaiThiDangMo.Size = new System.Drawing.Size(373, 92);
-            this.lblTCGV_BaiThiDangMo.TabIndex = 0;
-            this.lblTCGV_BaiThiDangMo.Text = "Bài thi đang mở\n--";
-            this.lblTCGV_BaiThiDangMo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel36
-            // 
-            this.tableLayoutPanel36.ColumnCount = 2;
-            this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.22691F));
-            this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.77309F));
-            this.tableLayoutPanel36.Controls.Add(this.panel71, 0, 0);
-            this.tableLayoutPanel36.Controls.Add(this.tableLayoutPanel39, 1, 0);
-            this.tableLayoutPanel36.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel36.Location = new System.Drawing.Point(3, 184);
-            this.tableLayoutPanel36.Name = "tableLayoutPanel36";
-            this.tableLayoutPanel36.RowCount = 1;
-            this.tableLayoutPanel36.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel36.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 630F));
-            this.tableLayoutPanel36.Size = new System.Drawing.Size(1516, 488);
-            this.tableLayoutPanel36.TabIndex = 2;
-            // 
-            // panel71
-            // 
-            this.panel71.Controls.Add(this.tableLayoutPanel37);
-            this.panel71.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel71.Location = new System.Drawing.Point(3, 3);
-            this.panel71.Name = "panel71";
-            this.panel71.Size = new System.Drawing.Size(998, 482);
-            this.panel71.TabIndex = 0;
-            // 
-            // tableLayoutPanel37
-            // 
-            this.tableLayoutPanel37.ColumnCount = 1;
-            this.tableLayoutPanel37.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel37.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel37.Controls.Add(this.dgvBaiThiDangMo, 0, 1);
-            this.tableLayoutPanel37.Controls.Add(this.panel72, 0, 0);
-            this.tableLayoutPanel37.Controls.Add(this.panel73, 0, 2);
-            this.tableLayoutPanel37.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel37.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel37.Name = "tableLayoutPanel37";
-            this.tableLayoutPanel37.RowCount = 3;
-            this.tableLayoutPanel37.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.82255F));
-            this.tableLayoutPanel37.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 72.44259F));
-            this.tableLayoutPanel37.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.66026F));
-            this.tableLayoutPanel37.Size = new System.Drawing.Size(998, 482);
-            this.tableLayoutPanel37.TabIndex = 0;
-            // 
-            // dgvBaiThiDangMo
-            // 
-            this.dgvBaiThiDangMo.AllowUserToAddRows = false;
-            this.dgvBaiThiDangMo.AllowUserToDeleteRows = false;
-            this.dgvBaiThiDangMo.AllowUserToResizeColumns = false;
-            this.dgvBaiThiDangMo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvBaiThiDangMo.BackgroundColor = System.Drawing.Color.White;
-            this.dgvBaiThiDangMo.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvBaiThiDangMo.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvBaiThiDangMo.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle25.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBaiThiDangMo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
-            this.dgvBaiThiDangMo.ColumnHeadersHeight = 44;
-            this.dgvBaiThiDangMo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvBaiThiDangMo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn7,
-            this.dataGridViewTextBoxColumn8,
-            this.dataGridViewTextBoxColumn9});
-            this.dgvBaiThiDangMo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvBaiThiDangMo.EnableHeadersVisualStyles = false;
-            this.dgvBaiThiDangMo.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
-            this.dgvBaiThiDangMo.Location = new System.Drawing.Point(3, 74);
-            this.dgvBaiThiDangMo.MultiSelect = false;
-            this.dgvBaiThiDangMo.Name = "dgvBaiThiDangMo";
-            this.dgvBaiThiDangMo.ReadOnly = true;
-            this.dgvBaiThiDangMo.RowHeadersVisible = false;
-            this.dgvBaiThiDangMo.RowHeadersWidth = 51;
-            this.dgvBaiThiDangMo.RowTemplate.Height = 24;
-            this.dgvBaiThiDangMo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBaiThiDangMo.Size = new System.Drawing.Size(992, 343);
-            this.dgvBaiThiDangMo.TabIndex = 6;
-            this.dgvBaiThiDangMo.AutoGenerateColumns = false;
-            // 
-            // panel72
-            // 
-            this.panel72.Controls.Add(this.lblTCGV_XemTatCaLop);
-            this.panel72.Controls.Add(this.materialLabel29);
-            this.panel72.Controls.Add(this.materialLabel30);
-            this.panel72.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel72.Location = new System.Drawing.Point(3, 3);
-            this.panel72.Name = "panel72";
-            this.panel72.Size = new System.Drawing.Size(992, 65);
-            this.panel72.TabIndex = 0;
-            // 
-            // lblTCGV_XemTatCaLop
-            // 
-            this.lblTCGV_XemTatCaLop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTCGV_XemTatCaLop.AutoSize = true;
-            this.lblTCGV_XemTatCaLop.Depth = 0;
-            this.lblTCGV_XemTatCaLop.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_XemTatCaLop.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lblTCGV_XemTatCaLop.Location = new System.Drawing.Point(869, 16);
-            this.lblTCGV_XemTatCaLop.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_XemTatCaLop.Name = "lblTCGV_XemTatCaLop";
-            this.lblTCGV_XemTatCaLop.Size = new System.Drawing.Size(107, 24);
-            this.lblTCGV_XemTatCaLop.TabIndex = 2;
-            this.lblTCGV_XemTatCaLop.Text = "Xem Tất Cả";
-            this.lblTCGV_XemTatCaLop.Click += new System.EventHandler(this.btnTCGV_QuanLyLop_Click);
-            this.lblTCGV_XemTatCaLop.Cursor = System.Windows.Forms.Cursors.Hand;
-            // 
-            // materialLabel29
-            // 
-            this.materialLabel29.AutoSize = true;
-            this.materialLabel29.Depth = 0;
-            this.materialLabel29.Dock = System.Windows.Forms.DockStyle.Top;
-            this.materialLabel29.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel29.Location = new System.Drawing.Point(0, 30);
-            this.materialLabel29.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel29.Name = "materialLabel29";
-            this.materialLabel29.Size = new System.Drawing.Size(277, 24);
-            this.materialLabel29.TabIndex = 1;
-            this.materialLabel29.Text = "Các Lớp Đang Được Phân Công";
-            // 
-            // materialLabel30
-            // 
-            this.materialLabel30.AutoSize = true;
-            this.materialLabel30.Depth = 0;
-            this.materialLabel30.Dock = System.Windows.Forms.DockStyle.Top;
-            this.materialLabel30.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel30.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.materialLabel30.Location = new System.Drawing.Point(0, 0);
-            this.materialLabel30.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel30.Name = "materialLabel30";
-            this.materialLabel30.Size = new System.Drawing.Size(185, 30);
-            this.materialLabel30.TabIndex = 0;
-            this.materialLabel30.Text = "Lớp Học Của Tôi";
-            // 
-            // panel73
-            // 
-            this.panel73.Controls.Add(this.tableLayoutPanel38);
-            this.panel73.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel73.Location = new System.Drawing.Point(3, 423);
-            this.panel73.Name = "panel73";
-            this.panel73.Size = new System.Drawing.Size(992, 56);
-            this.panel73.TabIndex = 7;
-            // 
-            // tableLayoutPanel38
-            // 
-            this.tableLayoutPanel38.ColumnCount = 2;
-            this.tableLayoutPanel38.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.05943F));
-            this.tableLayoutPanel38.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.94058F));
-            this.tableLayoutPanel38.Controls.Add(this.panel74, 0, 0);
-            this.tableLayoutPanel38.Controls.Add(this.panel75, 1, 0);
-            this.tableLayoutPanel38.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel38.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel38.Name = "tableLayoutPanel38";
-            this.tableLayoutPanel38.RowCount = 1;
-            this.tableLayoutPanel38.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel38.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
-            this.tableLayoutPanel38.Size = new System.Drawing.Size(992, 56);
-            this.tableLayoutPanel38.TabIndex = 0;
-            // 
-            // panel74
-            // 
-            this.panel74.Controls.Add(this.lblTCGV_SoLopQuanLy);
-            this.panel74.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel74.Location = new System.Drawing.Point(3, 3);
-            this.panel74.Name = "panel74";
-            this.panel74.Size = new System.Drawing.Size(669, 50);
-            this.panel74.TabIndex = 0;
-            // 
-            // lblTCGV_SoLopQuanLy
-            // 
-            this.lblTCGV_SoLopQuanLy.AutoSize = true;
-            this.lblTCGV_SoLopQuanLy.Depth = 0;
-            this.lblTCGV_SoLopQuanLy.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTCGV_SoLopQuanLy.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_SoLopQuanLy.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.lblTCGV_SoLopQuanLy.Location = new System.Drawing.Point(0, 0);
-            this.lblTCGV_SoLopQuanLy.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_SoLopQuanLy.Name = "lblTCGV_SoLopQuanLy";
-            this.lblTCGV_SoLopQuanLy.Size = new System.Drawing.Size(240, 30);
-            this.lblTCGV_SoLopQuanLy.TabIndex = 0;
-            this.lblTCGV_SoLopQuanLy.Text = "Số Lớp Đang Quản Lý";
-            // 
-            // panel75
-            // 
-            this.panel75.Controls.Add(this.btnTCGV_QuanLyLop);
-            this.panel75.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel75.Location = new System.Drawing.Point(678, 3);
-            this.panel75.Name = "panel75";
-            this.panel75.Size = new System.Drawing.Size(311, 50);
-            this.panel75.TabIndex = 1;
-            // 
-            // btnTCGV_QuanLyLop
-            // 
-            this.btnTCGV_QuanLyLop.BackColor = System.Drawing.Color.Transparent;
-            this.btnTCGV_QuanLyLop.BaseColor = System.Drawing.Color.White;
-            this.btnTCGV_QuanLyLop.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTCGV_QuanLyLop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnTCGV_QuanLyLop.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnTCGV_QuanLyLop.Location = new System.Drawing.Point(0, 0);
-            this.btnTCGV_QuanLyLop.Name = "btnTCGV_QuanLyLop";
-            this.btnTCGV_QuanLyLop.Rounded = false;
-            this.btnTCGV_QuanLyLop.Size = new System.Drawing.Size(311, 50);
-            this.btnTCGV_QuanLyLop.TabIndex = 1;
-            this.btnTCGV_QuanLyLop.Text = "Quản Lý Lớp";
-            this.btnTCGV_QuanLyLop.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(83)))), ((int)(((byte)(183)))));
-            this.btnTCGV_QuanLyLop.Click += new System.EventHandler(this.btnTCGV_QuanLyLop_Click);
-            // 
-            // tableLayoutPanel39
-            // 
-            this.tableLayoutPanel39.ColumnCount = 1;
-            this.tableLayoutPanel39.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel39.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel39.Controls.Add(this.dgvTCBaiThi, 0, 1);
-            this.tableLayoutPanel39.Controls.Add(this.tableLayoutPanel40, 0, 0);
-            this.tableLayoutPanel39.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel39.Location = new System.Drawing.Point(1007, 3);
-            this.tableLayoutPanel39.Name = "tableLayoutPanel39";
-            this.tableLayoutPanel39.RowCount = 2;
-            this.tableLayoutPanel39.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.57692F));
-            this.tableLayoutPanel39.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.42308F));
-            this.tableLayoutPanel39.Size = new System.Drawing.Size(506, 482);
-            this.tableLayoutPanel39.TabIndex = 1;
-            // 
-            // dgvTCBaiThi
-            // 
-            this.dgvTCBaiThi.AllowUserToAddRows = false;
-            this.dgvTCBaiThi.AllowUserToDeleteRows = false;
-            this.dgvTCBaiThi.AllowUserToResizeColumns = false;
-            this.dgvTCBaiThi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvTCBaiThi.BackgroundColor = System.Drawing.Color.White;
-            this.dgvTCBaiThi.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvTCBaiThi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvTCBaiThi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle36.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle36.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle36.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle36.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle36.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTCBaiThi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle36;
-            this.dgvTCBaiThi.ColumnHeadersHeight = 44;
-            this.dgvTCBaiThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvTCBaiThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn11,
-            this.dataGridViewTextBoxColumn12,
-            this.dataGridViewTextBoxColumn33});
-            this.dgvTCBaiThi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTCBaiThi.EnableHeadersVisualStyles = false;
-            this.dgvTCBaiThi.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
-            this.dgvTCBaiThi.Location = new System.Drawing.Point(3, 53);
-            this.dgvTCBaiThi.MultiSelect = false;
-            this.dgvTCBaiThi.Name = "dgvTCBaiThi";
-            this.dgvTCBaiThi.ReadOnly = true;
-            this.dgvTCBaiThi.RowHeadersVisible = false;
-            this.dgvTCBaiThi.RowHeadersWidth = 51;
-            this.dgvTCBaiThi.RowTemplate.Height = 24;
-            this.dgvTCBaiThi.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTCBaiThi.Size = new System.Drawing.Size(500, 426);
-            this.dgvTCBaiThi.TabIndex = 7;
-            this.dgvTCBaiThi.AutoGenerateColumns = false;
-            this.dgvTCBaiThi.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTCBaiThi_CellDoubleClick);
-            // 
-            // tableLayoutPanel40
-            // 
-            this.tableLayoutPanel40.ColumnCount = 2;
-            this.tableLayoutPanel40.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.2017F));
-            this.tableLayoutPanel40.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.7983F));
-            this.tableLayoutPanel40.Controls.Add(this.panel76, 0, 0);
-            this.tableLayoutPanel40.Controls.Add(this.panel77, 1, 0);
-            this.tableLayoutPanel40.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel40.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel40.Name = "tableLayoutPanel40";
-            this.tableLayoutPanel40.RowCount = 1;
-            this.tableLayoutPanel40.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel40.Size = new System.Drawing.Size(500, 44);
-            this.tableLayoutPanel40.TabIndex = 0;
-            // 
-            // panel76
-            // 
-            this.panel76.Controls.Add(this.materialLabel32);
-            this.panel76.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel76.Location = new System.Drawing.Point(3, 3);
-            this.panel76.Name = "panel76";
-            this.panel76.Size = new System.Drawing.Size(270, 38);
-            this.panel76.TabIndex = 0;
-            // 
-            // materialLabel32
-            // 
-            this.materialLabel32.AutoSize = true;
-            this.materialLabel32.Depth = 0;
-            this.materialLabel32.Dock = System.Windows.Forms.DockStyle.Top;
-            this.materialLabel32.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel32.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.materialLabel32.Location = new System.Drawing.Point(0, 0);
-            this.materialLabel32.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel32.Name = "materialLabel32";
-            this.materialLabel32.Size = new System.Drawing.Size(230, 30);
-            this.materialLabel32.TabIndex = 0;
-            this.materialLabel32.Text = "Kết Quả Thi Gần Đây";
-            // 
-            // panel77
-            // 
-            this.panel77.Controls.Add(this.lblTCGV_XemTatCaBaiThi);
-            this.panel77.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel77.Location = new System.Drawing.Point(279, 3);
-            this.panel77.Name = "panel77";
-            this.panel77.Size = new System.Drawing.Size(218, 38);
-            this.panel77.TabIndex = 1;
-            // 
-            // lblTCGV_XemTatCaBaiThi
-            // 
-            this.lblTCGV_XemTatCaBaiThi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTCGV_XemTatCaBaiThi.AutoSize = true;
-            this.lblTCGV_XemTatCaBaiThi.Depth = 0;
-            this.lblTCGV_XemTatCaBaiThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_XemTatCaBaiThi.Location = new System.Drawing.Point(108, 7);
-            this.lblTCGV_XemTatCaBaiThi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_XemTatCaBaiThi.Name = "lblTCGV_XemTatCaBaiThi";
-            this.lblTCGV_XemTatCaBaiThi.Size = new System.Drawing.Size(107, 24);
-            this.lblTCGV_XemTatCaBaiThi.TabIndex = 2;
-            this.lblTCGV_XemTatCaBaiThi.Text = "Xem Tất Cả";
-            this.lblTCGV_XemTatCaBaiThi.Click += new System.EventHandler(this.lblTCGV_XemTatCaBaiThi_Click);
-            this.lblTCGV_XemTatCaBaiThi.Cursor = System.Windows.Forms.Cursors.Hand;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.DataPropertyName = "TenLop";
-            this.dataGridViewTextBoxColumn7.HeaderText = "Lớp Học";
-            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.DataPropertyName = "SiSo";
-            this.dataGridViewTextBoxColumn8.HeaderText = "Sĩ Số";
-            this.dataGridViewTextBoxColumn8.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.DataPropertyName = "LichHoc";
-            this.dataGridViewTextBoxColumn9.HeaderText = "Lịch Học";
-            this.dataGridViewTextBoxColumn9.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn11
-            // 
-            this.dataGridViewTextBoxColumn11.DataPropertyName = "TenDeThi";
-            this.dataGridViewTextBoxColumn11.HeaderText = "Đề Thi";
-            this.dataGridViewTextBoxColumn11.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            this.dataGridViewTextBoxColumn11.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn12
-            // 
-            this.dataGridViewTextBoxColumn12.DataPropertyName = "DaNop";
-            this.dataGridViewTextBoxColumn12.HeaderText = "Đã Nộp";
-            this.dataGridViewTextBoxColumn12.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
-            this.dataGridViewTextBoxColumn12.ReadOnly = true;
-            styledataGridViewTextBoxColumn12.Format = "N0";
-            this.dataGridViewTextBoxColumn12.DefaultCellStyle = styledataGridViewTextBoxColumn12;
-            // 
-            // dataGridViewTextBoxColumn33
-            // 
-            this.dataGridViewTextBoxColumn33.DataPropertyName = "DiemTrungBinh";
-            this.dataGridViewTextBoxColumn33.HeaderText = "Điểm Trung Bình";
-            this.dataGridViewTextBoxColumn33.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn33.Name = "dataGridViewTextBoxColumn33";
-            this.dataGridViewTextBoxColumn33.ReadOnly = true;
-            styledataGridViewTextBoxColumn33.Format = "0.00";
-            styledataGridViewTextBoxColumn33.NullValue = "--";
-            this.dataGridViewTextBoxColumn33.DefaultCellStyle = styledataGridViewTextBoxColumn33;
-            // 
-            // tableLayoutPanel41
-            // 
-            this.tableLayoutPanel41.ColumnCount = 2;
-            this.tableLayoutPanel41.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 83.31135F));
-            this.tableLayoutPanel41.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.68865F));
-            this.tableLayoutPanel41.Controls.Add(this.panel78, 0, 0);
-            this.tableLayoutPanel41.Controls.Add(this.panel79, 1, 0);
-            this.tableLayoutPanel41.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel41.Location = new System.Drawing.Point(3, 678);
-            this.tableLayoutPanel41.Name = "tableLayoutPanel41";
-            this.tableLayoutPanel41.RowCount = 1;
-            this.tableLayoutPanel41.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel41.Size = new System.Drawing.Size(1516, 77);
-            this.tableLayoutPanel41.TabIndex = 3;
-            // 
-            // panel78
-            // 
-            this.panel78.Controls.Add(this.materialLabel33);
-            this.panel78.Controls.Add(this.lblTCGV_SoYeuCauChoDuyet);
-            this.panel78.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel78.Location = new System.Drawing.Point(3, 3);
-            this.panel78.Name = "panel78";
-            this.panel78.Size = new System.Drawing.Size(1257, 71);
-            this.panel78.TabIndex = 0;
-            // 
-            // lblTCGV_SoYeuCauChoDuyet
-            // 
-            this.lblTCGV_SoYeuCauChoDuyet.AutoSize = true;
-            this.lblTCGV_SoYeuCauChoDuyet.Depth = 0;
-            this.lblTCGV_SoYeuCauChoDuyet.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTCGV_SoYeuCauChoDuyet.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTCGV_SoYeuCauChoDuyet.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.lblTCGV_SoYeuCauChoDuyet.Location = new System.Drawing.Point(0, 0);
-            this.lblTCGV_SoYeuCauChoDuyet.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCGV_SoYeuCauChoDuyet.Name = "lblTCGV_SoYeuCauChoDuyet";
-            this.lblTCGV_SoYeuCauChoDuyet.Size = new System.Drawing.Size(312, 30);
-            this.lblTCGV_SoYeuCauChoDuyet.TabIndex = 0;
-            this.lblTCGV_SoYeuCauChoDuyet.Text = "Số Yêu Cầu Đang Chờ Duyệt";
-            // 
-            // materialLabel33
-            // 
-            this.materialLabel33.AutoSize = true;
-            this.materialLabel33.Depth = 0;
-            this.materialLabel33.Dock = System.Windows.Forms.DockStyle.Top;
-            this.materialLabel33.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel33.Location = new System.Drawing.Point(0, 30);
-            this.materialLabel33.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialLabel33.Name = "materialLabel33";
-            this.materialLabel33.Size = new System.Drawing.Size(279, 24);
-            this.materialLabel33.TabIndex = 1;
-            this.materialLabel33.Text = "Xem và Duyệt Học Viên vào lớp";
-            // 
-            // panel79
-            // 
-            this.panel79.Controls.Add(this.btnTCGV_DuyetNgay);
-            this.panel79.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel79.Location = new System.Drawing.Point(1266, 3);
-            this.panel79.Name = "panel79";
-            this.panel79.Size = new System.Drawing.Size(247, 71);
-            this.panel79.TabIndex = 1;
-            // 
-            // btnTCGV_DuyetNgay
-            // 
-            this.btnTCGV_DuyetNgay.BackColor = System.Drawing.Color.Transparent;
-            this.btnTCGV_DuyetNgay.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(139)))), ((int)(((byte)(8)))));
-            this.btnTCGV_DuyetNgay.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTCGV_DuyetNgay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnTCGV_DuyetNgay.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnTCGV_DuyetNgay.Location = new System.Drawing.Point(0, 0);
-            this.btnTCGV_DuyetNgay.Name = "btnTCGV_DuyetNgay";
-            this.btnTCGV_DuyetNgay.Rounded = false;
-            this.btnTCGV_DuyetNgay.Size = new System.Drawing.Size(247, 71);
-            this.btnTCGV_DuyetNgay.TabIndex = 0;
-            this.btnTCGV_DuyetNgay.Text = "Duyệt Ngay";
-            this.btnTCGV_DuyetNgay.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
-            this.btnTCGV_DuyetNgay.Click += new System.EventHandler(this.btnTCGV_DuyetNgay_Click);
+            // lblTTGV_ChuyenMon
+            // 
+            this.lblTTGV_ChuyenMon.Depth = 0;
+            this.lblTTGV_ChuyenMon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTGV_ChuyenMon.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTGV_ChuyenMon.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTGV_ChuyenMon.Location = new System.Drawing.Point(3, 184);
+            this.lblTTGV_ChuyenMon.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTGV_ChuyenMon.Name = "lblTTGV_ChuyenMon";
+            this.lblTTGV_ChuyenMon.Size = new System.Drawing.Size(743, 85);
+            this.lblTTGV_ChuyenMon.TabIndex = 3;
+            this.lblTTGV_ChuyenMon.Text = "Chuyên Môn: ";
+            this.lblTTGV_ChuyenMon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTTGV_Email
+            // 
+            this.lblTTGV_Email.Depth = 0;
+            this.lblTTGV_Email.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTGV_Email.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTGV_Email.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTGV_Email.Location = new System.Drawing.Point(3, 269);
+            this.lblTTGV_Email.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTGV_Email.Name = "lblTTGV_Email";
+            this.lblTTGV_Email.Size = new System.Drawing.Size(743, 94);
+            this.lblTTGV_Email.TabIndex = 4;
+            this.lblTTGV_Email.Text = "Email:";
+            this.lblTTGV_Email.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTTGV_SDT
+            // 
+            this.lblTTGV_SDT.Depth = 0;
+            this.lblTTGV_SDT.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTGV_SDT.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTGV_SDT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTGV_SDT.Location = new System.Drawing.Point(3, 363);
+            this.lblTTGV_SDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTGV_SDT.Name = "lblTTGV_SDT";
+            this.lblTTGV_SDT.Size = new System.Drawing.Size(743, 80);
+            this.lblTTGV_SDT.TabIndex = 5;
+            this.lblTTGV_SDT.Text = "Số Điện Thoại: ";
+            this.lblTTGV_SDT.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frm_GiaoVien
             // 
@@ -4986,6 +5030,39 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.mnuCH_Excel.ResumeLayout(false);
             this.materialTabControl1.ResumeLayout(false);
             this.pageGV_TrangChu.ResumeLayout(false);
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel34.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel66.ResumeLayout(false);
+            this.panel66.PerformLayout();
+            this.tableLayoutPanel35.ResumeLayout(false);
+            this.panel67.ResumeLayout(false);
+            this.panel68.ResumeLayout(false);
+            this.panel69.ResumeLayout(false);
+            this.panel70.ResumeLayout(false);
+            this.tableLayoutPanel36.ResumeLayout(false);
+            this.panel71.ResumeLayout(false);
+            this.tableLayoutPanel37.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBaiThiDangMo)).EndInit();
+            this.panel72.ResumeLayout(false);
+            this.panel72.PerformLayout();
+            this.panel73.ResumeLayout(false);
+            this.tableLayoutPanel38.ResumeLayout(false);
+            this.panel74.ResumeLayout(false);
+            this.panel74.PerformLayout();
+            this.panel75.ResumeLayout(false);
+            this.tableLayoutPanel39.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTCBaiThi)).EndInit();
+            this.tableLayoutPanel40.ResumeLayout(false);
+            this.panel76.ResumeLayout(false);
+            this.panel76.PerformLayout();
+            this.panel77.ResumeLayout(false);
+            this.panel77.PerformLayout();
+            this.tableLayoutPanel41.ResumeLayout(false);
+            this.panel78.ResumeLayout(false);
+            this.panel78.PerformLayout();
+            this.panel79.ResumeLayout(false);
             this.pageGV_LopHoc.ResumeLayout(false);
             this.tlpTeacherPage.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -5140,39 +5217,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel50.PerformLayout();
             this.panel51.ResumeLayout(false);
             this.tableLayoutPanel29.ResumeLayout(false);
-            this.tableLayoutPanel8.ResumeLayout(false);
-            this.tableLayoutPanel34.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel66.ResumeLayout(false);
-            this.panel66.PerformLayout();
-            this.tableLayoutPanel35.ResumeLayout(false);
-            this.panel67.ResumeLayout(false);
-            this.panel68.ResumeLayout(false);
-            this.panel69.ResumeLayout(false);
-            this.panel70.ResumeLayout(false);
-            this.tableLayoutPanel36.ResumeLayout(false);
-            this.panel71.ResumeLayout(false);
-            this.tableLayoutPanel37.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBaiThiDangMo)).EndInit();
-            this.panel72.ResumeLayout(false);
-            this.panel72.PerformLayout();
-            this.panel73.ResumeLayout(false);
-            this.tableLayoutPanel38.ResumeLayout(false);
-            this.panel74.ResumeLayout(false);
-            this.panel74.PerformLayout();
-            this.panel75.ResumeLayout(false);
-            this.tableLayoutPanel39.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTCBaiThi)).EndInit();
-            this.tableLayoutPanel40.ResumeLayout(false);
-            this.panel76.ResumeLayout(false);
-            this.panel76.PerformLayout();
-            this.panel77.ResumeLayout(false);
-            this.panel77.PerformLayout();
-            this.tableLayoutPanel41.ResumeLayout(false);
-            this.panel78.ResumeLayout(false);
-            this.panel78.PerformLayout();
-            this.panel79.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -5490,5 +5534,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private ReaLTaiizor.Controls.MaterialLabel lblTCGV_SoYeuCauChoDuyet;
         private System.Windows.Forms.Panel panel79;
         private ReaLTaiizor.Controls.ForeverButton btnTCGV_DuyetNgay;
+        private ReaLTaiizor.Controls.MaterialLabel lblTTGV_SDT;
+        private ReaLTaiizor.Controls.MaterialLabel lblTTGV_Email;
+        private ReaLTaiizor.Controls.MaterialLabel lblTTGV_ChuyenMon;
     }
 }

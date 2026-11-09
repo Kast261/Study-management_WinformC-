@@ -28,19 +28,19 @@ namespace BLT_Quan_Ly_Hoc_Tap
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle styledataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabHocVien = new ReaLTaiizor.Controls.MaterialTabControl();
             this.pageHV_TrangChu = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -96,6 +96,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel21 = new ReaLTaiizor.Controls.MaterialLabel();
             this.panel35 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel27 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel36 = new System.Windows.Forms.Panel();
+            this.prcTCHV_DaHoanThanh = new ReaLTaiizor.Controls.MaterialProgressBar();
+            this.panel37 = new System.Windows.Forms.Panel();
+            this.lblTCHV_PhanTram = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageHV_LopHoc = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -248,13 +252,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel51 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel29 = new System.Windows.Forms.TableLayoutPanel();
             this.materialLabel54 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.lblGVTT_HovaTen = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel24 = new ReaLTaiizor.Controls.MaterialLabel();
             this.pageHV_DangXuat = new System.Windows.Forms.TabPage();
-            this.panel36 = new System.Windows.Forms.Panel();
-            this.panel37 = new System.Windows.Forms.Panel();
-            this.prcTCHV_DaHoanThanh = new ReaLTaiizor.Controls.MaterialProgressBar();
-            this.lblTCHV_PhanTram = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTTHV_HoTen = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTTHV_DiaChi = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTTHV_Email = new ReaLTaiizor.Controls.MaterialLabel();
+            this.lblTTHV_SDT = new ReaLTaiizor.Controls.MaterialLabel();
             this.tabHocVien.SuspendLayout();
             this.pageHV_TrangChu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -284,6 +287,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel34.SuspendLayout();
             this.panel35.SuspendLayout();
             this.tableLayoutPanel27.SuspendLayout();
+            this.panel36.SuspendLayout();
+            this.panel37.SuspendLayout();
             this.pageHV_LopHoc.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -351,8 +356,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel50.SuspendLayout();
             this.panel51.SuspendLayout();
             this.tableLayoutPanel29.SuspendLayout();
-            this.panel36.SuspendLayout();
-            this.panel37.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabHocVien
@@ -485,6 +488,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.btnTCHV_BatDauLamBai.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(83)))), ((int)(((byte)(183)))));
             this.btnTCHV_BatDauLamBai.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTCHV_BatDauLamBai.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnTCHV_BatDauLamBai.Enabled = false;
             this.btnTCHV_BatDauLamBai.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.btnTCHV_BatDauLamBai.Location = new System.Drawing.Point(0, 48);
             this.btnTCHV_BatDauLamBai.Name = "btnTCHV_BatDauLamBai";
@@ -494,7 +498,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.btnTCHV_BatDauLamBai.Text = "Bắt Đầu Làm Bài";
             this.btnTCHV_BatDauLamBai.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             this.btnTCHV_BatDauLamBai.Click += new System.EventHandler(this.btnTCHV_LamBai_Click);
-            this.btnTCHV_BatDauLamBai.Enabled = false;
             // 
             // tableLayoutPanel20
             // 
@@ -661,14 +664,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvBaiThiDangMo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvBaiThiDangMo.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvBaiThiDangMo.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle25.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBaiThiDangMo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBaiThiDangMo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvBaiThiDangMo.ColumnHeadersHeight = 44;
             this.dgvBaiThiDangMo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvBaiThiDangMo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -689,9 +692,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvBaiThiDangMo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvBaiThiDangMo.Size = new System.Drawing.Size(1077, 473);
             this.dgvBaiThiDangMo.TabIndex = 6;
-            this.dgvBaiThiDangMo.AutoGenerateColumns = false;
-            this.dgvBaiThiDangMo.SelectionChanged += new System.EventHandler(this.dgvBaiThiDangMo_SelectionChanged);
             this.dgvBaiThiDangMo.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBaiThiDangMo_CellDoubleClick);
+            this.dgvBaiThiDangMo.SelectionChanged += new System.EventHandler(this.dgvBaiThiDangMo_SelectionChanged);
             // 
             // dataGridViewTextBoxColumn18
             // 
@@ -704,13 +706,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn19
             // 
             this.dataGridViewTextBoxColumn19.DataPropertyName = "HanNop";
+            dataGridViewCellStyle2.Format = "dd/MM/yyyy HH:mm";
+            dataGridViewCellStyle2.NullValue = "Không giới hạn";
+            this.dataGridViewTextBoxColumn19.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewTextBoxColumn19.HeaderText = "Hạn Nộp";
             this.dataGridViewTextBoxColumn19.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
             this.dataGridViewTextBoxColumn19.ReadOnly = true;
-            styledataGridViewTextBoxColumn19.Format = "dd/MM/yyyy HH:mm";
-            styledataGridViewTextBoxColumn19.NullValue = "Không giới hạn";
-            this.dataGridViewTextBoxColumn19.DefaultCellStyle = styledataGridViewTextBoxColumn19;
             // 
             // dataGridViewTextBoxColumn20
             // 
@@ -743,6 +745,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             this.lblTCHV_XemTatCa.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTCHV_XemTatCa.AutoSize = true;
+            this.lblTCHV_XemTatCa.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblTCHV_XemTatCa.Depth = 0;
             this.lblTCHV_XemTatCa.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.lblTCHV_XemTatCa.Location = new System.Drawing.Point(954, 16);
@@ -752,7 +755,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.lblTCHV_XemTatCa.TabIndex = 2;
             this.lblTCHV_XemTatCa.Text = "Xem Tất Cả";
             this.lblTCHV_XemTatCa.Click += new System.EventHandler(this.lblTCHV_XemTatCa_Click);
-            this.lblTCHV_XemTatCa.Cursor = System.Windows.Forms.Cursors.Hand;
             // 
             // materialLabel8
             // 
@@ -825,7 +827,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.lblTCHV_DangChon.Location = new System.Drawing.Point(0, 0);
             this.lblTCHV_DangChon.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.lblTCHV_DangChon.Name = "lblTCHV_DangChon";
-            this.lblTCHV_DangChon.Size = new System.Drawing.Size(124, 30);
+            this.lblTCHV_DangChon.Size = new System.Drawing.Size(325, 30);
             this.lblTCHV_DangChon.TabIndex = 0;
             this.lblTCHV_DangChon.Text = "Đang chọn: chưa chọn bài thi";
             // 
@@ -845,6 +847,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.btnTCHV_LamBai.BackColor = System.Drawing.Color.Transparent;
             this.btnTCHV_LamBai.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(159)))), ((int)(((byte)(135)))));
             this.btnTCHV_LamBai.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTCHV_LamBai.Enabled = false;
             this.btnTCHV_LamBai.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.btnTCHV_LamBai.Location = new System.Drawing.Point(160, 2);
             this.btnTCHV_LamBai.Name = "btnTCHV_LamBai";
@@ -854,7 +857,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.btnTCHV_LamBai.Text = "Làm Bài";
             this.btnTCHV_LamBai.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             this.btnTCHV_LamBai.Click += new System.EventHandler(this.btnTCHV_LamBai_Click);
-            this.btnTCHV_LamBai.Enabled = false;
             // 
             // lblTCHV_SoTrang
             // 
@@ -864,7 +866,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.lblTCHV_SoTrang.Location = new System.Drawing.Point(12, 19);
             this.lblTCHV_SoTrang.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.lblTCHV_SoTrang.Name = "lblTCHV_SoTrang";
-            this.lblTCHV_SoTrang.Size = new System.Drawing.Size(58, 24);
+            this.lblTCHV_SoTrang.Size = new System.Drawing.Size(98, 24);
             this.lblTCHV_SoTrang.TabIndex = 0;
             this.lblTCHV_SoTrang.Text = "Trang 0 / 0";
             // 
@@ -894,14 +896,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvLopDangHoc.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLopDangHoc.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvLopDangHoc.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLopDangHoc.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLopDangHoc.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvLopDangHoc.ColumnHeadersHeight = 44;
             this.dgvLopDangHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvLopDangHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -922,7 +924,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvLopDangHoc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvLopDangHoc.Size = new System.Drawing.Size(471, 553);
             this.dgvLopDangHoc.TabIndex = 7;
-            this.dgvLopDangHoc.AutoGenerateColumns = false;
             // 
             // dataGridViewTextBoxColumn22
             // 
@@ -1007,6 +1008,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             this.lblTCHV_XemLopDangHoc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTCHV_XemLopDangHoc.AutoSize = true;
+            this.lblTCHV_XemLopDangHoc.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblTCHV_XemLopDangHoc.Depth = 0;
             this.lblTCHV_XemLopDangHoc.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.lblTCHV_XemLopDangHoc.Location = new System.Drawing.Point(95, 7);
@@ -1016,7 +1018,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.lblTCHV_XemLopDangHoc.TabIndex = 2;
             this.lblTCHV_XemLopDangHoc.Text = "Xem Tất Cả";
             this.lblTCHV_XemLopDangHoc.Click += new System.EventHandler(this.lblTCHV_XemLopDangHoc_Click);
-            this.lblTCHV_XemLopDangHoc.Cursor = System.Windows.Forms.Cursors.Hand;
             // 
             // tableLayoutPanel26
             // 
@@ -1091,9 +1092,52 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel27.Name = "tableLayoutPanel27";
             this.tableLayoutPanel27.RowCount = 1;
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel27.Size = new System.Drawing.Size(978, 100);
             this.tableLayoutPanel27.TabIndex = 0;
+            // 
+            // panel36
+            // 
+            this.panel36.Controls.Add(this.prcTCHV_DaHoanThanh);
+            this.panel36.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel36.Location = new System.Drawing.Point(3, 3);
+            this.panel36.Name = "panel36";
+            this.panel36.Size = new System.Drawing.Size(821, 94);
+            this.panel36.TabIndex = 0;
+            // 
+            // prcTCHV_DaHoanThanh
+            // 
+            this.prcTCHV_DaHoanThanh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.prcTCHV_DaHoanThanh.Depth = 0;
+            this.prcTCHV_DaHoanThanh.Location = new System.Drawing.Point(0, 27);
+            this.prcTCHV_DaHoanThanh.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.prcTCHV_DaHoanThanh.Name = "prcTCHV_DaHoanThanh";
+            this.prcTCHV_DaHoanThanh.Size = new System.Drawing.Size(821, 23);
+            this.prcTCHV_DaHoanThanh.TabIndex = 0;
+            this.prcTCHV_DaHoanThanh.UseAccentColor = false;
+            // 
+            // panel37
+            // 
+            this.panel37.Controls.Add(this.lblTCHV_PhanTram);
+            this.panel37.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel37.Location = new System.Drawing.Point(830, 3);
+            this.panel37.Name = "panel37";
+            this.panel37.Size = new System.Drawing.Size(145, 94);
+            this.panel37.TabIndex = 1;
+            // 
+            // lblTCHV_PhanTram
+            // 
+            this.lblTCHV_PhanTram.Depth = 0;
+            this.lblTCHV_PhanTram.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTCHV_PhanTram.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTCHV_PhanTram.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
+            this.lblTCHV_PhanTram.Location = new System.Drawing.Point(0, 0);
+            this.lblTCHV_PhanTram.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTCHV_PhanTram.Name = "lblTCHV_PhanTram";
+            this.lblTCHV_PhanTram.Size = new System.Drawing.Size(145, 94);
+            this.lblTCHV_PhanTram.TabIndex = 0;
+            this.lblTCHV_PhanTram.Text = "0%";
+            this.lblTCHV_PhanTram.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pageHV_LopHoc
             // 
@@ -1198,14 +1242,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvLopDangKi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvLopDangKi.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             this.dgvLopDangKi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle27.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLopDangKi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLopDangKi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvLopDangKi.ColumnHeadersHeight = 44;
             this.dgvLopDangKi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvLopDangKi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -1410,14 +1454,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvLopThamGia.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLopThamGia.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvLopThamGia.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle28.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLopThamGia.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLopThamGia.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvLopThamGia.ColumnHeadersHeight = 44;
             this.dgvLopThamGia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvLopThamGia.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -1478,8 +1522,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn10
             // 
             this.dataGridViewTextBoxColumn10.DataPropertyName = "NgayBatDau";
-            dataGridViewCellStyle29.Format = "dd/MM/yyyy";
-            this.dataGridViewTextBoxColumn10.DefaultCellStyle = dataGridViewCellStyle29;
+            dataGridViewCellStyle6.Format = "dd/MM/yyyy";
+            this.dataGridViewTextBoxColumn10.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewTextBoxColumn10.HeaderText = "Ngày Bắt Đầu";
             this.dataGridViewTextBoxColumn10.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
@@ -1488,8 +1532,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn11
             // 
             this.dataGridViewTextBoxColumn11.DataPropertyName = "NgayKetThuc";
-            dataGridViewCellStyle30.Format = "dd/MM/yyyy";
-            this.dataGridViewTextBoxColumn11.DefaultCellStyle = dataGridViewCellStyle30;
+            dataGridViewCellStyle7.Format = "dd/MM/yyyy";
+            this.dataGridViewTextBoxColumn11.DefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridViewTextBoxColumn11.HeaderText = "Ngày Kết Thúc";
             this.dataGridViewTextBoxColumn11.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
@@ -1738,14 +1782,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvHVDeThi.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvHVDeThi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvHVDeThi.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle31.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle31.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvHVDeThi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle31;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvHVDeThi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvHVDeThi.ColumnHeadersHeight = 44;
             this.dgvHVDeThi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvHVDeThi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -1807,9 +1851,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // Column3
             // 
             this.Column3.DataPropertyName = "HanNop";
-            dataGridViewCellStyle32.Format = "dd/MM/yyyy HH:mm";
-            dataGridViewCellStyle32.NullValue = "Không giới hạn";
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle9.Format = "dd/MM/yyyy HH:mm";
+            dataGridViewCellStyle9.NullValue = "Không giới hạn";
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle9;
             this.Column3.HeaderText = "Hạn nộp";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
@@ -1826,8 +1870,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn13
             // 
             this.dataGridViewTextBoxColumn13.DataPropertyName = "Diem";
-            dataGridViewCellStyle33.Format = "0.00";
-            this.dataGridViewTextBoxColumn13.DefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle10.Format = "0.00";
+            this.dataGridViewTextBoxColumn13.DefaultCellStyle = dataGridViewCellStyle10;
             this.dataGridViewTextBoxColumn13.HeaderText = "Điểm";
             this.dataGridViewTextBoxColumn13.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
@@ -2220,14 +2264,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.dgvHVKetQua.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvHVKetQua.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvHVKetQua.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle34.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle34.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvHVKetQua.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle34;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvHVKetQua.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dgvHVKetQua.ColumnHeadersHeight = 44;
             this.dgvHVKetQua.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvHVKetQua.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -2270,8 +2314,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn16
             // 
             this.dataGridViewTextBoxColumn16.DataPropertyName = "ThoiGianNop";
-            dataGridViewCellStyle35.Format = "dd/MM/yyyy HH:mm";
-            this.dataGridViewTextBoxColumn16.DefaultCellStyle = dataGridViewCellStyle35;
+            dataGridViewCellStyle12.Format = "dd/MM/yyyy HH:mm";
+            this.dataGridViewTextBoxColumn16.DefaultCellStyle = dataGridViewCellStyle12;
             this.dataGridViewTextBoxColumn16.HeaderText = "Nộp Lúc";
             this.dataGridViewTextBoxColumn16.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
@@ -2280,8 +2324,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // dataGridViewTextBoxColumn17
             // 
             this.dataGridViewTextBoxColumn17.DataPropertyName = "Diem";
-            dataGridViewCellStyle36.Format = "0.00";
-            this.dataGridViewTextBoxColumn17.DefaultCellStyle = dataGridViewCellStyle36;
+            dataGridViewCellStyle13.Format = "0.00";
+            this.dataGridViewTextBoxColumn17.DefaultCellStyle = dataGridViewCellStyle13;
             this.dataGridViewTextBoxColumn17.HeaderText = "Điểm";
             this.dataGridViewTextBoxColumn17.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
@@ -2849,7 +2893,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.btnTTHV_LuuThayDoi.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTTHV_LuuThayDoi.Enabled = false;
             this.btnTTHV_LuuThayDoi.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnTTHV_LuuThayDoi.Location = new System.Drawing.Point(481, -19);
+            this.btnTTHV_LuuThayDoi.Location = new System.Drawing.Point(496, -5);
             this.btnTTHV_LuuThayDoi.Name = "btnTTHV_LuuThayDoi";
             this.btnTTHV_LuuThayDoi.Rounded = true;
             this.btnTTHV_LuuThayDoi.Size = new System.Drawing.Size(278, 52);
@@ -3115,7 +3159,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.btnTTHV_DoiMK.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTTHV_DoiMK.Enabled = false;
             this.btnTTHV_DoiMK.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnTTHV_DoiMK.Location = new System.Drawing.Point(512, 3);
+            this.btnTTHV_DoiMK.Location = new System.Drawing.Point(546, 18);
             this.btnTTHV_DoiMK.Name = "btnTTHV_DoiMK";
             this.btnTTHV_DoiMK.Rounded = true;
             this.btnTTHV_DoiMK.Size = new System.Drawing.Size(228, 51);
@@ -3218,16 +3262,22 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.tableLayoutPanel29.ColumnCount = 1;
             this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel29.Controls.Add(this.lblTTHV_SDT, 0, 4);
+            this.tableLayoutPanel29.Controls.Add(this.lblTTHV_Email, 0, 3);
+            this.tableLayoutPanel29.Controls.Add(this.lblTTHV_DiaChi, 0, 2);
+            this.tableLayoutPanel29.Controls.Add(this.lblTTHV_HoTen, 0, 1);
             this.tableLayoutPanel29.Controls.Add(this.materialLabel54, 0, 0);
-            this.tableLayoutPanel29.Controls.Add(this.lblGVTT_HovaTen, 0, 1);
             this.tableLayoutPanel29.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel29.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel29.Name = "tableLayoutPanel29";
-            this.tableLayoutPanel29.RowCount = 7;
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.59259F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.66667F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.62963F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel29.RowCount = 6;
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.29646F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 22.46294F));
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
@@ -3242,26 +3292,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel54.Font = new System.Drawing.Font("Roboto Medium", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.materialLabel54.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
             this.materialLabel54.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
-            this.materialLabel54.Location = new System.Drawing.Point(260, 24);
+            this.materialLabel54.Location = new System.Drawing.Point(260, 22);
             this.materialLabel54.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
             this.materialLabel54.Name = "materialLabel54";
             this.materialLabel54.Size = new System.Drawing.Size(257, 133);
             this.materialLabel54.TabIndex = 2;
             this.materialLabel54.Text = "HV";
             this.materialLabel54.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblGVTT_HovaTen
-            // 
-            this.lblGVTT_HovaTen.Depth = 0;
-            this.lblGVTT_HovaTen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGVTT_HovaTen.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblGVTT_HovaTen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
-            this.lblGVTT_HovaTen.Location = new System.Drawing.Point(3, 181);
-            this.lblGVTT_HovaTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblGVTT_HovaTen.Name = "lblGVTT_HovaTen";
-            this.lblGVTT_HovaTen.Size = new System.Drawing.Size(771, 128);
-            this.lblGVTT_HovaTen.TabIndex = 1;
-            this.lblGVTT_HovaTen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // materialLabel24
             // 
@@ -3285,51 +3322,61 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.pageHV_DangXuat.Text = "Đăng Xuất";
             this.pageHV_DangXuat.UseVisualStyleBackColor = true;
             // 
-            // panel36
+            // lblTTHV_HoTen
             // 
-            this.panel36.Controls.Add(this.prcTCHV_DaHoanThanh);
-            this.panel36.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel36.Location = new System.Drawing.Point(3, 3);
-            this.panel36.Name = "panel36";
-            this.panel36.Size = new System.Drawing.Size(821, 94);
-            this.panel36.TabIndex = 0;
+            this.lblTTHV_HoTen.Depth = 0;
+            this.lblTTHV_HoTen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTHV_HoTen.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTHV_HoTen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTHV_HoTen.Location = new System.Drawing.Point(3, 178);
+            this.lblTTHV_HoTen.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTHV_HoTen.Name = "lblTTHV_HoTen";
+            this.lblTTHV_HoTen.Size = new System.Drawing.Size(771, 197);
+            this.lblTTHV_HoTen.TabIndex = 3;
+            this.lblTTHV_HoTen.Text = "Lương Trung Thành";
+            this.lblTTHV_HoTen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel37
+            // lblTTHV_DiaChi
             // 
-            this.panel37.Controls.Add(this.lblTCHV_PhanTram);
-            this.panel37.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel37.Location = new System.Drawing.Point(830, 3);
-            this.panel37.Name = "panel37";
-            this.panel37.Size = new System.Drawing.Size(145, 94);
-            this.panel37.TabIndex = 1;
+            this.lblTTHV_DiaChi.Depth = 0;
+            this.lblTTHV_DiaChi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTHV_DiaChi.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTHV_DiaChi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTHV_DiaChi.Location = new System.Drawing.Point(3, 375);
+            this.lblTTHV_DiaChi.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTHV_DiaChi.Name = "lblTTHV_DiaChi";
+            this.lblTTHV_DiaChi.Size = new System.Drawing.Size(771, 125);
+            this.lblTTHV_DiaChi.TabIndex = 4;
+            this.lblTTHV_DiaChi.Text = "Địa Chỉ";
+            this.lblTTHV_DiaChi.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // prcTCHV_DaHoanThanh
+            // lblTTHV_Email
             // 
-            this.prcTCHV_DaHoanThanh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.prcTCHV_DaHoanThanh.Depth = 0;
-            this.prcTCHV_DaHoanThanh.Location = new System.Drawing.Point(0, 27);
-            this.prcTCHV_DaHoanThanh.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.prcTCHV_DaHoanThanh.Name = "prcTCHV_DaHoanThanh";
-            this.prcTCHV_DaHoanThanh.Size = new System.Drawing.Size(821, 23);
-            this.prcTCHV_DaHoanThanh.TabIndex = 0;
-            this.prcTCHV_DaHoanThanh.UseAccentColor = false;
-            this.prcTCHV_DaHoanThanh.Minimum = 0;
-            this.prcTCHV_DaHoanThanh.Maximum = 100;
-            this.prcTCHV_DaHoanThanh.Value = 0;
+            this.lblTTHV_Email.Depth = 0;
+            this.lblTTHV_Email.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTHV_Email.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTHV_Email.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTHV_Email.Location = new System.Drawing.Point(3, 500);
+            this.lblTTHV_Email.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTHV_Email.Name = "lblTTHV_Email";
+            this.lblTTHV_Email.Size = new System.Drawing.Size(771, 125);
+            this.lblTTHV_Email.TabIndex = 5;
+            this.lblTTHV_Email.Text = "Email: ";
+            this.lblTTHV_Email.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblTCHV_PhanTram
+            // lblTTHV_SDT
             // 
-            this.lblTCHV_PhanTram.Depth = 0;
-            this.lblTCHV_PhanTram.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTCHV_PhanTram.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTCHV_PhanTram.FontType = ReaLTaiizor.Manager.MaterialSkinManager.FontType.H6;
-            this.lblTCHV_PhanTram.Location = new System.Drawing.Point(0, 0);
-            this.lblTCHV_PhanTram.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.lblTCHV_PhanTram.Name = "lblTCHV_PhanTram";
-            this.lblTCHV_PhanTram.Size = new System.Drawing.Size(145, 94);
-            this.lblTCHV_PhanTram.TabIndex = 0;
-            this.lblTCHV_PhanTram.Text = "0%";
-            this.lblTCHV_PhanTram.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTTHV_SDT.Depth = 0;
+            this.lblTTHV_SDT.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTTHV_SDT.Font = new System.Drawing.Font("Roboto", 17.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTTHV_SDT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(32)))), ((int)(((byte)(57)))));
+            this.lblTTHV_SDT.Location = new System.Drawing.Point(3, 625);
+            this.lblTTHV_SDT.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.lblTTHV_SDT.Name = "lblTTHV_SDT";
+            this.lblTTHV_SDT.Size = new System.Drawing.Size(771, 125);
+            this.lblTTHV_SDT.TabIndex = 6;
+            this.lblTTHV_SDT.Text = "Số Điện Thoại";
+            this.lblTTHV_SDT.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // HocVien
             // 
@@ -3379,6 +3426,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel34.PerformLayout();
             this.panel35.ResumeLayout(false);
             this.tableLayoutPanel27.ResumeLayout(false);
+            this.panel36.ResumeLayout(false);
+            this.panel37.ResumeLayout(false);
             this.pageHV_LopHoc.ResumeLayout(false);
             this.pageHV_LopHoc.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -3477,8 +3526,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.panel50.PerformLayout();
             this.panel51.ResumeLayout(false);
             this.tableLayoutPanel29.ResumeLayout(false);
-            this.panel36.ResumeLayout(false);
-            this.panel37.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3638,7 +3685,6 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.Panel panel51;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel29;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel54;
-        private ReaLTaiizor.Controls.MaterialLabel lblGVTT_HovaTen;
         private System.Windows.Forms.Panel pnlTTHV_NgaySinh;
         private ReaLTaiizor.Controls.MaterialLabel lblTTHV_NgaySinh;
         private ReaLTaiizor.Controls.MaterialTextBoxEdit txtTTHV_NgaySinh;
@@ -3699,5 +3745,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private System.Windows.Forms.Panel panel37;
         private ReaLTaiizor.Controls.MaterialProgressBar prcTCHV_DaHoanThanh;
         private ReaLTaiizor.Controls.MaterialLabel lblTCHV_PhanTram;
+        private ReaLTaiizor.Controls.MaterialLabel lblTTHV_SDT;
+        private ReaLTaiizor.Controls.MaterialLabel lblTTHV_Email;
+        private ReaLTaiizor.Controls.MaterialLabel lblTTHV_DiaChi;
+        private ReaLTaiizor.Controls.MaterialLabel lblTTHV_HoTen;
     }
 }
