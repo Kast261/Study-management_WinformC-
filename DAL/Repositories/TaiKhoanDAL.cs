@@ -415,6 +415,33 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 new NpgsqlParameter("@kw", "%" + tenSinhVien.Trim() + "%")
             });
         }
+        public DataTable LayHoSoChuaCoTaiKhoan(string vaiTro)
+        {
+            bool giaoVien = string.Equals(vaiTro?.Trim(), "GiaoVien", StringComparison.OrdinalIgnoreCase);
+            bool hocSinh = string.Equals(vaiTro?.Trim(), "HocSinh", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(vaiTro?.Trim(), "HocVien", StringComparison.OrdinalIgnoreCase);
+            if (!giaoVien && !hocSinh)
+            {
+                var empty = new DataTable();
+                empty.Columns.Add("NguoiDungID", typeof(int));
+                empty.Columns.Add("HoTen", typeof(string));
+                return empty;
+            }
+            string table = giaoVien ? "GiaoVien" : "HocSinh";
+            string[] roles = giaoVien ? new[] { "giaovien" } : new[] { "hocsinh", "hocvien" };
+            // Cùng kiểm tra cả liên kết tài khoản -> hồ sơ và liên kết ngược của dữ liệu cũ.
+            return DatabaseHelper.ExecuteQuery(@"
+                SELECT p." + table + @"ID AS ""NguoiDungID"",
+                       COALESCE(NULLIF(BTRIM(p.HoTen),''),'Chưa có họ tên') AS ""HoTen""
+                FROM " + table + @" p
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM TaiKhoan tk
+                    WHERE (LOWER(BTRIM(tk.VaiTro))=ANY(@roles) AND tk.NguoiDungID=p." + table + @"ID)
+                       OR tk.TaiKhoanID=p.TaiKhoanID)
+                ORDER BY p.HoTen,p." + table + "ID",
+                new NpgsqlParameter("roles", roles));
+        }
+
         public bool ThemTaiKhoan(string tenDangNhap, string matKhauPlain, string vaiTro, int nguoiDungID)
         {
             if (nguoiDungID < 0 || string.IsNullOrWhiteSpace(tenDangNhap) || string.IsNullOrWhiteSpace(matKhauPlain)
@@ -443,9 +470,10 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                             person.Parameters.AddWithValue("id", nguoiDungID);
                             if (person.ExecuteScalar() == null) return false;
                         }
-                        using (var linked = new NpgsqlCommand("SELECT 1 FROM TaiKhoan tk JOIN " + table + " p ON p." + table + "ID=@id WHERE (tk.VaiTro=@role AND tk.NguoiDungID=@id) OR tk.TaiKhoanID=p.TaiKhoanID", conn, transaction))
+                        using (var linked = new NpgsqlCommand("SELECT 1 FROM TaiKhoan tk JOIN " + table + " p ON p." + table + "ID=@id WHERE (LOWER(BTRIM(tk.VaiTro))=ANY(@roles) AND tk.NguoiDungID=@id) OR tk.TaiKhoanID=p.TaiKhoanID", conn, transaction))
                         {
-                            linked.Parameters.AddWithValue("id", nguoiDungID); linked.Parameters.AddWithValue("role", vaiTro);
+                            linked.Parameters.AddWithValue("id", nguoiDungID);
+                            linked.Parameters.AddWithValue("roles", vaiTro == "GiaoVien" ? new[] { "giaovien" } : new[] { "hocsinh", "hocvien" });
                             if (linked.ExecuteScalar() != null) return false;
                         }
                     }

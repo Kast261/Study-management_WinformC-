@@ -62,6 +62,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             LamMoiFormHV();
             LamMoiFormKH();
             LamMoiFormLop();
+            cmbTK_VaiTro.SelectedItem = "HocSinh";
             LamMoiFormTK();
         }
 
@@ -949,7 +950,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             _selectedTaiKhoanLaAdmin = false;
             if (txtTK_TaiKhoanDangNhap != null) txtTK_TaiKhoanDangNhap.Clear();
             if (txtTK_MatKhau != null) txtTK_MatKhau.Clear();
-            if (cmbTK_VaiTro != null && cmbTK_VaiTro.Items.Count > 0) cmbTK_VaiTro.SelectedIndex = 0;
+            if (cmbTK_GanCho != null) cmbTK_GanCho.SelectedIndex = -1;
+            if (cmbTK_VaiTro != null && cmbTK_VaiTro.SelectedIndex < 0)
+                cmbTK_VaiTro.SelectedItem = "HocSinh";
+            else
+                LoadDropdownGanCho();
             if (txt_TimTaiKhoan != null) txt_TimTaiKhoan.Clear();
             UpdateNutKhoaMoKhoa();
         }
@@ -967,35 +972,50 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void LoadDropdownGanCho()
         {
-            if (cmbTK_GanCho == null || cmbTK_VaiTro == null) return;
-            string role = cmbTK_VaiTro.SelectedItem?.ToString() ?? "";
+            if (cmbTK_GanCho == null || cmbTK_VaiTro == null || btnTK_TaoTaiKhoan == null) return;
+            string role = cmbTK_VaiTro.SelectedItem?.ToString()?.Trim() ?? "";
+            int selectedID = cmbTK_GanCho.SelectedValue is int id ? id : 0;
+            cmbTK_GanCho.DataSource = null;
+            cmbTK_GanCho.DisplayMember = "";
+            cmbTK_GanCho.ValueMember = "";
+            bool needsProfile = role == "GiaoVien" || role == "HocSinh" || role == "HocVien";
+            cmbTK_GanCho.Visible = needsProfile;
+            cmbTK_GanCho.Enabled = false;
+            btnTK_TaoTaiKhoan.Enabled = role == "Admin";
+            if (!needsProfile) return;
             try
             {
-                if (role == "GiaoVien")
-                {
-                    DataTable dt = _gvDAL.LayTatCa();
-                    cmbTK_GanCho.DataSource    = dt;
-                    cmbTK_GanCho.ValueMember   = "GiaoVienID";
-                    cmbTK_GanCho.Visible       = true;
-                }
-                else if (role == "HocSinh")
-                {
-                    DataTable dt = _hsDAL.LayTatCa();
-                    cmbTK_GanCho.DataSource    = dt;
-                    cmbTK_GanCho.ValueMember   = "HocSinhID";
-                    cmbTK_GanCho.Visible       = true;
-                }
-                else
-                {
-                    cmbTK_GanCho.DataSource = null;
-                    cmbTK_GanCho.Visible    = false;
-                }
+                DataTable profiles = _tkDAL.LayHoSoChuaCoTaiKhoan(role);
+                bool hasProfiles = profiles.Rows.Count > 0;
+                string person = role == "GiaoVien" ? "giáo viên" : "học viên";
+                DataRow prompt = profiles.NewRow();
+                prompt["NguoiDungID"] = 0;
+                prompt["HoTen"] = hasProfiles ? "-- Chọn " + person + " --"
+                    : "Không còn " + person + " chưa có tài khoản";
+                profiles.Rows.InsertAt(prompt, 0);
+                cmbTK_GanCho.DisplayMember = profiles.Columns["HoTen"].ColumnName;
+                cmbTK_GanCho.ValueMember = profiles.Columns["NguoiDungID"].ColumnName;
+                cmbTK_GanCho.DataSource = profiles;
+                cmbTK_GanCho.Enabled = hasProfiles;
+                btnTK_TaoTaiKhoan.Enabled = hasProfiles;
+                foreach (DataRow row in profiles.Rows)
+                    if (Convert.ToInt32(row["NguoiDungID"]) == selectedID)
+                    {
+                        cmbTK_GanCho.SelectedValue = selectedID;
+                        break;
+                    }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                cmbTK_GanCho.DataSource = null;
+                MessageBox.Show("Không tải được hồ sơ để gán tài khoản: " + ex.Message,
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void cmbTK_VaiTro_Changed(object sender, EventArgs e)
         {
+            if (cmbTK_GanCho != null) cmbTK_GanCho.SelectedIndex = -1;
             LoadDropdownGanCho();
         }
 
@@ -1078,11 +1098,25 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             string tenDangNhap = txtTK_TaiKhoanDangNhap.Text.Trim();
             string matKhauPlain = txtTK_MatKhau.Text.Trim();
-            string vaiTro = cmbTK_VaiTro?.SelectedItem?.ToString() ?? "HocSinh";
+            string vaiTro = cmbTK_VaiTro?.SelectedItem?.ToString() ?? "";
+            if (vaiTro == "HocVien") vaiTro = "HocSinh";
+            if (vaiTro != "Admin" && vaiTro != "GiaoVien" && vaiTro != "HocSinh")
+            {
+                MessageBox.Show("Vui lòng chọn vai trò cho tài khoản.", "Thông báo");
+                return;
+            }
 
             int nguoiDungID = 0;
-            if (cmbTK_GanCho != null && cmbTK_GanCho.Visible && cmbTK_GanCho.SelectedValue != null)
-                int.TryParse(cmbTK_GanCho.SelectedValue.ToString(), out nguoiDungID);
+            if (vaiTro != "Admin")
+            {
+                if (cmbTK_GanCho == null || !cmbTK_GanCho.Enabled
+                    || !(cmbTK_GanCho.SelectedValue is int selectedID) || selectedID <= 0)
+                {
+                    MessageBox.Show("Vui lòng chọn hồ sơ trong ô Gán cho. Nếu chưa có hồ sơ, hãy tạo giáo viên hoặc học viên trước.", "Thông báo");
+                    return;
+                }
+                nguoiDungID = selectedID;
+            }
 
             try
             {
@@ -1094,7 +1128,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
                 else
                 {
-                    MessageBox.Show("Tên đăng nhập đã tồn tại hoặc có lỗi xảy ra!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    LoadDropdownGanCho();
+                    MessageBox.Show("Tên đăng nhập đã tồn tại hoặc hồ sơ đã có tài khoản. Vui lòng kiểm tra và chọn lại.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
@@ -1182,6 +1218,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             if (materialTabControl1.SelectedTab == pageDashboard && Visible)
                 LoadDashboard();
+            if (materialTabControl1.SelectedTab == pageTaiKhoan)
+            {
+                LoadDanhSachTaiKhoan();
+                LoadDropdownGanCho();
+            }
 
             if (materialTabControl1.SelectedTab != null &&
                 (materialTabControl1.SelectedTab == pageDangXuat || materialTabControl1.SelectedTab.Text.Contains("Đăng Xuất")))
