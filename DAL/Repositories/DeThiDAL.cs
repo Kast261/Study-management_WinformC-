@@ -36,6 +36,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             l.TenLop AS ""TenLop"",
             CASE 
                 WHEN kq.KetQuaID IS NOT NULL THEN 'Đã làm'
+                WHEN d.TrangThai = 'Đã đóng' THEN 'Đã đóng'
                 WHEN d.HanNop IS NOT NULL AND d.HanNop <= CURRENT_TIMESTAMP THEN 'Hết hạn'
                 ELSE 'Chưa làm'
             END AS ""TrangThai"",
@@ -43,19 +44,21 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         FROM DeThi d
         JOIN LopHoc l ON d.LopHocID = l.LopHocID
         LEFT JOIN KetQuaThi kq ON d.DeThiID = kq.DeThiID AND kq.HocSinhID = @hsID
-        WHERE d.TrangThai = 'Đang mở' AND l.LopHocID IN (
+        -- Xét thành viên hiện tại, không so sánh ngày duyệt với ngày giao đề.
+        WHERE d.TrangThai IN ('Đang mở', 'Đã đóng') AND l.LopHocID IN (
             SELECT LopHocID FROM HocSinh WHERE HocSinhID = @hsID AND LopHocID IS NOT NULL
             UNION
             SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND TrangThai = 'Đã duyệt'
         )
         AND (NOT @chiBaiCoTheLam OR (
-            kq.KetQuaID IS NULL AND d.ThoiGian > 0
+            d.TrangThai = 'Đang mở' AND kq.KetQuaID IS NULL AND d.ThoiGian > 0
             AND (d.HanNop IS NULL OR d.HanNop > CURRENT_TIMESTAMP)
             AND EXISTS (SELECT 1 FROM CauHoi c WHERE c.DeThiID = d.DeThiID)
         ))
         ORDER BY 
             CASE 
                 WHEN kq.KetQuaID IS NOT NULL THEN 1 -- Đã làm xếp cuối
+                WHEN d.TrangThai = 'Đã đóng' THEN 2
                 WHEN d.HanNop IS NOT NULL AND d.HanNop <= CURRENT_TIMESTAMP THEN 2 -- Hết hạn xếp thứ 2 từ dưới lên
                 ELSE 0 -- Chưa làm xếp lên đầu
             END ASC,
