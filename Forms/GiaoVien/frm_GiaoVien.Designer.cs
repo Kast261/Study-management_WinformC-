@@ -265,7 +265,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             this.materialLabel52 = new ReaLTaiizor.Controls.MaterialLabel();
             this.panel47 = new System.Windows.Forms.Panel();
             this.materialLabel53 = new ReaLTaiizor.Controls.MaterialLabel();
-            this.btnDT_GiaoBaiThi = new ReaLTaiizor.Controls.ForeverButton();
+            this.btnDT_GiaoBaiThi = new System.Windows.Forms.Button();
             this.btnDT_XoaDeThi = new ReaLTaiizor.Controls.ForeverButton();
             this.materialLabel45 = new ReaLTaiizor.Controls.MaterialLabel();
             this.materialLabel44 = new ReaLTaiizor.Controls.MaterialLabel();
@@ -3664,18 +3664,19 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // btnDT_GiaoBaiThi
             // 
-            this.btnDT_GiaoBaiThi.BackColor = System.Drawing.Color.Transparent;
-            this.btnDT_GiaoBaiThi.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
+            this.btnDT_GiaoBaiThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(79)))), ((int)(((byte)(196)))));
+            this.btnDT_GiaoBaiThi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDT_GiaoBaiThi.FlatAppearance.BorderSize = 0;
             this.btnDT_GiaoBaiThi.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDT_GiaoBaiThi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnDT_GiaoBaiThi.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.btnDT_GiaoBaiThi.Location = new System.Drawing.Point(3, 479);
             this.btnDT_GiaoBaiThi.Name = "btnDT_GiaoBaiThi";
-            this.btnDT_GiaoBaiThi.Rounded = false;
             this.btnDT_GiaoBaiThi.Size = new System.Drawing.Size(643, 65);
             this.btnDT_GiaoBaiThi.TabIndex = 5;
             this.btnDT_GiaoBaiThi.Text = "Giao Bài Thi";
-            this.btnDT_GiaoBaiThi.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.btnDT_GiaoBaiThi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
+            this.btnDT_GiaoBaiThi.UseVisualStyleBackColor = false;
             this.btnDT_GiaoBaiThi.Click += new System.EventHandler(this.btnDT_GiaoBaiThi_Click);
             // 
             // btnDT_XoaDeThi
@@ -4988,6 +4989,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             // 
             // Column5
             // 
+            this.Column5.DataPropertyName = "TenLop";
+            this.Column5.DefaultCellStyle.NullValue = "Chưa giao";
             this.Column5.HeaderText = "Lớp";
             this.Column5.MinimumWidth = 6;
             this.Column5.Name = "Column5";
@@ -5433,7 +5436,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private ReaLTaiizor.Controls.MaterialTextBoxEdit txtDT_SoCauHoi;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel52;
         private ReaLTaiizor.Controls.MaterialLabel materialLabel53;
-        private ReaLTaiizor.Controls.ForeverButton btnDT_GiaoBaiThi;
+        private System.Windows.Forms.Button btnDT_GiaoBaiThi;
         private ReaLTaiizor.Controls.ForeverButton btnDT_XoaDeThi;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;

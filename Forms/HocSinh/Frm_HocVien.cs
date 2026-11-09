@@ -31,6 +31,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private DataTable _lopTrangChu;
         private bool _dangTaiLopLocKetQua;
         private bool _daTaiHocVien;
+        private bool _dangLamMoiTrang;
 
         #endregion
 
@@ -310,6 +311,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
+                string monHocDaLoc = materialComboBox1?.SelectedItem?.ToString();
+                int deDaChon = _selectedDeThiID;
+                var baiTrangChu = dgvBaiThiDangMo.CurrentRow?.DataBoundItem as DataRowView;
+                int deTrangChu = baiTrangChu == null ? 0 : Convert.ToInt32(baiTrangChu["DeThiID"]);
                 DataTable exams = _deThiDAL.LayDeThiChoHocSinh(Session.NguoiDungID);
                 DataTable openExams = _deThiDAL.LayBaiThiDangMoChoHocSinh(Session.NguoiDungID);
                 _selectedDeThiID = 0;
@@ -348,8 +353,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
                             materialComboBox1.Items.Add(mon);
                         }
                     }
-                    materialComboBox1.SelectedIndex = 0;
+                    if (!string.IsNullOrEmpty(monHocDaLoc) && materialComboBox1.Items.Contains(monHocDaLoc))
+                        materialComboBox1.SelectedItem = monHocDaLoc;
+                    else
+                        materialComboBox1.SelectedIndex = 0;
                 }
+                if (deDaChon > 0 && DataGridViewPager.ShowItem(dgvHVDeThi, "DeThiID", deDaChon))
+                    _selectedDeThiID = deDaChon;
+                if (deTrangChu > 0) DataGridViewPager.ShowItem(dgvBaiThiDangMo, "DeThiID", deTrangChu);
             }
             catch (Exception ex)
             {
@@ -860,40 +871,46 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         #region 7. Điều Hướng & Sự Kiện Form
 
+        private void LamMoiTrangDangXem()
+        {
+            if (!_daTaiHocVien || _dangLamMoiTrang) return;
+            _dangLamMoiTrang = true;
+            try
+            {
+                if (tabHocVien.SelectedTab == pageHV_TrangChu)
+                {
+                    LoadLopHoc();
+                    LoadDanhSachDeThi();
+                }
+                else if (tabHocVien.SelectedTab == pageHV_BaiThi)
+                    LoadDanhSachDeThi();
+                else if (tabHocVien.SelectedTab == pageHV_KetQua)
+                    LoadLichSuThi();
+                else if (tabHocVien.SelectedTab == pageHV_LopHoc)
+                {
+                    LoadTabLopHocCuaToi();
+                    LoadDanhSachDeThi();
+                }
+                else if (tabHocVien.SelectedTab == pageHV_ThongTin)
+                    LoadThongTinHocVien();
+            }
+            finally { _dangLamMoiTrang = false; }
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            if (!_daTaiHocVien || _dangLamMoiTrang || !Visible) return;
+            // Giáo viên có thể giao bài/duyệt lớp trong khi cửa sổ học viên đang mở.
+            if (tabHocVien.SelectedTab == pageHV_TrangChu
+                || tabHocVien.SelectedTab == pageHV_BaiThi || tabHocVien.SelectedTab == pageHV_LopHoc)
+                LamMoiTrangDangXem();
+        }
+
         private void TabHocVien_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!_daTaiHocVien) return;
-            if (tabHocVien.SelectedTab == pageHV_TrangChu)
-            {
-                LoadLopHoc();
-                LoadDanhSachDeThi();
-                return;
-            }
-
-            if (tabHocVien.SelectedTab == pageHV_BaiThi)
-            {
-                LoadDanhSachDeThi();
-                return;
-            }
-
-            if (tabHocVien.SelectedTab == pageHV_KetQua)
-            {
-                LoadLichSuThi();
-                return;
-            }
-
-            if (tabHocVien.SelectedTab == pageHV_LopHoc)
-            {
-                LoadTabLopHocCuaToi();
-                return;
-            }
-
-            if (tabHocVien.SelectedTab == pageHV_ThongTin)
-            {
-                LoadThongTinHocVien();
-                return;
-            }
-
+            LamMoiTrangDangXem();
             if (tabHocVien.SelectedTab != null && tabHocVien.SelectedTab.Text.Trim().Contains("Đăng Xuất"))
             {
                 if (MessageBox.Show("Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
