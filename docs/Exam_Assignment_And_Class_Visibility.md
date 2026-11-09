@@ -48,11 +48,21 @@ vẫn là hai lớp độc lập.
 
 Danh sách lớp và bài thi được cập nhật khi đổi tab hoặc quay lại cửa sổ học
 viên. Bộ lọc môn học và bài đang chọn được giữ nếu vẫn còn trong danh sách.
+Trong lúc xác nhận đăng ký/hủy đăng ký, tạm hoãn refresh do `OnActivated` và
+giữ mã lớp/học viên trước khi mở hộp thoại. Tránh việc đóng hộp xác nhận làm
+mất mã lớp rồi gửi đăng ký với mã 0. Refresh tự hoạt động lại sau khi kết thúc
+thao tác hoặc chọn Không.
 Tab **Bài thi** giữ cả bài hết hạn/đã đóng để học viên vào lớp sau có thể thấy
 lịch sử giao bài. Trang chủ chỉ hiển thị bài còn có thể bắt đầu làm. Đề đã
 được giáo viên xóa vẫn tuân theo cơ chế giữ kết quả trong tab Kết quả.
 
 ## Kiểm tra
+
+`tests/StudentRegistration.SmokeTests` trích handler thật từ form học viên,
+kiểm tra mã lớp gửi xuống DAL khi giả lập activation/rebind lúc xác nhận.
+Kiểm thử này thất bại với master `c55dafe` và đạt sau bản sửa. Bổ sung luồng
+PostgreSQL trong `StudentRegistrationFlowTests`: học viên đã tham gia nhiều
+lớp đăng ký lớp Toán vừa tạo, được duyệt rồi thấy bài đã giao từ trước.
 
 **Đóng đăng kí** trên form giáo viên lấy mã từ dòng đang được chọn, xác nhận
 cả tên và mã lớp, rồi cập nhật duy nhất mã lớp đó với điều kiện giáo viên sở

@@ -32,6 +32,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private bool _dangTaiLopLocKetQua;
         private bool _daTaiHocVien;
         private bool _dangLamMoiTrang;
+        private bool _dangXuLyDangKyLop;
 
         #endregion
 
@@ -236,15 +237,25 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnDangKyLop_Click(object sender, EventArgs e)
         {
-            if (_selectedLopDangKyID <= 0)
+            if (_dangXuLyDangKyLop) return;
+            var selected = dgvLopDangKi.CurrentRow?.DataBoundItem as DataRowView;
+            if (selected == null || dgvLopDangKi.SelectedRows.Count != 1)
             {
                 MessageBox.Show("Vui lòng chọn lớp học muốn đăng ký!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (MessageBox.Show("Bạn có chắc chắn muốn đăng ký lớp học này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            // MessageBox đóng có thể kích hoạt OnActivated và tải lại bảng.
+            // Giữ mã lớp/học viên trước khi mở hộp thoại, không đọc lại cache sau đó.
+            int lopHocID = Convert.ToInt32(selected["LopHocID"]);
+            int hocSinhID = Session.NguoiDungID;
+            string tenLop = ExamSelection.ClassDisplayName(selected.Row);
+            _dangXuLyDangKyLop = true;
+            try
             {
-                if (_lopDAL.DangKyLop(_selectedLopDangKyID, Session.NguoiDungID, out string thongBao))
+                if (MessageBox.Show(this, $"Đăng ký {tenLop}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+                if (_lopDAL.DangKyLop(lopHocID, hocSinhID, out string thongBao))
                 {
                     MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadTabLopHocCuaToi();
@@ -256,11 +267,18 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Không thể đăng ký lớp: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally { _dangXuLyDangKyLop = false; }
         }
 
         private void btnHV_HuyDK_Click(object sender, EventArgs e)
         {
-            if (_selectedLopDangHocID <= 0)
+            if (_dangXuLyDangKyLop) return;
+            var selected = dgvLopThamGia.CurrentRow?.DataBoundItem as DataRowView;
+            if (selected == null || dgvLopThamGia.SelectedRows.Count != 1)
             {
                 MessageBox.Show("Vui lòng chọn lớp học muốn hủy đăng ký!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -285,9 +303,15 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             // -------------------------------------------------------------
 
-            if (MessageBox.Show("Bạn có chắc chắn muốn hủy đăng ký lớp học này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            int lopHocID = Convert.ToInt32(selected["LopHocID"]);
+            int hocSinhID = Session.NguoiDungID;
+            string tenLop = ExamSelection.ClassDisplayName(selected.Row);
+            _dangXuLyDangKyLop = true;
+            try
             {
-                if (_lopDAL.HuyDangKyLop(_selectedLopDangHocID, Session.NguoiDungID, out string thongBao))
+                if (MessageBox.Show(this, $"Hủy đăng ký {tenLop}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+                if (_lopDAL.HuyDangKyLop(lopHocID, hocSinhID, out string thongBao))
                 {
                     MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -301,6 +325,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Không thể hủy đăng ký lớp: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally { _dangXuLyDangKyLop = false; }
         }
 
         #endregion
@@ -873,7 +902,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void LamMoiTrangDangXem()
         {
-            if (!_daTaiHocVien || _dangLamMoiTrang) return;
+            if (!_daTaiHocVien || _dangLamMoiTrang || _dangXuLyDangKyLop) return;
             _dangLamMoiTrang = true;
             try
             {
@@ -900,7 +929,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            if (!_daTaiHocVien || _dangLamMoiTrang || !Visible) return;
+            if (!_daTaiHocVien || _dangLamMoiTrang || _dangXuLyDangKyLop || !Visible) return;
             // Giáo viên có thể giao bài/duyệt lớp trong khi cửa sổ học viên đang mở.
             if (tabHocVien.SelectedTab == pageHV_TrangChu
                 || tabHocVien.SelectedTab == pageHV_BaiThi || tabHocVien.SelectedTab == pageHV_LopHoc)
