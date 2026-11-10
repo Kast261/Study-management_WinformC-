@@ -1,5 +1,5 @@
-using BLT_Quan_Ly_Hoc_Tap.DAL;
-using BLT_Quan_Ly_Hoc_Tap.Database;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Services;
 using BLT_Quan_Ly_Hoc_Tap.Helpers;
 using BLT_Quan_Ly_Hoc_Tap.Models;
 using ReaLTaiizor.Controls;
@@ -12,14 +12,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Npgsql;
 namespace BLT_Quan_Ly_Hoc_Tap
 {
     public partial class frm_DangNhap : ReaLTaiizor.Forms.MaterialForm
     {
         #region Dữ liệu & Trạng thái
 
-        private readonly TaiKhoanDAL _taiKhoanDAL = new TaiKhoanDAL();
+        private readonly ITaiKhoanService _taiKhoanService = new TaiKhoanService();
 
         #endregion
 
@@ -36,7 +35,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             if (IsDesignTime) return;
 
-            if (!DatabaseHelper.KiemTraKetNoi(out string loi))
+            if (!new UngDungService().KiemTraKetNoi(out string loi))
             {
                
                 MessageBox.Show(
@@ -84,7 +83,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 // 2. Xác thực qua TaiKhoanDAL
-                TaiKhoan tk = _taiKhoanDAL.DangNhap(username, password);
+                TaiKhoan tk = _taiKhoanService.DangNhap(username, password);
 
                 if (tk == null)
                 {
@@ -115,9 +114,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 // 3. TASK-05: Xử lý lưu/xóa "Ghi Nhớ Đăng Nhập"
                 if (check_GhiNho.Checked)
-                    _taiKhoanDAL.LuuGhiNho(username, password);
+                    _taiKhoanService.LuuGhiNho(username, password);
                 else
-                    _taiKhoanDAL.XoaGhiNho(username);
+                    _taiKhoanService.XoaGhiNho(username);
 
                 // 4. Lưu vào Session
                 Session.TaiKhoanID = tk.TaiKhoanID;
@@ -128,16 +127,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 try
                 {
-                    if (Session.IsGiaoVien && Session.NguoiDungID > 0)
-                    {
-                        object gvName = DatabaseHelper.ExecuteScalar("SELECT HoTen FROM GiaoVien WHERE GiaoVienID = @id", new NpgsqlParameter("@id", Session.NguoiDungID));
-                        if (gvName != null && gvName != DBNull.Value) Session.HoTen = gvName.ToString();
-                    }
-                    else if (Session.IsHocSinh && Session.NguoiDungID > 0)
-                    {
-                        object hsName = DatabaseHelper.ExecuteScalar("SELECT HoTen FROM HocSinh WHERE HocSinhID = @id", new NpgsqlParameter("@id", Session.NguoiDungID));
-                        if (hsName != null && hsName != DBNull.Value) Session.HoTen = hsName.ToString();
-                    }
+                    string hoTen = _taiKhoanService.LayHoTen(Session.TaiKhoanID);
+                    if (!string.IsNullOrWhiteSpace(hoTen)) Session.HoTen = hoTen;
                 }
                 catch { }
 
@@ -192,7 +183,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void TaiThongTinGhiNho()
         {
-            var (tenDangNhap, matKhau) = _taiKhoanDAL.DocGhiNho();
+            var (tenDangNhap, matKhau) = _taiKhoanService.DocGhiNho();
             if (!string.IsNullOrEmpty(tenDangNhap))
             {
                 txt_TaiKhoan.Text = tenDangNhap;
@@ -214,7 +205,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (check_GhiNho.Checked)
             {
                 string currentUsername = txt_TaiKhoan.Text.Trim();
-                string savedPass = _taiKhoanDAL.LayMatKhauGhiNho(currentUsername);
+                string savedPass = _taiKhoanService.LayMatKhauGhiNho(currentUsername);
 
                 if (!string.IsNullOrEmpty(savedPass))
                 {
@@ -223,7 +214,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
                 else
                 {
-                    var (tenDangNhap, matKhau) = _taiKhoanDAL.DocGhiNho();
+                    var (tenDangNhap, matKhau) = _taiKhoanService.DocGhiNho();
                     if (string.IsNullOrEmpty(currentUsername) && !string.IsNullOrEmpty(matKhau))
                     {
                         if (string.IsNullOrEmpty(currentUsername))
@@ -246,7 +237,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (check_GhiNho.Checked)
             {
                 string u = txt_TaiKhoan.Text.Trim();
-                string pass = _taiKhoanDAL.LayMatKhauGhiNho(u);
+                string pass = _taiKhoanService.LayMatKhauGhiNho(u);
                 txt_MatKhau.Text = pass ?? string.Empty;
                 txt_MatKhau.UseSystemPasswordChar = true;
             }

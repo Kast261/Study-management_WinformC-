@@ -1,0 +1,9 @@
+digraph G { graph [bgcolor="white",fontname="DejaVu Sans",pad="0.25"]; node [shape=box,fontname="DejaVu Sans",fontsize=12,style="rounded,filled",fillcolor="#edf3fc"]; edge [fontname="DejaVu Sans",fontsize=10];rankdir=TB;
+        gui[label="GUI — Windows Forms"]; bus[label="BLL — interface / Service"];
+        dal[label="DAL — Npgsql / transaction"]; db[label="PostgreSQL",shape=cylinder];
+        gui -> bus[label="Yêu cầu và dữ liệu"]; bus -> dal[label="Thao tác dữ liệu"];
+        dal -> db[label="SQL / CALL có tham số"];
+        db -> dal[label="Dữ liệu / kết quả ghi"]; dal -> bus[label="Kết quả"];
+        bus -> gui[label="Dữ liệu / thông báo"];
+
+}

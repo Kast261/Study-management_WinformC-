@@ -1,4 +1,5 @@
-using BLT_Quan_Ly_Hoc_Tap.DAL;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Services;
 using BLT_Quan_Ly_Hoc_Tap.Helpers;
 using BLT_Quan_Ly_Hoc_Tap.Models;
 using System;
@@ -17,10 +18,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
     {
         #region Dữ liệu & Trạng thái
 
-        private readonly LopHocDAL _lopDAL = new LopHocDAL();
-        private readonly DeThiDAL _deThiDAL = new DeThiDAL();
-        private readonly KhoaHocDAL _khDAL = new KhoaHocDAL();
-        private readonly TaiKhoanDAL _tkDAL = new TaiKhoanDAL();
+        private readonly ILopHocService _lopService = new LopHocService();
+        private readonly IDeThiService _deThiService = new DeThiService();
+        private readonly IKhoaHocService _khService = new KhoaHocService();
+        private readonly ITaiKhoanService _tkService = new TaiKhoanService();
         private int _selectedLopHocID = 0;
         private int _selectedCauHoiID = 0;
         private int _selectedDeThiID   = 0;  
@@ -73,7 +74,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void InitDropdowns()
         {
             // Khóa học cho form Lớp
-            _khoaHoc = _khDAL.LayTatCa();
+            _khoaHoc = _khService.LayTatCa();
             var tenKhoaHoc = new AutoCompleteStringCollection();
             foreach (DataRow row in _khoaHoc.Rows) tenKhoaHoc.Add(row["TenKhoaHoc"].ToString());
             txtLH_KhoaHoc.AutoCompleteCustomSource = tenKhoaHoc;
@@ -90,7 +91,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                DataTable dtMonHoc = _khDAL.LayKhoaHocTheoGiaoVien(Session.NguoiDungID);
+                DataTable dtMonHoc = _khService.LayKhoaHocTheoGiaoVien(Session.NguoiDungID);
 
                 string selectedCH = cmbCH_MonHoc.SelectedItem?.ToString();
                 string selectedDe = cmbDT_MonHoc.SelectedItem?.ToString();
@@ -171,9 +172,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             lblTCGV_NgayThangHT.Text = DateTime.Today.ToString("dddd, dd/MM/yyyy", vi);
             try
             {
-                DataTable classes = _lopDAL.LayTheoGiaoVien(Session.NguoiDungID);
-                DataTable results = _deThiDAL.LayTongHopKetQuaGanDay(Session.NguoiDungID);
-                using (DataTable summary = new DashboardDAL().LayTongQuanGiaoVien(Session.NguoiDungID))
+                DataTable classes = _lopService.LayTheoGiaoVien(Session.NguoiDungID);
+                DataTable results = _deThiService.LayTongHopKetQuaGanDay(Session.NguoiDungID);
+                using (DataTable summary = new DashboardService().LayTongQuanGiaoVien(Session.NguoiDungID))
                 {
                     DataRow row = summary.Rows[0];
                     long classCount = Convert.ToInt64(row["SoLopHoc"]);
@@ -238,7 +239,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                DataTable dt = _lopDAL.LayTheoGiaoVien(Session.NguoiDungID);
+                DataTable dt = _lopService.LayTheoGiaoVien(Session.NguoiDungID);
                 _lopHoc = dt;
                 HienThiLopHoc();
 
@@ -370,7 +371,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 NgayKetThuc = nkt
             };
 
-            if (_lopDAL.ThemLop(lop))
+            if (_lopService.ThemLop(lop))
             {
                 MessageBox.Show("Tạo lớp học mới thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachLopQuanLy();
@@ -421,7 +422,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 NgayKetThuc = nkt
             };
 
-            if (_lopDAL.SuaLop(lop))
+            if (_lopService.SuaLop(lop))
             {
                 MessageBox.Show("Cập nhật thông tin lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachLopQuanLy();
@@ -445,7 +446,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             string tenLop = ExamSelection.ClassDisplayName(selected.Row);
             if (MessageBox.Show($"Đóng đăng ký cho {tenLop}? Học viên mới sẽ không thể đăng ký vào lớp này. Các lớp khác vẫn mở đăng ký.", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (_lopDAL.DongDangKyLop(lopHocID, Session.NguoiDungID))
+                if (_lopService.DongDangKyLop(lopHocID, Session.NguoiDungID))
                 {
                     MessageBox.Show($"Đã đóng đăng ký {tenLop}.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadDanhSachLopQuanLy();
@@ -493,7 +494,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     int.TryParse(cboDK_LocTheoLop.SelectedValue.ToString(), out lopID);
                 }
 
-                DataTable dt = _lopDAL.LayDangKyChoDuyet(Session.NguoiDungID, lopID);
+                DataTable dt = _lopService.LayDangKyChoDuyet(Session.NguoiDungID, lopID);
 
                 dgvDSYeuCau.DataSource = null;
                 dgvDSYeuCau.DataSource = dt;
@@ -519,7 +520,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     int lopID = Convert.ToInt32(drv["LopHocID"]);
                     int hsID = Convert.ToInt32(drv["HocSinhID"]);
 
-                    if (_lopDAL.DuyetDangKy(dkID, lopID, hsID, Session.NguoiDungID))
+                    if (_lopService.DuyetDangKy(dkID, lopID, hsID, Session.NguoiDungID))
                     {
                         MessageBox.Show("Đã duyệt học viên vào lớp thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         cboDK_LocTheoLop_SelectedIndexChanged(null, null);
@@ -551,7 +552,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     int dkID = Convert.ToInt32(drv["DangKyID"]);
                     if (MessageBox.Show("Từ chối đơn đăng ký này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        if (_lopDAL.TuChoiDangKy(dkID, Session.NguoiDungID))
+                        if (_lopService.TuChoiDangKy(dkID, Session.NguoiDungID))
                         {
                             MessageBox.Show("Đã từ chối đơn đăng ký!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             cboDK_LocTheoLop_SelectedIndexChanged(null, null);
@@ -641,7 +642,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
 
             int.TryParse(cmbDT_DeThi.SelectedValue?.ToString(), out int currentID);
-            DataRow existing = ExamSelection.FindDraft(_deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID),
+            DataRow existing = ExamSelection.FindDraft(_deThiService.LayDeThiTheoGiaoVien(Session.NguoiDungID),
                 tenDe, monHoc, currentID);
             if (existing != null)
             {
@@ -660,7 +661,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 TrangThai  = "Chưa giao"
             };
 
-            int newID = _deThiDAL.TaoDeThiMoiLayID(de);
+            int newID = _deThiService.TaoDeThiMoiLayID(de);
             if (newID > 0)
             {
                 MessageBox.Show(
@@ -674,7 +675,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 LamMoiFormCauHoi();
 
                 // Nạp lưới câu hỏi (lúc mới tạo là 0 câu)
-                dgvCauHoi.DataSource = _deThiDAL.LayDanhSachCauHoi(newID);
+                dgvCauHoi.DataSource = _deThiService.LayDanhSachCauHoi(newID);
 
                 // Xóa tên đề thi đã nhập
                 if (txtCH_TenDeThi != null) txtCH_TenDeThi.Clear();
@@ -719,7 +720,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 {
                     // Kiểm tra xem đề thi này đã có trong danh sách chưa
                     int.TryParse(cmbDT_DeThi.SelectedValue?.ToString(), out int currentID);
-                    DataRow existing = ExamSelection.FindDraft(_deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID),
+                    DataRow existing = ExamSelection.FindDraft(_deThiService.LayDeThiTheoGiaoVien(Session.NguoiDungID),
                         tenDeNhap, monHocDaChon, currentID);
                     if (existing != null)
                     {
@@ -739,7 +740,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                             ThoiGian = 45,
                             TrangThai = "Chưa giao"
                         };
-                        deID = _deThiDAL.TaoDeThiMoiLayID(deMoi);
+                        deID = _deThiService.TaoDeThiMoiLayID(deMoi);
                         if (deID > 0)
                         {
                             LoadDeThiCombobox(deID);
@@ -751,7 +752,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (deID <= 0 && cmbDT_DeThi.SelectedValue != null)
                 {
                     int.TryParse(cmbDT_DeThi.SelectedValue.ToString(), out deID);
-                    DeThi deDaChon = deID > 0 ? _deThiDAL.LayTheoID(deID) : null;
+                    DeThi deDaChon = deID > 0 ? _deThiService.LayTheoID(deID) : null;
                     if (deDaChon == null || !string.Equals(deDaChon.MonHoc?.Trim(), monHocDaChon.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         MessageBox.Show("Đề thi đang chọn thuộc môn khác. Vui lòng nhập tên đề mới hoặc chọn đề đúng môn học!",
@@ -766,7 +767,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     return;
                 }
 
-                int soCauHienCo = _deThiDAL.DemSoCauHoiHienTai(deID);
+                int soCauHienCo = _deThiService.DemSoCauHoiHienTai(deID);
 
                 CauHoi ch = new CauHoi
                 {
@@ -780,9 +781,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     ThuTu = soCauHienCo + 1
                 };
 
-                if (_deThiDAL.ThemCauHoi(ch, Session.NguoiDungID))
+                if (_deThiService.ThemCauHoi(ch, Session.NguoiDungID))
                 {
-                    _deThiDAL.CapNhatSoCau(deID);
+                    _deThiService.CapNhatSoCau(deID);
                     MessageBox.Show($"Thêm câu hỏi thứ {ch.ThuTu} thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     // Đồng bộ cập nhật lại danh sách đề thi ở cả 2 tab
@@ -824,7 +825,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     DapAnDung = cmb_DapAn.SelectedItem?.ToString() ?? "A"
                 };
 
-                if (_deThiDAL.SuaCauHoi(ch, Session.NguoiDungID))
+                if (_deThiService.SuaCauHoi(ch, Session.NguoiDungID))
                 {
                     MessageBox.Show("Cập nhật câu hỏi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     cmbDT_DeThi_SelectedIndexChanged(null, null);
@@ -849,11 +850,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 try
                 {
-                    if (_deThiDAL.XoaCauHoi(_selectedCauHoiID, Session.NguoiDungID))
+                    if (_deThiService.XoaCauHoi(_selectedCauHoiID, Session.NguoiDungID))
                     {
                         if (cmbDT_DeThi.SelectedValue != null && int.TryParse(cmbDT_DeThi.SelectedValue.ToString(), out int deID))
                         {
-                            _deThiDAL.CapNhatSoCau(deID);
+                            _deThiService.CapNhatSoCau(deID);
                         }
                         MessageBox.Show("Đã xóa câu hỏi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadDeThiCombobox();
@@ -962,7 +963,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     "Xác nhận nhập câu hỏi", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
                 UseWaitCursor = true;
-                KetQuaNhapCauHoi result = await Task.Run(() => new CauHoiImportDAL().Nhap(taiKhoanID, target, questions));
+                KetQuaNhapCauHoi result = await Task.Run(() => new CauHoiImportService().Nhap(taiKhoanID, target, questions));
                 if (IsDisposed || Disposing || Session.TaiKhoanID != taiKhoanID || Session.NguoiDungID != giaoVienID) return;
                 try
                 {
@@ -1018,8 +1019,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     int.TryParse(cmbDT_DeThi.SelectedValue.ToString(), out currentDeID);
                 if (currentDeID <= 0) currentDeID = _selectedDeThiID;
                 int resultDeID = cmbKQ_DeThi.SelectedValue is int id ? id : 0;
-                DataTable dt = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID);
-                DataTable resultOptions = _deThiDAL.LayDeThiTheoGiaoVien(Session.NguoiDungID, true);
+                DataTable dt = _deThiService.LayDeThiTheoGiaoVien(Session.NguoiDungID);
+                DataTable resultOptions = _deThiService.LayDeThiTheoGiaoVien(Session.NguoiDungID, true);
                 resultOptions.Columns.Add("TenHienThiKetQua", typeof(string));
                 foreach (DataRow row in resultOptions.Rows)
                     row["TenHienThiKetQua"] = Convert.ToString(row["TenDeThi"])
@@ -1071,7 +1072,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             int selectedClass = cmbDT_GiaoChoLop.SelectedValue is int id ? id : 0;
             try
             {
-                DataTable classes = _lopDAL.LayTheoGiaoVien(Session.NguoiDungID);
+                DataTable classes = _lopService.LayTheoGiaoVien(Session.NguoiDungID);
                 cmbDT_GiaoChoLop.DataSource = null;
                 if (classes == null)
                 {
@@ -1126,12 +1127,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 _selectedDeThiID = deID;
                 _selectedCauHoiID = 0;
-                var listCH = _deThiDAL.LayDanhSachCauHoi(deID);
+                var listCH = _deThiService.LayDanhSachCauHoi(deID);
                 dgvCauHoi.DataSource = listCH;
                 txtDT_SoCauHoi.Text = listCH.Count.ToString();
                 lblCH_TongCauHoi.Text = $"Số câu hỏi: {listCH.Count:N0}";
 
-                DeThi de = _deThiDAL.LayTheoID(deID);
+                DeThi de = _deThiService.LayTheoID(deID);
                 if (de != null)
                 {
                     txtDT_ThoiGian.Text = de.ThoiGian.ToString();
@@ -1247,7 +1248,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     return;
                 }
 
-                int soCauHienCo = _deThiDAL.DemSoCauHoiHienTai(deNguonID);
+                int soCauHienCo = _deThiService.DemSoCauHoiHienTai(deNguonID);
                 if (soCauHienCo <= 0)
                 {
                     MessageBox.Show(this, "Đề đang chọn chưa có câu hỏi đã lưu. Hãy chọn đề đã soạn câu hỏi hoặc thêm câu hỏi vào đúng đề này.",
@@ -1276,7 +1277,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 UseWaitCursor = true;
                 btnDT_GiaoBaiThi.Text = "Đang giao bài...";
-                int lanGiaoID = _deThiDAL.TaoLanGiaoDeThi(Session.TaiKhoanID, Session.NguoiDungID,
+                int lanGiaoID = _deThiService.TaoLanGiaoDeThi(Session.TaiKhoanID, Session.NguoiDungID,
                     deNguonID, lopHocID, thoiGian, DateTime.Now.AddDays(7), monHocGiao);
                 UseWaitCursor = false;
                 MessageBox.Show(this, $"Đã giao đề cho lớp {tenLop} (lượt #{lanGiaoID}).\nHọc viên được duyệt vào lớp trước hoặc sau khi giao đều thấy bài thi này.",
@@ -1335,7 +1336,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
 
             // 2. Lấy thông tin đề thi để hiển thị xác nhận và kiểm tra
-            DeThi de = _deThiDAL.LayTheoID(deID);
+            DeThi de = _deThiService.LayTheoID(deID);
             string tenDeThi = de?.TenDeThi ?? $"Mã {deID}";
 
             // 4. Hỏi xác nhận người dùng
@@ -1349,7 +1350,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (confirm != DialogResult.Yes) return;
 
             // 5. Thực hiện xóa
-            if (_deThiDAL.XoaDeThi(deID, Session.TaiKhoanID, Session.NguoiDungID, out string thongBao))
+            if (_deThiService.XoaDeThi(deID, Session.TaiKhoanID, Session.NguoiDungID, out string thongBao))
             {
                 MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -1375,7 +1376,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             if (_dangTaiDeThi) return;
             if (cmbKQ_DeThi.SelectedValue != null && int.TryParse(cmbKQ_DeThi.SelectedValue.ToString(), out int deID))
-                _ketQua = _deThiDAL.LayKetQuaTheoDeThi(deID);
+                _ketQua = _deThiService.LayKetQuaTheoDeThi(deID);
             else
                 _ketQua = null;
             HienThiKetQua();
@@ -1469,17 +1470,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             try
             {
-                // Lấy toàn bộ bảng điểm của học sinh đó (tất cả môn)
-                DataTable dtBangDiem = _deThiDAL.LayBangDiemHocSinh(hocSinhID);
-
-                ExcelExportHelper.ExportBangDiemHocSinh(
-                    dt:           dtBangDiem,
-                    tenHocSinh:   tenHocSinh,
-                    tenMonHocLoc: null,               // không lọc môn học
-                    tuNgay:       null,               // không lọc ngày
-                    denNgay:      null,
-                    nguoiLapBieu: Session.TenDangNhap
-                );
+                // Report selection keeps the existing Excel path available.
+                using (DataTable dtBangDiem = _deThiService.LayBangDiemHocSinh(hocSinhID))
+                using (var report = new BLT_Quan_Ly_Hoc_Tap.Forms.BaoCaoDialog(
+                    dtBangDiem, tenHocSinh, Session.TenDangNhap))
+                    report.ShowDialog(this);
             }
             catch (Exception ex)
             {
@@ -1495,7 +1490,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                GiaoVien gv = new GiaoVienDAL().LayTheoID(Session.NguoiDungID);
+                GiaoVien gv = new GiaoVienService().LayTheoID(Session.NguoiDungID);
                 if (gv != null)
                 {
                     txtGVTT_HovaTen.Text = gv.HoTen;
@@ -1573,7 +1568,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     GioiTinh = cmbTTGV_GioiTinh.SelectedItem?.ToString()
                 };
 
-                if (new GiaoVienDAL().CapNhatHoSoCaNhan(Session.TaiKhoanID, gv))
+                if (new GiaoVienService().CapNhatHoSoCaNhan(Session.TaiKhoanID, gv))
                 {
                     MessageBox.Show("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     // Đọc lại cả chuyên môn được giữ nguyên trong database, thay vì dùng model chỉnh sửa thiếu trường này.
@@ -1597,12 +1592,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             try
             {
-                if (!_tkDAL.DoiMatKhauGiaoVien(Session.TaiKhoanID, cu, moi))
+                if (!_tkService.DoiMatKhauGiaoVien(Session.TaiKhoanID, cu, moi))
                 {
                     MessageBox.Show("Mật khẩu hiện tại không đúng hoặc tài khoản đã bị khóa.", "Không thể đổi mật khẩu");
                     return;
                 }
-                _tkDAL.XoaGhiNho(Session.TenDangNhap);
+                _tkService.XoaGhiNho(Session.TenDangNhap);
                 txtTTGV_MatKhauHienTai.Clear();
                 txtTTGV_MKMoi.Clear();
                 txtTTGV_XacNhanMK.Clear();

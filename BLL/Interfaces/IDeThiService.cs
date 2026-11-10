@@ -8,9 +8,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces
     public interface IDeThiService
     {
         DataTable LayDeThiChoHocSinh(int hocSinhID);
+        DataTable LayBaiThiDangMoChoHocSinh(int hocSinhID);
         DataTable LayDeThiTheoLop(int lopID);
         DataTable LayDeThiTheoGiaoVien(int gvID, bool baoGomDaXoa = false);
         DeThi LayTheoID(int deThiID);
+        bool CoTheBatDauThi(int hocSinhID, int deThiID);
         List<CauHoi> LayDanhSachCauHoi(int deThiID);
         bool ThemDeThi(DeThi de);
         int TaoDeThiMoiLayID(DeThi de);
@@ -20,12 +22,12 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces
         bool XoaDeThi(int deThiID, out string thongBao);
         bool XoaDeThi(int deThiID, int taiKhoanID, int giaoVienID, out string thongBao);
         bool CapNhatSoCau(int deThiID);
-        bool ThemCauHoi(CauHoi ch);
-        bool XoaCauHoi(int cauHoiID);
-        bool SuaCauHoi(CauHoi ch);
+        bool ThemCauHoi(CauHoi ch, int giaoVienID);
+        bool XoaCauHoi(int cauHoiID, int giaoVienID);
+        bool SuaCauHoi(CauHoi ch, int giaoVienID);
+        DataTable LayTongHopKetQuaGanDay(int giaoVienID);
         DataTable LayKetQuaTheoDeThi(int maDeThi);
         DataTable LayBangDiemHocSinh(int hocSinhID);
         int DemSoCauHoiHienTai(int deThiID);
     }
 }
-

@@ -1,0 +1,8 @@
+digraph G { graph [bgcolor="white",fontname="DejaVu Sans",pad="0.25"]; node [shape=box,fontname="DejaVu Sans",fontsize=12,style="rounded,filled",fillcolor="#edf3fc"]; edge [fontname="DejaVu Sans",fontsize=10];rankdir=LR;
+        s[label="0. Hệ thống quản lý học tập",shape=ellipse];
+        a[label="Quản trị viên"]; g[label="Giáo viên"]; h[label="Học viên"];
+        a -> s[label="Tài khoản, hồ sơ, khóa/lớp"]; s -> a[label="Danh sách, thống kê"];
+        g -> s[label="Quyết định duyệt, đề/câu hỏi"]; s -> g[label="Yêu cầu, lượt giao, kết quả"];
+        h -> s[label="Đăng ký, hồ sơ, đáp án"]; s -> h[label="Trạng thái, bài thi, điểm"];
+
+}

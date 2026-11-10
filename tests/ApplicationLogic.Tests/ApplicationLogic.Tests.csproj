@@ -5,6 +5,15 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../../BLL/Interfaces/*.cs" Link="Production/BLL/Interfaces/%(Filename)%(Extension)" />
+    <Compile Include="../../BLL/Services/*.cs" Exclude="../../BLL/Services/UngDungService.cs" Link="Production/BLL/Services/%(Filename)%(Extension)" />
+    <Compile Include="../../DAL/Repositories/KhoaHocDAL.cs" Link="Production/KhoaHocDAL.cs" />
+    <Compile Include="../../DAL/Repositories/CauHoiImportDAL.cs" Link="Production/CauHoiImportDAL.cs" />
+    <Compile Include="../../Helpers/Import/CauHoiExcelReader.cs" Link="Production/CauHoiExcelReader.cs" />
+    <PackageReference Include="ExcelDataReader" Version="3.7.0" />
+    <EmbeddedResource Include="../../Reports/BangDiem.xsd" LogicalName="BangDiem.xsd" />
+    <EmbeddedResource Include="../../Database/PostgreSQL/01_Schema.sql" LogicalName="PostgresSchema.sql" />
+    <EmbeddedResource Include="../../Database/PostgreSQL/02_Procedures.sql" LogicalName="PostgresProcedures.sql" />
     <EmbeddedResource Include="../../docs/Diagnose_Student_Assigned_Exams.sql" LogicalName="DiagnoseStudentExams.sql" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="xunit" Version="2.9.3" />

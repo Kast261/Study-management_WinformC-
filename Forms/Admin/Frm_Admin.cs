@@ -1,5 +1,5 @@
-using BLT_Quan_Ly_Hoc_Tap.DAL;
-using BLT_Quan_Ly_Hoc_Tap.Database;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Services;
 using BLT_Quan_Ly_Hoc_Tap.Helpers;
 using BLT_Quan_Ly_Hoc_Tap.Models;
 using ReaLTaiizor.Controls;
@@ -22,12 +22,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
     {
         #region Dữ liệu & Trạng thái
 
-        private readonly GiaoVienDAL _gvDAL = new GiaoVienDAL();
-        private readonly HocSinhDAL _hsDAL = new HocSinhDAL();
-        private readonly KhoaHocDAL _khDAL = new KhoaHocDAL();
-        private readonly LopHocDAL _lopDAL = new LopHocDAL();
-        private readonly TaiKhoanDAL _tkDAL = new TaiKhoanDAL();
-        private readonly DashboardDAL _dashboardDAL = new DashboardDAL();
+        private readonly IGiaoVienService _gvService = new GiaoVienService();
+        private readonly IHocSinhService _hsService = new HocSinhService();
+        private readonly IKhoaHocService _khService = new KhoaHocService();
+        private readonly ILopHocService _lopService = new LopHocService();
+        private readonly ITaiKhoanService _tkService = new TaiKhoanService();
+        private readonly IDashboardService _dashboardService = new DashboardService();
         private bool _dangTaiDashboard;
         private readonly ComboBox _lopChoHocVienMoi = new ComboBox
         {
@@ -78,11 +78,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 // Load danh sách khóa học vào ComboBox Lớp Học
-                DataTable dtKH = _khDAL.LayTatCa();
+                DataTable dtKH = _khService.LayTatCa();
                 cboLop_KhoaHoc.DataSource = dtKH;
 
                 // Load danh sách giáo viên vào ComboBox Lớp Học (materialComboBox2)
-                DataTable dtGV = _gvDAL.LayTatCa();
+                DataTable dtGV = _gvService.LayTatCa();
                 materialComboBox2.DataSource = dtGV;
             }
             catch (Exception ex)
@@ -134,7 +134,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 // Số lượng lấy từ toàn bộ dữ liệu, không phụ thuộc bộ lọc/phân trang
                 // hay việc tải biểu đồ và danh sách lớp có thành công hay không.
-                using (DataTable tongQuan = _dashboardDAL.LayTongQuan())
+                using (DataTable tongQuan = _dashboardService.LayTongQuan())
                 {
                     var vi = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
                     DataRow row = tongQuan.Rows[0];
@@ -144,8 +144,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     lblTC_LopHoc.Text = "LỚP HỌC\n" + Convert.ToInt64(row["SoLopHoc"]).ToString("N0", vi);
                 }
 
-                using (DataTable theoKhoaHoc = _dashboardDAL.LayHocVienTheoKhoaHoc())
-                using (DataTable lopMoiNhat = _dashboardDAL.LayLopMoiNhat())
+                using (DataTable theoKhoaHoc = _dashboardService.LayHocVienTheoKhoaHoc())
+                using (DataTable lopMoiNhat = _dashboardService.LayLopMoiNhat())
                 {
                     HienThiBieuDoDashboard(theoKhoaHoc);
                     HienThiLopMoiNhat(lopMoiNhat);
@@ -225,7 +225,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                var danhSach = _gvDAL.LayTatCa();
+                var danhSach = _gvService.LayTatCa();
                 dgvGiaoVien.DataSource = danhSach;
                 hlbl_SoLuong.Text = $"Số lượng giáo viên: {danhSach.Rows.Count:N0}";
             }
@@ -283,7 +283,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             else
             {
-                var danhSach = _gvDAL.TimKiem(kw);
+                var danhSach = _gvService.TimKiem(kw);
                 dgvGiaoVien.DataSource = danhSach;
                 hlbl_SoLuong.Text = $"Số lượng giáo viên: {danhSach.Rows.Count:N0}";
             }
@@ -330,7 +330,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 DiaChi = txtGV_DiaChi.Text.Trim()
             };
 
-            if (_gvDAL.Them(gv))
+            if (_gvService.Them(gv))
             {
                 MessageBox.Show("Thêm giáo viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachGiaoVien();
@@ -388,7 +388,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 DiaChi = txtGV_DiaChi.Text.Trim()
             };
 
-            if (_gvDAL.Sua(gv))
+            if (_gvService.Sua(gv))
             {
                 MessageBox.Show("Cập nhật thông tin giáo viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachGiaoVien();
@@ -414,7 +414,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 try
                 {
-                    if (_gvDAL.Xoa(_selectedGiaoVienID))
+                    if (_gvService.Xoa(_selectedGiaoVienID))
                     {
                         MessageBox.Show("Đã xóa giáo viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadDanhSachGiaoVien();
@@ -444,7 +444,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                var danhSach = _hsDAL.LayTatCa();
+                var danhSach = _hsService.LayTatCa();
                 dgvHocVien.DataSource = danhSach;
                 headerLabel14.Text = $"Số lượng học viên: {danhSach.Rows.Count:N0}";
                 LoadLopChoHocVienMoi();
@@ -502,7 +502,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             else
             {
-                var danhSach = _hsDAL.TimKiem(kw);
+                var danhSach = _hsService.TimKiem(kw);
                 dgvHocVien.DataSource = danhSach;
                 headerLabel14.Text = $"Số lượng học viên: {danhSach.Rows.Count:N0}";
             }
@@ -551,7 +551,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             int lopHocID = _lopChoHocVienMoi.SelectedValue is int id ? id : 0;
             try
             {
-                if (!_hsDAL.Them(hs, lopHocID))
+                if (!_hsService.Them(hs, lopHocID))
                 {
                     MessageBox.Show("Không thể thêm học viên. Lớp được chọn có thể đã đóng hoặc đủ sĩ số; hãy tải lại danh sách.", "Thông báo");
                     return;
@@ -573,7 +573,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void LoadLopChoHocVienMoi()
         {
-            using (DataTable allClasses = _lopDAL.LayTatCa())
+            using (DataTable allClasses = _lopService.LayTatCa())
             {
                 var choices = new DataTable();
                 choices.Columns.Add("LopHocID", typeof(int));
@@ -636,7 +636,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 DiaChi = txtHV_DiaChi.Text.Trim()
             };
 
-            if (_hsDAL.Sua(hs))
+            if (_hsService.Sua(hs))
             {
                 MessageBox.Show("Cập nhật thông tin học viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachHocVien();
@@ -656,7 +656,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 try
                 {
-                    if (_hsDAL.Xoa(_selectedHocVienID))
+                    if (_hsService.Xoa(_selectedHocVienID))
                     {
                         MessageBox.Show("Đã xóa học viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadDanhSachHocVien();
@@ -686,7 +686,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                dgvKhoaHoc.DataSource = _khDAL.LayTatCa();
+                dgvKhoaHoc.DataSource = _khService.LayTatCa();
             }
             catch (Exception ex)
             {
@@ -731,7 +731,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 MoTa = txtKH_MoTa.Text.Trim()
             };
 
-            if (_khDAL.Them(kh))
+            if (_khService.Them(kh))
             {
                 MessageBox.Show("Thêm khóa học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachKhoaHoc();
@@ -763,7 +763,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 MoTa = txtKH_MoTa.Text.Trim()
             };
 
-            if (_khDAL.Sua(kh))
+            if (_khService.Sua(kh))
             {
                 MessageBox.Show("Cập nhật khóa học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachKhoaHoc();
@@ -784,7 +784,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 try
                 {
-                    if (_khDAL.Xoa(_selectedKhoaHocID))
+                    if (_khService.Xoa(_selectedKhoaHocID))
                     {
                         MessageBox.Show("Đã xóa khóa học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadDanhSachKhoaHoc();
@@ -808,7 +808,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                dgvLopHoc.DataSource = _lopDAL.LayTatCa();
+                dgvLopHoc.DataSource = _lopService.LayTatCa();
             }
             catch (Exception ex)
             {
@@ -879,7 +879,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 TrangThai = "Đang mở"
             };
 
-            if (_lopDAL.ThemLop(lop))
+            if (_lopService.ThemLop(lop))
             {
                 MessageBox.Show("Thêm lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachLopHoc();
@@ -927,7 +927,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 GiaoVienID = gvID
             };
 
-            if (_lopDAL.SuaThongTinLopCoBan(lop))
+            if (_lopService.SuaThongTinLopCoBan(lop))
             {
                 MessageBox.Show("Cập nhật thông tin lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachLopHoc();
@@ -950,7 +950,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 try
                 {
-                    if (_lopDAL.XoaLop(_selectedLopHocID))
+                    if (_lopService.XoaLop(_selectedLopHocID))
                     {
                         MessageBox.Show("Đã xóa lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadDanhSachLopHoc();
@@ -975,7 +975,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 if (dgvTaiKhoan == null) return;
 
-                dgvTaiKhoan.DataSource = _tkDAL.LayTatCaCoTenNguoiDung();
+                dgvTaiKhoan.DataSource = _tkService.LayTatCaCoTenNguoiDung();
             }
             catch (Exception ex)
             {
@@ -1025,7 +1025,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (!needsProfile) return;
             try
             {
-                DataTable profiles = _tkDAL.LayHoSoChuaCoTaiKhoan(role);
+                DataTable profiles = _tkService.LayHoSoChuaCoTaiKhoan(role);
                 bool hasProfiles = profiles.Rows.Count > 0;
                 string person = role == "GiaoVien" ? "giáo viên" : "học viên";
                 DataRow prompt = profiles.NewRow();
@@ -1087,7 +1087,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     return;
                 }
 
-                DataTable dt = _tkDAL.TimKiemTheoTenSinhVien(kw);
+                DataTable dt = _tkService.TimKiemTheoTenSinhVien(kw);
                 dgvTaiKhoan.DataSource = dt;
 
                 if (dt == null || dt.Rows.Count == 0)
@@ -1160,7 +1160,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             try
             {
-                if (_tkDAL.ThemTaiKhoan(tenDangNhap, matKhauPlain, vaiTro, nguoiDungID))
+                if (_tkService.ThemTaiKhoan(tenDangNhap, matKhauPlain, vaiTro, nguoiDungID))
                 {
                     MessageBox.Show("Tạo tài khoản thành công! Có thể đăng nhập ngay.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadDanhSachTaiKhoan();
@@ -1200,7 +1200,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             try
             {
-                if (_tkDAL.KhoaHoacMoKhoaTaiKhoan(_selectedTaiKhoanID, seKhoa))
+                if (_tkService.KhoaHoacMoKhoaTaiKhoan(_selectedTaiKhoanID, seKhoa))
                 {
                     string thongBao = seKhoa ? "Đã khóa tài khoản thành công!" : "Đã mở khóa tài khoản thành công!";
                     MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1228,7 +1228,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             if (MessageBox.Show("Đặt lại mật khẩu về '123456' cho tài khoản này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (_tkDAL.DoiMatKhau(_selectedTaiKhoanID, "123456"))
+                if (_tkService.DoiMatKhau(_selectedTaiKhoanID, "123456"))
                 {
                     MessageBox.Show("Đã đặt lại mật khẩu thành '123456'!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

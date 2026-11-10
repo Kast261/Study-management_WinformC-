@@ -1,4 +1,5 @@
-using BLT_Quan_Ly_Hoc_Tap.DAL;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Services;
 using BLT_Quan_Ly_Hoc_Tap.Helpers;
 using ReaLTaiizor.Manager;
 using System;
@@ -18,7 +19,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms
         #region Dữ liệu & Trạng thái
 
         private readonly int _ketQuaID;
-        private readonly KetQuaDAL _ketQuaDAL = new KetQuaDAL();
+        private readonly IKetQuaService _ketQuaService = new KetQuaService();
 
         #endregion
 
@@ -44,7 +45,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Forms
 
         private void LoadChiTiet()
         {
-            DataTable dt = _ketQuaDAL.LayChiTietBaiLamTheoKetQua(_ketQuaID);
+            DataTable dt = _ketQuaService.LayChiTietBaiLamTheoKetQua(_ketQuaID);
             dgvChiTiet.DataSource = dt;
         }
 
