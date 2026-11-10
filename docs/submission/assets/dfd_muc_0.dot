@@ -1,0 +1,46 @@
+digraph G { graph [bgcolor="white",fontname="DejaVu Sans",pad="0.25"]; node [shape=box,fontname="DejaVu Sans",fontsize=12,style="rounded,filled",fillcolor="#edf3fc"]; edge [fontname="DejaVu Sans",fontsize=10];rankdir=LR;
+        label="DFD mức 0 rút gọn — tác nhân/kho dữ liệu lặp lại theo tiến trình";
+        subgraph cluster_1 { label="Tài khoản và hồ sơ"; color="#cccccc";
+            a1[label="Admin / Giáo viên / Học viên"];
+            p1[label="1.0 Quản lý tài khoản / hồ sơ",shape=ellipse];
+            d1[label="D1 Tài khoản / hồ sơ",shape=cylinder];
+            a1 -> p1[label="Thông tin quản lý / cá nhân"];
+            p1 -> a1[label="Xác thực / hồ sơ / kết quả"];
+            p1 -> d1[label="Thông tin cập nhật"]; d1 -> p1[label="Tài khoản / hồ sơ hiện có"];
+        }
+        subgraph cluster_2 { label="Lớp và đăng ký"; color="#cccccc";
+            a2[label="Admin / Giáo viên / Học viên"];
+            p2[label="2.0 Xử lý lớp / đăng ký",shape=ellipse];
+            d2[label="D1 Hồ sơ; D2 Khóa / lớp / đăng ký",shape=cylinder];
+            a2 -> p2[label="Lớp / yêu cầu / quyết định duyệt"];
+            p2 -> a2[label="Danh sách / trạng thái / kết quả"];
+            p2 -> d2[label="Lớp / đăng ký / xếp lớp"];
+            d2 -> p2[label="Lớp chính / sĩ số / trạng thái"];
+        }
+        subgraph cluster_3 { label="Đề và câu hỏi"; color="#cccccc";
+            a3[label="Giáo viên"];
+            p3[label="3.0 Soạn / giao đề",shape=ellipse];
+            d3[label="D1 Tài khoản; D2 Lớp; D3 Đề / câu hỏi",shape=cylinder];
+            a3 -> p3[label="Đề / Excel / lớp nhận"]; p3 -> a3[label="Kết quả soạn / lượt giao"];
+            p3 -> d3[label="Đề / câu hỏi / lượt mới"];
+            d3 -> p3[label="Tài khoản / lớp phụ trách / đề nguồn"];
+        }
+        subgraph cluster_4 { label="Bài làm"; color="#cccccc";
+            a4[label="Học viên"];
+            p4[label="4.0 Tiếp nhận và chấm bài",shape=ellipse];
+            d4[label="D1 Tài khoản; D2 Lớp; D3 Đề; D4 Bài làm",shape=cylinder];
+            a4 -> p4[label="Mã đề / định danh / đáp án"];
+            p4 -> a4[label="Bài được phép mở / điểm"];
+            p4 -> d4[label="Kết quả / chi tiết trả lời"];
+            d4 -> p4[label="Quyền lớp / đề / đáp án chuẩn / đã nộp"];
+        }
+        subgraph cluster_5 { label="Tra cứu"; color="#cccccc";
+            a5[label="Admin / Giáo viên / Học viên"];
+            p5[label="5.0 Tra cứu / báo cáo",shape=ellipse];
+            d5[label="D1 Hồ sơ; D2 Lớp; D3 Đề; D4 Bài làm",shape=cylinder];
+            a5 -> p5[label="Bộ lọc / yêu cầu thống kê"];
+            p5 -> a5[label="Thống kê / lịch sử / báo cáo"];
+            d5 -> p5[label="Hồ sơ / lớp / metadata / kết quả"];
+        }
+
+}

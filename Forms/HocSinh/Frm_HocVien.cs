@@ -1,4 +1,5 @@
-using BLT_Quan_Ly_Hoc_Tap.DAL;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Services;
 using BLT_Quan_Ly_Hoc_Tap.Helpers;
 using BLT_Quan_Ly_Hoc_Tap.Models;
 using ReaLTaiizor.Forms;
@@ -17,11 +18,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
     {
         #region Dữ liệu & Trạng thái
 
-        private readonly LopHocDAL _lopDAL = new LopHocDAL();
-        private readonly DeThiDAL _deThiDAL = new DeThiDAL();
-        private readonly KetQuaDAL _ketQuaDAL = new KetQuaDAL();
-        private readonly HocSinhDAL _hocSinhDAL = new HocSinhDAL();
-        private readonly TaiKhoanDAL _taiKhoanDAL = new TaiKhoanDAL();
+        private readonly ILopHocService _lopService = new LopHocService();
+        private readonly IDeThiService _deThiService = new DeThiService();
+        private readonly IKetQuaService _ketQuaService = new KetQuaService();
+        private readonly IHocSinhService _hocSinhService = new HocSinhService();
+        private readonly ITaiKhoanService _taiKhoanService = new TaiKhoanService();
         private int _selectedLopDangKyID = 0;
         private int _selectedLopDangHocID = 0;
         private int _selectedDeThiID = 0;
@@ -100,7 +101,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             lblTCHV_NgayThangHT.Text = DateTime.Today.ToString("dddd, dd/MM/yyyy", CultureInfo.GetCultureInfo("vi-VN"));
             try
             {
-                _lopTrangChu = _lopDAL.LayTheoHocSinh(Session.NguoiDungID);
+                _lopTrangChu = _lopService.LayTheoHocSinh(Session.NguoiDungID);
                 _lopTrangChu.Columns.Add("ThoiGianHoc", typeof(string));
                 foreach (DataRow row in _lopTrangChu.Rows)
                 {
@@ -125,7 +126,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (_dtBaiThiDangMo == null) return;
             try
             {
-                using (DataTable results = _ketQuaDAL.LayLichSuTheoHocSinh(Session.NguoiDungID))
+                using (DataTable results = _ketQuaService.LayLichSuTheoHocSinh(Session.NguoiDungID))
                 {
                     var summary = HomeDashboardSummary.ForStudent(_lopTrangChu, _dtBaiThiDangMo, results);
                     lblTCHV_DaHoanThanh.Text = $"Đã hoàn thành\n{summary.CompletedExamCount:N0}";
@@ -193,10 +194,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                DataTable dtLopMo = _lopDAL.LayLopChuaDangKy(Session.NguoiDungID);
+                DataTable dtLopMo = _lopService.LayLopChuaDangKy(Session.NguoiDungID);
                 if (dgvLopDangKi != null) dgvLopDangKi.DataSource = dtLopMo;
 
-                DataTable dtLopDangHoc = _lopDAL.LayLopHocVienDangHocVaChoDuyet(Session.NguoiDungID);
+                DataTable dtLopDangHoc = _lopService.LayLopHocVienDangHocVaChoDuyet(Session.NguoiDungID);
                 if (dgvLopThamGia != null) dgvLopThamGia.DataSource = dtLopDangHoc;
 
                 _selectedLopDangKyID = 0;
@@ -255,7 +256,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 if (MessageBox.Show(this, $"Đăng ký {tenLop}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                     return;
-                if (_lopDAL.DangKyLop(lopHocID, hocSinhID, out string thongBao))
+                if (_lopService.DangKyLop(lopHocID, hocSinhID, out string thongBao))
                 {
                     MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadTabLopHocCuaToi();
@@ -311,7 +312,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 if (MessageBox.Show(this, $"Hủy đăng ký {tenLop}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                     return;
-                if (_lopDAL.HuyDangKyLop(lopHocID, hocSinhID, out string thongBao))
+                if (_lopService.HuyDangKyLop(lopHocID, hocSinhID, out string thongBao))
                 {
                     MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -344,8 +345,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 int deDaChon = _selectedDeThiID;
                 var baiTrangChu = dgvBaiThiDangMo.CurrentRow?.DataBoundItem as DataRowView;
                 int deTrangChu = baiTrangChu == null ? 0 : Convert.ToInt32(baiTrangChu["DeThiID"]);
-                DataTable exams = _deThiDAL.LayDeThiChoHocSinh(Session.NguoiDungID);
-                DataTable openExams = _deThiDAL.LayBaiThiDangMoChoHocSinh(Session.NguoiDungID);
+                DataTable exams = _deThiService.LayDeThiChoHocSinh(Session.NguoiDungID);
+                DataTable openExams = _deThiService.LayBaiThiDangMoChoHocSinh(Session.NguoiDungID);
                 _selectedDeThiID = 0;
                 _dtDeThi = exams;
                 _dtBaiThiDangMo = openExams;
@@ -482,7 +483,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                if (!_deThiDAL.CoTheBatDauThi(Session.NguoiDungID, deThiID))
+                if (!_deThiService.CoTheBatDauThi(Session.NguoiDungID, deThiID))
                 {
                     MessageBox.Show("Bài thi không còn khả dụng. Bài có thể đã đóng, hết hạn, đã nộp hoặc bạn không còn thuộc lớp được giao.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadDanhSachDeThi();
@@ -513,7 +514,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             _dangTaiLopLocKetQua = true;
             try
             {
-                using (DataTable classes = _lopDAL.LayTheoHocSinh(Session.NguoiDungID))
+                using (DataTable classes = _lopService.LayTheoHocSinh(Session.NguoiDungID))
                 {
                     DataTable options = classes.DefaultView.ToTable(true, "LopHocID", "TenLop");
                     DataRow all = options.NewRow();
@@ -557,7 +558,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 int lopID = cmbKQHV_BaiThi.SelectedValue is int value ? value : 0;
-                DataTable results = _ketQuaDAL.LayKetQuaTheoLopDangHoc(Session.NguoiDungID, lopID);
+                DataTable results = _ketQuaService.LayKetQuaTheoLopDangHoc(Session.NguoiDungID, lopID);
                 dgvHVKetQua.DataSource = results;
                 btnHVKQ_XuatFile.Enabled = results.Rows.Count > 0;
                 btnHVKQ_BaoCao.Enabled = results.Rows.Count > 0;
@@ -628,7 +629,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     return;
                 }
 
-                DataTable dtChiTiet = _ketQuaDAL.LayChiTietBaiLamTheoKetQua(ketQuaID);
+                DataTable dtChiTiet = _ketQuaService.LayChiTietBaiLamTheoKetQua(ketQuaID);
                 if (dtChiTiet == null || dtChiTiet.Rows.Count == 0)
                 {
                     MessageBox.Show("Không có dữ liệu chi tiết bài làm!", "Thông báo");
@@ -696,9 +697,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
             try
             {
                 int lopID = cmbKQHV_BaiThi.SelectedValue is int value ? value : 0;
-                using (DataTable results = _ketQuaDAL.LayKetQuaTheoLopDangHoc(Session.NguoiDungID, lopID))
-                    ExcelExportHelper.ExportBangDiemHocSinh(results, Session.HoTen ?? Session.TenDangNhap,
-                        null, null, null, Session.TenDangNhap);
+                using (DataTable results = _ketQuaService.LayKetQuaTheoLopDangHoc(Session.NguoiDungID, lopID))
+                using (var report = new BLT_Quan_Ly_Hoc_Tap.Forms.BaoCaoDialog(results,
+                    Session.HoTen ?? Session.TenDangNhap, Session.TenDangNhap))
+                    report.ShowDialog(this);
             }
             catch (Exception ex)
             {
@@ -727,7 +729,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
             try
             {
-                HocSinh hs = _hocSinhDAL.LayTheoTaiKhoan(Session.TaiKhoanID);
+                HocSinh hs = _hocSinhService.LayTheoTaiKhoan(Session.TaiKhoanID);
                 if (hs == null)
                 {
                     MessageBox.Show("Không tìm thấy hồ sơ học sinh được liên kết với tài khoản. Vui lòng liên hệ quản trị viên.", "Thông báo");
@@ -837,7 +839,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             btnTTHV_LuuThayDoi.Enabled = false;
             try
             {
-                if (!_hocSinhDAL.CapNhatHoSoCaNhan(Session.TaiKhoanID, hs))
+                if (!_hocSinhService.CapNhatHoSoCaNhan(Session.TaiKhoanID, hs))
                 {
                     MessageBox.Show("Không thể cập nhật hồ sơ. Tài khoản hoặc liên kết học sinh có thể đã thay đổi. Vui lòng đăng nhập lại.", "Thông báo");
                     return;
@@ -874,13 +876,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
             btnTTHV_DoiMK.Enabled = false;
             try
             {
-                if (!_taiKhoanDAL.DoiMatKhauCaNhan(Session.TaiKhoanID, matKhauCu, matKhauMoi))
+                if (!_taiKhoanService.DoiMatKhauCaNhan(Session.TaiKhoanID, matKhauCu, matKhauMoi))
                 {
                     MessageBox.Show("Mật khẩu hiện tại không đúng hoặc tài khoản đã thay đổi. Vui lòng kiểm tra lại.", "Không thể đổi mật khẩu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                _taiKhoanDAL.XoaGhiNho(Session.TenDangNhap);
+                _taiKhoanService.XoaGhiNho(Session.TenDangNhap);
                 txtTTHV_MatKhauHienTai.Clear();
                 txtTTHV_MKMoi.Clear();
                 txtTTHV_XacNhanMK.Clear();

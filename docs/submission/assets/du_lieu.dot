@@ -1,0 +1,11 @@
+digraph G { graph [bgcolor="white",fontname="DejaVu Sans",pad="0.25"]; node [shape=box,fontname="DejaVu Sans",fontsize=12,style="rounded,filled",fillcolor="#edf3fc"]; edge [fontname="DejaVu Sans",fontsize=10];rankdir=LR;
+        label="Quan hệ nghiệp vụ — không đồng nghĩa mọi FK đã được khai báo";
+        TaiKhoan -> GiaoVien[label="Theo vai trò"];
+        TaiKhoan -> HocSinh[label="Theo vai trò"];
+        KhoaHoc -> LopHoc; GiaoVien -> LopHoc;
+        HocSinh -> DangKyLop; LopHoc -> DangKyLop;
+        GiaoVien -> DeThi; LopHoc -> DeThi;
+        DeThi -> CauHoi; HocSinh -> KetQuaThi; DeThi -> KetQuaThi;
+        KetQuaThi -> ChiTietBaiLam; CauHoi -> ChiTietBaiLam;
+
+}

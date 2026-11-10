@@ -60,13 +60,25 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool Sua(KhoaHoc kh)
         {
-            string sql = "UPDATE KhoaHoc SET TenKhoaHoc = @ten, MoTa = @mota WHERE KhoaHocID = @id";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@ten", kh.TenKhoaHoc),
-                new NpgsqlParameter("@mota", (object)kh.MoTa ?? DBNull.Value),
-                new NpgsqlParameter("@id", kh.KhoaHocID)
-            };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            if (kh == null) throw new ArgumentNullException(nameof(kh));
+            // Explicit CALL works with Npgsql 6; do not use its StoredProcedure
+            // command mode, which invokes PostgreSQL functions in that version.
+            try
+            {
+                using (DataTable result = DatabaseHelper.ExecuteQuery(
+                    "CALL study_sua_khoa_hoc(@id, @ten, @mota, FALSE)",
+                    new NpgsqlParameter("id", kh.KhoaHocID),
+                    new NpgsqlParameter("ten", NpgsqlTypes.NpgsqlDbType.Varchar) { Value = (object)kh.TenKhoaHoc ?? DBNull.Value },
+                    new NpgsqlParameter("mota", NpgsqlTypes.NpgsqlDbType.Varchar) { Value = (object)kh.MoTa ?? DBNull.Value }))
+                {
+                    return result.Rows.Count == 1 && Convert.ToBoolean(result.Rows[0]["p_updated"]);
+                }
+            }
+            catch (PostgresException ex) when (ex.SqlState == "42883")
+            {
+                throw new InvalidOperationException(
+                    "Chưa cài thủ tục PostgreSQL. Chạy Database/PostgreSQL/02_Procedures.sql trên database ứng dụng.", ex);
+            }
         }
 
         public bool Xoa(int id)

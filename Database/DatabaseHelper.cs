@@ -39,7 +39,6 @@ namespace BLT_Quan_Ly_Hoc_Tap.Database
                 if (ex.InnerException != null)
                     loi += "\n\nChi tiết:\n" + ex.InnerException;
 
-                MessageBox.Show(loi, "Lỗi SSL");
                 return false;
             }
         }

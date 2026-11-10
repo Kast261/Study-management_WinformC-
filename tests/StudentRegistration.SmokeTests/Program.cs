@@ -52,7 +52,7 @@ sealed class ClassStore
 
 partial class RegistrationHost : Form
 {
-    private readonly ClassStore _lopDAL = new ClassStore();
+    private readonly ClassStore _lopService = new ClassStore();
     private readonly DataGridView dgvLopDangKi = new DataGridView { MultiSelect = false };
     private readonly DataGridView dgvLopThamGia = new DataGridView { MultiSelect = false };
     private readonly Label lblHV_DangChon = new Label();
@@ -61,7 +61,7 @@ partial class RegistrationHost : Form
         pageHV_KetQua = new TabPage(), pageHV_LopHoc = new TabPage(), pageHV_ThongTin = new TabPage();
     private int _selectedLopDangKyID, _selectedLopDangHocID;
     private bool _daTaiHocVien, _dangLamMoiTrang, _dangXuLyDangKyLop;
-    public ClassStore Store => _lopDAL;
+    public ClassStore Store => _lopService;
     public RegistrationHost()
     {
         Controls.Add(tabHocVien);

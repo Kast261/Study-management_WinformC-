@@ -16,6 +16,22 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
     {
         private readonly string _rememberFilePath = Path.Combine(Application.StartupPath, "remember.dat");
 
+        public string LayHoTen(int taiKhoanID)
+        {
+            object name = DatabaseHelper.ExecuteScalar(@"
+                SELECT CASE
+                    WHEN LOWER(BTRIM(tk.VaiTro))='giaovien' THEN
+                        (SELECT g.HoTen FROM GiaoVien g WHERE g.GiaoVienID=tk.NguoiDungID
+                         OR (COALESCE(tk.NguoiDungID,0)=0 AND g.TaiKhoanID=tk.TaiKhoanID) LIMIT 1)
+                    WHEN LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh','hocvien') THEN
+                        (SELECT h.HoTen FROM HocSinh h WHERE h.HocSinhID=tk.NguoiDungID
+                         OR (COALESCE(tk.NguoiDungID,0)=0 AND h.TaiKhoanID=tk.TaiKhoanID) LIMIT 1)
+                    ELSE tk.TenDangNhap END
+                FROM TaiKhoan tk WHERE tk.TaiKhoanID=@id",
+                new NpgsqlParameter("id", taiKhoanID));
+            return name == null || name == DBNull.Value ? null : Convert.ToString(name);
+        }
+
         public TaiKhoan DangNhap(string tenDangNhap, string matKhauNhap)
         {
             if (string.IsNullOrWhiteSpace(tenDangNhap) || string.IsNullOrEmpty(matKhauNhap))

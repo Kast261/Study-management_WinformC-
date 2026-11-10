@@ -1,4 +1,5 @@
-using BLT_Quan_Ly_Hoc_Tap.DAL;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces;
+using BLT_Quan_Ly_Hoc_Tap.BLL.Services;
 using BLT_Quan_Ly_Hoc_Tap.Forms.KiemTra;
 using BLT_Quan_Ly_Hoc_Tap.Helpers;
 using BLT_Quan_Ly_Hoc_Tap.Models;
@@ -14,8 +15,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         #region Dữ liệu & Trạng thái
 
         private readonly int _deThiID;
-        private readonly DeThiDAL _deThiDAL = new DeThiDAL();
-        private readonly KetQuaDAL _ketQuaDAL = new KetQuaDAL();
+        private readonly IDeThiService _deThiService = new DeThiService();
+        private readonly IKetQuaService _ketQuaService = new KetQuaService();
         private DeThi _deThi;
         private List<CauHoi> _cauHois = new List<CauHoi>();
         private Dictionary<int, string> _dapAnChon = new Dictionary<int, string>(); 
@@ -42,14 +43,14 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             try
             {
-                if (!Session.IsHocSinh || !_deThiDAL.CoTheBatDauThi(Session.NguoiDungID, _deThiID))
+                if (!Session.IsHocSinh || !_deThiService.CoTheBatDauThi(Session.NguoiDungID, _deThiID))
                 {
                     MessageBox.Show("Đề thi đã hết hạn, đã làm hoặc không thuộc lớp của bạn.", "Không thể bắt đầu thi");
                     Close();
                     return;
                 }
-                _deThi = _deThiDAL.LayTheoID(_deThiID);
-                _cauHois = _deThiDAL.LayDanhSachCauHoi(_deThiID);
+                _deThi = _deThiService.LayTheoID(_deThiID);
+                _cauHois = _deThiService.LayDanhSachCauHoi(_deThiID);
 
                 if (_deThi == null || _cauHois.Count == 0)
                 {
@@ -227,7 +228,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 var answers = new Dictionary<int, string>();
                 for (int i = 0; i < _cauHois.Count; i++)
                     if (_dapAnChon.ContainsKey(i)) answers[_cauHois[i].CauHoiID] = _dapAnChon[i];
-                result = _ketQuaDAL.NopBai(Session.TaiKhoanID, Session.NguoiDungID, _deThiID, answers);
+                result = _ketQuaService.NopBai(Session.TaiKhoanID, Session.NguoiDungID, _deThiID, answers);
                 _daNopBai = true;
             }
             catch (Exception ex)
