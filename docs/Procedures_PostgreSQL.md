@@ -64,7 +64,7 @@ ROLLBACK;
 
 Mã mới lấy bằng `INSERT … RETURNING`. Thêm học viên vào lớp không tồn tại/đóng/đầy trả `p_id=0`, không tạo hồ sơ dở. Không tìm thấy bản ghi cần sửa/xóa trả cờ FALSE. Dữ liệu bắt buộc hoặc độ dài không hợp lệ báo SQLSTATE `22023`. Xóa đối tượng còn liên quan báo `23503`; DAL chuyển thành `InvalidOperationException` để giữ cách xử lý nghiệp vụ.
 
-`ProcedureExecutor` dùng `CALL` rõ ràng, đọc cột INOUT từ DataTable và gắn kiểu `varchar`/`date` cho tham số NULL. Với Npgsql 6 không dùng `CommandType.StoredProcedure` vì cơ chế đó gọi PostgreSQL function. Thiếu procedure (`42883`) báo cần cài lại `02_Procedures.sql`, không tự fallback sang SQL trực tiếp.
+`ProcedureExecutor` dùng `CALL` rõ ràng, đọc cột INOUT từ DataTable và gắn kiểu `varchar`/`date` cho tham số NULL. Với Npgsql 6 không dùng `CommandType.StoredProcedure` vì cơ chế đó gọi PostgreSQL function. Nếu CALL ngoài bị thiếu procedure (`42883`), bản vá sẽ cài script nhúng trong transaction rồi retry đúng CALL một lần; không fallback SQL trực tiếp. Nếu thiếu quyền cài, ứng dụng hướng dẫn quản trị viên chạy script. Xem [bản vá xóa hồ sơ](Fix_Profile_Deletion_42883.md).
 
 Không procedure nào COMMIT nội bộ. Một CALL chạy trong transaction của PostgreSQL; caller có thể gộp nhiều CALL trong một transaction rồi rollback tất cả. Thêm học viên dùng cùng khóa bản ghi lớp và cách đếm lớp chính OR đăng ký Đã duyệt như luồng duyệt C#. Đóng lớp từ chối giáo viên 0 ngay tại procedure, không giữ lối bỏ qua quyền cũ của DAL ở thao tác này.
 

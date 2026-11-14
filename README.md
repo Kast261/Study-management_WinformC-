@@ -14,6 +14,8 @@ Khôi phục bằng NuGet CLI cần chép native binaries SQLServer.Types theo `
 
 ## Bổ sung và bằng chứng
 
+Bản vá [xóa học viên/giáo viên khi thiếu procedure](docs/Fix_Profile_Deletion_42883.md): executable nhúng script và tự cài khi CALL gặp `42883`, rồi thử lại một lần nếu tài khoản DB có quyền. Lấy mã mới và Clean/Rebuild trước khi thử. Hồ sơ còn dữ liệu liên quan vẫn được bảo vệ.
+
 Nhánh `docs/bao-cao-hoan-chinh` hiện bổ sung 9 procedure, tổng **10 procedure** được gọi từ DAL. Cài lại toàn bộ `Database/PostgreSQL/02_Procedures.sql` trước khi chạy bản này, kể cả DB đã cài phiên bản chỉ có một procedure. Các thao tác thêm/sửa/xóa khóa học, giáo viên, học viên và đóng đăng ký lớp đều dùng CALL. Xem [danh mục và hướng dẫn](docs/Procedures_PostgreSQL.md).
 
 - [Đối chiếu thang điểm, thay đổi và cài procedure](docs/Hoan_thien_theo_thang_diem.md)

@@ -13,6 +13,10 @@ for source in (root / 'Forms').rglob('*.cs'):
 project = ET.parse(root / 'BLT_Quan_Ly_Hoc_Tap.csproj')
 ns = {'m': 'http://schemas.microsoft.com/developer/msbuild/2003'}
 included = {n.attrib['Include'].replace('\\', '/') for n in project.findall('.//m:Compile', ns)}
+bundled_procedures = next((n for n in project.findall('.//m:EmbeddedResource', ns)
+    if n.attrib['Include'].replace('\\', '/') == 'Database/PostgreSQL/02_Procedures.sql'), None)
+if bundled_procedures is None or bundled_procedures.findtext('m:LogicalName', namespaces=ns) != 'PostgresProcedures.sql':
+    errors.append('WinForms executable must embed PostgresProcedures.sql for missing-procedure recovery')
 for directory in ['BLL', 'Forms']:
     for source in (root / directory).rglob('*.cs'):
         if source.relative_to(root).as_posix() not in included:

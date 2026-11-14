@@ -269,6 +269,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BangDiem.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Database\PostgreSQL\02_Procedures.sql">
+      <LogicalName>PostgresProcedures.sql</LogicalName>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
