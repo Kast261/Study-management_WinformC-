@@ -188,8 +188,11 @@ namespace ApplicationLogic.Tests
         public void DeletionCannotOrphanAccountsExamsOrEnrollments()
         {
             using var db = new LogicDatabase();
-            Assert.Throws<InvalidOperationException>(()=>new HocSinhDAL().Xoa(11));
-            Assert.Throws<InvalidOperationException>(()=>new GiaoVienDAL().Xoa(101));
+            Assert.Equal(KetQuaXoaHoSo.DaLuuTru, new HocSinhDAL().XoaChiTiet(11));
+            Assert.Equal(KetQuaXoaHoSo.DaLuuTru, new GiaoVienDAL().XoaChiTiet(101));
+            Assert.Equal(3L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM TaiKhoan"));
+            Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM DeThi"));
+            Assert.Equal(2L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM LopHoc"));
             Assert.Throws<Exception>(()=>new LopHocDAL().XoaLop(1));
         }
 

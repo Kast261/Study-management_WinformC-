@@ -26,6 +26,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     COALESCE(l.TenLop, 'Chưa xếp lớp') AS TenLop
                 FROM HocSinh hs
                 LEFT JOIN LopHoc l ON hs.LopHocID = l.LopHocID
+                WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE)
                 ORDER BY hs.HocSinhID ASC";
             return DatabaseHelper.ExecuteQuery(sql);
         }
@@ -33,7 +34,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             string sql = @"SELECT HocSinhID, HoTen, Email, SoDienThoai, DiaChi,
                                   NgaySinh, GioiTinh, LopHocID, TaiKhoanID
-                           FROM HocSinh WHERE HocSinhID = @id";
+                           FROM HocSinh WHERE HocSinhID = @id AND NOT COALESCE((to_jsonb(HocSinh)->>'daxoa')::boolean,FALSE)";
             DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) });
             if (dt.Rows.Count == 0) return null;
             DataRow r = dt.Rows[0];
@@ -75,7 +76,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     hs.HocSinhID = NULLIF(tk.NguoiDungID, 0)
                     OR (COALESCE(tk.NguoiDungID, 0) = 0
                         AND hs.TaiKhoanID = tk.TaiKhoanID)
-                WHERE tk.TaiKhoanID = @tkID
+                WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND tk.TaiKhoanID = @tkID
                   AND LOWER(tk.VaiTro) IN ('hocsinh', 'hocvien')
                   AND COALESCE(tk.TrangThaiKhoa, FALSE) = FALSE";
 
@@ -107,10 +108,10 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 SET HoTen = @hoten, NgaySinh = @ngaysinh,
                     GioiTinh = @gioitinh, Email = @email,
                     SoDienThoai = @sdt, DiaChi = @diachi
-                WHERE hs.HocSinhID = @hsID
+                WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND hs.HocSinhID = @hsID
                   AND EXISTS (
                       SELECT 1 FROM TaiKhoan tk
-                      WHERE tk.TaiKhoanID = @tkID
+                      WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND tk.TaiKhoanID = @tkID
                         AND LOWER(tk.VaiTro) IN ('hocsinh', 'hocvien')
                         AND COALESCE(tk.TrangThaiKhoa, FALSE) = FALSE
                         AND (hs.HocSinhID = NULLIF(tk.NguoiDungID, 0)
@@ -146,9 +147,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
         public bool Xoa(int id)
         {
-            return ProcedureExecutor.Boolean("CALL study_xoa_hoc_sinh(@id, FALSE)", "p_deleted",
-                new NpgsqlParameter("id", id));
+            return XoaChiTiet(id) != KetQuaXoaHoSo.KhongTimThay;
         }
+
+        public KetQuaXoaHoSo XoaChiTiet(int id) => ProcedureExecutor.DeleteProfile(
+            "CALL study_xoa_hoc_sinh(@id, FALSE, FALSE)", id);
         public DataTable TimKiem(string tuKhoa)
         {
             string sql = @"
@@ -163,7 +166,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     COALESCE(l.TenLop, 'Chưa xếp lớp') AS TenLop
                 FROM HocSinh hs
                 LEFT JOIN LopHoc l ON hs.LopHocID = l.LopHocID
-                WHERE hs.HoTen ILIKE @kw OR hs.Email ILIKE @kw OR hs.SoDienThoai ILIKE @kw
+                WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND (hs.HoTen ILIKE @kw OR hs.Email ILIKE @kw OR hs.SoDienThoai ILIKE @kw)
                 ORDER BY hs.HocSinhID ASC";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@kw", "%" + tuKhoa + "%") });
         }

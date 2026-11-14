@@ -4,6 +4,7 @@ using System.IO;
 using Npgsql;
 using NpgsqlTypes;
 using BLT_Quan_Ly_Hoc_Tap.Database;
+using BLT_Quan_Ly_Hoc_Tap.Models;
 
 namespace BLT_Quan_Ly_Hoc_Tap.DAL
 {
@@ -26,6 +27,18 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             using (var result = Execute(sql, parameters))
                 return result.Rows.Count == 1 ? Convert.ToInt32(result.Rows[0]["p_id"]) : 0;
+        }
+
+        public static KetQuaXoaHoSo DeleteProfile(string sql, int id)
+        {
+            if (id <= 0) return KetQuaXoaHoSo.KhongTimThay;
+            using (var result = Execute(sql, new[] { new NpgsqlParameter("id", id) }))
+            {
+                if (result.Rows.Count != 1) return KetQuaXoaHoSo.KhongTimThay;
+                if (Convert.ToBoolean(result.Rows[0]["p_archived"])) return KetQuaXoaHoSo.DaLuuTru;
+                return Convert.ToBoolean(result.Rows[0]["p_deleted"])
+                    ? KetQuaXoaHoSo.DaXoa : KetQuaXoaHoSo.KhongTimThay;
+            }
         }
 
         private static DataTable Execute(string sql, NpgsqlParameter[] parameters)

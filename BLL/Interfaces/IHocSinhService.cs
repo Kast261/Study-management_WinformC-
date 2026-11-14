@@ -14,6 +14,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces
         bool CapNhatHoSoCaNhan(int taiKhoanID, HocSinh hs);
         bool Sua(HocSinh hs);
         bool Xoa(int id);
+        KetQuaXoaHoSo XoaChiTiet(int id);
         DataTable TimKiem(string tuKhoa);
     }
 }

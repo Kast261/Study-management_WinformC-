@@ -9,6 +9,13 @@ namespace ApplicationLogic.Tests
 {
     public class AdminAccountLockTests
     {
+        private static TestDatabase CreateDatabase()
+        {
+            var db = new TestDatabase();
+            DatabaseHelper.ExecuteNonQuery("CREATE TABLE GiaoVien (GiaoVienID integer PRIMARY KEY, HoTen text, TaiKhoanID integer)");
+            return db;
+        }
+
         [Theory]
         [InlineData("Admin")]
         [InlineData("admin")]
@@ -16,7 +23,7 @@ namespace ApplicationLogic.Tests
         [InlineData(" AdMiN ")]
         public void AdminCannotBeLockedEvenWhenCallingDalDirectly(string role)
         {
-            using var db = new TestDatabase();
+            using var db = CreateDatabase();
             db.SeedAccount(1, 0, role);
             Assert.False(new TaiKhoanDAL().KhoaHoacMoKhoaTaiKhoan(1, true));
             Assert.False(IsLocked(1));
@@ -25,7 +32,7 @@ namespace ApplicationLogic.Tests
         [Fact]
         public void PreviouslyLockedAdminCanBeUnlockedButCannotBeLockedAgain()
         {
-            using var db = new TestDatabase();
+            using var db = CreateDatabase();
             db.SeedAccount(1, 0, "Admin", locked: true);
             var dal = new TaiKhoanDAL();
             Assert.True(dal.KhoaHoacMoKhoaTaiKhoan(1, false));
@@ -41,7 +48,7 @@ namespace ApplicationLogic.Tests
         [InlineData("GiaoVien")]
         public void NonAdminAccountsCanStillBeLockedAndUnlocked(string role)
         {
-            using var db = new TestDatabase();
+            using var db = CreateDatabase();
             db.SeedAccount(1, 11, role);
             var dal = new TaiKhoanDAL();
             Assert.True(dal.KhoaHoacMoKhoaTaiKhoan(1, true));
@@ -53,7 +60,7 @@ namespace ApplicationLogic.Tests
         [Fact]
         public void LockChecksCurrentRoleEvenIfTheAccountListHasBecomeStale()
         {
-            using var db = new TestDatabase();
+            using var db = CreateDatabase();
             db.SeedAccount(1, 11);
             var dal = new TaiKhoanDAL();
             var oldList = dal.GetAll();
@@ -68,7 +75,7 @@ namespace ApplicationLogic.Tests
         [InlineData(false)]
         public void MissingAccountsDoNotReportSuccess(bool locked)
         {
-            using var db = new TestDatabase();
+            using var db = CreateDatabase();
             Assert.False(new TaiKhoanDAL().KhoaHoacMoKhoaTaiKhoan(999, locked));
         }
 

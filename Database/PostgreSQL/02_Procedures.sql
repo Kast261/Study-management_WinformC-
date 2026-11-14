@@ -1,5 +1,22 @@
 -- PostgreSQL 11+. Run after 01_Schema.sql, in the application's database/schema.
 -- Rerunnable; no data deletion or default password. No COMMIT inside the procedure.
+-- Add archive metadata to existing databases without changing profile IDs/history.
+DO $$ BEGIN
+    IF to_regclass('giaovien') IS NOT NULL THEN
+        ALTER TABLE GiaoVien ADD COLUMN IF NOT EXISTS DaXoa boolean NOT NULL DEFAULT FALSE;
+        ALTER TABLE GiaoVien ADD COLUMN IF NOT EXISTS NgayXoa timestamp;
+    END IF;
+    IF to_regclass('hocsinh') IS NOT NULL THEN
+        ALTER TABLE HocSinh ADD COLUMN IF NOT EXISTS DaXoa boolean NOT NULL DEFAULT FALSE;
+        ALTER TABLE HocSinh ADD COLUMN IF NOT EXISTS NgayXoa timestamp;
+    END IF;
+END; $$;
+
+-- A new output distinguishes permanent deletion from archiving. Removing the old
+-- overload also keeps the catalog at ten procedures. Old DBs recover via 42883.
+DROP PROCEDURE IF EXISTS study_xoa_giao_vien(integer, boolean);
+DROP PROCEDURE IF EXISTS study_xoa_hoc_sinh(integer, boolean);
+
 CREATE OR REPLACE PROCEDURE study_sua_khoa_hoc(
     IN p_id integer,
     IN p_ten varchar,
@@ -98,31 +115,45 @@ BEGIN
     END IF;
     UPDATE GiaoVien SET HoTen = btrim(p_hoten), NgaySinh = p_ngaysinh,
         GioiTinh = p_gioitinh, ChuyenMon = p_chuyenmon, Email = p_email,
-        SoDienThoai = p_sdt, DiaChi = p_diachi WHERE GiaoVienID = p_id;
+        SoDienThoai = p_sdt, DiaChi = p_diachi WHERE GiaoVienID = p_id
+        AND NOT COALESCE((to_jsonb(GiaoVien)->>'daxoa')::boolean,FALSE);
     GET DIAGNOSTICS affected = ROW_COUNT;
     p_updated := affected = 1;
 END;
 $$;
 
 CREATE OR REPLACE PROCEDURE study_xoa_giao_vien(
-    IN p_id integer, INOUT p_deleted boolean)
+    IN p_id integer, INOUT p_deleted boolean, INOUT p_archived boolean)
 LANGUAGE plpgsql AS $$
-DECLARE affected integer;
+DECLARE affected integer; related boolean; already_archived boolean;
 BEGIN
-    p_deleted := FALSE;
-    PERFORM 1 FROM GiaoVien WHERE GiaoVienID = p_id FOR UPDATE;
-    IF NOT FOUND THEN RETURN; END IF;
-    IF EXISTS (SELECT 1 FROM LopHoc WHERE GiaoVienID = p_id)
+    p_deleted := FALSE; p_archived := FALSE;
+    SELECT DaXoa INTO already_archived FROM GiaoVien
+        WHERE GiaoVienID = p_id FOR NO KEY UPDATE;
+    IF NOT FOUND OR already_archived THEN RETURN; END IF;
+    related := EXISTS (SELECT 1 FROM LopHoc WHERE GiaoVienID = p_id)
        OR EXISTS (SELECT 1 FROM DeThi WHERE GiaoVienID = p_id)
        OR EXISTS (SELECT 1 FROM TaiKhoan tk JOIN GiaoVien gv ON gv.GiaoVienID = p_id
-            WHERE (lower(tk.VaiTro) = 'giaovien' AND tk.NguoiDungID = p_id)
-               OR tk.TaiKhoanID = gv.TaiKhoanID) THEN
-        RAISE EXCEPTION 'Không thể xóa hồ sơ đã liên kết tài khoản hoặc có dữ liệu học tập. Hãy khóa tài khoản để giữ lịch sử.'
-            USING ERRCODE = '23503';
+            WHERE (lower(btrim(tk.VaiTro)) = 'giaovien' AND tk.NguoiDungID = p_id)
+               OR tk.TaiKhoanID = gv.TaiKhoanID);
+    IF NOT related THEN
+        BEGIN
+            DELETE FROM GiaoVien WHERE GiaoVienID = p_id;
+            GET DIAGNOSTICS affected = ROW_COUNT;
+            p_deleted := affected = 1;
+            RETURN;
+        EXCEPTION WHEN foreign_key_violation THEN
+            -- Preserve references supplied by an extended/older schema as well.
+            related := TRUE;
+        END;
     END IF;
-    DELETE FROM GiaoVien WHERE GiaoVienID = p_id;
-    GET DIAGNOSTICS affected = ROW_COUNT;
-    p_deleted := affected = 1;
+    UPDATE GiaoVien SET DaXoa = TRUE, NgayXoa = CURRENT_TIMESTAMP WHERE GiaoVienID = p_id;
+    UPDATE TaiKhoan tk SET TrangThaiKhoa = TRUE
+        WHERE lower(btrim(tk.VaiTro)) = 'giaovien' AND EXISTS (
+            SELECT 1 FROM GiaoVien gv WHERE gv.GiaoVienID = p_id
+                AND (tk.NguoiDungID = p_id OR (COALESCE(tk.NguoiDungID,0) = 0
+                    AND tk.TaiKhoanID = gv.TaiKhoanID)));
+    p_archived := TRUE;
 END;
 $$;
 
@@ -148,9 +179,9 @@ BEGIN
             FOR UPDATE;
         IF NOT FOUND THEN RETURN; END IF;
         SELECT COUNT(*) INTO current_count FROM HocSinh h
-            WHERE h.LopHocID = p_lop OR EXISTS (
+            WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID = p_lop OR EXISTS (
                 SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID = h.HocSinhID
-                    AND dk.LopHocID = p_lop AND dk.TrangThai = 'Đã duyệt');
+                    AND dk.LopHocID = p_lop AND dk.TrangThai = 'Đã duyệt'));
         IF current_count >= capacity THEN RETURN; END IF;
     END IF;
     INSERT INTO HocSinh (HoTen, NgaySinh, GioiTinh, Email, SoDienThoai, DiaChi, LopHocID)
@@ -177,31 +208,44 @@ BEGIN
     -- Admin edit must not overwrite class membership or account links.
     UPDATE HocSinh SET HoTen = btrim(p_hoten), NgaySinh = p_ngaysinh,
         GioiTinh = p_gioitinh, Email = p_email, SoDienThoai = p_sdt,
-        DiaChi = p_diachi WHERE HocSinhID = p_id;
+        DiaChi = p_diachi WHERE HocSinhID = p_id
+            AND NOT COALESCE((to_jsonb(HocSinh)->>'daxoa')::boolean,FALSE);
     GET DIAGNOSTICS affected = ROW_COUNT;
     p_updated := affected = 1;
 END;
 $$;
 
 CREATE OR REPLACE PROCEDURE study_xoa_hoc_sinh(
-    IN p_id integer, INOUT p_deleted boolean)
+    IN p_id integer, INOUT p_deleted boolean, INOUT p_archived boolean)
 LANGUAGE plpgsql AS $$
-DECLARE affected integer;
+DECLARE affected integer; related boolean; already_archived boolean;
 BEGIN
-    p_deleted := FALSE;
-    PERFORM 1 FROM HocSinh WHERE HocSinhID = p_id FOR UPDATE;
-    IF NOT FOUND THEN RETURN; END IF;
-    IF EXISTS (SELECT 1 FROM DangKyLop WHERE HocSinhID = p_id)
+    p_deleted := FALSE; p_archived := FALSE;
+    SELECT DaXoa INTO already_archived FROM HocSinh
+        WHERE HocSinhID = p_id FOR NO KEY UPDATE;
+    IF NOT FOUND OR already_archived THEN RETURN; END IF;
+    related := EXISTS (SELECT 1 FROM DangKyLop WHERE HocSinhID = p_id)
        OR EXISTS (SELECT 1 FROM KetQuaThi WHERE HocSinhID = p_id)
        OR EXISTS (SELECT 1 FROM TaiKhoan tk JOIN HocSinh hs ON hs.HocSinhID = p_id
-            WHERE (lower(tk.VaiTro) IN ('hocsinh', 'hocvien') AND tk.NguoiDungID = p_id)
-               OR tk.TaiKhoanID = hs.TaiKhoanID) THEN
-        RAISE EXCEPTION 'Không thể xóa hồ sơ đã liên kết tài khoản hoặc có dữ liệu học tập. Hãy khóa tài khoản để giữ lịch sử.'
-            USING ERRCODE = '23503';
+            WHERE (lower(btrim(tk.VaiTro)) IN ('hocsinh', 'hocvien') AND tk.NguoiDungID = p_id)
+               OR tk.TaiKhoanID = hs.TaiKhoanID);
+    IF NOT related THEN
+        BEGIN
+            DELETE FROM HocSinh WHERE HocSinhID = p_id;
+            GET DIAGNOSTICS affected = ROW_COUNT;
+            p_deleted := affected = 1;
+            RETURN;
+        EXCEPTION WHEN foreign_key_violation THEN
+            related := TRUE;
+        END;
     END IF;
-    DELETE FROM HocSinh WHERE HocSinhID = p_id;
-    GET DIAGNOSTICS affected = ROW_COUNT;
-    p_deleted := affected = 1;
+    UPDATE HocSinh SET DaXoa = TRUE, NgayXoa = CURRENT_TIMESTAMP WHERE HocSinhID = p_id;
+    UPDATE TaiKhoan tk SET TrangThaiKhoa = TRUE
+        WHERE lower(btrim(tk.VaiTro)) IN ('hocsinh','hocvien') AND EXISTS (
+            SELECT 1 FROM HocSinh hs WHERE hs.HocSinhID = p_id
+                AND (tk.NguoiDungID = p_id OR (COALESCE(tk.NguoiDungID,0) = 0
+                    AND tk.TaiKhoanID = hs.TaiKhoanID)));
+    p_archived := TRUE;
 END;
 $$;
 
@@ -216,6 +260,7 @@ BEGIN
     END IF;
     UPDATE LopHoc SET TrangThai = 'Đã đóng'
         WHERE LopHocID = p_id AND GiaoVienID = p_giao_vien
+            AND EXISTS (SELECT 1 FROM GiaoVien gv WHERE gv.GiaoVienID=p_giao_vien AND NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE))
             AND COALESCE(TrangThai, 'Đang mở') = 'Đang mở';
     GET DIAGNOSTICS affected = ROW_COUNT;
     p_updated := affected = 1;

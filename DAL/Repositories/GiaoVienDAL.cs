@@ -26,6 +26,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     gv.DiaChi,
                     (SELECT COUNT(*) FROM LopHoc l WHERE l.GiaoVienID = gv.GiaoVienID) AS SoLop
                 FROM GiaoVien gv
+                WHERE NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE)
                 ORDER BY gv.GiaoVienID ASC";
             return DatabaseHelper.ExecuteQuery(sql);
         }
@@ -33,7 +34,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         {
             string sql = @"SELECT GiaoVienID, HoTen, Email, SoDienThoai, DiaChi,
                                   NgaySinh, ChuyenMon, GioiTinh, TaiKhoanID
-                           FROM GiaoVien WHERE GiaoVienID = @id";
+                           FROM GiaoVien WHERE GiaoVienID = @id AND NOT COALESCE((to_jsonb(GiaoVien)->>'daxoa')::boolean,FALSE)";
             DataTable dt = DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) });
             if (dt.Rows.Count == 0) return null;
             DataRow r = dt.Rows[0];
@@ -81,7 +82,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             return DatabaseHelper.ExecuteNonQuery(@"
                 UPDATE GiaoVien gv SET HoTen=@ten, Email=@email, SoDienThoai=@sdt,
                     DiaChi=@diachi, GioiTinh=@gioitinh
-                WHERE gv.GiaoVienID=@gv AND EXISTS (
+                WHERE gv.GiaoVienID=@gv AND NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) AND EXISTS (
                     SELECT 1 FROM TaiKhoan tk WHERE tk.TaiKhoanID=@tk
                       AND LOWER(tk.VaiTro)='giaovien' AND COALESCE(tk.TrangThaiKhoa,FALSE)=FALSE
                       AND (tk.NguoiDungID=gv.GiaoVienID OR (COALESCE(tk.NguoiDungID,0)=0
@@ -95,9 +96,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool Xoa(int id)
         {
-            return ProcedureExecutor.Boolean("CALL study_xoa_giao_vien(@id, FALSE)", "p_deleted",
-                new NpgsqlParameter("id", id));
+            return XoaChiTiet(id) != KetQuaXoaHoSo.KhongTimThay;
         }
+
+        public KetQuaXoaHoSo XoaChiTiet(int id) => ProcedureExecutor.DeleteProfile(
+            "CALL study_xoa_giao_vien(@id, FALSE, FALSE)", id);
         public DataTable TimKiem(string tuKhoa)
         {
             string sql = @"
@@ -112,7 +115,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     gv.DiaChi,
                     (SELECT COUNT(*) FROM LopHoc l WHERE l.GiaoVienID = gv.GiaoVienID) AS SoLop
                 FROM GiaoVien gv
-                WHERE gv.HoTen ILIKE @kw OR gv.Email ILIKE @kw OR gv.SoDienThoai ILIKE @kw OR gv.ChuyenMon ILIKE @kw
+                WHERE NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) AND (gv.HoTen ILIKE @kw OR gv.Email ILIKE @kw OR gv.SoDienThoai ILIKE @kw OR gv.ChuyenMon ILIKE @kw)
                 ORDER BY gv.GiaoVienID ASC";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@kw", "%" + tuKhoa + "%") });
         }

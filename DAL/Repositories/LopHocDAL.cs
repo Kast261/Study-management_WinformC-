@@ -18,7 +18,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 SELECT 
                     l.LopHocID, 
                     l.TenLop, 
-                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt'))) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
                     COALESCE(k.TenKhoaHoc, 'Chưa phân loại') AS TenKhoaHoc, 
                     COALESCE(g.HoTen, 'Chưa phân công') AS TenGiaoVien, 
                     l.KhoaHocID, 
@@ -40,7 +40,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     l.TenLop, 
                     l.KhoaHocID,
                     COALESCE(k.TenKhoaHoc, N'Chưa phân loại') AS TenKhoaHoc,
-                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt'))) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
                     COALESCE(l.SiSoToiDa, 40) AS SiSoToiDa,
                     l.NgayBatDau,
                     l.NgayKetThuc,
@@ -67,7 +67,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     COALESCE(l.TrangThai, 'Đang mở') AS TrangThai
                 FROM LopHoc l
                 LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
-                WHERE l.LopHocID IN (
+                WHERE EXISTS (SELECT 1 FROM HocSinh hs WHERE hs.HocSinhID=@hsID AND NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE)) AND l.LopHocID IN (
                     SELECT LopHocID FROM HocSinh WHERE HocSinhID = @hsID
                     UNION
                     SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND TrangThai = 'Đã duyệt'
@@ -89,7 +89,30 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 new NpgsqlParameter("@nbd", lop.NgayBatDau.HasValue ? (object)lop.NgayBatDau.Value : DBNull.Value),
                 new NpgsqlParameter("@nkt", lop.NgayKetThuc.HasValue ? (object)lop.NgayKetThuc.Value : DBNull.Value)
             };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    if (!GiaoVienConHoatDong(conn, transaction, lop.GiaoVienID)) return false;
+                    using (var insert = new NpgsqlCommand(sql, conn, transaction))
+                    {
+                        insert.Parameters.AddRange(pars);
+                        if (insert.ExecuteNonQuery() != 1) return false;
+                    }
+                    transaction.Commit();return true;
+                }
+            }
+        }
+
+        private static bool GiaoVienConHoatDong(NpgsqlConnection conn, NpgsqlTransaction transaction, int id)
+        {
+            if (id <= 0) return true; // Lớp có thể chưa phân công giáo viên.
+            using (var command = new NpgsqlCommand("SELECT 1 FROM GiaoVien gv WHERE gv.GiaoVienID=@id AND NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) FOR SHARE", conn, transaction))
+            {
+                command.Parameters.AddWithValue("id", id);
+                return command.ExecuteScalar() != null;
+            }
         }
 
         public bool SuaLop(LopHoc lop)
@@ -112,6 +135,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                         locked.Parameters.AddWithValue("id", lop.LopHocID);
                         if (locked.ExecuteScalar() == null) return false;
                     }
+                    if (!GiaoVienConHoatDong(conn, transaction, lop.GiaoVienID)) return false;
                     if (DemHocVien(conn, transaction, lop.LopHocID) > lop.SiSoToiDa) return false;
                     string sql = "UPDATE LopHoc SET KhoaHocID=@kh, GiaoVienID=@gv, TenLop=@ten, SiSoToiDa=@siso"
                         + (giuLichVaNgay ? "" : ", LichHoc=@lich, NgayBatDau=@nbd, NgayKetThuc=@nkt")
@@ -162,13 +186,13 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             hs.Email,
             hs.SoDienThoai,
             l.TenLop,
-            CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+            CAST((SELECT COUNT(*) FROM HocSinh h WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt'))) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
             dk.NgayDangKy,
             dk.TrangThai
         FROM DangKyLop dk
         JOIN HocSinh hs ON dk.HocSinhID = hs.HocSinhID
         JOIN LopHoc l ON dk.LopHocID = l.LopHocID
-        WHERE dk.LopHocID = @lopID AND (dk.TrangThai = 'Chờ duyệt' OR dk.TrangThai IS NULL)
+        WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND dk.LopHocID = @lopID AND (dk.TrangThai = 'Chờ duyệt' OR dk.TrangThai IS NULL)
         ORDER BY dk.NgayDangKy ASC";
 
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@lopID", lopHocID) });
@@ -185,13 +209,13 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             hs.Email,
             hs.SoDienThoai,
             l.TenLop,
-            CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+            CAST((SELECT COUNT(*) FROM HocSinh h WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID = l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dks WHERE dks.HocSinhID=h.HocSinhID AND dks.LopHocID=l.LopHocID AND dks.TrangThai='Đã duyệt'))) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
             dk.NgayDangKy,
             COALESCE(dk.TrangThai, 'Chờ duyệt') AS TrangThai
         FROM DangKyLop dk
         JOIN HocSinh hs ON dk.HocSinhID = hs.HocSinhID
         JOIN LopHoc l ON dk.LopHocID = l.LopHocID
-        WHERE l.GiaoVienID = @gvID AND (dk.TrangThai = 'Chờ duyệt' OR dk.TrangThai IS NULL)";
+        WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND l.GiaoVienID = @gvID AND (dk.TrangThai = 'Chờ duyệt' OR dk.TrangThai IS NULL)";
 
             if (lopHocID > 0)
             {
@@ -212,9 +236,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         private static long DemHocVien(NpgsqlConnection conn, NpgsqlTransaction transaction, int lopHocID)
         {
             using (var cmd = new NpgsqlCommand(@"
-                SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=@lop OR EXISTS (
+                SELECT COUNT(*) FROM HocSinh h WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID=@lop OR EXISTS (
                     SELECT 1 FROM DangKyLop dk WHERE dk.LopHocID=@lop
-                      AND dk.HocSinhID=h.HocSinhID AND dk.TrangThai='Đã duyệt')", conn, transaction))
+                      AND dk.HocSinhID=h.HocSinhID AND dk.TrangThai='Đã duyệt'))", conn, transaction))
             {
                 cmd.Parameters.AddWithValue("lop", lopHocID);
                 return Convert.ToInt64(cmd.ExecuteScalar());
@@ -243,11 +267,11 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     using (var lop = DocBang(conn, transaction, @"
                         SELECT COALESCE(SiSoToiDa,40) AS SucChua FROM LopHoc
                         WHERE LopHocID=@lop AND COALESCE(TrangThai,'Đang mở')='Đang mở'
-                          AND (@gv=0 OR GiaoVienID=@gv) FOR UPDATE",
+                          AND (@gv=0 OR (GiaoVienID=@gv AND EXISTS (SELECT 1 FROM GiaoVien gv WHERE gv.GiaoVienID=@gv AND NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE)))) FOR UPDATE",
                         new NpgsqlParameter("lop", lopHocID), new NpgsqlParameter("gv", giaoVienID)))
                     {
                         if (lop.Rows.Count != 1) return false;
-                        using (var hs = DocBang(conn, transaction, "SELECT HocSinhID FROM HocSinh WHERE HocSinhID=@hs FOR UPDATE", new NpgsqlParameter("hs", hocSinhID)))
+                        using (var hs = DocBang(conn, transaction, "SELECT HocSinhID FROM HocSinh WHERE HocSinhID=@hs AND NOT COALESCE((to_jsonb(HocSinh)->>'daxoa')::boolean,FALSE) FOR UPDATE", new NpgsqlParameter("hs", hocSinhID)))
                             if (hs.Rows.Count != 1) return false;
                         if (DemHocVien(conn, transaction, lopHocID) >= Convert.ToInt32(lop.Rows[0]["SucChua"])) return false;
                     }
@@ -303,14 +327,14 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     COALESCE(l.LichHoc, 'Chưa có') AS LichHoc,
                     l.NgayBatDau,
                     l.NgayKetThuc,
-                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
+                    CAST((SELECT COUNT(*) FROM HocSinh h WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt'))) AS varchar(10)) || '/' || CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
                     COALESCE(l.SiSoToiDa, 40) AS SiSoToiDa,
-                    (SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')) AS SiSoHienTai,
+                    (SELECT COUNT(*) FROM HocSinh h WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt'))) AS SiSoHienTai,
                     COALESCE(l.TrangThai, 'Đang mở') AS TrangThai
                 FROM LopHoc l
                 LEFT JOIN KhoaHoc k ON l.KhoaHocID = k.KhoaHocID
                 LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
-                WHERE COALESCE(l.TrangThai, 'Đang mở') = 'Đang mở'
+                WHERE EXISTS (SELECT 1 FROM HocSinh hs WHERE hs.HocSinhID=@hsID AND NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE)) AND COALESCE(l.TrangThai, 'Đang mở') = 'Đang mở'
                   AND l.LopHocID NOT IN (
                       SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND LopHocID IS NOT NULL AND TrangThai IN ('Đã duyệt', 'Chờ duyệt')
                       UNION
@@ -336,7 +360,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             l.NgayKetThuc,
 
             CAST((
-                SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk2 WHERE dk2.HocSinhID=h.HocSinhID AND dk2.LopHocID=l.LopHocID AND dk2.TrangThai='Đã duyệt')
+                SELECT COUNT(*) FROM HocSinh h WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk2 WHERE dk2.HocSinhID=h.HocSinhID AND dk2.LopHocID=l.LopHocID AND dk2.TrangThai='Đã duyệt'))
             ) AS varchar(10))
             || '/' ||
             CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
@@ -350,7 +374,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         LEFT JOIN KhoaHoc k ON l.KhoaHocID = k.KhoaHocID
         LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
 
-        WHERE dk.HocSinhID = @hsID
+        WHERE EXISTS (SELECT 1 FROM HocSinh hs WHERE hs.HocSinhID=@hsID AND NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE)) AND dk.HocSinhID = @hsID
           AND dk.TrangThai IN ('Đã duyệt', 'Chờ duyệt', 'Từ chối')
 
         UNION
@@ -365,7 +389,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             l.NgayKetThuc,
 
             CAST((
-                SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk2 WHERE dk2.HocSinhID=h.HocSinhID AND dk2.LopHocID=l.LopHocID AND dk2.TrangThai='Đã duyệt')
+                SELECT COUNT(*) FROM HocSinh h WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID=l.LopHocID OR EXISTS (SELECT 1 FROM DangKyLop dk2 WHERE dk2.HocSinhID=h.HocSinhID AND dk2.LopHocID=l.LopHocID AND dk2.TrangThai='Đã duyệt'))
             ) AS varchar(10))
             || '/' ||
             CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
@@ -379,7 +403,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         LEFT JOIN KhoaHoc k ON l.KhoaHocID = k.KhoaHocID
         LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
 
-        WHERE hs.HocSinhID = @hsID
+        WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND hs.HocSinhID = @hsID
           AND hs.LopHocID IS NOT NULL
           AND l.LopHocID NOT IN (
               SELECT LopHocID
@@ -417,7 +441,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                         if (lop.Rows.Count != 1) return false;
                         if (DemHocVien(conn, transaction, lopHocID) >= Convert.ToInt32(lop.Rows[0]["SucChua"])) return false;
                     }
-                    using (var hs = DocBang(conn, transaction, "SELECT LopHocID FROM HocSinh WHERE HocSinhID=@hs FOR UPDATE", new NpgsqlParameter("hs", hocSinhID)))
+                    using (var hs = DocBang(conn, transaction, "SELECT LopHocID FROM HocSinh WHERE HocSinhID=@hs AND NOT COALESCE((to_jsonb(HocSinh)->>'daxoa')::boolean,FALSE) FOR UPDATE", new NpgsqlParameter("hs", hocSinhID)))
                     {
                         if (hs.Rows.Count != 1 || (hs.Rows[0][0] != DBNull.Value && Convert.ToInt32(hs.Rows[0][0]) == lopHocID)) return false;
                     }
@@ -454,7 +478,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 {
                     using (var lop = DocBang(conn, transaction, "SELECT LopHocID FROM LopHoc WHERE LopHocID=@lop AND COALESCE(TrangThai,'Đang mở')='Đang mở' FOR UPDATE", new NpgsqlParameter("lop", lopHocID)))
                         if (lop.Rows.Count != 1) return false;
-                    using (var hs = DocBang(conn, transaction, "SELECT LopHocID FROM HocSinh WHERE HocSinhID=@hs FOR UPDATE", new NpgsqlParameter("hs", hocSinhID)))
+                    using (var hs = DocBang(conn, transaction, "SELECT LopHocID FROM HocSinh WHERE HocSinhID=@hs AND NOT COALESCE((to_jsonb(HocSinh)->>'daxoa')::boolean,FALSE) FOR UPDATE", new NpgsqlParameter("hs", hocSinhID)))
                         if (hs.Rows.Count != 1 || (hs.Rows[0][0] != DBNull.Value && Convert.ToInt32(hs.Rows[0][0]) == lopHocID)) return false;
                     using (var approved = DocBang(conn, transaction, "SELECT 1 FROM DangKyLop WHERE LopHocID=@lop AND HocSinhID=@hs AND TrangThai='Đã duyệt'",
                         new NpgsqlParameter("lop", lopHocID), new NpgsqlParameter("hs", hocSinhID)))

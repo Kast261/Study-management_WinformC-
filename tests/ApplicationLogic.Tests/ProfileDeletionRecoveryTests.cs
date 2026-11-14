@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLT_Quan_Ly_Hoc_Tap.BLL.Services;
 using BLT_Quan_Ly_Hoc_Tap.DAL;
+using BLT_Quan_Ly_Hoc_Tap.Models;
 using BLT_Quan_Ly_Hoc_Tap.Database;
 using Npgsql;
 using StudentProfile.Tests;
@@ -52,7 +53,7 @@ namespace ApplicationLogic.Tests
         public void DeletionRepairsOnlyMissingDeleteEntryPointAndStillUsesItsResult(bool teacher)
         {
             using var db = Database(install: true);
-            DatabaseHelper.ExecuteNonQuery("DROP PROCEDURE " + Procedure(teacher) + "(integer,boolean)");
+            DatabaseHelper.ExecuteNonQuery("DROP PROCEDURE " + Procedure(teacher) + "(integer,boolean,boolean)");
             Assert.True(Delete(teacher, teacher ? 101 : 11));
             Assert.Equal(10L, ProcedureCount());
             Assert.False(Delete(teacher, teacher ? 101 : 11));
@@ -61,14 +62,15 @@ namespace ApplicationLogic.Tests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void RecoveredProcedureStillBlocksDeletingLearningHistory(bool teacher)
+        public void RecoveredProcedureArchivesProfilesAndKeepsLearningHistory(bool teacher)
         {
             using var db = Database();
             DatabaseHelper.ExecuteNonQuery(teacher
                 ? "INSERT INTO LopHoc (TenLop,GiaoVienID) VALUES ('Lớp đang dạy',101)"
                 : "INSERT INTO KetQuaThi (HocSinhID,Diem) VALUES (11,7.5)");
-            var error = Assert.Throws<InvalidOperationException>(() => Delete(teacher, teacher ? 101 : 11));
-            Assert.Equal("23503", Assert.IsType<PostgresException>(error.InnerException).SqlState);
+            var result = teacher ? new GiaoVienService().XoaChiTiet(101) : new HocSinhService().XoaChiTiet(11);
+            Assert.Equal(KetQuaXoaHoSo.DaLuuTru, result);
+            Assert.Equal(true, DatabaseHelper.ExecuteScalar("SELECT DaXoa FROM " + Table(teacher)));
             Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM " + Table(teacher)));
             Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM " + (teacher ? "LopHoc" : "KetQuaThi")));
         }
@@ -162,7 +164,7 @@ namespace ApplicationLogic.Tests
         {
             using var db = Database();
             DatabaseHelper.ExecuteNonQuery(@"
-                CREATE PROCEDURE study_xoa_giao_vien(IN p_id integer, INOUT p_deleted boolean)
+                CREATE PROCEDURE study_xoa_giao_vien(IN p_id integer, INOUT p_deleted boolean, INOUT p_archived boolean)
                 LANGUAGE plpgsql AS $$ BEGIN PERFORM study_internal_function_not_installed(); END; $$;");
             var error = Assert.Throws<PostgresException>(() => Delete(true, 101));
             Assert.Equal("42883", error.SqlState);

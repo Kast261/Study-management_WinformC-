@@ -14,12 +14,12 @@ Khôi phục bằng NuGet CLI cần chép native binaries SQLServer.Types theo `
 
 ## Bổ sung và bằng chứng
 
-Bản vá [xóa học viên/giáo viên khi thiếu procedure](docs/Fix_Profile_Deletion_42883.md): executable nhúng script và tự cài khi CALL gặp `42883`, rồi thử lại một lần nếu tài khoản DB có quyền. Lấy mã mới và Clean/Rebuild trước khi thử. Hồ sơ còn dữ liệu liên quan vẫn được bảo vệ.
+Bản sửa [xóa và lưu trữ học viên/giáo viên](docs/Profile_Deletion_Lifecycle.md): hồ sơ chưa liên kết được xóa hẳn; hồ sơ có tài khoản hoặc lịch sử được ẩn khỏi danh sách hoạt động, khóa tài khoản và giữ nguyên dữ liệu học tập. Sĩ số và thống kê loại hồ sơ đã lưu trữ. Executable nhúng script và tự cập nhật khi CALL gặp `42883`, rồi thử lại một lần nếu tài khoản DB có quyền. Lấy mã mới trên `docs/bao-cao-hoan-chinh` và Clean/Rebuild trước khi thử.
 
 Nhánh `docs/bao-cao-hoan-chinh` hiện bổ sung 9 procedure, tổng **10 procedure** được gọi từ DAL. Cài lại toàn bộ `Database/PostgreSQL/02_Procedures.sql` trước khi chạy bản này, kể cả DB đã cài phiên bản chỉ có một procedure. Các thao tác thêm/sửa/xóa khóa học, giáo viên, học viên và đóng đăng ký lớp đều dùng CALL. Xem [danh mục và hướng dẫn](docs/Procedures_PostgreSQL.md).
 
 - [Đối chiếu thang điểm, thay đổi và cài procedure](docs/Hoan_thien_theo_thang_diem.md)
-- [Kết quả 256 test .NET và bằng chứng build/smoke lịch sử](docs/Ket_qua_kiem_thu.md)
+- [Kết quả 290 test .NET, 12 tình huống nút Xóa và bằng chứng build/smoke lịch sử](docs/Ket_qua_kiem_thu.md)
 - [Phân công 5 người và mẫu đánh giá chéo](docs/Phan_cong_va_danh_gia_cheo.md)
 - [Hướng dẫn hoàn tất Crystal Reports](Reports/README.md)
 - [Báo cáo 3 chương dạng Markdown](docs/submission/Bao_cao_3_chuong.md)
@@ -32,6 +32,7 @@ Nhánh `docs/bao-cao-hoan-chinh` hiện bổ sung 9 procedure, tổng **10 proce
 
 ```bash
 python3 tests/check_architecture.py
+python3 tests/check_profile_deletion_ui.py
 dotnet test tests/Pagination.Tests/Pagination.Tests.csproj
 python3 tests/StudentProfile.Tests/run.py --project tests/ApplicationLogic.Tests/ApplicationLogic.Tests.csproj
 ```

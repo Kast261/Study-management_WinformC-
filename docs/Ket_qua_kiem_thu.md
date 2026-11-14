@@ -1,5 +1,26 @@
 # Kết quả kiểm tra bản bổ sung
 
+## Xóa/lưu trữ hồ sơ và bảo toàn lịch sử — 14/11/2026
+
+Đã chạy lại năm suite sau khi sửa cả học viên và giáo viên. Hồ sơ có dữ liệu liên quan được lưu trữ và khóa tài khoản thay cho lỗi nghiệp vụ trong ảnh; hồ sơ chưa liên kết vẫn xóa hẳn. Danh sách, đăng nhập, cấp/mở khóa tài khoản, sĩ số, thống kê và các thao tác ghi bằng phiên cũ được kiểm tra theo trạng thái hồ sơ.
+
+| Target | Kết quả mới nhất |
+|---|---|
+| Kiểm tra kiến trúc | Đạt |
+| ApplicationLogic.Tests | **206 đạt** |
+| StudentProfile.Tests | 29 đạt |
+| Dashboard.Tests | 7 đạt |
+| ExcelImport.Tests | 29 đạt |
+| Pagination.Tests | 19 đạt |
+| Tổng .NET 8 | **290 đạt; 0 thất bại; 0 bỏ qua** |
+| Hai handler nút Xóa Admin | **12 tình huống đạt** |
+
+20 trường hợp mới trong `ProfileArchiveTests` kiểm tra xóa/lưu trữ, liên kết thuận/ngược và vai trò, bảo toàn lịch sử, không khóa nhầm tài khoản khác/Admin, không đăng nhập lại bằng mở khóa, sĩ số, hồ sơ ẩn trong tìm kiếm/cấp tài khoản, chặn thao tác từ phiên cũ, xóa đồng thời, rollback và schema/chữ ký procedure cũ. Các test procedure/khôi phục hiện có được giữ và cập nhật kết quả lưu trữ.
+
+Script `check_profile_deletion_ui.py` biên dịch trực tiếp hai handler từ Form vào harness có service và hộp thoại giả lập. Mỗi loại hồ sơ được kiểm tra sáu tình huống: xóa thật, lưu trữ, không tìm thấy, hủy, chưa chọn và lỗi thực sự. Kiểm tra cả ID được giữ trước xác nhận, thông báo và các lần làm mới. Đây là kiểm tra logic handler; chưa nghiệm thu hiển thị và tương tác toàn bộ Form trên Windows.
+
+Môi trường: Linux, .NET SDK 8.0.428, PostgreSQL 16 trong Docker. Các runner tạo và dọn DB tạm, không dùng cấu hình hay DB người dùng. Hướng dẫn nâng cấp và hành vi chi tiết: [Vòng đời hồ sơ](Profile_Deletion_Lifecycle.md). Các mục dưới đây ghi lại những lần kiểm thử trước đó.
+
 ## Bản vá xóa hồ sơ khi DB thiếu procedure — 14/11/2026
 
 Đã xác minh cơ chế cài bộ procedure nhúng và retry CALL khi gặp `42883`. Suite `ApplicationLogic.Tests` có **186 test đạt** (14 trường hợp khôi phục mới); `StudentProfile.Tests` có **29 test đạt**. Không có test thất bại/bỏ qua ở hai suite này. Kiểm tra kiến trúc đạt, gồm kiểm tra tài nguyên `PostgresProcedures.sql` được nhúng vào executable.
@@ -55,6 +76,7 @@ Lần test mới đầu tiên có một assertion giả định sai rằng xóa 
 
 ```bash
 python3 tests/check_architecture.py
+python3 tests/check_profile_deletion_ui.py
 dotnet test tests/Pagination.Tests/Pagination.Tests.csproj
 python3 tests/StudentProfile.Tests/run.py
 python3 tests/StudentProfile.Tests/run.py --project tests/ApplicationLogic.Tests/ApplicationLogic.Tests.csproj
