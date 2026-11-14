@@ -52,54 +52,17 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public bool Them(HocSinh hs, int lopHocID = 0)
         {
             if (hs == null || lopHocID < 0) return false;
-            string sql = @"INSERT INTO HocSinh (HoTen, NgaySinh, GioiTinh, Email, SoDienThoai, DiaChi, LopHocID)
-                           VALUES (@hoten, @ngaysinh, @gioitinh, @email, @sdt, @diachi, @lop) RETURNING HocSinhID";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@hoten", hs.HoTen),
-                new NpgsqlParameter("@ngaysinh", (object)hs.NgaySinh ?? DBNull.Value),
-                new NpgsqlParameter("@gioitinh", (object)hs.GioiTinh ?? DBNull.Value),
-                new NpgsqlParameter("@email", (object)hs.Email ?? DBNull.Value),
-                new NpgsqlParameter("@sdt", (object)hs.SoDienThoai ?? DBNull.Value),
-                new NpgsqlParameter("@diachi", (object)hs.DiaChi ?? DBNull.Value),
-                new NpgsqlParameter("@lop", NpgsqlTypes.NpgsqlDbType.Integer) { Value = lopHocID > 0 ? (object)lopHocID : DBNull.Value }
-            };
-            using (var conn = DatabaseHelper.GetConnection())
-            {
-                conn.Open();
-                using (var transaction = conn.BeginTransaction())
-                {
-                    if (lopHocID > 0)
-                    {
-                        // Cùng khóa với đăng ký/duyệt lớp để không vượt sĩ số khi thêm đồng thời.
-                        using (var check = new NpgsqlCommand(@"
-                            SELECT COALESCE(SiSoToiDa,40) FROM LopHoc
-                            WHERE LopHocID=@lop AND COALESCE(TrangThai,'Đang mở')='Đang mở'
-                            FOR UPDATE", conn, transaction))
-                        {
-                            check.Parameters.AddWithValue("lop", lopHocID);
-                            object capacity = check.ExecuteScalar();
-                            if (capacity == null) return false;
-                            using (var count = new NpgsqlCommand(@"
-                                SELECT COUNT(*) FROM HocSinh h WHERE h.LopHocID=@lop OR EXISTS (
-                                    SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID
-                                    AND dk.LopHocID=@lop AND dk.TrangThai='Đã duyệt')", conn, transaction))
-                            {
-                                count.Parameters.AddWithValue("lop", lopHocID);
-                                if (Convert.ToInt64(count.ExecuteScalar()) >= Convert.ToInt32(capacity)) return false;
-                            }
-                        }
-                    }
-                    int hocSinhID;
-                    using (var insert = new NpgsqlCommand(sql, conn, transaction))
-                    {
-                        insert.Parameters.AddRange(pars);
-                        hocSinhID = Convert.ToInt32(insert.ExecuteScalar());
-                    }
-                    transaction.Commit();
-                    hs.HocSinhID = hocSinhID;
-                    return true;
-                }
-            }
+            // The procedure holds the same class lock as registration/approval.
+            // One CALL atomically checks capacity and creates the student.
+            int id = ProcedureExecutor.Id(
+                "CALL study_them_hoc_sinh(@hoten, @ngaysinh, @gioitinh, @email, @sdt, @diachi, @lop, 0)",
+                ProcedureExecutor.Text("hoten", hs.HoTen), ProcedureExecutor.Date("ngaysinh", hs.NgaySinh),
+                ProcedureExecutor.Text("gioitinh", hs.GioiTinh), ProcedureExecutor.Text("email", hs.Email),
+                ProcedureExecutor.Text("sdt", hs.SoDienThoai), ProcedureExecutor.Text("diachi", hs.DiaChi),
+                new NpgsqlParameter("lop", lopHocID));
+            if (id <= 0) return false;
+            hs.HocSinhID = id;
+            return true;
         }
 
         public HocSinh LayTheoTaiKhoan(int taiKhoanID)
@@ -173,25 +136,18 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool Sua(HocSinh hs)
         {
-            string sql = @"UPDATE HocSinh SET HoTen=@hoten, NgaySinh=@ngaysinh, GioiTinh=@gioitinh, 
-                           Email=@email, SoDienThoai=@sdt, DiaChi=@diachi WHERE HocSinhID=@id";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@hoten", hs.HoTen),
-                new NpgsqlParameter("@ngaysinh", (object)hs.NgaySinh ?? DBNull.Value),
-                new NpgsqlParameter("@gioitinh", (object)hs.GioiTinh ?? DBNull.Value),
-                new NpgsqlParameter("@email", (object)hs.Email ?? DBNull.Value),
-                new NpgsqlParameter("@sdt", (object)hs.SoDienThoai ?? DBNull.Value),
-                new NpgsqlParameter("@diachi", (object)hs.DiaChi ?? DBNull.Value),
-                new NpgsqlParameter("@id", hs.HocSinhID)
-            };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            if (hs == null) throw new ArgumentNullException(nameof(hs));
+            return ProcedureExecutor.Boolean(
+                "CALL study_sua_hoc_sinh(@id, @hoten, @ngaysinh, @gioitinh, @email, @sdt, @diachi, FALSE)",
+                "p_updated", new NpgsqlParameter("id", hs.HocSinhID),
+                ProcedureExecutor.Text("hoten", hs.HoTen), ProcedureExecutor.Date("ngaysinh", hs.NgaySinh),
+                ProcedureExecutor.Text("gioitinh", hs.GioiTinh), ProcedureExecutor.Text("email", hs.Email),
+                ProcedureExecutor.Text("sdt", hs.SoDienThoai), ProcedureExecutor.Text("diachi", hs.DiaChi));
         }
         public bool Xoa(int id)
         {
-            if (Convert.ToBoolean(DatabaseHelper.ExecuteScalar(@"SELECT EXISTS (SELECT 1 FROM DangKyLop WHERE HocSinhID=@id) OR EXISTS (SELECT 1 FROM KetQuaThi WHERE HocSinhID=@id) OR EXISTS (SELECT 1 FROM TaiKhoan tk JOIN HocSinh hs ON hs.HocSinhID=@id WHERE (LOWER(tk.VaiTro) IN ('hocsinh','hocvien') AND tk.NguoiDungID=@id) OR tk.TaiKhoanID=hs.TaiKhoanID)", new NpgsqlParameter("id", id))))
-                throw new InvalidOperationException("Không thể xóa hồ sơ đã liên kết tài khoản hoặc có dữ liệu học tập. Hãy khóa tài khoản để giữ lịch sử.");
-            string sql = "DELETE FROM HocSinh WHERE HocSinhID = @id";
-            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) }) > 0;
+            return ProcedureExecutor.Boolean("CALL study_xoa_hoc_sinh(@id, FALSE)", "p_deleted",
+                new NpgsqlParameter("id", id));
         }
         public DataTable TimKiem(string tuKhoa)
         {

@@ -50,49 +50,26 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool Them(KhoaHoc kh)
         {
-            string sql = "INSERT INTO KhoaHoc (TenKhoaHoc, MoTa) VALUES (@ten, @mota)";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@ten", kh.TenKhoaHoc),
-                new NpgsqlParameter("@mota", (object)kh.MoTa ?? DBNull.Value)
-            };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            if (kh == null) throw new ArgumentNullException(nameof(kh));
+            int id = ProcedureExecutor.Id("CALL study_them_khoa_hoc(@ten, @mota, 0)",
+                ProcedureExecutor.Text("ten", kh.TenKhoaHoc), ProcedureExecutor.Text("mota", kh.MoTa));
+            if (id <= 0) return false;
+            kh.KhoaHocID = id;
+            return true;
         }
 
         public bool Sua(KhoaHoc kh)
         {
             if (kh == null) throw new ArgumentNullException(nameof(kh));
-            // Explicit CALL works with Npgsql 6; do not use its StoredProcedure
-            // command mode, which invokes PostgreSQL functions in that version.
-            try
-            {
-                using (DataTable result = DatabaseHelper.ExecuteQuery(
-                    "CALL study_sua_khoa_hoc(@id, @ten, @mota, FALSE)",
-                    new NpgsqlParameter("id", kh.KhoaHocID),
-                    new NpgsqlParameter("ten", NpgsqlTypes.NpgsqlDbType.Varchar) { Value = (object)kh.TenKhoaHoc ?? DBNull.Value },
-                    new NpgsqlParameter("mota", NpgsqlTypes.NpgsqlDbType.Varchar) { Value = (object)kh.MoTa ?? DBNull.Value }))
-                {
-                    return result.Rows.Count == 1 && Convert.ToBoolean(result.Rows[0]["p_updated"]);
-                }
-            }
-            catch (PostgresException ex) when (ex.SqlState == "42883")
-            {
-                throw new InvalidOperationException(
-                    "Chưa cài thủ tục PostgreSQL. Chạy Database/PostgreSQL/02_Procedures.sql trên database ứng dụng.", ex);
-            }
+            return ProcedureExecutor.Boolean("CALL study_sua_khoa_hoc(@id, @ten, @mota, FALSE)", "p_updated",
+                new NpgsqlParameter("id", kh.KhoaHocID),
+                ProcedureExecutor.Text("ten", kh.TenKhoaHoc), ProcedureExecutor.Text("mota", kh.MoTa));
         }
 
         public bool Xoa(int id)
         {
-            // Kiểm tra xem có lớp học nào đang thuộc khóa học này không
-            string checkSql = "SELECT COUNT(*) FROM LopHoc WHERE KhoaHocID = @id";
-            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(checkSql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) }));
-            if (count > 0)
-            {
-                throw new Exception("Không thể xóa khóa học này vì đang có lớp học thuộc khóa học!");
-            }
-
-            string sql = "DELETE FROM KhoaHoc WHERE KhoaHocID = @id";
-            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) }) > 0;
+            return ProcedureExecutor.Boolean("CALL study_xoa_khoa_hoc(@id, FALSE)", "p_deleted",
+                new NpgsqlParameter("id", id));
         }
     }
 }

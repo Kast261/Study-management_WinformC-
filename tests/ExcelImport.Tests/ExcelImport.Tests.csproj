@@ -21,6 +21,7 @@
     <Compile Include="../../Models/Entities/KetQuaNhapCauHoi.cs" Link="Production/KetQuaNhapCauHoi.cs" />
     <Compile Include="../../Helpers/Security/Passwords.cs" Link="Production/Passwords.cs" />
     <Compile Include="../StudentProfile.Tests/TestDatabase.cs" Link="TestDatabase.cs" />
+    <EmbeddedResource Include="../../Database/PostgreSQL/02_Procedures.sql" LogicalName="PostgresProcedures.sql" />
     <None Include="Fixtures/*.xlsx" CopyToOutputDirectory="PreserveNewest" />
     <None Include="Fixtures/*.xls" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../Templates/CauHoi_Mau.xlsx" Link="Fixtures/CauHoi_Mau.xlsx" CopyToOutputDirectory="PreserveNewest" />

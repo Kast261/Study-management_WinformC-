@@ -11,7 +11,7 @@ Quản lý học tập bao gồm các nghiệp vụ có liên hệ chặt chẽ 
 
 Ứng dụng được xây dựng bằng C# WinForms trên .NET Framework 4.8, sử dụng PostgreSQL và Npgsql. Ba nhóm người dùng gồm quản trị viên, giáo viên và học viên có các màn hình và thao tác khác nhau. Báo cáo trình bày yêu cầu, thiết kế, triển khai, kiểm thử và các phần còn cần nghiệm thu.
 
-Bản này dành cho nhánh bổ sung `feat/complete-coursework-requirements`, không mô tả nguyên trạng master trước thay đổi. Chưa có template chính thức của khoa nên cách chia ba chương dưới đây là bản nháp theo thang điểm, không phải xác nhận đúng mọi quy định trình bày. Cần bổ sung trang bìa, tên thành viên, ảnh và kết quả kiểm tra Windows trước khi nộp.
+Bản nháp này giữ cấu trúc cũ và đã đồng bộ nội dung 10 procedure theo nhánh `docs/bao-cao-hoan-chinh`, commit mã `b9c3b42c28d82be7c445a0062cd21793b587a3c3`. Bản Word/PDF chính theo mẫu người dùng cung cấp nằm tại `docs/bao_cao_hoan_chinh`. Thông tin nhóm, ảnh chạy thật và kết quả nghiệm thu Windows vẫn cần bổ sung trước khi nộp.
 
 # Chương 1. Khảo sát bài toán và phân tích yêu cầu
 
@@ -115,13 +115,13 @@ Chưa có bản ghi lần bắt đầu và lưu nháp bền vững trong DB. T�
 
 Dự án sử dụng NpgsqlConnection, NpgsqlCommand, NpgsqlParameter và DataAdapter. CRUD hồ sơ có thêm/sửa/xóa/tìm kiếm. Truy vấn SQL nằm trong DAL thay vì Form.
 
-Luồng sửa khóa học hiện gọi procedure study_sua_khoa_hoc bằng CALL có tham số. Procedure kiểm tra dữ liệu, cập nhật tên/mô tả và trả p_updated. Script 02_Procedures.sql có thể cài lặp lại; thiếu procedure được báo rõ, không fallback sang UPDATE để giả vờ đã dùng thủ tục. Script phải được cài lên DB triển khai trước khi dùng bản mới.
+Bản cập nhật có **10 procedure**: thêm/sửa/xóa khóa học, giáo viên, học viên và đóng đăng ký lớp. Xem [danh mục và hợp đồng](../Procedures_PostgreSQL.md). Luồng sửa khóa học gọi procedure study_sua_khoa_hoc bằng CALL có tham số. Procedure kiểm tra dữ liệu, cập nhật tên/mô tả và trả p_updated. Script 02_Procedures.sql có thể cài lặp lại; thiếu procedure được báo rõ, không fallback sang UPDATE để giả vờ đã dùng thủ tục. Script phải được cài lên DB triển khai trước khi dùng bản mới.
 
 ## 2.9. Báo cáo
 
 Xuất Excel XML/CSV được giữ. Hộp thoại báo cáo bổ sung đường xem/in Crystal: load mẫu, SetDataSource bằng DataSet từ BaoCaoService và hiển thị viewer. XSD BangDiem xác định kiểu số/ngày và các cột cần cho mẫu; không lưu mật khẩu DB trong báo cáo.
 
-Nhóm hiện chưa cài SAP Crystal Reports. Mẫu BangDiem.rpt chưa được tạo bằng designer, API viewer chưa chạy trên Windows. Vì vậy đây là phần tích hợp đã chuẩn bị, chưa phải chức năng Crystal đã nghiệm thu. Hướng dẫn hoàn tất ở Reports/README.md.
+Repository đã có Reports/BangDiem.rpt và BangDiem.cs; chưa nghiệm thu mẫu/viewer trên Windows có SAP runtime phù hợp. Vì vậy đây là phần tích hợp đã chuẩn bị, chưa phải chức năng Crystal đã nghiệm thu. Hướng dẫn hoàn tất ở Reports/README.md.
 
 ## 2.10. Cài đặt
 
@@ -143,18 +143,18 @@ Kiểm thử kết hợp unit logic, tích hợp PostgreSQL và smoke WinForms. 
 | Kiểm tra ranh giới GUI/BLL và đăng ký file | Đạt; 10 hợp đồng |
 | Pagination.Tests | 19 đạt |
 | StudentProfile.Tests | 29 đạt |
-| ApplicationLogic.Tests | 150 đạt |
+| ApplicationLogic.Tests | 172 đạt |
 | Dashboard.Tests | 7 đạt |
 | ExcelImport.Tests | 29 đạt |
-| Tổng .NET 8 | 234 đạt; không bỏ qua/thất bại |
+| Tổng .NET 8 | 256 đạt; không bỏ qua/thất bại |
 | Pagination.SmokeTests trên Mono/Xvfb | 89 assertion đạt |
 | StudentRegistration.SmokeTests trên Mono/Xvfb | 16 assertion đạt |
 
-SDK đo được trong lần chạy bổ sung là 8.0.427. Các test mới kiểm tra gọi procedure qua Service, cài script lặp, dữ liệu chứa nháy/tiếng Việt, thiếu procedure, giữ quyền giáo viên, chống nộp lặp và dataset báo cáo trên hai văn hóa.
+SDK trong lần cập nhật 10 procedure là 8.0.428. Có 22 trường hợp mới; build net48 và smoke Mono trong bảng là bằng chứng lịch sử, chưa chạy lại trong phiên này. Các test mới kiểm tra gọi procedure qua Service, cài script lặp, dữ liệu chứa nháy/tiếng Việt, thiếu procedure, giữ quyền giáo viên, chống nộp lặp và dataset báo cáo trên hai văn hóa.
 
 ## 3.3. Kiểm tra Windows cần bổ sung
 
-Cần chạy thực tế đăng nhập ba vai trò, CRUD, đăng ký/duyệt, giao đề nhiều lượt, làm bài/nộp/xem lại, nhập/xuất dữ liệu và resize/chuyển tab. Cần cài SAP, tạo .rpt và xem/in báo cáo. Không lấy build Linux hoặc smoke Mono thay cho kiểm tra toàn bộ ReaLTaiizor trên Windows.
+Cần chạy thực tế đăng nhập ba vai trò, CRUD, đăng ký/duyệt, giao đề nhiều lượt, làm bài/nộp/xem lại, nhập/xuất dữ liệu và resize/chuyển tab. Cần kiểm tra SAP, mẫu .rpt hiện có và xem/in báo cáo. Không lấy build Linux hoặc smoke Mono thay cho kiểm tra toàn bộ ReaLTaiizor trên Windows.
 
 Chèn ảnh: đăng nhập; Admin; quản lý hồ sơ; lớp/duyệt; câu hỏi/import; giao đề; học viên; phòng thi; kết quả; Crystal. Ảnh phải lấy từ bản chạy thật với dữ liệu thử, không dùng mockup rồi ghi như bằng chứng.
 
@@ -166,7 +166,7 @@ Bảng tên, commit, nhận xét và điểm đánh giá chưa được điền 
 
 ## 3.5. Đối chiếu và hạn chế
 
-Sau bổ sung, có hơn năm interface và lớp triển khai, GUI qua BLL, procedure được ứng dụng gọi và kiểm thử. Các yêu cầu CRUD vẫn được duy trì. Mục Crystal chưa hoàn tất do thiếu mẫu/runtime; mục phối hợp nhóm cần bằng chứng; bản Word/slide cần template và thông tin thực tế.
+Sau bổ sung, có hơn năm interface và lớp triển khai, GUI qua BLL, procedure được ứng dụng gọi và kiểm thử. Các yêu cầu CRUD vẫn được duy trì. Mục Crystal chưa nghiệm thu mẫu/viewer trên Windows; mục phối hợp nhóm cần bằng chứng; bản Word/slide cần template và thông tin thực tế.
 
 Hạn chế khác gồm schema chưa đủ FK, SHA-256 không salt, ghi nhớ Base64, phân trang trên dữ liệu đã tải, chưa lưu nháp và chưa có phép đo tải. Việc cải tiến tiếp theo cần migration có kiểm soát, thuật toán mật khẩu chuyên dụng, lưu trữ thông tin đăng nhập Windows an toàn và quản lý lần thi bền vững.
 

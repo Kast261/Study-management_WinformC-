@@ -96,12 +96,12 @@ slides = [
     ('Kiến trúc ba tầng', ['GUI gọi interface Service, không truy cập DAL trực tiếp', 'BLL: hợp đồng và điều phối nghiệp vụ', 'DAL: SQL/CALL có tham số, quyền và transaction', '10 interface ứng dụng có lớp triển khai']),
     ('Hướng đối tượng', ['Form kế thừa MaterialForm hoặc Form', 'Service triển khai I*Service và chứa DAL', 'Giữ mã giáo viên khi duyệt/sửa câu hỏi', 'Kiểm tra kiến trúc và source csproj tự động']),
     ('Cơ sở dữ liệu', ['10 bảng liên quan hồ sơ, lớp, đề và bài làm', 'Lớp chính + đăng ký Đã duyệt cho nhiều lớp', 'Sơ đồ quan hệ logic không đồng nghĩa đủ FK vật lý', 'Script PostgreSQL mới tách khỏi SQL Server lịch sử']),
-    ('CRUD và stored procedure', ['Npgsql là provider ADO.NET cho PostgreSQL', 'Admin sửa khóa → Service → DAL → CALL', 'study_sua_khoa_hoc: validation và INOUT boolean', 'Cài 02_Procedures.sql trước khi dùng bản mới']),
+    ('CRUD và stored procedure', ['Npgsql là provider ADO.NET cho PostgreSQL', '10 procedure: CRUD ghi khóa/GV/HV + đóng đăng ký', 'INOUT ID/boolean; giữ sĩ số, liên kết, chặn xóa', 'Cài 02_Procedures.sql trước khi dùng bản mới']),
     ('Đăng ký và quyền lớp', ['Giáo viên phụ trách duyệt, kiểm tra sĩ số lúc ghi', 'Duyệt thêm lớp không ghi đè lớp chính', 'Đóng đăng ký không đóng đề đã giao', 'Giữ mã lựa chọn khi xác nhận / activation']),
     ('Câu hỏi và giao đề', ['Excel .xlsx/.xls, tối đa 20 MB / 5.000 câu', 'Kiểm tra đủ 6 cột và dữ liệu trước khi ghi', 'Mỗi lần giao tạo lượt và bộ câu hỏi riêng', 'Ẩn đề giữ metadata và lịch sử bài làm']),
     ('Làm bài và nộp bài', ['Kiểm tra quyền trước bắt đầu, đồng hồ giới hạn bởi hạn', 'Chấm theo đáp án DB, không nhận điểm từ Form', 'Kết quả + chi tiết trong cùng transaction', 'Chưa có lưu nháp bền vững / lần thi phía server']),
-    ('Crystal Reports — còn nghiệm thu', ['Đã có XSD, dataset và đường gọi engine/viewer', 'Excel vẫn hoạt động khi chưa cài SAP', 'Cần SAP SDK/runtime Windows đúng kiến trúc', 'Cần tạo BangDiem.rpt và chạy xem/in thực tế']),
-    ('Bằng chứng kiểm thử', ['Build net48 trên Linux: thành công', '234 kiểm thử .NET 8 đạt', '89 + 16 assertion Mono/Xvfb đạt', 'UI ReaLTaiizor và Crystal Windows chưa kiểm chứng']),
+    ('Crystal Reports — còn nghiệm thu', ['Đã có XSD, dataset và đường gọi engine/viewer', 'Excel vẫn hoạt động khi chưa cài SAP', 'Cần SAP SDK/runtime Windows đúng kiến trúc', 'Đã có BangDiem.rpt; còn nghiệm thu xem/in Windows']),
+    ('Bằng chứng kiểm thử', ['Build net48: bằng chứng lịch sử, chưa chạy lại', '256 test .NET 8 đạt; 22 trường hợp procedure mới', '105 assertion Mono/Xvfb: bằng chứng lịch sử', 'UI ReaLTaiizor và Crystal Windows chưa kiểm chứng']),
     ('Phân công và công việc còn lại', ['TV1 tài khoản; TV2 hồ sơ; TV3 DB/lớp', 'TV4 đề/Excel; TV5 phòng thi/kết quả/Crystal', 'Điền đóng góp, review và ảnh demo thực tế', 'Áp dụng template Word/slide chính thức của khoa'])
 ]
 prs = Presentation()

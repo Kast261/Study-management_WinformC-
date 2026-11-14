@@ -12,5 +12,6 @@
     <Compile Include="../../DAL/Repositories/DashboardDAL.cs" Link="Production/DashboardDAL.cs" />
     <Compile Include="../../Helpers/Security/Passwords.cs" Link="Production/Passwords.cs" />
     <Compile Include="../StudentProfile.Tests/TestDatabase.cs" Link="TestDatabase.cs" />
+    <EmbeddedResource Include="../../Database/PostgreSQL/02_Procedures.sql" LogicalName="PostgresProcedures.sql" />
   </ItemGroup>
 </Project>
