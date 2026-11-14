@@ -45,7 +45,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         JOIN LopHoc l ON d.LopHocID = l.LopHocID
         LEFT JOIN KetQuaThi kq ON d.DeThiID = kq.DeThiID AND kq.HocSinhID = @hsID
         -- Xét thành viên hiện tại, không so sánh ngày duyệt với ngày giao đề.
-        WHERE d.TrangThai IN ('Đang mở', 'Đã đóng') AND l.LopHocID IN (
+        WHERE EXISTS (SELECT 1 FROM HocSinh hs WHERE hs.HocSinhID=@hsID AND NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE)) AND d.TrangThai IN ('Đang mở', 'Đã đóng') AND l.LopHocID IN (
             SELECT LopHocID FROM HocSinh WHERE HocSinhID = @hsID AND LopHocID IS NOT NULL
             UNION
             SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND TrangThai = 'Đã duyệt'
@@ -128,7 +128,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             return Convert.ToBoolean(DatabaseHelper.ExecuteScalar(@"
                 SELECT EXISTS (
                     SELECT 1 FROM DeThi d JOIN HocSinh hs ON hs.HocSinhID=@hs
-                    WHERE d.DeThiID=@de AND d.TrangThai='Đang mở' AND d.ThoiGian>0
+                    WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND d.DeThiID=@de AND d.TrangThai='Đang mở' AND d.ThoiGian>0
                       AND (d.HanNop IS NULL OR d.HanNop>CURRENT_TIMESTAMP)
                       AND (hs.LopHocID=d.LopHocID OR EXISTS (
                           SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=hs.HocSinhID
@@ -166,7 +166,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public bool ThemDeThi(DeThi de)
         {
             string sql = @"INSERT INTO DeThi (LopHocID, GiaoVienID, TenDeThi, MonHoc, SoCau, ThoiGian, HanNop, TrangThai)
-                           VALUES (@lopID, @gvID, @ten, @mon, @socau, @tg, @han, @tt)";
+                           SELECT @lopID, @gvID, @ten, @mon, @socau, @tg, @han, @tt FROM GiaoVien gv
+                           WHERE gv.GiaoVienID=@gvID AND NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) FOR SHARE";
             NpgsqlParameter[] pars = {
                 new NpgsqlParameter("@lopID", de.LopHocID),
                 new NpgsqlParameter("@gvID", de.GiaoVienID),
@@ -187,7 +188,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public int TaoDeThiMoiLayID(DeThi de)
         {
             string sql = @"INSERT INTO DeThi (GiaoVienID, TenDeThi, MonHoc, SoCau, ThoiGian, TrangThai)
-                           VALUES (@gvID, @ten, @mon, @socau, @tg, @tt)
+                           SELECT @gvID, @ten, @mon, @socau, @tg, @tt FROM GiaoVien gv
+                           WHERE gv.GiaoVienID=@gvID AND NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) FOR SHARE
                            RETURNING DeThiID";
             NpgsqlParameter[] pars = {
                 new NpgsqlParameter("@gvID", de.GiaoVienID),
@@ -296,6 +298,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     using (var check = new NpgsqlCommand(@"
                         SELECT d.DeThiID FROM DeThi d JOIN LopHoc l ON l.LopHocID=@lop AND l.GiaoVienID=d.GiaoVienID
                         WHERE d.DeThiID=@id AND (COALESCE(d.LopHocID,0)=0 OR d.LopHocID=@lop)
+                          AND EXISTS (SELECT 1 FROM GiaoVien gv WHERE gv.GiaoVienID=d.GiaoVienID
+                              AND NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE))
                           AND COALESCE(d.TrangThai,'') <> 'Đã xóa'
                         FOR UPDATE OF d", conn, transaction))
                     {
@@ -427,7 +431,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             using (var auth = new NpgsqlCommand(@"
                 SELECT gv.GiaoVienID FROM GiaoVien gv
                 JOIN TaiKhoan tk ON tk.TaiKhoanID=@tk
-                WHERE gv.GiaoVienID=@gv AND LOWER(tk.VaiTro)='giaovien'
+                WHERE NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) AND gv.GiaoVienID=@gv AND LOWER(tk.VaiTro)='giaovien'
                   AND COALESCE(tk.TrangThaiKhoa,FALSE)=FALSE
                   AND (tk.NguoiDungID=gv.GiaoVienID OR
                       (COALESCE(tk.NguoiDungID,0)=0 AND gv.TaiKhoanID=tk.TaiKhoanID))
@@ -497,6 +501,15 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         private static void KhoaDeThiChuaGiao(NpgsqlConnection conn, NpgsqlTransaction transaction, int deThiID, int giaoVienID)
         {
+            if (giaoVienID > 0)
+            {
+                using (var activeTeacher = new NpgsqlCommand("SELECT 1 FROM GiaoVien gv WHERE gv.GiaoVienID=@gv AND NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) FOR SHARE", conn, transaction))
+                {
+                    activeTeacher.Parameters.AddWithValue("gv", giaoVienID);
+                    if (activeTeacher.ExecuteScalar() == null)
+                        throw new InvalidOperationException("Hồ sơ giáo viên đã ngừng hoạt động.");
+                }
+            }
             using (var cmd = new NpgsqlCommand(@"
                 SELECT GiaoVienID, COALESCE(LopHocID,0), COALESCE(TrangThai,'Chưa giao')
                 FROM DeThi WHERE DeThiID=@id FOR UPDATE", conn, transaction))

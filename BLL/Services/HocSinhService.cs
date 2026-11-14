@@ -53,6 +53,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
             return _repository.Xoa(id);
         }
 
+        public KetQuaXoaHoSo XoaChiTiet(int id) => _repository.XoaChiTiet(id);
+
         public DataTable TimKiem(string tuKhoa)
         {
             return _repository.TimKiem(tuKhoa);

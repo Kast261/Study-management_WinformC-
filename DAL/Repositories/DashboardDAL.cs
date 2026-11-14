@@ -11,14 +11,14 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             return DatabaseHelper.ExecuteQuery(@"
                 SELECT (SELECT COUNT(*) FROM LopHoc WHERE GiaoVienID=@gv) AS SoLopHoc,
                        (SELECT COUNT(DISTINCT h.HocSinhID)
-                        FROM HocSinh h JOIN LopHoc l ON h.LopHocID=l.LopHocID OR EXISTS (
+                        FROM HocSinh h JOIN LopHoc l ON NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID=l.LopHocID OR EXISTS (
                             SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID
-                              AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')
+                              AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt'))
                         WHERE l.GiaoVienID=@gv) AS SoHocVien,
                        (SELECT COUNT(*) FROM DangKyLop dk
                         JOIN LopHoc l ON l.LopHocID=dk.LopHocID
                         JOIN HocSinh h ON h.HocSinhID=dk.HocSinhID
-                        WHERE l.GiaoVienID=@gv AND (dk.TrangThai='Chờ duyệt' OR dk.TrangThai IS NULL)) AS SoChoDuyet,
+                        WHERE NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND l.GiaoVienID=@gv AND (dk.TrangThai='Chờ duyệt' OR dk.TrangThai IS NULL)) AS SoChoDuyet,
                        (SELECT COUNT(*) FROM DeThi d JOIN LopHoc l ON l.LopHocID=d.LopHocID
                         WHERE d.GiaoVienID=@gv AND d.TrangThai='Đang mở' AND d.ThoiGian>0
                           AND (d.HanNop IS NULL OR d.HanNop>CURRENT_TIMESTAMP)
@@ -29,8 +29,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         public DataTable LayTongQuan()
         {
             return DatabaseHelper.ExecuteQuery(@"
-                SELECT (SELECT COUNT(*) FROM HocSinh) AS SoHocVien,
-                       (SELECT COUNT(*) FROM GiaoVien) AS SoGiaoVien,
+                SELECT (SELECT COUNT(*) FROM HocSinh WHERE NOT COALESCE((to_jsonb(HocSinh)->>'daxoa')::boolean,FALSE)) AS SoHocVien,
+                       (SELECT COUNT(*) FROM GiaoVien WHERE NOT COALESCE((to_jsonb(GiaoVien)->>'daxoa')::boolean,FALSE)) AS SoGiaoVien,
                        (SELECT COUNT(*) FROM KhoaHoc) AS SoKhoaHoc,
                        (SELECT COUNT(*) FROM LopHoc) AS SoLopHoc");
         }
@@ -42,9 +42,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 SELECT k.KhoaHocID, k.TenKhoaHoc, COUNT(DISTINCT h.HocSinhID) AS SoHocVien
                 FROM KhoaHoc k
                 LEFT JOIN LopHoc l ON l.KhoaHocID = k.KhoaHocID
-                LEFT JOIN HocSinh h ON h.LopHocID = l.LopHocID OR EXISTS (
+                LEFT JOIN HocSinh h ON NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID = l.LopHocID OR EXISTS (
                     SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID
-                      AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')
+                      AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt'))
                 GROUP BY k.KhoaHocID, k.TenKhoaHoc
                 ORDER BY SoHocVien DESC, k.TenKhoaHoc, k.KhoaHocID
                 LIMIT 6");
@@ -60,9 +60,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                        COALESCE(l.SiSoToiDa, 40) AS SiSoToiDa
                 FROM LopHoc l
                 LEFT JOIN GiaoVien g ON g.GiaoVienID = l.GiaoVienID
-                LEFT JOIN HocSinh h ON h.LopHocID = l.LopHocID OR EXISTS (
+                LEFT JOIN HocSinh h ON NOT COALESCE((to_jsonb(h)->>'daxoa')::boolean,FALSE) AND (h.LopHocID = l.LopHocID OR EXISTS (
                     SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=h.HocSinhID
-                      AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt')
+                      AND dk.LopHocID=l.LopHocID AND dk.TrangThai='Đã duyệt'))
                 GROUP BY l.LopHocID, l.TenLop, g.HoTen, l.SiSoToiDa
                 ORDER BY l.LopHocID DESC
                 LIMIT 5");

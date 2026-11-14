@@ -104,6 +104,18 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 }
             }
 
+            string profileTable = string.Equals(vaiTro, "GiaoVien", StringComparison.OrdinalIgnoreCase)
+                ? "GiaoVien" : (string.Equals(vaiTro, "HocSinh", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(vaiTro, "HocVien", StringComparison.OrdinalIgnoreCase)) ? "HocSinh" : null;
+            if (profileTable != null)
+            {
+                bool archived = Convert.ToBoolean(DatabaseHelper.ExecuteScalar(
+                    "SELECT EXISTS (SELECT 1 FROM " + profileTable + " p WHERE COALESCE((to_jsonb(p)->>'daxoa')::boolean,FALSE)"
+                        + " AND (p." + profileTable + "ID=@person OR (@person=0 AND p.TaiKhoanID=@account)))",
+                    new NpgsqlParameter("person", nguoiDungID), new NpgsqlParameter("account", taiKhoanID)));
+                trangThaiKhoa = trangThaiKhoa || archived;
+            }
+
             return new TaiKhoan
             {
                 TaiKhoanID = taiKhoanID,
@@ -355,7 +367,16 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             // Vẫn cho phép mở lại một tài khoản Admin từng bị khóa trước đây.
             string sql = @"UPDATE TaiKhoan SET TrangThaiKhoa = @khoa
                            WHERE TaiKhoanID = @id
-                             AND (NOT @khoa OR LOWER(BTRIM(COALESCE(VaiTro, ''))) <> 'admin')";
+                             AND (NOT @khoa OR LOWER(BTRIM(COALESCE(VaiTro, ''))) <> 'admin')
+                             AND (@khoa OR NOT (
+                               (LOWER(BTRIM(VaiTro))='giaovien' AND EXISTS (
+                                 SELECT 1 FROM GiaoVien p WHERE COALESCE((to_jsonb(p)->>'daxoa')::boolean,FALSE)
+                                   AND (p.GiaoVienID=TaiKhoan.NguoiDungID OR
+                                     (COALESCE(TaiKhoan.NguoiDungID,0)=0 AND p.TaiKhoanID=TaiKhoan.TaiKhoanID))))
+                               OR (LOWER(BTRIM(VaiTro)) IN ('hocsinh','hocvien') AND EXISTS (
+                                 SELECT 1 FROM HocSinh p WHERE COALESCE((to_jsonb(p)->>'daxoa')::boolean,FALSE)
+                                   AND (p.HocSinhID=TaiKhoan.NguoiDungID OR
+                                     (COALESCE(TaiKhoan.NguoiDungID,0)=0 AND p.TaiKhoanID=TaiKhoan.TaiKhoanID))))))";
 
             NpgsqlParameter[] pars = {
                 new NpgsqlParameter("@khoa", khoa),
@@ -450,7 +471,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 SELECT p." + table + @"ID AS ""NguoiDungID"",
                        COALESCE(NULLIF(BTRIM(p.HoTen),''),'Chưa có họ tên') AS ""HoTen""
                 FROM " + table + @" p
-                WHERE NOT EXISTS (
+                WHERE NOT COALESCE((to_jsonb(p)->>'daxoa')::boolean,FALSE) AND NOT EXISTS (
                     SELECT 1 FROM TaiKhoan tk
                     WHERE (LOWER(BTRIM(tk.VaiTro))=ANY(@roles) AND tk.NguoiDungID=p." + table + @"ID)
                        OR tk.TaiKhoanID=p.TaiKhoanID)
@@ -481,7 +502,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     }
                     if (table != null && nguoiDungID > 0)
                     {
-                        using (var person = new NpgsqlCommand("SELECT " + table + "ID FROM " + table + " WHERE " + table + "ID=@id FOR UPDATE", conn, transaction))
+                        using (var person = new NpgsqlCommand("SELECT " + table + "ID FROM " + table + " p WHERE " + table + "ID=@id AND NOT COALESCE((to_jsonb(p)->>'daxoa')::boolean,FALSE) FOR UPDATE", conn, transaction))
                         {
                             person.Parameters.AddWithValue("id", nguoiDungID);
                             if (person.ExecuteScalar() == null) return false;

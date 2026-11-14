@@ -404,29 +404,32 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnGV_Xoa_Click(object sender, EventArgs e)
         {
-            if (_selectedGiaoVienID <= 0)
+            int profileId = _selectedGiaoVienID; // Giữ ID trước khi hộp thoại bơm message loop.
+            if (profileId <= 0)
             {
                 MessageBox.Show("Vui lòng chọn giáo viên cần xóa từ danh sách!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            if (MessageBox.Show("Bạn có chắc chắn muốn xóa giáo viên này?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Xử lý hồ sơ giáo viên đang chọn?\n\nHồ sơ chưa có liên kết sẽ được xóa. Hồ sơ có tài khoản hoặc lịch sử học tập sẽ được ẩn khỏi danh sách và khóa tài khoản liên kết; lớp, điểm và bài làm được giữ nguyên.",
+                "Xác nhận xóa / ngừng hoạt động", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+            try
             {
-                try
-                {
-                    if (_gvService.Xoa(_selectedGiaoVienID))
-                    {
-                        MessageBox.Show("Đã xóa giáo viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LoadDanhSachGiaoVien();
-                        LoadDropdownData();
-                        LoadDashboard();
-                        LamMoiFormGV();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Không thể xóa giáo viên: " + ex.Message, "Lỗi xóa dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                KetQuaXoaHoSo result = _gvService.XoaChiTiet(profileId);
+                string message = result == KetQuaXoaHoSo.DaLuuTru
+                    ? "Đã ngừng hoạt động và ẩn hồ sơ giáo viên. Tài khoản liên kết đã bị khóa; lịch sử học tập được giữ nguyên."
+                    : result == KetQuaXoaHoSo.DaXoa ? "Đã xóa hồ sơ giáo viên thành công."
+                    : "Hồ sơ không còn trong danh sách hoạt động. Danh sách sẽ được tải lại.";
+                MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadDanhSachGiaoVien();
+                LoadDropdownData();
+                LoadDanhSachTaiKhoan();
+                LoadDashboard();
+                LamMoiFormGV();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể xử lý hồ sơ giáo viên: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -646,29 +649,32 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnHV_Xoa_Click(object sender, EventArgs e)
         {
-            if (_selectedHocVienID <= 0)
+            int profileId = _selectedHocVienID; // Giữ ID trước khi hộp thoại bơm message loop.
+            if (profileId <= 0)
             {
                 MessageBox.Show("Vui lòng chọn học viên cần xóa từ danh sách!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            if (MessageBox.Show("Bạn có chắc chắn muốn xóa học viên này?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Xử lý hồ sơ học viên đang chọn?\n\nHồ sơ chưa có liên kết sẽ được xóa. Hồ sơ có tài khoản hoặc lịch sử học tập sẽ được ẩn khỏi danh sách và khóa tài khoản liên kết; lớp, điểm và bài làm được giữ nguyên.",
+                "Xác nhận xóa / ngừng hoạt động", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+            try
             {
-                try
-                {
-                    if (_hsService.Xoa(_selectedHocVienID))
-                    {
-                        MessageBox.Show("Đã xóa học viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LoadDanhSachHocVien();
-                        LoadDashboard();
-                        LoadDanhSachLopHoc(); // Cập nhật lại sĩ số
-                        LamMoiFormHV();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Không thể xóa học viên: " + ex.Message, "Lỗi xóa", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                KetQuaXoaHoSo result = _hsService.XoaChiTiet(profileId);
+                string message = result == KetQuaXoaHoSo.DaLuuTru
+                    ? "Đã ngừng hoạt động và ẩn hồ sơ học viên. Tài khoản liên kết đã bị khóa; lịch sử học tập được giữ nguyên."
+                    : result == KetQuaXoaHoSo.DaXoa ? "Đã xóa hồ sơ học viên thành công."
+                    : "Hồ sơ không còn trong danh sách hoạt động. Danh sách sẽ được tải lại.";
+                MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadDanhSachHocVien();
+                LoadDanhSachLopHoc();
+                LoadDanhSachTaiKhoan();
+                LoadDashboard();
+                LamMoiFormHV();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể xử lý hồ sơ học viên: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1207,7 +1213,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 }
                 else
                 {
-                    MessageBox.Show("Không thể đổi trạng thái: tài khoản không còn tồn tại hoặc đã chuyển thành Admin nên không được khóa. Vui lòng chọn lại tài khoản.",
+                    MessageBox.Show("Không thể đổi trạng thái: tài khoản không còn tồn tại, đang là Admin cần bảo vệ hoặc hồ sơ liên kết đã ngừng hoạt động. Vui lòng chọn lại tài khoản.",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 LoadDanhSachTaiKhoan();

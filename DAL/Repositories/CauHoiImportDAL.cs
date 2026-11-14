@@ -34,7 +34,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     using (var auth = new NpgsqlCommand(@"
                         SELECT gv.GiaoVienID FROM GiaoVien gv
                         JOIN TaiKhoan tk ON tk.TaiKhoanID = @tk
-                        WHERE gv.GiaoVienID = @gv
+                        WHERE NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) AND gv.GiaoVienID = @gv
                           AND LOWER(tk.VaiTro) = 'giaovien'
                           AND COALESCE(tk.TrangThaiKhoa, FALSE) = FALSE
                           AND (tk.NguoiDungID = gv.GiaoVienID

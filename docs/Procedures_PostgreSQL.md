@@ -21,10 +21,10 @@ Trên Windows có thể dùng `scripts/Initialize-Postgres.ps1`. Nhập thông t
 | `study_xoa_khoa_hoc` | Admin → KhoaHocService.Xoa → KhoaHocDAL.Xoa | `p_deleted boolean` | Khóa bản ghi; chặn xóa khi có lớp tham chiếu. |
 | `study_them_giao_vien` | Admin → GiaoVienService.Them → GiaoVienDAL.Them | `p_id integer` | Kiểm tra họ tên/độ dài; ngày sinh và thông tin tùy chọn có thể NULL. |
 | `study_sua_giao_vien` | Admin → GiaoVienService.Sua → GiaoVienDAL.Sua | `p_updated boolean` | Chỉ sửa các trường hồ sơ, giữ liên kết tài khoản. |
-| `study_xoa_giao_vien` | Admin → GiaoVienService.Xoa → GiaoVienDAL.Xoa | `p_deleted boolean` | Chặn khi có lớp, đề hoặc tài khoản liên kết thuận/ngược. |
+| `study_xoa_giao_vien` | Admin → GiaoVienService.XoaChiTiet → GiaoVienDAL.XoaChiTiet | `p_deleted boolean`, `p_archived boolean` | Chưa liên kết: xóa hẳn. Có lớp, đề hoặc tài khoản: lưu trữ hồ sơ, khóa tài khoản đúng vai trò, giữ lịch sử. |
 | `study_them_hoc_sinh` | Admin → HocSinhService.Them → HocSinhDAL.Them | `p_id integer` | Có thể chưa xếp lớp; nếu chọn lớp thì khóa lớp mở, kiểm tra sĩ số rồi thêm trong cùng CALL. |
 | `study_sua_hoc_sinh` | Admin → HocSinhService.Sua → HocSinhDAL.Sua | `p_updated boolean` | Giữ LopHocID/TaiKhoanID; ngày chưa chọn giữ NULL. |
-| `study_xoa_hoc_sinh` | Admin → HocSinhService.Xoa → HocSinhDAL.Xoa | `p_deleted boolean` | Chặn khi có đăng ký, kết quả hoặc tài khoản liên kết thuận/ngược. |
+| `study_xoa_hoc_sinh` | Admin → HocSinhService.XoaChiTiet → HocSinhDAL.XoaChiTiet | `p_deleted boolean`, `p_archived boolean` | Chưa liên kết: xóa hẳn. Có đăng ký, kết quả hoặc tài khoản: lưu trữ, khóa tài khoản, giữ bài làm và lịch sử. |
 | `study_dong_dang_ky_lop` | Giáo viên → LopHocService.DongDangKyLop → LopHocDAL.DongDangKyLop | `p_updated boolean` | Mã lớp và giáo viên phải dương, đúng giáo viên phụ trách, lớp đang mở. Không đóng đề hoặc thu hồi tư cách lớp. |
 
 Tên kỹ thuật `HocSinh` tương ứng học viên. Các SELECT/tìm kiếm, cập nhật hồ sơ cá nhân và các giao dịch đề/bài làm khác vẫn có SQL có tham số trong DAL; bản này không chuyển toàn bộ ứng dụng sang procedure.
@@ -32,8 +32,9 @@ Tên kỹ thuật `HocSinh` tương ứng học viên. Các SELECT/tìm kiếm, 
 ## Hợp đồng tham số
 
 - **Khóa học:** `p_ten varchar`, `p_mota varchar`; sửa/xóa có `p_id integer` đầu vào. Thêm trả `p_id`, sửa trả `p_updated`, xóa trả `p_deleted`.
-- **Giáo viên:** `p_hoten varchar`, `p_ngaysinh date`, `p_gioitinh varchar`, `p_chuyenmon varchar`, `p_email varchar`, `p_sdt varchar`, `p_diachi varchar`. Sửa thêm `p_id` đầu vào. Thêm trả `p_id`; sửa/xóa trả cờ boolean.
-- **Học viên:** `p_hoten`, `p_ngaysinh`, `p_gioitinh`, `p_email`, `p_sdt`, `p_diachi`; thêm có `p_lop integer` (0/NULL là chưa xếp lớp), sửa có `p_id`. Thêm trả `p_id`; sửa/xóa trả cờ boolean.
+- **Giáo viên:** `p_hoten varchar`, `p_ngaysinh date`, `p_gioitinh varchar`, `p_chuyenmon varchar`, `p_email varchar`, `p_sdt varchar`, `p_diachi varchar`. Sửa thêm `p_id` đầu vào. Thêm trả `p_id`; sửa trả `p_updated`.
+- **Học viên:** `p_hoten`, `p_ngaysinh`, `p_gioitinh`, `p_email`, `p_sdt`, `p_diachi`; thêm có `p_lop integer` (0/NULL là chưa xếp lớp), sửa có `p_id`. Thêm trả `p_id`; sửa trả `p_updated`.
+- **Xóa hồ sơ giáo viên/học viên:** `p_id integer`, `p_deleted boolean INOUT`, `p_archived boolean INOUT`. Hai cờ phân biệt xóa hẳn và lưu trữ; cả hai FALSE khi không có hồ sơ hoạt động tương ứng. Service trả enum `KetQuaXoaHoSo`; phương thức bool `Xoa` cũ vẫn trả TRUE cho cả hai loại thành công.
 - **Đóng đăng ký:** `p_id integer`, `p_giao_vien integer`, `p_updated boolean INOUT`.
 
 Họ tên và tên khóa được trim. Giới hạn: họ tên/email/chuyên môn ≤100, giới tính ≤10, điện thoại ≤20, địa chỉ/mô tả ≤255. Đây là kiểm tra bắt buộc và độ dài tại DB, không thay thế kiểm tra định dạng email/điện thoại/ngày của ứng dụng.
@@ -50,11 +51,11 @@ CALL study_xoa_khoa_hoc(101, FALSE);
 
 CALL study_them_giao_vien('Nguyễn An', NULL, 'Nam', 'C#', NULL, NULL, NULL, 0);
 CALL study_sua_giao_vien(201, 'Nguyễn An', DATE '1980-04-03', 'Nam', 'C#', NULL, NULL, NULL, FALSE);
-CALL study_xoa_giao_vien(201, FALSE);
+CALL study_xoa_giao_vien(201, FALSE, FALSE);
 
 CALL study_them_hoc_sinh('Trần Bình', NULL, NULL, NULL, NULL, NULL, 0, 0);
 CALL study_sua_hoc_sinh(301, 'Trần Bình', DATE '2006-04-03', NULL, NULL, NULL, NULL, FALSE);
-CALL study_xoa_hoc_sinh(301, FALSE);
+CALL study_xoa_hoc_sinh(301, FALSE, FALSE);
 
 CALL study_dong_dang_ky_lop(401, 201, FALSE);
 ROLLBACK;
@@ -62,7 +63,9 @@ ROLLBACK;
 
 ## Kết quả, ngoại lệ và giao dịch
 
-Mã mới lấy bằng `INSERT … RETURNING`. Thêm học viên vào lớp không tồn tại/đóng/đầy trả `p_id=0`, không tạo hồ sơ dở. Không tìm thấy bản ghi cần sửa/xóa trả cờ FALSE. Dữ liệu bắt buộc hoặc độ dài không hợp lệ báo SQLSTATE `22023`. Xóa đối tượng còn liên quan báo `23503`; DAL chuyển thành `InvalidOperationException` để giữ cách xử lý nghiệp vụ.
+Mã mới lấy bằng `INSERT … RETURNING`. Thêm học viên vào lớp không tồn tại/đóng/đầy trả `p_id=0`, không tạo hồ sơ dở. Không tìm thấy bản ghi cần sửa/xóa trả cờ FALSE. Dữ liệu bắt buộc hoặc độ dài không hợp lệ báo SQLSTATE `22023`. Xóa khóa học còn lớp vẫn báo `23503`; xóa hồ sơ có liên kết trả `p_archived=TRUE`, không dùng ngoại lệ cho trường hợp thành công này.
+
+Script bổ sung `DaXoa boolean NOT NULL DEFAULT FALSE`, `NgayXoa timestamp` cho hai bảng hồ sơ và bỏ hai overload xóa cũ có hai tham số; tổng vẫn 10 procedure. Bản ứng dụng mới gọi chữ ký ba tham số nên DB chưa nâng cấp đi qua cơ chế khôi phục `42883`. Lưu trữ hồ sơ và khóa tài khoản nằm trong cùng transaction. Đọc [vòng đời hồ sơ](Profile_Deletion_Lifecycle.md) để biết các bộ lọc, quyền truy cập và cách nâng cấp.
 
 `ProcedureExecutor` dùng `CALL` rõ ràng, đọc cột INOUT từ DataTable và gắn kiểu `varchar`/`date` cho tham số NULL. Với Npgsql 6 không dùng `CommandType.StoredProcedure` vì cơ chế đó gọi PostgreSQL function. Nếu CALL ngoài bị thiếu procedure (`42883`), bản vá sẽ cài script nhúng trong transaction rồi retry đúng CALL một lần; không fallback SQL trực tiếp. Nếu thiếu quyền cài, ứng dụng hướng dẫn quản trị viên chạy script. Xem [bản vá xóa hồ sơ](Fix_Profile_Deletion_42883.md).
 
@@ -72,6 +75,6 @@ Khóa bản ghi và kiểm tra xóa không thay thế FK/UNIQUE còn thiếu tro
 
 ## Kiểm thử
 
-`tests/ApplicationLogic.Tests/CourseworkProcedureTests.cs` bổ sung 22 trường hợp: cài lặp vẫn đúng 10 procedure, CRUD hồ sơ qua Service, Unicode/dấu nháy/NULL/ngày, giữ liên kết lớp/tài khoản, chặn xóa với chín dạng dữ liệu liên quan, cập nhật mã không tồn tại, kiểm tra dữ liệu tại DB, rollback nhiều CALL, thiếu procedure không ghi lén bằng SQL, quyền đóng lớp và thêm học viên chạy đồng thời với duyệt đơn.
+`tests/ApplicationLogic.Tests/CourseworkProcedureTests.cs` có 22 trường hợp: cài lặp vẫn đúng 10 procedure, CRUD hồ sơ qua Service, Unicode/dấu nháy/NULL/ngày, giữ liên kết lớp/tài khoản, bảo toàn chín dạng dữ liệu liên quan, cập nhật mã không tồn tại, kiểm tra dữ liệu tại DB, rollback nhiều CALL, thiếu procedure không ghi lén bằng SQL, quyền đóng lớp và thêm học viên chạy đồng thời với duyệt đơn. `ProfileArchiveTests` bổ sung 20 trường hợp về lưu trữ, khóa tài khoản, lịch sử, sĩ số, phiên cũ, rollback và nâng cấp DB.
 
 Các test cũ tiếp tục kiểm tra không vượt sĩ số khi nhiều Admin thêm cùng lúc, không tạo hồ sơ khi lớp đầy/đóng/không tồn tại, và đóng đăng ký không làm mất quyền làm đề đã giao. Xem `docs/Ket_qua_kiem_thu.md` để biết kết quả chạy thực tế và giới hạn Windows/Crystal.

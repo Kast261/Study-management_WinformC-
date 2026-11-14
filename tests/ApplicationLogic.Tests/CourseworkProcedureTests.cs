@@ -140,16 +140,22 @@ namespace ApplicationLogic.Tests
                         ? "UPDATE GiaoVien SET TaiKhoanID=99 WHERE GiaoVienID=@id"
                         : "UPDATE HocSinh SET TaiKhoanID=99 WHERE HocSinhID=@id", new NpgsqlParameter("id", person));
             }
-            var error = Assert.Throws<InvalidOperationException>(() =>
+            if (relation.StartsWith("course"))
             {
-                if (relation.StartsWith("course")) courses.Xoa(course.KhoaHocID);
-                else if (relation.StartsWith("teacher")) teachers.Xoa(teacher);
-                else students.Xoa(student.HocSinhID);
-            });
-            Assert.IsType<PostgresException>(error.InnerException);
-            Assert.NotNull(courses.LayTheoID(course.KhoaHocID));
-            Assert.NotNull(teachers.LayTheoID(teacher));
-            Assert.NotNull(students.LayTheoID(student.HocSinhID));
+                var error = Assert.Throws<InvalidOperationException>(() => courses.Xoa(course.KhoaHocID));
+                Assert.IsType<PostgresException>(error.InnerException);
+            }
+            else
+            {
+                var result = relation.StartsWith("teacher")
+                    ? teachers.XoaChiTiet(teacher) : students.XoaChiTiet(student.HocSinhID);
+                Assert.Equal(KetQuaXoaHoSo.DaLuuTru, result);
+                Assert.Equal(true, DatabaseHelper.ExecuteScalar("SELECT DaXoa FROM "
+                    + (relation.StartsWith("teacher") ? "GiaoVien" : "HocSinh")));
+            }
+            Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM KhoaHoc"));
+            Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM GiaoVien"));
+            Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM HocSinh"));
         }
 
         [Theory]

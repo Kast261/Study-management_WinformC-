@@ -25,7 +25,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     using (var check = new NpgsqlCommand(@"
                         SELECT d.DeThiID FROM DeThi d JOIN HocSinh hs ON hs.HocSinhID=@hs
                         JOIN TaiKhoan tk ON tk.TaiKhoanID=@tk
-                        WHERE d.DeThiID=@de AND d.TrangThai='Đang mở'
+                        WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND d.DeThiID=@de AND d.TrangThai='Đang mở'
                           AND LOWER(tk.VaiTro) IN ('hocsinh','hocvien')
                           AND COALESCE(tk.TrangThaiKhoa,FALSE)=FALSE
                           AND (tk.NguoiDungID=hs.HocSinhID OR (COALESCE(tk.NguoiDungID,0)=0 AND hs.TaiKhoanID=tk.TaiKhoanID))

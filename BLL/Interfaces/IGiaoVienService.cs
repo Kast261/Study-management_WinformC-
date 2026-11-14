@@ -13,6 +13,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces
         bool Sua(GiaoVien gv);
         bool CapNhatHoSoCaNhan(int taiKhoanID, GiaoVien gv);
         bool Xoa(int id);
+        KetQuaXoaHoSo XoaChiTiet(int id);
         DataTable TimKiem(string tuKhoa);
     }
 }
