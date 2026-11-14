@@ -61,3 +61,6 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+# Generated report PDFs contain encoded streams and must not be text-normalized.
+*.pdf binary
