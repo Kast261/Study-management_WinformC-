@@ -205,13 +205,16 @@ namespace ApplicationLogic.Tests
         }
 
         [Fact]
-        public void MissingNewProcedureDoesNotFallBackToDirectInsert()
+        public void MissingCreateProcedureIsRestoredBeforeInserting()
         {
             using var db = CreateDatabase();
             DatabaseHelper.ExecuteNonQuery("DROP PROCEDURE study_them_giao_vien(varchar,date,varchar,varchar,varchar,varchar,varchar,integer)");
-            var error = Assert.Throws<InvalidOperationException>(() => new GiaoVienService().Them(new GiaoVien { HoTen = "Chưa được ghi" }));
-            Assert.Contains("02_Procedures.sql", error.Message);
-            Assert.Equal(0L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM GiaoVien"));
+            var teacher = new GiaoVien { HoTen = "Được ghi qua CALL" };
+            Assert.True(new GiaoVienService().Them(teacher));
+            Assert.True(teacher.GiaoVienID > 0);
+            Assert.Equal(1L, DatabaseHelper.ExecuteScalar("SELECT COUNT(*) FROM GiaoVien"));
+            Assert.NotNull(DatabaseHelper.ExecuteScalar(
+                "SELECT to_regprocedure('study_them_giao_vien(varchar,date,varchar,varchar,varchar,varchar,varchar,integer)')::text"));
         }
 
         [Fact]

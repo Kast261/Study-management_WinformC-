@@ -43,13 +43,13 @@ namespace ApplicationLogic.Tests
         }
 
         [Fact]
-        public void MissingProcedureHasActionableSetupError()
+        public void MissingCourseProcedureIsInstalledAndOriginalCallRetried()
         {
             using var database = new TestDatabase(installProcedures: false);
             DatabaseHelper.ExecuteNonQuery(Script("PostgresSchema.sql"));
-            var ex = Assert.Throws<InvalidOperationException>(() => new KhoaHocService().Sua(
-                new KhoaHoc { KhoaHocID = 1, TenKhoaHoc = "Tên" }));
-            Assert.Contains("02_Procedures.sql", ex.Message);
+            DatabaseHelper.ExecuteNonQuery("INSERT INTO KhoaHoc (KhoaHocID,TenKhoaHoc) VALUES (1,'Tên cũ')");
+            Assert.True(new KhoaHocService().Sua(new KhoaHoc { KhoaHocID = 1, TenKhoaHoc = "Tên mới" }));
+            Assert.Equal("Tên mới", new KhoaHocService().LayTheoID(1).TenKhoaHoc);
         }
 
         [Fact]

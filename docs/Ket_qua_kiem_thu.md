@@ -1,5 +1,11 @@
 # Kết quả kiểm tra bản bổ sung
 
+## Bản vá xóa hồ sơ khi DB thiếu procedure — 14/11/2026
+
+Đã xác minh cơ chế cài bộ procedure nhúng và retry CALL khi gặp `42883`. Suite `ApplicationLogic.Tests` có **186 test đạt** (14 trường hợp khôi phục mới); `StudentProfile.Tests` có **29 test đạt**. Không có test thất bại/bỏ qua ở hai suite này. Kiểm tra kiến trúc đạt, gồm kiểm tra tài nguyên `PostgresProcedures.sql` được nhúng vào executable.
+
+Các trường hợp mới kiểm tra cả xóa giáo viên/học viên khi DB chưa cài thủ tục, thiếu riêng thủ tục xóa, bảo vệ dữ liệu học tập, xóa đồng thời, role thiếu quyền CREATE, rollback cài đặt, lỗi function nội bộ và retry tối đa một lần. Kiểm thử chỉ dùng PostgreSQL tạm; xem [hướng dẫn dùng bản sửa](Fix_Profile_Deletion_42883.md). Các suite khác và số liệu 256 bên dưới thuộc lần cập nhật 10 procedure trước bản vá này.
+
 ## Cập nhật 10 procedure — 14/11/2026
 
 Script `02_Procedures.sql` hiện có **10 procedure** (thêm 9). Các thao tác thêm/sửa/xóa khóa học, giáo viên, học viên và đóng đăng ký lớp đã gọi `CALL` từ DAL qua `ProcedureExecutor`. Xem [danh mục, tham số và cài đặt](Procedures_PostgreSQL.md).
