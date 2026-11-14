@@ -59,7 +59,7 @@ namespace StudentProfile.Tests
         private readonly NpgsqlConnection connection;
         private readonly string schema = "profile_" + Guid.NewGuid().ToString("N");
 
-        public TestDatabase()
+        public TestDatabase(bool installProcedures = true)
         {
             string connectionString = Environment.GetEnvironmentVariable("PROFILE_TEST_CONNECTION")
                 ?? throw new InvalidOperationException("Run run.py to create a disposable test database.");
@@ -81,6 +81,13 @@ namespace StudentProfile.Tests
                     HocSinhID integer PRIMARY KEY, TaiKhoanID integer,
                     HoTen text, NgaySinh date, GioiTinh text, Email text,
                     SoDienThoai text, DiaChi text, LopHocID integer);");
+            if (installProcedures)
+            {
+                using var stream = typeof(TestDatabase).Assembly.GetManifestResourceStream("PostgresProcedures.sql");
+                using var reader = new System.IO.StreamReader(stream
+                    ?? throw new InvalidOperationException("Test assembly must embed PostgresProcedures.sql."));
+                Database.DatabaseHelper.ExecuteNonQuery(reader.ReadToEnd());
+            }
         }
 
         public void SeedAccount(int id, int studentId, string role = "HocSinh",

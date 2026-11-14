@@ -1,5 +1,27 @@
 # Kết quả kiểm tra bản bổ sung
 
+## Cập nhật 10 procedure — 14/11/2026
+
+Script `02_Procedures.sql` hiện có **10 procedure** (thêm 9). Các thao tác thêm/sửa/xóa khóa học, giáo viên, học viên và đóng đăng ký lớp đã gọi `CALL` từ DAL qua `ProcedureExecutor`. Xem [danh mục, tham số và cài đặt](Procedures_PostgreSQL.md).
+
+Môi trường chạy lại: Linux, .NET SDK **8.0.428**, PostgreSQL 16 trong Docker; mỗi runner dùng database tạm và dọn container/volume. Không dùng `App.config` hoặc DB thật.
+
+| Target | Kết quả phiên cập nhật |
+|---|---|
+| Kiểm tra kiến trúc | Đạt; 10 interface có triển khai, GUI qua BLL, helper mới có trong csproj |
+| Pagination.Tests | 19 đạt |
+| StudentProfile.Tests | 29 đạt |
+| ApplicationLogic.Tests | **172 đạt**, gồm 22 trường hợp mới về procedure |
+| Dashboard.Tests | 7 đạt |
+| ExcelImport.Tests | 29 đạt |
+| Tổng .NET 8 | **256 đạt; 0 thất bại; 0 bỏ qua** |
+
+Kiểm tra mới bao gồm cài lặp đúng 10 procedure, CRUD qua Service/DAL, NULL/ngày/Unicode/dấu nháy, giữ liên kết lớp/tài khoản, chín dạng dữ liệu chặn xóa, mã không tồn tại, validation tại DB, rollback nhiều CALL, thiếu procedure không fallback, quyền đóng lớp và thêm học viên chạy đồng thời với duyệt đơn. Các test sĩ số/đóng lớp cũ tiếp tục đạt sau khi chuyển SQL vào procedure.
+
+Không chạy lại build WinForms net48 hoặc hai suite Mono/Xvfb trong phiên cập nhật này. Chạy GUI và xem/in Crystal trên Windows vẫn cần nghiệm thu. Repository đã có `Reports/BangDiem.rpt` và `BangDiem.cs`; mô tả thiếu mẫu trong tài liệu cũ không phản ánh trạng thái hiện tại.
+
+## Bằng chứng lịch sử trước cập nhật procedure
+
 Mã nguồn thay đổi trên nhánh `feat/complete-coursework-requirements`, nền master `f8d6a5f3dc0aea88229a900939178e31c3bd7006`. Kết quả này thuộc lần chạy sau thay đổi, không dùng số liệu của master để thay thế.
 
 ## Đã chạy

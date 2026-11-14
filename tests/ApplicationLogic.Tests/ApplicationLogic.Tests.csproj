@@ -8,6 +8,7 @@
     <Compile Include="../../BLL/Interfaces/*.cs" Link="Production/BLL/Interfaces/%(Filename)%(Extension)" />
     <Compile Include="../../BLL/Services/*.cs" Exclude="../../BLL/Services/UngDungService.cs" Link="Production/BLL/Services/%(Filename)%(Extension)" />
     <Compile Include="../../DAL/Repositories/KhoaHocDAL.cs" Link="Production/KhoaHocDAL.cs" />
+    <Compile Include="../../DAL/Repositories/ProcedureExecutor.cs" Link="Production/ProcedureExecutor.cs" />
     <Compile Include="../../DAL/Repositories/CauHoiImportDAL.cs" Link="Production/CauHoiImportDAL.cs" />
     <Compile Include="../../Helpers/Import/CauHoiExcelReader.cs" Link="Production/CauHoiExcelReader.cs" />
     <PackageReference Include="ExcelDataReader" Version="3.7.0" />

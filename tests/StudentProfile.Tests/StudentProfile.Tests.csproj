@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="../../DAL/Repositories/HocSinhDAL.cs" Link="Production/HocSinhDAL.cs" />
+    <Compile Include="../../DAL/Repositories/ProcedureExecutor.cs" Link="Production/ProcedureExecutor.cs" />
+    <EmbeddedResource Include="../../Database/PostgreSQL/02_Procedures.sql" LogicalName="PostgresProcedures.sql" />
     <Compile Include="../../DAL/Repositories/TaiKhoanDAL.cs" Link="Production/TaiKhoanDAL.cs" />
     <Compile Include="../../Models/Entities/HocSinh.cs" Link="Production/HocSinh.cs" />
     <Compile Include="../../Models/Entities/TaiKhoan.cs" Link="Production/TaiKhoan.cs" />

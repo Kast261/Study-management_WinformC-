@@ -284,12 +284,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
         public bool DongDangKyLop(int lopHocID, int giaoVienID = 0)
         {
-            if (lopHocID <= 0 || giaoVienID < 0) return false;
-            string sql = @"UPDATE LopHoc SET TrangThai = 'Đã đóng'
-                           WHERE LopHocID = @id AND (@gv=0 OR GiaoVienID=@gv)
-                             AND COALESCE(TrangThai,'Đang mở')='Đang mở'";
-            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter("id", lopHocID),
-                new NpgsqlParameter("gv", giaoVienID)) == 1;
+            if (lopHocID <= 0 || giaoVienID <= 0) return false;
+            return ProcedureExecutor.Boolean("CALL study_dong_dang_ky_lop(@id, @gv, FALSE)", "p_updated",
+                new NpgsqlParameter("id", lopHocID), new NpgsqlParameter("gv", giaoVienID));
         }
 
         /// <summary>

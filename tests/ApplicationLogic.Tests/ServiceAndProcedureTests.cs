@@ -45,7 +45,7 @@ namespace ApplicationLogic.Tests
         [Fact]
         public void MissingProcedureHasActionableSetupError()
         {
-            using var database = new TestDatabase();
+            using var database = new TestDatabase(installProcedures: false);
             DatabaseHelper.ExecuteNonQuery(Script("PostgresSchema.sql"));
             var ex = Assert.Throws<InvalidOperationException>(() => new KhoaHocService().Sua(
                 new KhoaHoc { KhoaHocID = 1, TenKhoaHoc = "Tên" }));

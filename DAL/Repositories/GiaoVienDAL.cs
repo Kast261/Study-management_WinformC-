@@ -52,34 +52,27 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         }
         public bool Them(GiaoVien gv)
         {
-            string sql = @"INSERT INTO GiaoVien (HoTen, NgaySinh, GioiTinh, ChuyenMon, Email, SoDienThoai, DiaChi) 
-                           VALUES (@hoten, @ngaysinh, @gioitinh, @chuyenmon, @email, @sdt, @diachi)";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@hoten", gv.HoTen),
-                new NpgsqlParameter("@ngaysinh", (object)gv.NgaySinh ?? DBNull.Value),
-                new NpgsqlParameter("@gioitinh", (object)gv.GioiTinh ?? DBNull.Value),
-                new NpgsqlParameter("@chuyenmon", (object)gv.ChuyenMon ?? DBNull.Value),
-                new NpgsqlParameter("@email", (object)gv.Email ?? DBNull.Value),
-                new NpgsqlParameter("@sdt", (object)gv.SoDienThoai ?? DBNull.Value),
-                new NpgsqlParameter("@diachi", (object)gv.DiaChi ?? DBNull.Value)
-            };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            if (gv == null) throw new ArgumentNullException(nameof(gv));
+            int id = ProcedureExecutor.Id(
+                "CALL study_them_giao_vien(@hoten, @ngaysinh, @gioitinh, @chuyenmon, @email, @sdt, @diachi, 0)",
+                ProcedureExecutor.Text("hoten", gv.HoTen), ProcedureExecutor.Date("ngaysinh", gv.NgaySinh),
+                ProcedureExecutor.Text("gioitinh", gv.GioiTinh), ProcedureExecutor.Text("chuyenmon", gv.ChuyenMon),
+                ProcedureExecutor.Text("email", gv.Email), ProcedureExecutor.Text("sdt", gv.SoDienThoai),
+                ProcedureExecutor.Text("diachi", gv.DiaChi));
+            if (id <= 0) return false;
+            gv.GiaoVienID = id;
+            return true;
         }
         public bool Sua(GiaoVien gv)
         {
-            string sql = @"UPDATE GiaoVien SET HoTen=@hoten, NgaySinh=@ngaysinh, GioiTinh=@gioitinh, ChuyenMon=@chuyenmon, Email=@email, 
-                           SoDienThoai=@sdt, DiaChi=@diachi WHERE GiaoVienID=@id";
-            NpgsqlParameter[] pars = {
-                new NpgsqlParameter("@hoten", gv.HoTen),
-                new NpgsqlParameter("@ngaysinh", (object)gv.NgaySinh ?? DBNull.Value),
-                new NpgsqlParameter("@gioitinh", (object)gv.GioiTinh ?? DBNull.Value),
-                new NpgsqlParameter("@chuyenmon", (object)gv.ChuyenMon ?? DBNull.Value),
-                new NpgsqlParameter("@email", (object)gv.Email ?? DBNull.Value),
-                new NpgsqlParameter("@sdt", (object)gv.SoDienThoai ?? DBNull.Value),
-                new NpgsqlParameter("@diachi", (object)gv.DiaChi ?? DBNull.Value),
-                new NpgsqlParameter("@id", gv.GiaoVienID)
-            };
-            return DatabaseHelper.ExecuteNonQuery(sql, pars) > 0;
+            if (gv == null) throw new ArgumentNullException(nameof(gv));
+            return ProcedureExecutor.Boolean(
+                "CALL study_sua_giao_vien(@id, @hoten, @ngaysinh, @gioitinh, @chuyenmon, @email, @sdt, @diachi, FALSE)",
+                "p_updated", new NpgsqlParameter("id", gv.GiaoVienID),
+                ProcedureExecutor.Text("hoten", gv.HoTen), ProcedureExecutor.Date("ngaysinh", gv.NgaySinh),
+                ProcedureExecutor.Text("gioitinh", gv.GioiTinh), ProcedureExecutor.Text("chuyenmon", gv.ChuyenMon),
+                ProcedureExecutor.Text("email", gv.Email), ProcedureExecutor.Text("sdt", gv.SoDienThoai),
+                ProcedureExecutor.Text("diachi", gv.DiaChi));
         }
 
         public bool CapNhatHoSoCaNhan(int taiKhoanID, GiaoVien gv)
@@ -102,10 +95,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool Xoa(int id)
         {
-            if (Convert.ToBoolean(DatabaseHelper.ExecuteScalar(@"SELECT EXISTS (SELECT 1 FROM LopHoc WHERE GiaoVienID=@id) OR EXISTS (SELECT 1 FROM DeThi WHERE GiaoVienID=@id) OR EXISTS (SELECT 1 FROM TaiKhoan tk JOIN GiaoVien gv ON gv.GiaoVienID=@id WHERE (LOWER(tk.VaiTro)='giaovien' AND tk.NguoiDungID=@id) OR tk.TaiKhoanID=gv.TaiKhoanID)", new NpgsqlParameter("id", id))))
-                throw new InvalidOperationException("Không thể xóa hồ sơ đã liên kết tài khoản hoặc có dữ liệu học tập. Hãy khóa tài khoản để giữ lịch sử.");
-            string sql = "DELETE FROM GiaoVien WHERE GiaoVienID = @id";
-            return DatabaseHelper.ExecuteNonQuery(sql, new NpgsqlParameter[] { new NpgsqlParameter("@id", id) }) > 0;
+            return ProcedureExecutor.Boolean("CALL study_xoa_giao_vien(@id, FALSE)", "p_deleted",
+                new NpgsqlParameter("id", id));
         }
         public DataTable TimKiem(string tuKhoa)
         {
