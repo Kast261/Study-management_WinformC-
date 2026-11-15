@@ -56,7 +56,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             tableLayoutPanel19.ColumnCount = 4;
             foreach (ColumnStyle style in tableLayoutPanel19.ColumnStyles) style.Width = 25F;
             tableLayoutPanel19.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            var button = new Button { Text = "Làm mới", Dock = DockStyle.Fill };
+            var button = new System.Windows.Forms.Button { Text = "Làm mới", Dock = DockStyle.Fill };
             button.Click += (sender, e) => { if (!_dangNhapExcel) LamMoiFormCauHoi(); };
             tableLayoutPanel19.Controls.Add(button, 3, 0);
         }
