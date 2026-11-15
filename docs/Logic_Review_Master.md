@@ -72,3 +72,19 @@ Kiểm chứng: `python3 tests/check_editor_modes.py` biên dịch handler chọ
 làm mới và danh mục tài khoản thật với control/service giả; kiểm tra sáu editor,
 tạo tài khoản, giữ bộ lọc và sự kiện chọn dòng phát sinh khi xóa tìm kiếm.
 Đây là kiểm thử logic handler, không thay thế chạy tương tác WinForms trên Windows.
+
+## Tên đăng nhập không được trùng
+
+`ThemTaiKhoan` đã chặn trùng tên không phân biệt hoa/thường và dùng advisory
+transaction lock để hai phiên ứng dụng không cùng tạo một tên. Bổ sung
+`BTRIM` trên tên đã lưu khi kiểm tra để dữ liệu cũ như `  Student1  ` cũng
+chặn việc tạo `student1` hoặc ` STUDENT1 `. Tên nhập mới tiếp tục được Trim
+trước khi lưu; tài khoản đã khóa vẫn giữ tên và không cho tạo trùng.
+
+`UsernameUniquenessTests` bổ sung sáu trường hợp: tên trùng chính xác, khác
+hoa/thường, khoảng trắng ở đầu/cuối, tên cũ có khoảng trắng, tài khoản khóa,
+và sáu yêu cầu tạo đồng thời chỉ một yêu cầu thành công. Khi từ chối tên trùng,
+không tạo tài khoản hay liên kết nhầm hồ sơ; tên khác vẫn tạo được.
+Trên code trước sửa, hai trường hợp tên cũ có khoảng trắng đã tái hiện lỗi.
+Kết quả sau sửa: ApplicationLogic.Tests **225 đạt, 0 thất bại, 0 bỏ qua**;
+kiểm tra kiến trúc đạt. Không cần đổi schema hoặc sửa dữ liệu hiện có.
