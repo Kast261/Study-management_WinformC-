@@ -56,7 +56,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             tableLayoutPanel19.ColumnCount = 4;
             foreach (ColumnStyle style in tableLayoutPanel19.ColumnStyles) style.Width = 25F;
             tableLayoutPanel19.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            var button = new Button { Text = "Làm mới", Dock = DockStyle.Fill };
+            var button = new System.Windows.Forms.Button { Text = "Làm mới", Dock = DockStyle.Fill };
             button.Click += (sender, e) => { if (!_dangNhapExcel) LamMoiFormCauHoi(); };
             tableLayoutPanel19.Controls.Add(button, 3, 0);
         }
@@ -619,7 +619,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     btnCH_TaoDe.Enabled = false;
                     btnCH_Excel.Enabled = false;
                     btnCH_CapNhap.Enabled = true;
-                    materialLabel15.Text = "Đang chỉnh sửa câu hỏi: " + q.ThuTu;
+                    materialLabel15.Text = "Đang sửa câu " + q.ThuTu + " (Làm mới để thêm/tạo đề)";
                     txtCH_NhapCauHoi.Text = q.NoiDung;
                     txtCH_A.Text = q.DapAnA;
                     txtCH_B.Text = q.DapAnB;
@@ -654,64 +654,83 @@ namespace BLT_Quan_Ly_Hoc_Tap
         // -----------------------------------------------------------------------
         private void btnCH_TaoDe_Click(object sender, EventArgs e)
         {
-            if (_selectedCauHoiID > 0) return; // Làm mới trước khi thêm dữ liệu mới.
-
-            string tenDe = txtCH_TenDeThi?.Text?.Trim();
-            if (string.IsNullOrWhiteSpace(tenDe))
+            if (_selectedCauHoiID > 0)
             {
-                MessageBox.Show("Vui lòng nhập tên đề thi!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtCH_TenDeThi?.Focus();
+                MessageBox.Show("Bạn đang sửa câu hỏi đã chọn. Bấm Làm mới trước khi tạo đề khác.",
+                    "Đang chỉnh sửa", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string monHoc = cmbCH_MonHoc.SelectedItem?.ToString() ?? cmbCH_MonHoc.Text?.Trim();
-            if (string.IsNullOrWhiteSpace(monHoc))
+            int savedID = 0;
+            try
             {
-                monHoc = cmbDT_MonHoc.SelectedItem?.ToString() ?? "Lập trình C# WinForms";
+                string tenDe = txtCH_TenDeThi?.Text?.Trim();
+                if (string.IsNullOrWhiteSpace(tenDe))
+                {
+                    MessageBox.Show("Vui lòng nhập tên đề thi!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCH_TenDeThi?.Focus();
+                    return;
+                }
+
+                string monHoc = cmbCH_MonHoc.SelectedItem?.ToString() ?? cmbCH_MonHoc.Text?.Trim();
+                if (string.IsNullOrWhiteSpace(monHoc))
+                {
+                    monHoc = cmbDT_MonHoc.SelectedItem?.ToString() ?? "Lập trình C# WinForms";
+                }
+
+                int.TryParse(cmbDT_DeThi.SelectedValue?.ToString(), out int currentID);
+                DataRow existing = ExamSelection.FindDraft(_deThiService.LayDeThiTheoGiaoVien(Session.NguoiDungID),
+                    tenDe, monHoc, currentID);
+                if (existing != null)
+                {
+                    LoadDeThiCombobox(Convert.ToInt32(existing["DeThiID"]));
+                    LamMoiFormCauHoi();
+                    MessageBox.Show($"Đề thi \"{tenDe}\" đã tồn tại và đã được chọn. Bạn có thể tiếp tục soạn câu hỏi hoặc giao đề ở tab Bài thi.",
+                        "Đã chọn đề thi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                DeThi de = new DeThi
+                {
+                    TenDeThi   = tenDe,
+                    MonHoc     = monHoc,
+                    GiaoVienID = Session.NguoiDungID,
+                    SoCau      = 0,
+                    ThoiGian   = 45,
+                    TrangThai  = "Chưa giao"
+                };
+
+                int newID = _deThiService.TaoDeThiMoiLayID(de);
+                if (newID > 0)
+                {
+                    savedID = newID;
+                    MessageBox.Show(
+                        $"Tạo đề thi \"{ tenDe }\" ({ monHoc }) thành công!\nBây giờ bạn có thể nhập các câu hỏi kèm đáp án cho đề thi này.",
+                        "Tạo đề thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Làm mới danh sách đề thi và chọn đề vừa tạo
+                    _selectedDeThiID = newID;
+                    LoadDeThiCombobox(newID);
+                    // Reset form câu hỏi để bắt đầu nhập câu mới
+                    LamMoiFormCauHoi();
+
+                    // Nạp lưới câu hỏi (lúc mới tạo là 0 câu)
+                    dgvCauHoi.DataSource = _deThiService.LayDanhSachCauHoi(newID);
+
+                    // Xóa tên đề thi đã nhập
+                    if (txtCH_TenDeThi != null) txtCH_TenDeThi.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Tạo đề thi thất bại! Vui lòng thử lại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            int.TryParse(cmbDT_DeThi.SelectedValue?.ToString(), out int currentID);
-            DataRow existing = ExamSelection.FindDraft(_deThiService.LayDeThiTheoGiaoVien(Session.NguoiDungID),
-                tenDe, monHoc, currentID);
-            if (existing != null)
+            catch (Exception ex)
             {
-                LoadDeThiCombobox(Convert.ToInt32(existing["DeThiID"]));
-                LamMoiFormCauHoi();
-                return;
-            }
-
-            DeThi de = new DeThi
-            {
-                TenDeThi   = tenDe,
-                MonHoc     = monHoc,
-                GiaoVienID = Session.NguoiDungID,
-                SoCau      = 0,
-                ThoiGian   = 45,
-                TrangThai  = "Chưa giao"
-            };
-
-            int newID = _deThiService.TaoDeThiMoiLayID(de);
-            if (newID > 0)
-            {
-                MessageBox.Show(
-                    $"Tạo đề thi \"{ tenDe }\" ({ monHoc }) thành công!\nBây giờ bạn có thể nhập các câu hỏi kèm đáp án cho đề thi này.",
-                    "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Làm mới danh sách đề thi và chọn đề vừa tạo
-                _selectedDeThiID = newID;
-                LoadDeThiCombobox(newID);
-                // Reset form câu hỏi để bắt đầu nhập câu mới
-                LamMoiFormCauHoi();
-
-                // Nạp lưới câu hỏi (lúc mới tạo là 0 câu)
-                dgvCauHoi.DataSource = _deThiService.LayDanhSachCauHoi(newID);
-
-                // Xóa tên đề thi đã nhập
-                if (txtCH_TenDeThi != null) txtCH_TenDeThi.Clear();
-            }
-            else
-            {
-                MessageBox.Show("Tạo đề thi thất bại! Vui lòng thử lại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string message = savedID > 0
+                    ? $"Đã tạo đề thi (mã {savedID}), nhưng chưa tải lại được giao diện. Không cần tạo lại.\n" + ex.Message
+                    : "Không thể tạo hoặc chọn đề thi: " + ex.Message;
+                MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

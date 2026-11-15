@@ -88,3 +88,16 @@ không tạo tài khoản hay liên kết nhầm hồ sơ; tên khác vẫn tạ
 Trên code trước sửa, hai trường hợp tên cũ có khoảng trắng đã tái hiện lỗi.
 Kết quả sau sửa: ApplicationLogic.Tests **225 đạt, 0 thất bại, 0 bỏ qua**;
 kiểm tra kiến trúc đạt. Không cần đổi schema hoặc sửa dữ liệu hiện có.
+
+## Phản hồi của nút Tạo Đề Thi ở tab Câu hỏi
+
+`btnCH_TaoDe` tiếp tục tạo đề nháp `Chưa giao`, theo yêu cầu đã xác nhận;
+không đổi thành thao tác giao bài cho lớp. Đề mới được báo “Tạo đề thành công”.
+Nếu đã có đề nháp trùng tên/môn, chọn lại đề đó và hiện thông báo thay vì thoát
+im lặng. Lỗi DB được hiển thị; nếu đã lưu đề nhưng tải lại giao diện thất bại,
+thông báo nêu mã đề và không yêu cầu tạo lại. Khi chọn câu hỏi để sửa, nhãn
+hiển thị hướng dẫn Làm mới để thêm/tạo đề; vẫn giữ quy tắc không thêm khi sửa.
+
+Chạy `python3 tests/check_exam_creation_ui.py`: bảy tình huống handler thật
+với service/control giả (tạo mới, đề có sẵn, thiếu tên, lỗi DB, lỗi tải lại sau
+khi lưu, tạo thất bại và đang sửa). Không thay thế chạy WinForms trên Windows.

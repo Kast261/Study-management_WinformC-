@@ -68,7 +68,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 style.Width = 100F / panel.ColumnCount;
             }
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F / panel.ColumnCount));
-            var button = new Button { Text = "Làm mới", Dock = DockStyle.Fill };
+            var button = new System.Windows.Forms.Button { Text = "Làm mới", Dock = DockStyle.Fill };
             button.Click += (sender, e) => reset();
             panel.Controls.Add(button, panel.ColumnCount - 1, 0);
         }
