@@ -152,6 +152,8 @@
     </Compile>
     <Compile Include="ColorScheme.cs" />
     <Compile Include="DAL\Repositories\DashboardDAL.cs" />
+    <Compile Include="Models\Entities\GiamSatPhongThi.cs" />
+    <Compile Include="DAL\Repositories\GiamSatThiDAL.cs" />
     <Compile Include="DAL\Repositories\DeThiDAL.cs" />
     <Compile Include="DAL\Repositories\GiaoVienDAL.cs" />
     <Compile Include="DAL\Repositories\HocSinhDAL.cs" />

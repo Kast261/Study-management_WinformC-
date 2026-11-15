@@ -23,6 +23,12 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Services
             return _repository.NopBai(taiKhoanID, hocSinhID, deThiID, dapAn);
         }
 
+        public int BatDauGiamSat(int taiKhoanID, int hocSinhID, int deThiID)
+            => new GiamSatThiDAL().BatDau(taiKhoanID, hocSinhID, deThiID);
+
+        public int GhiNhanRoiManHinh(int taiKhoanID, int hocSinhID, int deThiID, int soLan)
+            => new GiamSatThiDAL().GhiNhan(taiKhoanID, hocSinhID, deThiID, soLan);
+
         public bool KiemTraDaThi(int hocSinhID, int deThiID)
         {
             return _repository.KiemTraDaThi(hocSinhID, deThiID);

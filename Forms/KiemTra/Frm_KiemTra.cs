@@ -26,6 +26,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private bool _daNopBai = false;
         private bool _dangNopBai;
         private DateTime _ketThucLuc;
+        private readonly GiamSatPhongThi _giamSat = new GiamSatPhongThi();
+        private int _soLanDaLuu, _soLanBanDau;
+        private bool _hopThoaiNoiBo, _sanSangGiamSat;
+        private bool _loiLuuViPham;
 
         #endregion
 
@@ -37,6 +41,13 @@ namespace BLT_Quan_Ly_Hoc_Tap
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             _deThiID = deThiID;
+            FormStyle = ReaLTaiizor.Enum.Material.FormStyles.StatusAndActionBar_None;
+            Sizable = false;
+            FormBorderStyle = FormBorderStyle.None;
+            ControlBox = MaximizeBox = MinimizeBox = false;
+            StartPosition = FormStartPosition.Manual;
+            WindowState = FormWindowState.Normal;
+            Bounds = Screen.FromControl(this).Bounds;
         }
 
         private void KiemTra_Load(object sender, EventArgs e)
@@ -45,7 +56,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
             {
                 if (!Session.IsHocSinh || !_deThiService.CoTheBatDauThi(Session.NguoiDungID, _deThiID))
                 {
-                    MessageBox.Show("Đề thi đã hết hạn, đã làm hoặc không thuộc lớp của bạn.", "Không thể bắt đầu thi");
+                    ThongBao("Đề thi đã hết hạn, đã làm hoặc không thuộc lớp của bạn.", "Không thể bắt đầu thi");
+                    _daNopBai = true;
                     Close();
                     return;
                 }
@@ -54,17 +66,21 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
                 if (_deThi == null || _cauHois.Count == 0)
                 {
-                    MessageBox.Show("Đề thi chưa có câu hỏi nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    ThongBao("Đề thi chưa có câu hỏi nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    _daNopBai = true;
                     this.Close();
                     return;
                 }
 
+                _soLanBanDau = _ketQuaService.BatDauGiamSat(Session.TaiKhoanID, Session.NguoiDungID, _deThiID);
+                _soLanDaLuu = _soLanBanDau;
+                _sanSangGiamSat = true;
                 this.Text = $"BÀI THI: {_deThi.TenDeThi} - Môn: {_deThi.MonHoc}";
                 _ketThucLuc = DateTime.Now.AddMinutes(_deThi.ThoiGian);
                 if (_deThi.HanNop.HasValue && _deThi.HanNop.Value < _ketThucLuc)
                     _ketThucLuc = _deThi.HanNop.Value;
                 _thoiGianConLai = Math.Max(0, (int)Math.Ceiling((_ketThucLuc - DateTime.Now).TotalSeconds));
-                lblKiemTra_SoCauHoi.Text = $"Thời gian: {_thoiGianConLai / 60:D2}:{_thoiGianConLai % 60:D2}";
+                CapNhatTrangThaiThi();
 
                 // Timer đếm ngược
                 _timer = new Timer { Interval = 1000 };
@@ -77,9 +93,75 @@ namespace BLT_Quan_Ly_Hoc_Tap
             catch (Exception ex)
             {
                 _daNopBai = true; // Không hỏi nộp bài khi chưa tải được phòng thi.
-                MessageBox.Show("Không thể mở bài thi: " + ex.Message, "Lỗi");
+                ThongBao("Không thể mở bài thi: " + ex.Message, "Lỗi");
                 Close();
             }
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            Bounds = Screen.FromControl(this).Bounds;
+            if (!_sanSangGiamSat || _daNopBai) return;
+            _giamSat.BatDau(_soLanBanDau);
+            CapNhatTrangThaiThi();
+            if (_giamSat.BiDung) DungVaNopBai();
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            _giamSat.KichHoat();
+        }
+
+        protected override void OnDeactivate(EventArgs e)
+        {
+            base.OnDeactivate(e);
+            if (_daNopBai || _dangNopBai || !_giamSat.RoiCuaSo(_hopThoaiNoiBo)) return;
+            // Khóa ngay trên máy học viên ở lần 3, kể cả khi mạng đang lỗi.
+            if (_giamSat.BiDung) KhoaDapAn();
+            try { LuuViPham(); }
+            catch { _loiLuuViPham = true; } // Nộp bài sẽ thử lưu lại trước khi chấm điểm.
+            CapNhatTrangThaiThi();
+            if (_giamSat.BiDung) DungVaNopBai();
+        }
+
+        private void LuuViPham()
+        {
+            if (_giamSat.SoLan <= _soLanDaLuu) return;
+            _soLanDaLuu = _ketQuaService.GhiNhanRoiManHinh(Session.TaiKhoanID,
+                Session.NguoiDungID, _deThiID, _giamSat.SoLan);
+            _loiLuuViPham = false;
+        }
+
+        private void CapNhatTrangThaiThi()
+        {
+            lblKiemTra_SoCauHoi.Text = _giamSat.BiDung
+                ? "ĐÃ DỪNG: rời cửa sổ thi 3/3 lần. Nộp bài để lưu kết quả."
+                : $"Thời gian: {_thoiGianConLai / 60:D2}:{_thoiGianConLai % 60:D2} | Rời cửa sổ: {_giamSat.SoLan}/3\nLần thứ 3 sẽ dừng và tự nộp bài.";
+            if (_loiLuuViPham) lblKiemTra_SoCauHoi.Text += " · Chưa đồng bộ vi phạm";
+        }
+
+        private void KhoaDapAn()
+        {
+            radKiemTra_DapAnA.Enabled = radKiemTra_DapAnB.Enabled =
+                radKiemTra_DapAnC.Enabled = radKiemTra_DapAnD.Enabled = false;
+            btnKiemTra_CauTruoc.Enabled = btnKiemTra_CauSau.Enabled = false;
+        }
+
+        private void DungVaNopBai()
+        {
+            KhoaDapAn();_timer?.Stop();
+            BeginInvoke(new Action(() => { if (!IsDisposed && !_daNopBai) NopBai(); }));
+        }
+
+        private DialogResult ThongBao(string text, string caption,
+            MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information)
+        {
+            bool previous = _hopThoaiNoiBo;
+            _hopThoaiNoiBo = true;
+            try { return MessageBox.Show(this, text, caption, buttons, icon); }
+            finally { _hopThoaiNoiBo = previous; }
         }
 
         private void DangKySuKienRadio()
@@ -147,6 +229,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void ChuyenCau(int newIndex)
         {
+            if (_giamSat.BiDung) return;
             if (newIndex >= 0 && newIndex < _cauHois.Count)
             {
                 HienThiCauHoi(newIndex);
@@ -159,7 +242,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void Radio_CheckedChanged(object sender, EventArgs e)
         {
-            if (DateTime.Now >= _ketThucLuc) return;
+            if (_giamSat.BiDung || _dangNopBai || DateTime.Now >= _ketThucLuc) return;
             RadioButton rb = sender as RadioButton;
             if (rb != null && rb.Checked)
             {
@@ -188,8 +271,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void Timer_Tick(object sender, EventArgs e)
         {
             _thoiGianConLai = Math.Max(0, (int)Math.Ceiling((_ketThucLuc - DateTime.Now).TotalSeconds));
-            lblKiemTra_SoCauHoi.Text = $"Thời gian: {_thoiGianConLai / 60:D2}:{_thoiGianConLai % 60:D2}";
-            if (_thoiGianConLai == 0 && !_dangNopBai)
+            CapNhatTrangThaiThi();
+            if ((_thoiGianConLai == 0 || _giamSat.BiDung) && !_dangNopBai)
             {
                 _timer.Stop();
                 NopBai();
@@ -207,7 +290,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void XacNhanNopBai()
         {
-            DialogResult res = MessageBox.Show("Bạn có muốn nộp bài không?", "Xác nhận nộp bài", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (_giamSat.BiDung) { NopBai(); return; }
+            DialogResult res = ThongBao("Bạn có muốn nộp bài không?", "Xác nhận nộp bài", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (res == DialogResult.Yes)
             {
@@ -228,15 +312,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 var answers = new Dictionary<int, string>();
                 for (int i = 0; i < _cauHois.Count; i++)
                     if (_dapAnChon.ContainsKey(i)) answers[_cauHois[i].CauHoiID] = _dapAnChon[i];
+                LuuViPham();
                 result = _ketQuaService.NopBai(Session.TaiKhoanID, Session.NguoiDungID, _deThiID, answers);
                 _daNopBai = true;
+                _giamSat.KetThuc();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Chưa lưu được bài thi. Bạn có thể bấm Nộp bài để thử lại.\n" + ex.Message,
+                ThongBao("Chưa lưu được bài thi. Bạn có thể bấm Nộp bài để thử lại.\n" + ex.Message,
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 // Không cho sửa đáp án sau khi hết giờ, nhưng vẫn cho phép nộp lại.
-                bool conGio = DateTime.Now < _ketThucLuc;
+                bool conGio = !_giamSat.BiDung && DateTime.Now < _ketThucLuc;
                 radKiemTra_DapAnA.Enabled = radKiemTra_DapAnB.Enabled =
                     radKiemTra_DapAnC.Enabled = radKiemTra_DapAnD.Enabled = conGio;
                 if (conGio) _timer?.Start();
@@ -244,6 +330,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
             finally { _dangNopBai = false; }
 
+            if (_giamSat.BiDung)
+                ThongBao("Bài thi đã dừng và tự nộp vì rời cửa sổ thi 3 lần. Giáo viên sẽ thấy vi phạm trong kết quả.",
+                    "Dừng do vi phạm", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             using (var frm = new FrmKetQuaBaiThi(result.SoCauDung, _cauHois.Count, (double)result.Diem))
             {
                 frm.ShowDialog(this);
@@ -261,7 +350,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             if (_daNopBai || _timer == null) return;
             if (_dangNopBai) { e.Cancel = true; return; }
-            if (MessageBox.Show("Thoát phòng thi sẽ nộp các đáp án hiện tại. Bạn có muốn nộp bài không?",
+            if (_giamSat.BiDung)
+            {
+                NopBai(false);e.Cancel = !_daNopBai;return;
+            }
+            if (ThongBao("Thoát phòng thi sẽ nộp các đáp án hiện tại. Bạn có muốn nộp bài không?",
                 "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 NopBai(false);
             // Nếu lưu thất bại, giữ phòng thi mở để người dùng có thể thử lại.
@@ -270,6 +363,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
+            _giamSat.KetThuc();
             _timer?.Dispose();
             base.OnFormClosed(e);
         }

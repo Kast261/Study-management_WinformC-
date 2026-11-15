@@ -651,12 +651,31 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public DataTable LayKetQuaTheoDeThi(int maDeThi)
         {
-            string sql = @"SELECT hs.HocSinhID, hs.HoTen, d.TenDeThi, k.SoCauDung, k.Diem, k.ThoiGianNop
+            bool monitored;
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();monitored = GiamSatThiDAL.CoBang(conn);
+            }
+            string sql = @"SELECT hs.HocSinhID, hs.HoTen, d.TenDeThi, k.SoCauDung, k.Diem, k.ThoiGianNop,
+                           TRUE AS ""DaNop"", k.TrangThai AS ""TrangThaiBaiThi"", "
+                         + (monitored ? "COALESCE(gs.SoLan,0)" : "0") + @" AS ""SoLanRoiManHinh""
                            FROM KetQuaThi k
                            JOIN HocSinh hs ON hs.HocSinhID = k.HocSinhID
-                           JOIN DeThi d ON d.DeThiID = k.DeThiID
-                           WHERE k.DeThiID = @id
-                           ORDER BY k.ThoiGianNop DESC";
+                           JOIN DeThi d ON d.DeThiID = k.DeThiID "
+                         + (monitored ? "LEFT JOIN study_giam_sat_thi gs ON gs.HocSinhID=k.HocSinhID AND gs.DeThiID=k.DeThiID " : "")
+                         + @"WHERE k.DeThiID = @id"
+                         + (monitored ? @"
+                           UNION ALL
+                           SELECT hs.HocSinhID, hs.HoTen, d.TenDeThi, NULL, NULL, NULL, FALSE,
+                               CASE WHEN gs.SoLan>=3 THEN 'Dừng do vi phạm (chưa lưu bài)'
+                                    ELSE 'Đang làm (có vi phạm)' END, gs.SoLan
+                           FROM study_giam_sat_thi gs
+                           JOIN HocSinh hs ON hs.HocSinhID=gs.HocSinhID
+                           JOIN DeThi d ON d.DeThiID=gs.DeThiID
+                           WHERE gs.DeThiID=@id AND gs.SoLan>0
+                             AND NOT EXISTS (SELECT 1 FROM KetQuaThi k
+                                 WHERE k.HocSinhID=gs.HocSinhID AND k.DeThiID=gs.DeThiID)" : "")
+                         + " ORDER BY ThoiGianNop DESC NULLS FIRST";
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter("@id", maDeThi));
         }
 

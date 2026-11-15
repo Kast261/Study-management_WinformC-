@@ -47,6 +47,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 HienThiTheHoSo(new GiaoVien { HoTen = Session.HoTen ?? Session.TenDangNhap });
             }
 
+            dgvKetQua.Columns.Add(new DataGridViewTextBoxColumn {
+                Name = "colSoLanRoiManHinh", DataPropertyName = "SoLanRoiManHinh",
+                HeaderText = "Rời màn hình", ReadOnly = true, MinimumWidth = 100 });
+            dgvKetQua.Columns.Add(new DataGridViewTextBoxColumn {
+                Name = "colTrangThaiBaiThi", DataPropertyName = "TrangThaiBaiThi",
+                HeaderText = "Trạng thái bài thi", ReadOnly = true, MinimumWidth = 150 });
             ThemNutLamMoiCauHoi();
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
         }
@@ -1455,7 +1461,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             string ten = txtKQ_TenHocVien.Text.Trim().Replace("'", "''").Replace("[", "[[]").Replace("%", "[%]").Replace("*", "[*]");
             if (ten.Length > 0) view.RowFilter = $"HoTen LIKE '%{ten}%'";
             dgvKetQua.DataSource = view;
-            lblKQ_SoBaiNop.Text = $"Số bài nộp: {view.Count:N0}";
+            int daNop = view.Cast<DataRowView>().Count(row => Convert.ToBoolean(row["DaNop"]));
+            int viPham = view.Cast<DataRowView>().Count(row => Convert.ToInt32(row["SoLanRoiManHinh"]) > 0);
+            lblKQ_SoBaiNop.Text = $"Số bài nộp: {daNop:N0} | Có vi phạm: {viPham:N0}";
         }
 
         private void dgvKetQua_SelectionChanged(object sender, EventArgs e)
