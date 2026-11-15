@@ -77,7 +77,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     OR (COALESCE(tk.NguoiDungID, 0) = 0
                         AND hs.TaiKhoanID = tk.TaiKhoanID)
                 WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND tk.TaiKhoanID = @tkID
-                  AND LOWER(tk.VaiTro) IN ('hocsinh', 'hocvien')
+                  AND LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh', 'hocvien')
                   AND COALESCE(tk.TrangThaiKhoa, FALSE) = FALSE";
 
             DataTable dt = DatabaseHelper.ExecuteQuery(
@@ -112,7 +112,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                   AND EXISTS (
                       SELECT 1 FROM TaiKhoan tk
                       WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND tk.TaiKhoanID = @tkID
-                        AND LOWER(tk.VaiTro) IN ('hocsinh', 'hocvien')
+                        AND LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh', 'hocvien')
                         AND COALESCE(tk.TrangThaiKhoa, FALSE) = FALSE
                         AND (hs.HocSinhID = NULLIF(tk.NguoiDungID, 0)
                              OR (COALESCE(tk.NguoiDungID, 0) = 0

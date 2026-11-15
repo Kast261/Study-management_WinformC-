@@ -300,11 +300,28 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
 
         public bool TuChoiDangKy(int dangKyID, int giaoVienID = 0)
         {
-            return DatabaseHelper.ExecuteNonQuery(@"
-                UPDATE DangKyLop dk SET TrangThai='Từ chối'
-                WHERE dk.DangKyID=@dk AND (dk.TrangThai='Chờ duyệt' OR dk.TrangThai IS NULL)
-                  AND EXISTS (SELECT 1 FROM LopHoc l WHERE l.LopHocID=dk.LopHocID AND (@gv=0 OR l.GiaoVienID=@gv))",
-                new NpgsqlParameter("dk", dangKyID), new NpgsqlParameter("gv", giaoVienID)) == 1;
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    // Khóa hồ sơ để việc lưu trữ và từ chối không vượt qua nhau.
+                    // gv=0 được giữ cho đường gọi DAL quản trị cũ.
+                    if (!GiaoVienConHoatDong(conn, transaction, giaoVienID)) return false;
+                    using (var cmd = new NpgsqlCommand(@"
+                        UPDATE DangKyLop dk SET TrangThai='Từ chối'
+                        WHERE dk.DangKyID=@dk AND (dk.TrangThai='Chờ duyệt' OR dk.TrangThai IS NULL)
+                          AND EXISTS (SELECT 1 FROM LopHoc l WHERE l.LopHocID=dk.LopHocID
+                              AND (@gv=0 OR l.GiaoVienID=@gv))", conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("dk", dangKyID);
+                        cmd.Parameters.AddWithValue("gv", giaoVienID);
+                        if (cmd.ExecuteNonQuery() != 1) return false;
+                    }
+                    transaction.Commit();
+                    return true;
+                }
+            }
         }
         public bool DongDangKyLop(int lopHocID, int giaoVienID = 0)
         {
@@ -336,7 +353,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
                 WHERE EXISTS (SELECT 1 FROM HocSinh hs WHERE hs.HocSinhID=@hsID AND NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE)) AND COALESCE(l.TrangThai, 'Đang mở') = 'Đang mở'
                   AND l.LopHocID NOT IN (
-                      SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND LopHocID IS NOT NULL AND TrangThai IN ('Đã duyệt', 'Chờ duyệt')
+                      SELECT LopHocID FROM DangKyLop WHERE HocSinhID = @hsID AND LopHocID IS NOT NULL AND COALESCE(TrangThai, 'Chờ duyệt') IN ('Đã duyệt', 'Chờ duyệt')
                       UNION
                       SELECT COALESCE(LopHocID, 0) FROM HocSinh WHERE HocSinhID = @hsID
                   )
@@ -365,7 +382,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             || '/' ||
             CAST(COALESCE(l.SiSoToiDa, 40) AS varchar(10)) AS SiSo,
 
-            dk.TrangThai AS TrangThaiDangKy,
+            COALESCE(dk.TrangThai, 'Chờ duyệt') AS TrangThaiDangKy,
             dk.DangKyID,
             COALESCE(l.TrangThai, 'Đang mở') AS TrangThaiLop
 
@@ -375,7 +392,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
         LEFT JOIN GiaoVien g ON l.GiaoVienID = g.GiaoVienID
 
         WHERE EXISTS (SELECT 1 FROM HocSinh hs WHERE hs.HocSinhID=@hsID AND NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE)) AND dk.HocSinhID = @hsID
-          AND dk.TrangThai IN ('Đã duyệt', 'Chờ duyệt', 'Từ chối')
+          AND COALESCE(dk.TrangThai, 'Chờ duyệt') IN ('Đã duyệt', 'Chờ duyệt', 'Từ chối')
 
         UNION
 
@@ -409,7 +426,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
               SELECT LopHocID
               FROM DangKyLop
               WHERE HocSinhID = @hsID AND LopHocID IS NOT NULL
-                AND TrangThai IN ('Đã duyệt', 'Chờ duyệt', 'Từ chối')
+                AND COALESCE(TrangThai, 'Chờ duyệt') IN ('Đã duyệt', 'Chờ duyệt', 'Từ chối')
           )
 
         ORDER BY LopHocID DESC";

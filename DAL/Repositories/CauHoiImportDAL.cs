@@ -35,7 +35,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                         SELECT gv.GiaoVienID FROM GiaoVien gv
                         JOIN TaiKhoan tk ON tk.TaiKhoanID = @tk
                         WHERE NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) AND gv.GiaoVienID = @gv
-                          AND LOWER(tk.VaiTro) = 'giaovien'
+                          AND LOWER(BTRIM(tk.VaiTro)) = 'giaovien'
                           AND COALESCE(tk.TrangThaiKhoa, FALSE) = FALSE
                           AND (tk.NguoiDungID = gv.GiaoVienID
                                OR (COALESCE(tk.NguoiDungID, 0) = 0 AND gv.TaiKhoanID = tk.TaiKhoanID))
