@@ -339,7 +339,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 return false;
 
             string dieuKien = "TaiKhoanID = @id AND COALESCE(TrangThaiKhoa, FALSE) = FALSE AND "
-                + (giaoVien ? "LOWER(VaiTro) = 'giaovien'" : "LOWER(VaiTro) IN ('hocsinh', 'hocvien')");
+                + (giaoVien ? "LOWER(BTRIM(VaiTro)) = 'giaovien'" : "LOWER(BTRIM(VaiTro)) IN ('hocsinh', 'hocvien')");
             object result = DatabaseHelper.ExecuteScalar(
                 "SELECT MatKhau FROM TaiKhoan WHERE " + dieuKien,
                 new NpgsqlParameter("@id", taiKhoanID));
@@ -401,9 +401,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             tk.NguoiDungID,
             COALESCE(tk.TrangThaiKhoa, FALSE) AS TrangThaiKhoa,
             CASE 
-                WHEN tk.VaiTro = 'GiaoVien' THEN COALESCE(gv.HoTen, '(Chưa liên kết)')
-                WHEN tk.VaiTro = 'HocSinh'  THEN COALESCE(hs.HoTen, '(Chưa liên kết)')
-                WHEN tk.VaiTro = 'Admin'    THEN 'Quản trị viên hệ thống'
+                WHEN LOWER(BTRIM(tk.VaiTro)) = 'giaovien' THEN COALESCE(gv.HoTen, '(Chưa liên kết)')
+                WHEN LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh', 'hocvien')  THEN COALESCE(hs.HoTen, '(Chưa liên kết)')
+                WHEN LOWER(BTRIM(tk.VaiTro)) = 'admin'    THEN 'Quản trị viên hệ thống'
                 ELSE '(Chưa xác định)'
             END AS TenNguoiDung,
             CASE 
@@ -411,8 +411,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 ELSE 'Hoạt động'
             END AS TrangThaiHienThi
         FROM TaiKhoan tk
-        LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND (tk.NguoiDungID = gv.GiaoVienID OR (COALESCE(tk.NguoiDungID,0)=0 AND gv.TaiKhoanID = tk.TaiKhoanID))
-        LEFT JOIN HocSinh hs  ON tk.VaiTro = 'HocSinh'  AND (tk.NguoiDungID = hs.HocSinhID OR (COALESCE(tk.NguoiDungID,0)=0 AND hs.TaiKhoanID = tk.TaiKhoanID))
+        LEFT JOIN GiaoVien gv ON LOWER(BTRIM(tk.VaiTro)) = 'giaovien' AND (tk.NguoiDungID = gv.GiaoVienID OR (COALESCE(tk.NguoiDungID,0)=0 AND gv.TaiKhoanID = tk.TaiKhoanID))
+        LEFT JOIN HocSinh hs  ON LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh', 'hocvien')  AND (tk.NguoiDungID = hs.HocSinhID OR (COALESCE(tk.NguoiDungID,0)=0 AND hs.TaiKhoanID = tk.TaiKhoanID))
         ORDER BY tk.TaiKhoanID DESC";
 
             return DatabaseHelper.ExecuteQuery(sql);
@@ -433,9 +433,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
             tk.NguoiDungID,
             COALESCE(tk.TrangThaiKhoa, FALSE) AS TrangThaiKhoa,
             CASE 
-                WHEN tk.VaiTro = 'GiaoVien' THEN COALESCE(gv.HoTen, '(Chưa liên kết)')
-                WHEN tk.VaiTro = 'HocSinh'  THEN COALESCE(hs.HoTen, '(Chưa liên kết)')
-                WHEN tk.VaiTro = 'Admin'    THEN 'Quản trị viên hệ thống'
+                WHEN LOWER(BTRIM(tk.VaiTro)) = 'giaovien' THEN COALESCE(gv.HoTen, '(Chưa liên kết)')
+                WHEN LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh', 'hocvien')  THEN COALESCE(hs.HoTen, '(Chưa liên kết)')
+                WHEN LOWER(BTRIM(tk.VaiTro)) = 'admin'    THEN 'Quản trị viên hệ thống'
                 ELSE '(Chưa xác định)'
             END AS TenNguoiDung,
             CASE 
@@ -443,9 +443,9 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 ELSE 'Hoạt động'
             END AS TrangThaiHienThi
         FROM TaiKhoan tk
-        LEFT JOIN GiaoVien gv ON tk.VaiTro = 'GiaoVien' AND (tk.NguoiDungID = gv.GiaoVienID OR (COALESCE(tk.NguoiDungID,0)=0 AND gv.TaiKhoanID = tk.TaiKhoanID))
-        LEFT JOIN HocSinh hs  ON tk.VaiTro = 'HocSinh'  AND (tk.NguoiDungID = hs.HocSinhID OR (COALESCE(tk.NguoiDungID,0)=0 AND hs.TaiKhoanID = tk.TaiKhoanID))
-        WHERE (tk.VaiTro = 'HocSinh' AND (hs.HoTen ILIKE @kw OR tk.TenDangNhap ILIKE @kw))
+        LEFT JOIN GiaoVien gv ON LOWER(BTRIM(tk.VaiTro)) = 'giaovien' AND (tk.NguoiDungID = gv.GiaoVienID OR (COALESCE(tk.NguoiDungID,0)=0 AND gv.TaiKhoanID = tk.TaiKhoanID))
+        LEFT JOIN HocSinh hs  ON LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh', 'hocvien')  AND (tk.NguoiDungID = hs.HocSinhID OR (COALESCE(tk.NguoiDungID,0)=0 AND hs.TaiKhoanID = tk.TaiKhoanID))
+        WHERE (LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh', 'hocvien') AND (hs.HoTen ILIKE @kw OR tk.TenDangNhap ILIKE @kw))
         ORDER BY tk.TaiKhoanID DESC";
 
             return DatabaseHelper.ExecuteQuery(sql, new NpgsqlParameter[] {

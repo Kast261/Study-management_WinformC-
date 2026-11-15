@@ -84,7 +84,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     DiaChi=@diachi, GioiTinh=@gioitinh
                 WHERE gv.GiaoVienID=@gv AND NOT COALESCE((to_jsonb(gv)->>'daxoa')::boolean,FALSE) AND EXISTS (
                     SELECT 1 FROM TaiKhoan tk WHERE tk.TaiKhoanID=@tk
-                      AND LOWER(tk.VaiTro)='giaovien' AND COALESCE(tk.TrangThaiKhoa,FALSE)=FALSE
+                      AND LOWER(BTRIM(tk.VaiTro))='giaovien' AND COALESCE(tk.TrangThaiKhoa,FALSE)=FALSE
                       AND (tk.NguoiDungID=gv.GiaoVienID OR (COALESCE(tk.NguoiDungID,0)=0
                            AND gv.TaiKhoanID=tk.TaiKhoanID)))",
                 new NpgsqlParameter("ten", gv.HoTen), new NpgsqlParameter("email", (object)gv.Email ?? DBNull.Value),

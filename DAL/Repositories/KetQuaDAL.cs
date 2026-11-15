@@ -26,7 +26,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                         SELECT d.DeThiID FROM DeThi d JOIN HocSinh hs ON hs.HocSinhID=@hs
                         JOIN TaiKhoan tk ON tk.TaiKhoanID=@tk
                         WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND d.DeThiID=@de AND d.TrangThai='Đang mở'
-                          AND LOWER(tk.VaiTro) IN ('hocsinh','hocvien')
+                          AND LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh','hocvien')
                           AND COALESCE(tk.TrangThaiKhoa,FALSE)=FALSE
                           AND (tk.NguoiDungID=hs.HocSinhID OR (COALESCE(tk.NguoiDungID,0)=0 AND hs.TaiKhoanID=tk.TaiKhoanID))
                           AND (hs.LopHocID=d.LopHocID OR EXISTS (
