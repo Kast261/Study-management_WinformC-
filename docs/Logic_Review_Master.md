@@ -54,3 +54,21 @@ Không đổi schema hoặc dữ liệu hiện có; không cần migration. Chư
 build Windows, WinForms Designer, thao tác toàn bộ giao diện và Crystal Reports
 trong môi trường Linux này. Rà soát tập trung DAL, service và các luồng nghiệp
 vụ được kiểm thử, không phải cam kết toàn bộ ứng dụng không còn lỗi.
+
+## Chọn dữ liệu để sửa, không thêm trùng
+
+Các editor giáo viên/học viên/khóa học/lớp học của Admin và lớp học/câu hỏi
+của Giáo viên khóa nút Thêm khi chọn dòng, bật Sửa/Cập nhật và giữ ID bản ghi.
+Handler Thêm cũng chặn khi đang có ID, kể cả nếu bị gọi trực tiếp. Bấm Làm mới
+để bỏ chọn, xóa dữ liệu cũ và chuyển về thêm mới; khu vực chưa có nút đã được
+bổ sung. Đổi trang/lọc bảng cũng xóa ô nhập trước khi cho phép thêm để không
+chuyển dữ liệu của dòng cũ thành bản ghi mới. Bộ lọc tìm kiếm được giữ lại.
+
+Ở tài khoản, chọn dòng chỉ cho thao tác tài khoản hiện có; tạo tài khoản bị
+khóa đến khi Làm mới, kể cả khi đổi dropdown vai trò. Ở câu hỏi, đang sửa
+không cho thêm câu hỏi, tạo đề hoặc nhập Excel; Làm mới mở lại các thao tác.
+
+Kiểm chứng: `python3 tests/check_editor_modes.py` biên dịch handler chọn dòng,
+làm mới và danh mục tài khoản thật với control/service giả; kiểm tra sáu editor,
+tạo tài khoản, giữ bộ lọc và sự kiện chọn dòng phát sinh khi xóa tìm kiếm.
+Đây là kiểm thử logic handler, không thay thế chạy tương tác WinForms trên Windows.
