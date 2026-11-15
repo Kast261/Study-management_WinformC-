@@ -21,32 +21,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                 conn.Open();
                 using (var transaction = conn.BeginTransaction())
                 {
-                    // Khóa đề để hai lần nộp đồng thời không cùng vượt qua kiểm tra đã thi.
-                    using (var check = new NpgsqlCommand(@"
-                        SELECT d.DeThiID FROM DeThi d JOIN HocSinh hs ON hs.HocSinhID=@hs
-                        JOIN TaiKhoan tk ON tk.TaiKhoanID=@tk
-                        WHERE NOT COALESCE((to_jsonb(hs)->>'daxoa')::boolean,FALSE) AND d.DeThiID=@de AND d.TrangThai='Đang mở'
-                          AND LOWER(BTRIM(tk.VaiTro)) IN ('hocsinh','hocvien')
-                          AND COALESCE(tk.TrangThaiKhoa,FALSE)=FALSE
-                          AND (tk.NguoiDungID=hs.HocSinhID OR (COALESCE(tk.NguoiDungID,0)=0 AND hs.TaiKhoanID=tk.TaiKhoanID))
-                          AND (hs.LopHocID=d.LopHocID OR EXISTS (
-                              SELECT 1 FROM DangKyLop dk WHERE dk.HocSinhID=@hs
-                                AND dk.LopHocID=d.LopHocID AND dk.TrangThai='Đã duyệt'))
-                        FOR UPDATE OF d FOR SHARE OF tk", conn, transaction))
-                    {
-                        check.Parameters.AddWithValue("hs", hocSinhID);
-                        check.Parameters.AddWithValue("tk", taiKhoanID);
-                        check.Parameters.AddWithValue("de", deThiID);
-                        if (check.ExecuteScalar() == null)
-                            throw new InvalidOperationException("Tài khoản không có quyền nộp bài cho đề thi này.");
-                    }
-                    using (var check = new NpgsqlCommand("SELECT 1 FROM KetQuaThi WHERE HocSinhID=@hs AND DeThiID=@de", conn, transaction))
-                    {
-                        check.Parameters.AddWithValue("hs", hocSinhID);
-                        check.Parameters.AddWithValue("de", deThiID);
-                        if (check.ExecuteScalar() != null)
-                            throw new InvalidOperationException("Bài thi đã được nộp trước đó. Vui lòng xem lịch sử thi.");
-                    }
+                    GiamSatThiDAL.KhoaQuyenNopBai(conn, transaction, taiKhoanID, hocSinhID, deThiID);
+                    int soLanRoiManHinh = GiamSatThiDAL.DocSoLan(conn, transaction, hocSinhID, deThiID);
                     var answers = new List<Tuple<int, string, bool>>();
                     using (var questions = new NpgsqlCommand("SELECT CauHoiID, DapAnDung FROM CauHoi WHERE DeThiID=@de ORDER BY ThuTu, CauHoiID", conn, transaction))
                     {
@@ -69,15 +45,18 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     var result = new KetQuaThi
                     {
                         HocSinhID = hocSinhID, DeThiID = deThiID,
-                        SoCauDung = answers.Count(a => a.Item3), TrangThai = "Hoàn thành"
+                        SoCauDung = answers.Count(a => a.Item3),
+                        SoLanRoiManHinh = soLanRoiManHinh,
+                        TrangThai = soLanRoiManHinh >= 3 ? "Dừng do vi phạm" : "Hoàn thành"
                     };
                     result.Diem = Math.Round(result.SoCauDung * 10M / answers.Count, 2);
                     using (var insert = new NpgsqlCommand(@"
                         INSERT INTO KetQuaThi (HocSinhID,DeThiID,SoCauDung,Diem,ThoiGianNop,TrangThai)
-                        VALUES (@hs,@de,@dung,@diem,CURRENT_TIMESTAMP,'Hoàn thành') RETURNING KetQuaID", conn, transaction))
+                        VALUES (@hs,@de,@dung,@diem,CURRENT_TIMESTAMP,@tt) RETURNING KetQuaID", conn, transaction))
                     {
                         insert.Parameters.AddWithValue("hs", hocSinhID); insert.Parameters.AddWithValue("de", deThiID);
                         insert.Parameters.AddWithValue("dung", result.SoCauDung); insert.Parameters.AddWithValue("diem", result.Diem);
+                        insert.Parameters.AddWithValue("tt", result.TrangThai);
                         result.KetQuaID = Convert.ToInt32(insert.ExecuteScalar());
                     }
                     foreach (var answer in answers)

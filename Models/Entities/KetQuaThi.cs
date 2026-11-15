@@ -15,6 +15,7 @@ namespace BLT_Quan_Ly_Hoc_Tap.Models
         public decimal Diem { get; set; }
         public DateTime ThoiGianNop { get; set; }
         public string TrangThai { get; set; }
+        public int SoLanRoiManHinh { get; set; }
         // Thuộc tính phụ trợ hiển thị bảng
         public string TenHocSinh { get; set; }
         public string TenDeThi { get; set; }

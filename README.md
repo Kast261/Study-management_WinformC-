@@ -28,6 +28,11 @@ Nhánh `docs/bao-cao-hoan-chinh` hiện bổ sung 9 procedure, tổng **10 proce
 
 **Trạng thái tài liệu và Crystal:** đã có mẫu `Reports/BangDiem.rpt`, lớp báo cáo, code engine/viewer và XSD; cần kiểm tra nạp dữ liệu/xem/in trên Windows có SAP runtime phù hợp. [Báo cáo theo mẫu và tài liệu thuyết trình](docs/bao_cao_hoan_chinh/README.md) nằm trên nhánh tài liệu; ảnh chạy Windows, thông tin thành viên và đánh giá chéo thực tế còn cần bổ sung. Không coi kết quả test logic là nghiệm thu toàn bộ giao diện hoặc thang điểm.
 
+## Phòng thi toàn màn hình
+
+Phòng thi ghi nhận rời cửa sổ; lần thứ ba khóa bài và tự nộp. Giáo viên xem số lần
+và trạng thái trong tab Kết quả thi. Xem [hướng dẫn, nâng cấp DB và kiểm thử](docs/Exam_Monitoring.md).
+
 ## Kiểm thử
 
 ```bash

@@ -8,6 +8,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.BLL.Interfaces
     public interface IKetQuaService
     {
         KetQuaThi NopBai(int taiKhoanID, int hocSinhID, int deThiID, IDictionary<int, string> dapAn);
+        int BatDauGiamSat(int taiKhoanID, int hocSinhID, int deThiID);
+        int GhiNhanRoiManHinh(int taiKhoanID, int hocSinhID, int deThiID, int soLan);
         bool KiemTraDaThi(int hocSinhID, int deThiID);
         int LuuKetQua(KetQuaThi kq);
         void LuuChiTietBaiLam(int ketQuaID, int cauHoiID, string dapAnChon, bool laDung);

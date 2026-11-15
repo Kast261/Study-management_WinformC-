@@ -15,6 +15,7 @@
   <ItemGroup>
     <Compile Include="../../Helpers/Import/CauHoiExcelReader.cs" Link="Production/CauHoiExcelReader.cs" />
     <Compile Include="../../DAL/Repositories/CauHoiImportDAL.cs" Link="Production/CauHoiImportDAL.cs" />
+    <Compile Include="../../DAL/Repositories/GiamSatThiDAL.cs" Link="Production/GiamSatThiDAL.cs" />
     <Compile Include="../../DAL/Repositories/DeThiDAL.cs" Link="Production/DeThiDAL.cs" />
     <Compile Include="../../Models/Entities/CauHoi.cs" Link="Production/CauHoi.cs" />
     <Compile Include="../../Models/Entities/DeThi.cs" Link="Production/DeThi.cs" />
