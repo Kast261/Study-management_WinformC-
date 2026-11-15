@@ -495,7 +495,8 @@ namespace BLT_Quan_Ly_Hoc_Tap.DAL
                     {
                         nameLock.Parameters.AddWithValue("ten", tenDangNhap.Trim()); nameLock.ExecuteNonQuery();
                     }
-                    using (var exists = new NpgsqlCommand("SELECT 1 FROM TaiKhoan WHERE LOWER(TenDangNhap)=LOWER(@ten)", conn, transaction))
+                    // Chuẩn hóa cả tên đã lưu: dữ liệu cũ có thể còn khoảng trắng hai đầu.
+                    using (var exists = new NpgsqlCommand("SELECT 1 FROM TaiKhoan WHERE LOWER(BTRIM(TenDangNhap))=LOWER(@ten)", conn, transaction))
                     {
                         exists.Parameters.AddWithValue("ten", tenDangNhap.Trim());
                         if (exists.ExecuteScalar() != null) return false;
