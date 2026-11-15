@@ -43,6 +43,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private int _selectedTaiKhoanID = 0;
         private bool _selectedTrangThaiKhoa = false;
         private bool _selectedTaiKhoanLaAdmin = false;
+        private bool _dangSuaTaiKhoan;
 
         #endregion
 
@@ -52,7 +53,24 @@ namespace BLT_Quan_Ly_Hoc_Tap
         {
             InitializeComponent();
             tableLayoutPanel22.Controls.Add(_lopChoHocVienMoi, 0, 2);
+            ThemNutLamMoi(tableLayoutPanel7, () => LamMoiFormKH());
+            ThemNutLamMoi(tableLayoutPanel9, () => LamMoiFormLop());
+            ThemNutLamMoi(TimTK, () => LamMoiFormTK());
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
+        }
+
+        private static void ThemNutLamMoi(TableLayoutPanel panel, Action reset)
+        {
+            panel.ColumnCount++;
+            foreach (ColumnStyle style in panel.ColumnStyles)
+            {
+                style.SizeType = SizeType.Percent;
+                style.Width = 100F / panel.ColumnCount;
+            }
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F / panel.ColumnCount));
+            var button = new Button { Text = "Làm mới", Dock = DockStyle.Fill };
+            button.Click += (sender, e) => reset();
+            panel.Controls.Add(button, panel.ColumnCount - 1, 0);
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -93,18 +111,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
         {
-            if (grid == dgvGiaoVien)
-            {
-                _selectedGiaoVienID = 0;
-                headerLabel4.Text = "Đang chọn: chưa chọn giáo viên";
-            }
-            if (grid == dgvHocVien)
-            {
-                _selectedHocVienID = 0;
-                headerLabel15.Text = "Đang chọn: chưa chọn học viên";
-            }
-            if (grid == dgvKhoaHoc) _selectedKhoaHocID = 0;
-            if (grid == dgvLopHoc) _selectedLopHocID = 0;
+            if (grid == dgvGiaoVien) LamMoiFormGV(false);
+            if (grid == dgvHocVien) LamMoiFormHV(false);
+            if (grid == dgvKhoaHoc) LamMoiFormKH(false);
+            if (grid == dgvLopHoc) LamMoiFormLop(false);
             if (grid == dgvTaiKhoan)
             {
                 _selectedTaiKhoanID = 0;
@@ -235,9 +245,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void LamMoiFormGV()
+        private void LamMoiFormGV(bool xoaTimKiem = true)
         {
             _selectedGiaoVienID = 0;
+            dgvGiaoVien.ClearSelection();
+            btnGV_Them.Enabled = true;
+            btnGV_Sua.Enabled = false;
             headerLabel4.Text = "Đang chọn: chưa chọn giáo viên";
             txtGV_HoTen.Clear();
             txtGV_NgaySinh.Checked = false;
@@ -245,9 +258,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             txtGV_Email.Clear();
             txtGV_SoDienThoai.Clear();
             txtGV_DiaChi.Clear();
-            txtGV_TimKiem.Text = "";
+            if (xoaTimKiem) txtGV_TimKiem.Text = "";
             if (txtGV_GioiTinh.Items.Count > 0) txtGV_GioiTinh.SelectedIndex = 0;
-            txtGV_HoTen.Focus();
+            if (xoaTimKiem) txtGV_HoTen.Focus();
         }
 
         private void dgvGiaoVien_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -258,6 +271,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (row.DataBoundItem is DataRowView drv)
                 {
                     _selectedGiaoVienID = Convert.ToInt32(drv["GiaoVienID"]);
+                    btnGV_Them.Enabled = false;
+                    btnGV_Sua.Enabled = true;
                     headerLabel4.Text = "Đang chọn: " + drv["HoTen"];
                     txtGV_HoTen.Text = drv["HoTen"]?.ToString();
                     txtGV_ChuyenMon.Text = drv["ChuyenMon"]?.ToString();
@@ -291,6 +306,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnGV_Them_Click(object sender, EventArgs e)
         {
+            if (_selectedGiaoVienID > 0) return; // Đang sửa bản ghi đã chọn; Làm mới để thêm.
+
             if (string.IsNullOrWhiteSpace(txtGV_HoTen.Text))
             {
                 MessageBox.Show("Vui lòng nhập họ tên giáo viên!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -458,9 +475,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void LamMoiFormHV()
+        private void LamMoiFormHV(bool xoaTimKiem = true)
         {
             _selectedHocVienID = 0;
+            dgvHocVien.ClearSelection();
+            btnHV_Them.Enabled = true;
+            btnHV_Sua.Enabled = false;
             if (_lopChoHocVienMoi.Items.Count > 0) _lopChoHocVienMoi.SelectedIndex = 0;
             headerLabel15.Text = "Đang chọn: chưa chọn học viên";
             txtHV_HoTen.Clear();
@@ -468,9 +488,9 @@ namespace BLT_Quan_Ly_Hoc_Tap
             txtHV_Email.Clear();
             txtHV_SoDienThoai.Clear();
             txtHV_DiaChi.Clear();
-            txtHV_TimKiem.Text = "";
+            if (xoaTimKiem) txtHV_TimKiem.Text = "";
             if (cboHV_GioiTinh.Items.Count > 0) cboHV_GioiTinh.SelectedIndex = 0;
-            txtHV_HoTen.Focus();
+            if (xoaTimKiem) txtHV_HoTen.Focus();
         }
 
         private void dgvHocVien_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -481,6 +501,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (row.DataBoundItem is DataRowView drv)
                 {
                     _selectedHocVienID = Convert.ToInt32(drv["HocSinhID"]);
+                    btnHV_Them.Enabled = false;
+                    btnHV_Sua.Enabled = true;
                     headerLabel15.Text = "Đang chọn: " + drv["HoTen"];
                     txtHV_HoTen.Text = drv["HoTen"]?.ToString();
                     txtHV_Email.Text = drv["Email"]?.ToString();
@@ -513,6 +535,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnHV_Them_Click(object sender, EventArgs e)
         {
+            if (_selectedHocVienID > 0) return; // Đang sửa bản ghi đã chọn; Làm mới để thêm.
+
             if (string.IsNullOrWhiteSpace(txtHV_HoTen.Text))
             {
                 MessageBox.Show("Vui lòng nhập họ tên học viên!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -700,12 +724,15 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void LamMoiFormKH()
+        private void LamMoiFormKH(bool focus = true)
         {
             _selectedKhoaHocID = 0;
+            dgvKhoaHoc.ClearSelection();
+            btnKH_Them.Enabled = true;
+            btnKH_Sua.Enabled = false;
             txtKH_TenKhoaHoc.Clear();
             txtKH_MoTa.Clear();
-            txtKH_TenKhoaHoc.Focus();
+            if (focus) txtKH_TenKhoaHoc.Focus();
         }
 
         private void dgvKhoaHoc_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -716,6 +743,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (row.DataBoundItem is DataRowView drv)
                 {
                     _selectedKhoaHocID = Convert.ToInt32(drv["KhoaHocID"]);
+                    btnKH_Them.Enabled = false;
+                    btnKH_Sua.Enabled = true;
                     txtKH_TenKhoaHoc.Text = drv["TenKhoaHoc"]?.ToString();
                     txtKH_MoTa.Text = drv["MoTa"]?.ToString();
                 }
@@ -724,6 +753,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnKH_Them_Click(object sender, EventArgs e)
         {
+            if (_selectedKhoaHocID > 0) return; // Đang sửa bản ghi đã chọn; Làm mới để thêm.
+
             if (string.IsNullOrWhiteSpace(txtKH_TenKhoaHoc.Text))
             {
                 MessageBox.Show("Vui lòng nhập tên khóa học!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -822,14 +853,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void LamMoiFormLop()
+        private void LamMoiFormLop(bool focus = true)
         {
             _selectedLopHocID = 0;
+            dgvLopHoc.ClearSelection();
+            btnLop_Them.Enabled = true;
+            btnLop_Sua.Enabled = false;
             txtLop_TenLop.Clear();
             txtLop_SiSoToiDa.Text = "40";
             if (cboLop_KhoaHoc.Items.Count > 0) cboLop_KhoaHoc.SelectedIndex = 0;
             if (materialComboBox2.Items.Count > 0) materialComboBox2.SelectedIndex = 0;
-            txtLop_TenLop.Focus();
+            if (focus) txtLop_TenLop.Focus();
         }
 
         private void dgvLopHoc_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -840,6 +874,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (row.DataBoundItem is DataRowView drv)
                 {
                     _selectedLopHocID = Convert.ToInt32(drv["LopHocID"]);
+                    btnLop_Them.Enabled = false;
+                    btnLop_Sua.Enabled = true;
                     txtLop_TenLop.Text = drv["TenLop"]?.ToString();
                     txtLop_SiSoToiDa.Text = drv["SiSoToiDa"]?.ToString();
 
@@ -854,6 +890,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnLop_Them_Click(object sender, EventArgs e)
         {
+            if (_selectedLopHocID > 0) return; // Đang sửa bản ghi đã chọn; Làm mới để thêm.
+
             if (string.IsNullOrWhiteSpace(txtLop_TenLop.Text))
             {
                 MessageBox.Show("Vui lòng nhập tên lớp học!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -991,17 +1029,22 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void LamMoiFormTK()
         {
+            dgvTaiKhoan.ClearSelection();
+            if (txtTK_TaiKhoanDangNhap != null) txtTK_TaiKhoanDangNhap.Clear();
+            if (txtTK_MatKhau != null) txtTK_MatKhau.Clear();
+            if (txt_TimTaiKhoan != null) txt_TimTaiKhoan.Clear();
+            // Xóa tìm kiếm có thể bind lại bảng và phát sinh SelectionChanged.
+            // Chuyển sang tạo mới sau khi quá trình đó đã hoàn tất.
+            dgvTaiKhoan.ClearSelection();
+            _dangSuaTaiKhoan = false;
             _selectedTaiKhoanID = 0;
             _selectedTrangThaiKhoa = false;
             _selectedTaiKhoanLaAdmin = false;
-            if (txtTK_TaiKhoanDangNhap != null) txtTK_TaiKhoanDangNhap.Clear();
-            if (txtTK_MatKhau != null) txtTK_MatKhau.Clear();
             if (cmbTK_GanCho != null) cmbTK_GanCho.SelectedIndex = -1;
             if (cmbTK_VaiTro != null && cmbTK_VaiTro.SelectedIndex < 0)
                 cmbTK_VaiTro.SelectedItem = "HocSinh";
             else
                 LoadDropdownGanCho();
-            if (txt_TimTaiKhoan != null) txt_TimTaiKhoan.Clear();
             UpdateNutKhoaMoKhoa();
         }
 
@@ -1027,7 +1070,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             bool needsProfile = role == "GiaoVien" || role == "HocSinh" || role == "HocVien";
             cmbTK_GanCho.Visible = needsProfile;
             cmbTK_GanCho.Enabled = false;
-            btnTK_TaoTaiKhoan.Enabled = role == "Admin";
+            btnTK_TaoTaiKhoan.Enabled = !_dangSuaTaiKhoan && role == "Admin";
             if (!needsProfile) return;
             try
             {
@@ -1043,7 +1086,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 cmbTK_GanCho.ValueMember = profiles.Columns["NguoiDungID"].ColumnName;
                 cmbTK_GanCho.DataSource = profiles;
                 cmbTK_GanCho.Enabled = hasProfiles;
-                btnTK_TaoTaiKhoan.Enabled = hasProfiles;
+                btnTK_TaoTaiKhoan.Enabled = !_dangSuaTaiKhoan && hasProfiles;
                 foreach (DataRow row in profiles.Rows)
                     if (Convert.ToInt32(row["NguoiDungID"]) == selectedID)
                     {
@@ -1075,6 +1118,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 ? dgvTaiKhoan.SelectedRows[0].DataBoundItem as DataRowView : null;
             if (row != null)
             {
+                _dangSuaTaiKhoan = true;
+                btnTK_TaoTaiKhoan.Enabled = false;
                 _selectedTaiKhoanID = Convert.ToInt32(row["TaiKhoanID"]);
                 _selectedTrangThaiKhoa = !row.Row.IsNull("TrangThaiKhoa") && Convert.ToBoolean(row["TrangThaiKhoa"]);
                 _selectedTaiKhoanLaAdmin = string.Equals(row["VaiTro"].ToString().Trim(), "Admin", StringComparison.OrdinalIgnoreCase);
@@ -1131,6 +1176,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnTK_TaoTaiKhoan_Click(object sender, EventArgs e)
         {
+            if (_dangSuaTaiKhoan) return; // Làm mới để tạo tài khoản khác.
+
             if (txtTK_TaiKhoanDangNhap == null || string.IsNullOrWhiteSpace(txtTK_TaiKhoanDangNhap.Text))
             {
                 MessageBox.Show("Vui lòng nhập tên đăng nhập!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);

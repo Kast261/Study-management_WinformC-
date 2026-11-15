@@ -47,7 +47,18 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 HienThiTheHoSo(new GiaoVien { HoTen = Session.HoTen ?? Session.TenDangNhap });
             }
 
+            ThemNutLamMoiCauHoi();
             DataGridViewPager.AttachAll(this, KhiDoiTrang);
+        }
+
+        private void ThemNutLamMoiCauHoi()
+        {
+            tableLayoutPanel19.ColumnCount = 4;
+            foreach (ColumnStyle style in tableLayoutPanel19.ColumnStyles) style.Width = 25F;
+            tableLayoutPanel19.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            var button = new Button { Text = "Làm mới", Dock = DockStyle.Fill };
+            button.Click += (sender, e) => { if (!_dangNhapExcel) LamMoiFormCauHoi(); };
+            tableLayoutPanel19.Controls.Add(button, 3, 0);
         }
 
         private void GiaoVien_Load(object sender, EventArgs e)
@@ -59,6 +70,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 _daTaiTrangChu = true;
 
                 InitDropdowns();
+                LamMoiFormLop();
+                LamMoiFormCauHoi();
 
                 // Load dữ liệu ban đầu cho các tab
                 LoadDanhSachLopQuanLy();
@@ -143,16 +156,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void KhiDoiTrang(DataGridView grid, PageChangeReason reason)
         {
-            if (grid == dgvLopHoc)
-            {
-                _selectedLopHocID = 0;
-                headerLabel4.Text = "Đang chọn: chưa chọn lớp";
-            }
-            if (grid == dgvCauHoi)
-            {
-                _selectedCauHoiID = 0;
-                materialLabel15.Text = "Đang chỉnh sửa: câu hỏi mới";
-            }
+            if (grid == dgvLopHoc) LamMoiFormLop();
+            if (grid == dgvCauHoi) LamMoiFormCauHoi();
             if (grid == dgvGVDeThi && reason != PageChangeReason.Data)
             {
                 _selectedDeThiID = 0;
@@ -288,6 +293,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
                 if (row.DataBoundItem is DataRowView drv)
                 {
                     _selectedLopHocID = Convert.ToInt32(drv["LopHocID"]);
+                    btnLH_Them.Enabled = false;
+                    btnLH_CapNhap.Enabled = true;
                     txtLH_TenLop.Text = drv["TenLop"]?.ToString();
                     txtGV_LichHoc.Text = drv["LichHoc"]?.ToString();
 
@@ -336,6 +343,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnLH_Them_Click(object sender, EventArgs e)
         {
+            if (_selectedLopHocID > 0) return; // Làm mới trước khi thêm bản ghi khác.
+
             if (string.IsNullOrWhiteSpace(txtLH_TenLop.Text))
             {
                 MessageBox.Show("Vui lòng nhập tên lớp học!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -457,10 +466,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             }
         }
 
-        private void btnLH_TaiLai_Click(object sender, EventArgs e)
+        private void LamMoiFormLop()
         {
             _selectedLopHocID = 0;
-            txtLH_TimKiem.Text = "";
+            dgvLopHoc.ClearSelection();
+            btnLH_Them.Enabled = true;
+            btnLH_CapNhap.Enabled = false;
             txtLH_TenLop.Clear();
             txtLH_KhoaHoc.Clear();
             txtGV_LichHoc.Clear();
@@ -468,6 +479,12 @@ namespace BLT_Quan_Ly_Hoc_Tap
             dateLH_NgayBatDau.Checked = dateLH_NgayKetThuc.Checked = false;
             nUDLH_SiSo.Value = 40;
             headerLabel4.Text = "Đang chọn: chưa chọn lớp";
+        }
+
+        private void btnLH_TaiLai_Click(object sender, EventArgs e)
+        {
+            LamMoiFormLop();
+            txtLH_TimKiem.Text = "";
             LoadDanhSachLopQuanLy();
             LoadTrangChu();
         }
@@ -591,12 +608,17 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void dgvCauHoi_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (_dangNhapExcel) return;
             if (e.RowIndex >= 0 && e.RowIndex < dgvCauHoi.Rows.Count)
             {
                 CauHoi q = dgvCauHoi.Rows[e.RowIndex].DataBoundItem as CauHoi;
                 if (q != null)
                 {
                     _selectedCauHoiID = q.CauHoiID;
+                    btnCH_ThemCH.Enabled = false;
+                    btnCH_TaoDe.Enabled = false;
+                    btnCH_Excel.Enabled = false;
+                    btnCH_CapNhap.Enabled = true;
                     materialLabel15.Text = "Đang chỉnh sửa câu hỏi: " + q.ThuTu;
                     txtCH_NhapCauHoi.Text = q.NoiDung;
                     txtCH_A.Text = q.DapAnA;
@@ -611,6 +633,11 @@ namespace BLT_Quan_Ly_Hoc_Tap
         private void LamMoiFormCauHoi()
         {
             _selectedCauHoiID = 0;
+            dgvCauHoi.ClearSelection();
+            btnCH_ThemCH.Enabled = !_dangNhapExcel;
+            btnCH_TaoDe.Enabled = !_dangNhapExcel;
+            btnCH_Excel.Enabled = !_dangNhapExcel;
+            btnCH_CapNhap.Enabled = false;
             materialLabel15.Text = "Đang chỉnh sửa: câu hỏi mới";
             txtCH_NhapCauHoi.Clear();
             txtCH_A.Clear();
@@ -627,6 +654,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
         // -----------------------------------------------------------------------
         private void btnCH_TaoDe_Click(object sender, EventArgs e)
         {
+            if (_selectedCauHoiID > 0) return; // Làm mới trước khi thêm dữ liệu mới.
+
             string tenDe = txtCH_TenDeThi?.Text?.Trim();
             if (string.IsNullOrWhiteSpace(tenDe))
             {
@@ -688,6 +717,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private void btnCH_ThemCH_Click(object sender, EventArgs e)
         {
+            if (_selectedCauHoiID > 0) return; // Làm mới trước khi thêm bản ghi khác.
+
             try
             {
                 if (string.IsNullOrWhiteSpace(txtCH_NhapCauHoi.Text))
@@ -924,6 +955,8 @@ namespace BLT_Quan_Ly_Hoc_Tap
 
         private async void BtnCH_Excel_Click(object sender, EventArgs e)
         {
+            if (_selectedCauHoiID > 0) return; // Làm mới trước khi thêm dữ liệu mới.
+
             if (_dangNhapExcel) return;
             if (!Session.IsGiaoVien || Session.TaiKhoanID <= 0 || Session.NguoiDungID <= 0)
             {
@@ -1002,6 +1035,10 @@ namespace BLT_Quan_Ly_Hoc_Tap
                     UseWaitCursor = false;
                     for (int i = 0; i < inputs.Length; i++)
                         if (!inputs[i].IsDisposed) inputs[i].Enabled = enabled[i];
+                    btnCH_ThemCH.Enabled = _selectedCauHoiID <= 0;
+                    btnCH_TaoDe.Enabled = _selectedCauHoiID <= 0;
+                    btnCH_Excel.Enabled = _selectedCauHoiID <= 0;
+                    btnCH_CapNhap.Enabled = _selectedCauHoiID > 0;
                 }
             }
         }
@@ -1126,7 +1163,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             if (cmbDT_DeThi.SelectedValue != null && int.TryParse(cmbDT_DeThi.SelectedValue.ToString(), out int deID) && deID > 0)
             {
                 _selectedDeThiID = deID;
-                _selectedCauHoiID = 0;
+                LamMoiFormCauHoi();
                 var listCH = _deThiService.LayDanhSachCauHoi(deID);
                 dgvCauHoi.DataSource = listCH;
                 txtDT_SoCauHoi.Text = listCH.Count.ToString();
@@ -1166,7 +1203,7 @@ namespace BLT_Quan_Ly_Hoc_Tap
             else
             {
                 _selectedDeThiID = 0;
-                _selectedCauHoiID = 0;
+                LamMoiFormCauHoi();
                 dgvCauHoi.DataSource = null;
                 lblCH_TongCauHoi.Text = "Số câu hỏi: 0";
                 materialLabel45.Text = "Đang chọn: chưa chọn đề thi";
